@@ -12,8 +12,8 @@ class TitleViewAll extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("${title??""}",style: TextStyle(fontWeight: FontWeight.w600,fontFamily: "Poppins"),),
-          TextButton(onPressed: (){}, child: Text("View all >",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: appPrimaryMaterialColor.shade600),))
+          Text("${title??""}",style: TextStyle(fontWeight: FontWeight.w700,fontFamily: "Poppins"),),
+          TextButton(onPressed: (){}, child: Text("View all >",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700,color: appPrimaryMaterialColor.shade600),))
         ],
       ),
     );

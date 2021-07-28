@@ -14,6 +14,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       width: 85,
       height:35,
       child: Card(
+        elevation: 0,
         color: appPrimaryMaterialColor[700],
         child: Center(
           child: Row(

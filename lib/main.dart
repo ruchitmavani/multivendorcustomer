@@ -15,7 +15,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.white,elevation: 0,actionsIconTheme: IconThemeData(color:appPrimaryMaterialColor)),
-        fontFamily: 'Poppins'
+        fontFamily: 'Poppins',
+        primaryColor: appPrimaryMaterialColor,
+        primarySwatch: Colors.grey,
+
+
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+
+        ),
+        )
       ),
       debugShowCheckedModeBanner: false,
       home:HomeScreen()
