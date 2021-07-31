@@ -4,7 +4,8 @@ import 'package:multi_vendor_customer/Constants/colors.dart';
 
 class TitleViewAll extends StatelessWidget {
     final String? title;
-    TitleViewAll({this.title});
+    final VoidCallback? onPressed;
+    TitleViewAll({this.title,this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,7 +14,7 @@ class TitleViewAll extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("${title??""}",style: TextStyle(fontWeight: FontWeight.w700,fontFamily: "Poppins"),),
-          TextButton(onPressed: (){}, child: Text("View all >",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700,color: appPrimaryMaterialColor.shade600),))
+          TextButton(onPressed:onPressed, child: Text("View all >",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700,color: appPrimaryMaterialColor.shade600),))
         ],
       ),
     );

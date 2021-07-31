@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Views/MyAccount.dart';
+import 'package:multi_vendor_customer/Views/MyOrder.dart';
 
 import 'CommonWidgets/Space.dart';
 
@@ -58,12 +60,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     leading: Icon(
                       Icons.list_sharp,
                     ),
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (contextt)=>MyOrder()));
+                    }),
                 ListTile(
                     title: Text("My Account"),
                     leading: Icon(Icons.account_circle),
                     enabled: true,
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (contextt)=>MyAccount()));
+
+                    }),
               ],
             ),
           ),

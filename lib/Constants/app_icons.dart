@@ -25,6 +25,7 @@ class AppIcons {
   static const IconData sort = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData fail = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData offer = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData coupon = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData rightarrow = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData shopping_cart = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

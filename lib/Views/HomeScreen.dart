@@ -11,6 +11,8 @@ import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
+import 'package:multi_vendor_customer/Views/CartScreen.dart';
+import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
 import 'package:multi_vendor_customer/exports.dart';
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey =
   new GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
             position: BadgePosition.topEnd(top: 5),
             badgeContent:
                 Text('3', style: TextStyle(fontSize: 10, color: Colors.white)),
-            child: Icon(AppIcons.shopping_cart,
-                size: 20, color: appPrimaryMaterialColor),
+            child: IconButton(
+              icon: Icon(AppIcons.shopping_cart,
+                  size: 20, color: appPrimaryMaterialColor), onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+            },
+            ),
           ),
-          SizedBox(width: 25)
+          Padding(padding: EdgeInsets.only(left:24))
         ],
       ),
       body: SingleChildScrollView(
@@ -319,7 +326,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           }),
                     ),
-                    TitleViewAll(title: "Clothing"),
+                    TitleViewAll(title: "Clothing",onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CategorySubScreen()),
+                      );                    }),
                     SizedBox(
                       height: 240,
                       child: ListView.builder(
