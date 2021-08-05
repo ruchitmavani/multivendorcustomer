@@ -21,10 +21,12 @@ class MyTextFormField extends StatelessWidget {
   late Widget? icon;
   late int? maxLines;
   late int? minLines;
+  late bool? filled=true;
 
   MyTextFormField(
       {this.hintText,
       this.lable,
+        this.filled,
       this.keyboardType,
       this.maxLength,
       this.focusNode,
@@ -85,12 +87,11 @@ class MyTextFormField extends StatelessWidget {
               onFieldSubmitted: onFieldSubmitted,
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade200,
-                  filled: true,
+                  filled: filled??true,
                   hintText: "${hintText ?? ""}",
                   hintStyle: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade400,
-                      fontWeight: FontWeight.w600),
+                      color: Colors.grey.shade400),
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   contentPadding: contentPadding == null
                       ? EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4)

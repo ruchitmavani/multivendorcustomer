@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
             child: MyTextFormField(
               controller: mobileNo,
-              hintText: "mobile number",
+              hintText: "Mobile number",
               maxLength: 10,
             ),
           ),

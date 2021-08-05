@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
+import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
-import 'package:multi_vendor_customer/CommonWidgets/TextInputWidget.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -64,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,29 +73,38 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("images/logo.png", width: 60, height: 60),
-                      Space(width: 8.0),
-                      Text("iCopper",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15))
+                      Padding(
+                        padding: const EdgeInsets.only(left:10.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("images/logo.png", width: 60, height: 60),
+                            Space(width: 8.0),
+                            Text("iCopper",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15))
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call, color: appPrimaryMaterialColor),
+                          Space(width: 8),
+                          Container(height: 18, width: 0.9, color: Colors.grey),
+                          Space(width: 8),
+                          SvgPicture.asset("images/whatsapp.svg"),
+                          Space(width: 10)
+                        ],
+                      ),
                     ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
-                  Space(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.call, color: appPrimaryMaterialColor),
-                      Space(width: 8),
-                      Container(height: 18, width: 0.9, color: Colors.grey),
-                      Space(width: 8),
-                      SvgPicture.asset("images/whatsapp.svg"),
-                      Space(width: 10)
-                    ],
+                  Space(
+                    height: 12,
                   ),
-                  Space(height: 10),
                   CarouselSlider(
                     options: CarouselOptions(
                         height: 170.0,
@@ -153,10 +161,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  TextInputWidget(
-                      hintText: "Search",
-                      icon: Icon(CupertinoIcons.search, size: 20)),
-                  Space(height: 20)
+                  Space(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left:12.0,right: 12.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                            borderRadius: BorderRadius.circular(6.0),
+                            boxShadow: [BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 4.0,
+                            ),]
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:12.0),
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.search,size: 18,color: Colors.grey.shade700),
+                              Space(width: 4),
+                              Text("Search",style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade400),),
+                            ],
+                          ),
+                        )
+                      ),
+                    ),
+                  ),
+                  Space(height: 24)
                 ],
               ),
             ),

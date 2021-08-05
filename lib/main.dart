@@ -56,6 +56,6 @@ class MyApp extends StatelessWidget {
               style: ButtonStyle(),
             )),
         debugShowCheckedModeBanner: false,
-        home: OrderDetails());
+        home: LoginScreen());
   }
 }
