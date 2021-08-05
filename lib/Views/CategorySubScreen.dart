@@ -15,8 +15,7 @@ class CategorySubScreen extends StatefulWidget {
 }
 
 class _CategorySubScreenState extends State<CategorySubScreen> {
-
-  bool isGrid=true;
+  bool isGrid = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +29,9 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
           Space(
             height: 4,
           ),
-          TopButtons(onChanged:(value){
+          TopButtons(onChanged: (value) {
             setState(() {
-              isGrid=value;
+              isGrid = value;
             });
             print(value);
           }),
@@ -43,8 +42,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
-                  crossAxisCount: isGrid?2:1,
-                  childAspectRatio:isGrid?0.79:3.5),
+                  crossAxisCount: isGrid ? 2 : 1,
+                  childAspectRatio: isGrid ? 0.75 : 3.5),
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -71,7 +70,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(right:15.0,bottom: 15.0),
+                                  padding: const EdgeInsets.only(
+                                      right: 15.0, bottom: 15.0),
                                   child: SizedBox(
                                     child: FloatingActionButton(
                                         onPressed: () {
@@ -95,42 +95,49 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                           });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 8.0,top: 6),
-                      child: isGrid?Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Space(
-                            height: 5,
-                          ),
-                          ProductRating(),
-                          ProductImage(),
-                          ProductDetail(isGridView: isGrid)
-                        ],
-                      ):Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ProductImage(),
-                            Space(width: 8),
-                            Expanded(child: ProductDetail(isGridView: isGrid)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                      padding:
+                          const EdgeInsets.only(left: 10.0, right: 8.0, top: 6),
+                      child: isGrid
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right:8.0),
-                                  child: ProductRating(),
+                                Space(
+                                  height: 5,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom:6.0),
-                                  child: AddRemoveButton(),
-                                ),
+                                ProductRating(),
+                                ProductImage(),
+                                ProductDetail(isGridView: isGrid)
                               ],
                             )
-                          ],
-                        ),
-                      ),
+                          : Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ProductImage(),
+                                  Space(width: 8),
+                                  Expanded(
+                                      child: ProductDetail(isGridView: isGrid)),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: ProductRating(),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 6.0),
+                                        child: AddRemoveButton(),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                     ),
                   ),
                 );
@@ -143,10 +150,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
   }
 }
 
-
 class ProductDetail extends StatelessWidget {
-
-  bool isGridView=true;
+  bool isGridView = true;
   ProductDetail({required this.isGridView});
 
   @override
@@ -177,8 +182,7 @@ class ProductDetail extends StatelessWidget {
                     Positioned(
                       child: Container(
                         height: 2,
-                        color:
-                        appPrimaryMaterialColor.shade900,
+                        color: appPrimaryMaterialColor.shade900,
                         width: 120,
                       ),
                       top: 8,
@@ -192,8 +196,7 @@ class ProductDetail extends StatelessWidget {
                               style: TextStyle(
                                   fontFamily: "",
                                   fontSize: 11,
-                                  color:
-                                  Colors.grey.shade700),
+                                  color: Colors.grey.shade700),
                             ),
                             Text(
                               "250.00",
@@ -214,9 +217,7 @@ class ProductDetail extends StatelessWidget {
                     Text(
                       "\u{20B9}",
                       style: TextStyle(
-                          fontFamily: "",
-                          fontSize: 12,
-                          color: Colors.black87),
+                          fontFamily: "", fontSize: 12, color: Colors.black87),
                     ),
                     Text(
                       "250.00",
@@ -231,7 +232,7 @@ class ProductDetail extends StatelessWidget {
               ],
             ),
             Space(width: 4),
-            isGridView?AddRemoveButton():SizedBox()
+            isGridView ? AddRemoveButton() : SizedBox()
           ],
         )
       ],
@@ -239,26 +240,19 @@ class ProductDetail extends StatelessWidget {
   }
 }
 
-
 class ProductRating extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(Icons.star, color: Colors.amber, size: 15),
-        Text("4.5",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 11))
+        Text("4.5", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))
       ],
     );
   }
 }
 
-
 class ProductImage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Center(

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 
-class ProductComponent extends StatefulWidget {
+class RecentlyBought extends StatefulWidget {
   @override
-  _ProductComponentState createState() => _ProductComponentState();
+  _RecentlyBoughtState createState() => _RecentlyBoughtState();
 }
 
-class _ProductComponentState extends State<ProductComponent> {
+class _RecentlyBoughtState extends State<RecentlyBought> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -116,7 +115,7 @@ class _ProductComponentState extends State<ProductComponent> {
                       ],
                     ),
                     Space(width: 8),
-                    AddRemoveButton()
+                    // AddRemoveButton()
                   ],
                 )
               ],

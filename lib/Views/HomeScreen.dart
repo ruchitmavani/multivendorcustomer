@@ -3,17 +3,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
-import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
+import 'package:multi_vendor_customer/Views/Components/RecentlyBought.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
 import 'package:multi_vendor_customer/exports.dart';
 
@@ -29,16 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
     "https://thumbs.dreamstime.com/b/shopping-cart-supermarket-empty-shelves-40320116.jpg"
   ];
 
-  final GlobalKey<ScaffoldState> _scaffoldKey =
-  new GlobalKey<ScaffoldState>();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.grey[200],
-      drawer:DrawerWidget(),
+      drawer: DrawerWidget(),
       appBar: AppBar(
         leading: IconButton(
           splashColor: Colors.transparent,
@@ -55,12 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text('3', style: TextStyle(fontSize: 10, color: Colors.white)),
             child: IconButton(
               icon: Icon(AppIcons.shopping_cart,
-                  size: 20, color: appPrimaryMaterialColor), onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
-            },
+                  size: 20, color: appPrimaryMaterialColor),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartScreen()));
+              },
             ),
           ),
-          Padding(padding: EdgeInsets.only(left:24))
+          Padding(padding: EdgeInsets.only(left: 24))
         ],
       ),
       body: SingleChildScrollView(
@@ -75,12 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left:10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset("images/logo.png", width: 60, height: 60),
+                            Image.asset("images/logo.png",
+                                width: 60, height: 60),
                             Space(width: 8.0),
                             Text("iCopper",
                                 style: TextStyle(
@@ -140,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       RichText(
                           text: TextSpan(
                               text: "Shop Timing:",
-                              style: subTitleStyle,
+                              style: FontsTheme.subTitleStyle(),
                               children: [
                             TextSpan(text: "  10am - 10am", style: titleStyle)
                           ])),
@@ -149,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           RichText(
                               text: TextSpan(
-                                  text: "Location:", style: subTitleStyle)),
+                                  text: "Location:",
+                                  style: FontsTheme.subTitleStyle())),
                           Text(" Direction",
                               style: TextStyle(
                                   fontSize: 11,
@@ -165,32 +165,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left:12.0,right: 12.0),
+                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: SizedBox(
                       height: 50,
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                            borderRadius: BorderRadius.circular(6.0),
-                            boxShadow: [BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 4.0,
-                            ),]
-
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left:12.0),
-                          child: Row(
-                            children: [
-                              Icon(CupertinoIcons.search,size: 18,color: Colors.grey.shade700),
-                              Space(width: 4),
-                              Text("Search",style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade400),),
-                            ],
-                          ),
-                        )
-                      ),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  blurRadius: 4.0,
+                                ),
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Row(
+                              children: [
+                                Icon(CupertinoIcons.search,
+                                    size: 18, color: Colors.grey.shade700),
+                                Space(width: 4),
+                                Text(
+                                  "Search",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade400),
+                                ),
+                              ],
+                            ),
+                          )),
                     ),
                   ),
                   Space(height: 24)
@@ -206,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height:105,
+              height: 105,
               child: ListView.builder(
                   itemCount: 4,
                   scrollDirection: Axis.horizontal,
@@ -228,284 +231,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, top: 8.0, bottom: 8.0),
-                              child: SizedBox(
-                                width: 180,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.shade200,
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        //offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Space(height: 8),
-                                        Center(
-                                            child: SizedBox(
-                                                height: 120,
-                                                width: 100,
-                                                child: Image.network(
-                                                    "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
-                                        Space(height: 8),
-                                        Text(
-                                          "Product name",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          "Description",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 10,
-                                              color: Colors.grey.shade400),
-                                        ),
-                                        Space(height: 6),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      child: Container(
-                                                        height: 2,
-                                                        color:
-                                                            appPrimaryMaterialColor
-                                                                .shade900,
-                                                        width: 120,
-                                                      ),
-                                                      top: 8,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "\u{20B9}",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "",
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700),
-                                                            ),
-                                                            Text(
-                                                              "250.00",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700,
-                                                                  fontSize: 11),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "\u{20B9}",
-                                                      style: TextStyle(
-                                                          fontFamily: "",
-                                                          fontSize: 12,
-                                                          color:
-                                                              Colors.black87),
-                                                    ),
-                                                    Text(
-                                                      "250.00",
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          color: Colors.black87,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Space(width: 8),
-                                            // AddRemoveButton()
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            return RecentlyBought();
                           }),
                     ),
-                    TitleViewAll(title: "Clothing",onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CategorySubScreen()),
-                      );                    }),
+                    TitleViewAll(
+                        title: "Clothing",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CategorySubScreen()),
+                          );
+                        }),
                     SizedBox(
                       height: 240,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, top: 8.0, bottom: 8.0),
-                              child: SizedBox(
-                                width: 180,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.shade200,
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        //offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Space(height: 8),
-                                        Center(
-                                            child: SizedBox(
-                                                height: 120,
-                                                width: 100,
-                                                child: Image.network(
-                                                    "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
-                                        Space(height: 8),
-                                        Text(
-                                          "Product name",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          "Description",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 10,
-                                              color: Colors.grey.shade400),
-                                        ),
-                                        Space(height: 6),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      child: Container(
-                                                        height: 2,
-                                                        color:
-                                                            appPrimaryMaterialColor
-                                                                .shade900,
-                                                        width: 120,
-                                                      ),
-                                                      top: 8,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "\u{20B9}",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "",
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700),
-                                                            ),
-                                                            Text(
-                                                              "250.00",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700,
-                                                                  fontSize: 11),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "\u{20B9}",
-                                                      style: TextStyle(
-                                                          fontFamily: "",
-                                                          fontSize: 12,
-                                                          color:
-                                                              Colors.black87),
-                                                    ),
-                                                    Text(
-                                                      "250.00",
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          color: Colors.black87,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Space(width: 8),
-                                            AddRemoveButton()
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            return ProductComponent();
                           }),
                     ),
                     TitleViewAll(title: "Headphone"),
@@ -514,139 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, top: 8.0, bottom: 8.0),
-                              child: SizedBox(
-                                width: 180,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.shade200,
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        //offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Space(height: 8),
-                                        Center(
-                                            child: SizedBox(
-                                                height: 120,
-                                                width: 100,
-                                                child: Image.network(
-                                                    "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
-                                        Space(height: 8),
-                                        Text(
-                                          "Product name",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          "Description",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 10,
-                                              color: Colors.grey.shade400),
-                                        ),
-                                        Space(height: 6),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      child: Container(
-                                                        height: 2,
-                                                        color:
-                                                            appPrimaryMaterialColor
-                                                                .shade900,
-                                                        width: 120,
-                                                      ),
-                                                      top: 8,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "\u{20B9}",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "",
-                                                                  fontSize: 11,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700),
-                                                            ),
-                                                            Text(
-                                                              "250.00",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade700,
-                                                                  fontSize: 11),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "\u{20B9}",
-                                                      style: TextStyle(
-                                                          fontFamily: "",
-                                                          fontSize: 12,
-                                                          color:
-                                                              Colors.black87),
-                                                    ),
-                                                    Text(
-                                                      "250.00",
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          color: Colors.black87,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Space(width: 8),
-                                            AddRemoveButton()
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            return ProductComponent();
                           }),
                     ),
                   ],
