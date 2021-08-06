@@ -15,6 +15,8 @@ import 'package:multi_vendor_customer/Views/Components/RecentlyBought.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
 import 'package:multi_vendor_customer/exports.dart';
 
+import 'AboutUs.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -72,19 +74,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset("images/logo.png",
-                                width: 60, height: 60),
-                            Space(width: 8.0),
-                            Text("iCopper",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15))
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => AboutUs()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("images/logo.png",
+                                  width: 60, height: 60),
+                              Space(width: 8.0),
+                              Text("iCopper",
+                                  style: FontsTheme.boldTextStyle(size: 17))
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -138,25 +145,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       RichText(
                           text: TextSpan(
-                              text: "Shop Timing:",
-                              style: FontsTheme.subTitleStyle(),
+                              text: "Shop Timing :",
+                              style: FontsTheme.descriptionText(
+                                  fontWeight: FontWeight.w600),
                               children: [
-                            TextSpan(text: "  10am - 10am", style: titleStyle)
+                            TextSpan(
+                                text: "  10am - 10am",
+                                style: FontsTheme.valueStyle(
+                                    color: Colors.black54,
+                                    size: 11,
+                                    fontWeight: FontWeight.w700))
                           ])),
                       Space(width: 20),
                       Row(
                         children: [
                           RichText(
                               text: TextSpan(
-                                  text: "Location:",
-                                  style: FontsTheme.subTitleStyle())),
+                            text: "Location:",
+                            style: FontsTheme.descriptionText(
+                                fontWeight: FontWeight.w600),
+                          )),
+                          Icon(Icons.directions,
+                              size: 18, color: appPrimaryMaterialColor),
                           Text(" Direction",
                               style: TextStyle(
                                   fontSize: 11,
                                   color: appPrimaryMaterialColor,
                                   fontWeight: FontWeight.w600)),
-                          Icon(Icons.directions,
-                              size: 18, color: appPrimaryMaterialColor)
                         ],
                       ),
                     ],
@@ -185,12 +200,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(CupertinoIcons.search,
                                     size: 18, color: Colors.grey.shade700),
                                 Space(width: 4),
-                                Text(
-                                  "Search",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade400),
-                                ),
+                                Text("Search",
+                                    style: FontsTheme.descriptionText(
+                                        color: Colors.grey.shade500,
+                                        fontWeight: FontWeight.w500,
+                                        size: 12)),
                               ],
                             ),
                           )),
@@ -204,18 +218,22 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(left: 10.0, top: 20),
               child: Row(
                 children: [
-                  Text("Top Selling Products", style: boldTitleText),
+                  Text("Top Selling Products",
+                      style: FontsTheme.boldTextStyle(size: 15)),
                 ],
               ),
             ),
-            SizedBox(
-              height: 105,
-              child: ListView.builder(
-                  itemCount: 4,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return TopSellingProductComponent();
-                  }),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: SizedBox(
+                height: 105,
+                child: ListView.builder(
+                    itemCount: 4,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return TopSellingProductComponent();
+                    }),
+              ),
             ),
             Space(
               height: 20,
@@ -225,7 +243,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     TopButtons(),
-                    TitleViewAll(title: "Recently bought"),
+                    TitleViewAll(
+                      title: "Recently bought",
+                    ),
                     SizedBox(
                       height: 245,
                       child: ListView.builder(

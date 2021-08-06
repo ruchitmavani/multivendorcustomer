@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 
@@ -99,7 +98,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 30.0),
+                          padding: const EdgeInsets.only(left: 30.0, right: 30),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -110,10 +109,13 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 children: [
                                   Icon(Icons.star,
                                       color: Colors.amber, size: 18),
-                                  Text("4.5",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12))
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 2.0),
+                                    child: Text("4.5",
+                                        style: FontsTheme.valueStyle(
+                                            size: 11,
+                                            fontWeight: FontWeight.w600)),
+                                  )
                                 ],
                               ),
                               Space(height: 8),
@@ -121,16 +123,19 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   "Lorem ipsum dolor sit amet, consectetuer adipis"
                                   "cing elit, sed diam nonummy nibh euismod"
                                   "tincid unt ut laoreet dolore magna.",
-                                  style: FontsTheme.descriptionText(size: 13),
-                                  textAlign: TextAlign.left),
+                                  style: FontsTheme.descriptionText(),
+                                  textAlign: TextAlign.justify),
 
                               // Color Option
 
                               Space(height: 20),
-                              Text("Color option",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade700)),
+                              Text(
+                                "Color option",
+                                style: FontsTheme.subTitleStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w600,
+                                    size: 13),
+                              ),
                               Space(height: 8),
                               Row(
                                 children: colorList.map<Widget>((e) {
@@ -175,9 +180,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
                               Space(height: 18),
                               Text("Size Option",
-                                  style: TextStyle(
+                                  style: FontsTheme.subTitleStyle(
+                                      color: Colors.black54,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade700)),
+                                      size: 13)),
                               Space(height: 8),
                               Row(
                                 children: sizeList.map<Widget>((e) {
@@ -249,22 +255,23 @@ class _ProductDescriptionState extends State<ProductDescription> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left:15.0,right: 15.0),
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
                       text: TextSpan(
                           text: "₹",
-                          style: TextStyle(color: Colors.black87, fontSize: 18),
+                          style: FontsTheme.digitStyle(size: 16),
                           children: [
                         TextSpan(
-                            text: " 1500", style: FontsTheme.boldTextStyle()),
+                            text: " 20.0",
+                            style: FontsTheme.digitStyle(size: 15)),
                       ])),
-
                   ElevatedButton(
                       onPressed: () {},
-                      child: Text("Add to Cart",style: FontsTheme.boldTextStyle(color: Colors.white)),
+                      child: Text("Add to Cart",
+                          style: FontsTheme.boldTextStyle(color: Colors.white)),
                       style: ButtonStyle(
                           elevation: MaterialStateProperty.all<double>(0),
                           backgroundColor: MaterialStateProperty.all<Color>(

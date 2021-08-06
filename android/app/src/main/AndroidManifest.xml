@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.multi_vendor_customer">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="multi_vendor_customer"
         android:icon="@mipmap/ic_launcher">

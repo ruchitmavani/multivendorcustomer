@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Constants/textStyles.dart';
 
 class RecentlyBought extends StatefulWidget {
   @override
@@ -42,15 +43,11 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                 Space(height: 8),
                 Text(
                   "Product name",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                  style: FontsTheme.subTitleStyle(),
                 ),
-                Text(
-                  "Description",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 10,
-                      color: Colors.grey.shade400),
-                ),
+                Text("Description",
+                    style: FontsTheme.descriptionText(
+                        size: 11, fontWeight: FontWeight.w500)),
                 Space(height: 6),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,

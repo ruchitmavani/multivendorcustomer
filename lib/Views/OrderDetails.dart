@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
 
 class OrderDetails extends StatefulWidget {
   const OrderDetails({Key? key}) : super(key: key);
@@ -24,46 +25,32 @@ class _OrderDetailsState extends State<OrderDetails> {
         context: context,
         builder: (ctx) {
           return Padding(
-            padding: const EdgeInsets.only(left:18.0,right: 18,top: 25),
+            padding: const EdgeInsets.only(left: 19.0, right: 19, top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  "Rate your Order for",
-                  style: FontsTheme.boldTextStyle(
-                    size: 18
-                  )
-                ),
+                Text("Rate your Order for",
+                    style: FontsTheme.boldTextStyle(size: 17)),
                 Padding(
-                  padding: const EdgeInsets.only(top:22.0),
+                  padding: const EdgeInsets.only(top: 22.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                          "Copper flask CF-125",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black45,
-                            fontWeight: FontWeight.w600),
-                      ),
+                      Text("Copper flask CF-125",
+                          style: FontsTheme.descriptionText(size: 15)),
                       Row(
                         children: [
-                          Text(
-                            "\u{20B9}",
-                            style: TextStyle(
-                                fontFamily: "",
-                                fontSize: 13,
-                                fontWeight:
-                                FontWeight.w600,
-                                color: Colors.black45),
-                          ),
-                          Text(
-                              "249",
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w600),
+                          Text("\u{20B9}",
+                              style: FontsTheme.digitStyle(
+                                  size: 15, colors: Colors.black54)),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 2.0,
+                            ),
+                            child: Text("249",
+                                style: FontsTheme.digitStyle(
+                                    size: 14, colors: Colors.black54)),
                           ),
                         ],
                       ),
@@ -71,7 +58,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top:8.0),
+                  padding: const EdgeInsets.only(top: 8.0),
                   child: RatingBar(
                     initialRating: 3,
                     itemSize: 33,
@@ -97,7 +84,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     onRatingUpdate: (rating) {},
                   ),
                 ),
-                Space(height: 20),
+                Space(height: 40),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 25.0),
                   child: SizedBox(
@@ -119,6 +106,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,47 +128,19 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(2),
-                      border: Border.all(
-                        width: 1.2,
-                        color: appPrimaryMaterialColor,
-                      ),
-                    ),
-                    width: 45,
-                    height: 45,
-                    child: Center(
-                      child: Text(
-                        "LOGO",
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: appPrimaryMaterialColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
+                  Image.asset("images/logo.png", width: 60, height: 60),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 11.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "The flash shop",
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "Sowcarpet",
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500),
-                          ),
+                          Text("The flash shop",
+                              style: FontsTheme.valueStyle(
+                                  fontWeight: FontWeight.w600, size: 14)),
+                          Text("Sowcarpet",
+                              style: FontsTheme.valueStyle(
+                                  fontWeight: FontWeight.w600, size: 11)),
                         ],
                       ),
                     ),
@@ -223,112 +183,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         scrollDirection: Axis.vertical,
                         itemCount: 4,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15.0, right: 15, top: 13, bottom: 7),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.network(
-                                  "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
-                                  width: 55,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 15.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Copper flash CF-125",
-                                              style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                ratingBottomSheet(context);
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color:
-                                                        appPrimaryMaterialColor,
-                                                    size: 11,
-                                                  ),
-                                                  Space(
-                                                    width: 2,
-                                                  ),
-                                                  Text(
-                                                    "Rate",
-                                                    style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        color:
-                                                            appPrimaryMaterialColor,
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Space(
-                                          height: 17,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Qty : 1",
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "\u{20B9}",
-                                                  style: TextStyle(
-                                                      fontFamily: "",
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.black87),
-                                                ),
-                                                Text(
-                                                  "249",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.black87),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                          return OrderDetailComponent();
                         },
                         separatorBuilder: (context, index) => Divider(
                           color: Colors.grey[300],
@@ -466,6 +321,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ],
                 ),
                 onPressed: () {
+                  ratingBottomSheet(context);
                   FocusScope.of(context).unfocus();
                 },
               ),
