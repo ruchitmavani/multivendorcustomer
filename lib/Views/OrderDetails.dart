@@ -203,19 +203,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text(
-                                  "Discount Applied",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black87,
-                                  ),
-                                ),
+                                title: Text("Discount Applied",
+                                    style: FontsTheme.valueStyle()),
                                 trailing: Text("\u{20B9}" + " " + "256.00",
-                                    style: FontsTheme.boldTextStyle(
-                                      size: 12,
-                                      color: Colors.black87,
-                                    )),
+                                    style: FontsTheme.digitStyle(size: 13)),
                               ),
                             ),
                           ),
@@ -226,19 +217,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text(
-                                  "Tax",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black87,
-                                  ),
-                                ),
+                                title:
+                                    Text("Tax", style: FontsTheme.valueStyle()),
                                 trailing: Text("\u{20B9}" + " " + "256.00",
-                                    style: FontsTheme.boldTextStyle(
-                                      size: 12,
-                                      color: Colors.black87,
-                                    )),
+                                    style: FontsTheme.digitStyle(size: 13)),
                               ),
                             ),
                           ),
@@ -249,19 +231,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text(
-                                  "Shipping Fee",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black87,
-                                  ),
-                                ),
+                                title: Text("Shipping Fee",
+                                    style: FontsTheme.valueStyle()),
                                 trailing: Text("\u{20B9}" + " " + "256.00",
-                                    style: FontsTheme.boldTextStyle(
-                                      size: 12,
-                                      color: Colors.black87,
-                                    )),
+                                    style: FontsTheme.digitStyle(size: 13)),
                               ),
                             ),
                           ),
@@ -272,17 +245,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text(
-                                  "Total",
-                                  style: FontsTheme.boldTextStyle(
-                                    size: 15,
-                                  ),
-                                ),
+                                title: Text("Total",
+                                    style: FontsTheme.valueStyle(size: 15)),
                                 trailing: Text("\u{20B9}" + " " + "256.00",
-                                    style: FontsTheme.boldTextStyle(
-                                      size: 14,
-                                      color: Colors.black87,
-                                    )),
+                                    style: FontsTheme.digitStyle(size: 14)),
                               ),
                             ),
                           ),

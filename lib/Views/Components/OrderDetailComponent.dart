@@ -67,30 +67,14 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Qty : 1",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600),
-                      ),
+                      Text("Qty : 1",
+                          style: FontsTheme.descriptionText(
+                              fontWeight: FontWeight.w500)),
                       Row(
                         children: [
-                          Text(
-                            "\u{20B9}",
-                            style: TextStyle(
-                                fontFamily: "",
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87),
-                          ),
-                          Text(
-                            "249",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87),
-                          ),
+                          Text("\u{20B9}",
+                              style: FontsTheme.digitStyle(size: 14)),
+                          Text("249", style: FontsTheme.digitStyle(size: 14)),
                         ],
                       ),
                     ],
