@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/exports.dart';
@@ -230,7 +229,7 @@ class _CartScreenState extends State<CartScreen> {
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                           title: Text("Discount Applied"),
-                          trailing: Text("256.00"),
+                          trailing: Text("- \u{20B9}256.00"),
                         ),
                       ),
                     ),
@@ -242,7 +241,7 @@ class _CartScreenState extends State<CartScreen> {
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                           title: Text("Tax"),
-                          trailing: Text("256.00"),
+                          trailing: Text("\u{20B9}256.00"),
                         ),
                       ),
                     ),
@@ -254,7 +253,7 @@ class _CartScreenState extends State<CartScreen> {
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                           title: Text("Shipping Fee"),
-                          trailing: Text("256.00"),
+                          trailing: Text("\u{20B9}256.00"),
                         ),
                       ),
                     ),
@@ -272,7 +271,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           trailing: Text(
-                            "316.00",
+                            "\u{20B9}316.00",
                             style: FontsTheme.boldTextStyle(
                               size: 14,
                             ),

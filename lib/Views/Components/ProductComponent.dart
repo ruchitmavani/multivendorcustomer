@@ -3,8 +3,11 @@ import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 
 class ProductComponent extends StatefulWidget {
+  ProductData productData;
+  ProductComponent({required this.productData});
   @override
   _ProductComponentState createState() => _ProductComponentState();
 }
@@ -43,10 +46,10 @@ class _ProductComponentState extends State<ProductComponent> {
                             "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
                 Space(height: 8),
                 Text(
-                  "Product name",
+                  "${widget.productData.productName}",
                   style: FontsTheme.subTitleStyle(),
                 ),
-                Text("Description",
+                Text("${widget.productData.productDescription}",
                     style: FontsTheme.descriptionText(
                         size: 11, fontWeight: FontWeight.w500)),
                 Space(height: 6),
@@ -78,7 +81,7 @@ class _ProductComponentState extends State<ProductComponent> {
                                           color: Colors.grey.shade700),
                                     ),
                                     Text(
-                                      "250.00",
+                                      "${widget.productData.productMrp}",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.w400,
@@ -101,7 +104,7 @@ class _ProductComponentState extends State<ProductComponent> {
                                   color: Colors.black87),
                             ),
                             Text(
-                              "250.00",
+                              "${widget.productData.productSellingPrice}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: Colors.black87,

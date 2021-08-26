@@ -36,12 +36,12 @@ class _OTPScreenState extends State<OTPScreen> {
                     Space(width: 45),
                     RichText(
                         text: TextSpan(
-                            text: "OTP sent to\t\t",
+                            text: "OTP sent to  ",
                             style: FontsTheme.descriptionText(
                                 size: 15, color: Colors.grey),
                             children: [
                           TextSpan(
-                              text: "+91\t" + "${widget.mobileNumber}",
+                              text: "+91 " + "${widget.mobileNumber}",
                               style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: "",

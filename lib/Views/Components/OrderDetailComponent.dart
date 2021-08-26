@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
@@ -11,6 +13,99 @@ class OrderDetailComponent extends StatefulWidget {
 }
 
 class _OrderDetailComponentState extends State<OrderDetailComponent> {
+
+  void ratingBottomSheet(BuildContext context, int price) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(15.0),
+              topRight: const Radius.circular(15.0)),
+        ),
+        context: context,
+        builder: (ctx) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 19.0, right: 19, top: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Rate your Order for",
+                    style: FontsTheme.boldTextStyle(size: 17)),
+                Padding(
+                  padding: const EdgeInsets.only(top: 22.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Copper flask CF-125",
+                          style: FontsTheme.descriptionText(size: 15)),
+                      Row(
+                        children: [
+                          Text("\u{20B9}",
+                              style: FontsTheme.digitStyle(
+                                  size: 14, colors: Colors.black54,fontWeight: FontWeight.w500)),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 2.0,
+                            ),
+                            child: Text("$price",
+                                style: FontsTheme.digitStyle(
+                                    size: 14, colors: Colors.black54,fontWeight: FontWeight.w500)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: RatingBar(
+                    initialRating: 3,
+                    itemSize: 33,
+                    direction: Axis.horizontal,
+                    tapOnlyMode: true,
+                    ignoreGestures: false,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    ratingWidget: RatingWidget(
+                      full: Icon(
+                        Icons.star,
+                        color: appPrimaryMaterialColor,
+                      ),
+                      half: Icon(
+                        Icons.star,
+                        color: Colors.grey.shade300,
+                      ),
+                      empty: Icon(
+                        Icons.star,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                    onRatingUpdate: (rating) {},
+                  ),
+                ),
+                Space(height: 40),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 25.0),
+                  child: SizedBox(
+                    height: 44,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      child: Text(
+                        "Save",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -48,13 +143,19 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                             Space(
                               width: 2,
                             ),
-                            Text(
-                              "Rate",
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: appPrimaryMaterialColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600),
+                            GestureDetector(
+                              onTap: (){
+                                ratingBottomSheet(context,25);
+                                FocusScope.of(context).unfocus();
+                              },
+                              child: Text(
+                                "Rate",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: appPrimaryMaterialColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ],
                         ),
@@ -73,8 +174,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                       Row(
                         children: [
                           Text("\u{20B9}",
-                              style: FontsTheme.digitStyle(size: 14)),
-                          Text("249", style: FontsTheme.digitStyle(size: 14)),
+                              style: FontsTheme.digitStyle(size: 14,fontWeight: FontWeight.w500)),
+                          Text(" 249", style: FontsTheme.digitStyle(size: 14,fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ],

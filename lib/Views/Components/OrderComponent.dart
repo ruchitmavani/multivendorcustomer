@@ -83,16 +83,16 @@ class _OrderComponentState extends State<OrderComponent> {
                             children: [
                               Text(
                                 "Copper Flask",
-                                style: TextStyle(
+                                style: FontsTheme.boldTextStyle(
                                     color: Colors.black87,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w800
+                                ),
                               ),
                               Text("and 21 other items...",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[400],
+                                    fontWeight: FontWeight.w600,
                                     fontStyle: FontStyle.italic,
                                   )),
                               Padding(
@@ -105,7 +105,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                     Text("Total amount",
                                         style: FontsTheme.subTitleStyle(
                                             fontWeight:
-                                            FontWeight.w500)),
+                                            FontWeight.w700,color: Colors.grey)),
                                     Row(
                                       children: [
                                         Text("\u{20B9}",

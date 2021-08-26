@@ -7,6 +7,8 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
@@ -29,7 +31,37 @@ class _HomeScreenState extends State<HomeScreen> {
     "https://thumbs.dreamstime.com/b/shopping-cart-supermarket-empty-shelves-40320116.jpg"
   ];
 
+  bool isLoading = false;
+  List<ProductData> productDataList = [];
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  _getProduct() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    await ProductController.getProductData("433202123326_9429828152").then(
+        (value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          productDataList = value.data;
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProduct();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,21 +78,23 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         actions: [
-          Badge(
-            elevation: 0,
-            position: BadgePosition.topEnd(top: 5),
-            badgeContent:
-                Text('3', style: TextStyle(fontSize: 10, color: Colors.white)),
-            child: IconButton(
-              icon: Icon(AppIcons.shopping_cart,
-                  size: 20, color: appPrimaryMaterialColor),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
-              },
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Badge(
+              elevation: 0,
+              position: BadgePosition.topEnd(top: 5, end: 0),
+              badgeContent: Text('3',
+                  style: TextStyle(fontSize: 10, color: Colors.white)),
+              child: IconButton(
+                icon: Icon(AppIcons.shopping_cart,
+                    size: 20, color: appPrimaryMaterialColor),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartScreen()));
+                },
+              ),
             ),
           ),
-          Padding(padding: EdgeInsets.only(left: 24))
         ],
       ),
       body: SingleChildScrollView(
@@ -266,18 +300,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 240,
                       child: ListView.builder(
+                        itemCount: productDataList.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return ProductComponent();
+                            return ProductComponent(productData: productDataList.elementAt(index));
                           }),
                     ),
                     TitleViewAll(title: "Headphone"),
                     SizedBox(
                       height: 245,
                       child: ListView.builder(
+                        itemCount: productDataList.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return ProductComponent();
+                            return ProductComponent(productData: productDataList.elementAt(index),);
                           }),
                     ),
                   ],

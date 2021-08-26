@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
@@ -5,6 +6,8 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 
 class CategorySubScreen extends StatefulWidget {
@@ -16,6 +19,35 @@ class CategorySubScreen extends StatefulWidget {
 
 class _CategorySubScreenState extends State<CategorySubScreen> {
   bool isGrid = true;
+  bool isLoading = false;
+  List<ProductData> productDataList = [];
+
+  _getProduct() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    await ProductController.getProductData("433202123326_9429828152").then(
+        (value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          productDataList = value.data;
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProduct();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,115 +67,134 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
             });
             print(value);
           }),
-          Expanded(
-            child: GridView.builder(
-              itemCount: 10,
-              padding: EdgeInsets.only(left: 10, right: 10, top: 8),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  crossAxisCount: isGrid ? 2 : 1,
-                  childAspectRatio: isGrid ? 0.75 : 3.5),
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade200,
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        //offset: Offset(0, 2), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15.0, bottom: 15.0),
-                                  child: SizedBox(
-                                    child: FloatingActionButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Icon(Icons.close, size: 16),
-                                        backgroundColor: Colors.white),
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(10.0),
-                                            topLeft: Radius.circular(10.0))),
-                                    child: ProductDescription()),
-                              ],
-                            );
-                          });
-                    },
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10.0, right: 8.0, top: 6),
-                      child: isGrid
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Space(
-                                  height: 5,
-                                ),
-                                ProductRating(),
-                                ProductImage(),
-                                ProductDetail(isGridView: isGrid)
-                              ],
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ProductImage(),
-                                  Space(width: 8),
-                                  Expanded(
-                                      child: ProductDetail(isGridView: isGrid)),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+           Expanded(
+                  child: isLoading
+                      ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                      :GridView.builder(
+                    itemCount: productDataList.length,
+                    padding: EdgeInsets.only(left: 10, right: 10, top: 8),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        crossAxisCount: isGrid ? 2 : 1,
+                        childAspectRatio: isGrid ? 0.75 : 3.5),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade200,
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              //offset: Offset(0, 2), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: ProductRating(),
+                                        padding: const EdgeInsets.only(
+                                            right: 15.0, bottom: 15.0),
+                                        child: SizedBox(
+                                          child: FloatingActionButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child:
+                                                  Icon(Icons.close, size: 16),
+                                              backgroundColor: Colors.white),
+                                          width: 24,
+                                          height: 24,
+                                        ),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 6.0),
-                                        child: AddRemoveButton(),
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topRight:
+                                                      Radius.circular(10.0),
+                                                  topLeft:
+                                                      Radius.circular(10.0))),
+                                          child: ProductDescription()),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 8.0, top: 6),
+                            child: isGrid
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Space(
+                                        height: 5,
                                       ),
+                                      ProductRating(productDataList.elementAt(index).productRatingAverage),
+                                      ProductImage(productDataList.elementAt(index).productImageUrl),
+                                      ProductDetail(
+                                        isGridView: isGrid,
+                                        productData:
+                                            productDataList.elementAt(index),
+                                      )
                                     ],
                                   )
-                                ],
-                              ),
-                            ),
-                    ),
+                                : Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ProductImage(productDataList.elementAt(index).productImageUrl),
+                                        Space(width: 8),
+                                        Expanded(
+                                          child: ProductDetail(
+                                            isGridView: isGrid,
+                                            productData: productDataList
+                                                .elementAt(index),
+                                          ),
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8.0),
+                                              child: ProductRating(productDataList.elementAt(index).productRatingAverage),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 6.0),
+                                              child: AddRemoveButton(),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
+                ),
         ],
       ),
     );
@@ -152,7 +203,9 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
 
 class ProductDetail extends StatelessWidget {
   bool isGridView = true;
-  ProductDetail({required this.isGridView});
+  ProductData productData;
+
+  ProductDetail({required this.isGridView, required this.productData});
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +213,11 @@ class ProductDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Product name",
+          "${productData.productName}",
           style: boldTitleText,
         ),
         Text(
-          "Description",
+          "${productData.productDescription}",
           style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 11,
@@ -199,7 +252,7 @@ class ProductDetail extends StatelessWidget {
                                   color: Colors.grey.shade700),
                             ),
                             Text(
-                              "250.00",
+                              "${productData.productMrp}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
@@ -220,7 +273,7 @@ class ProductDetail extends StatelessWidget {
                           fontFamily: "", fontSize: 12, color: Colors.black87),
                     ),
                     Text(
-                      "250.00",
+                      "${productData.productSellingPrice}",
                       style: TextStyle(
                           fontFamily: "Poppins",
                           color: Colors.black87,
@@ -241,6 +294,8 @@ class ProductDetail extends StatelessWidget {
 }
 
 class ProductRating extends StatelessWidget {
+  double rating=0;
+  ProductRating(this.rating);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -253,13 +308,37 @@ class ProductRating extends StatelessWidget {
 }
 
 class ProductImage extends StatelessWidget {
+  List banners;
+  ProductImage(this.banners);
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: SizedBox(
-            height: 110,
-            width: 90,
-            child: Image.network(
-                "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png")));
+    return CarouselSlider(
+      options: CarouselOptions(
+          height: 170.0,
+          aspectRatio: 16 / 9,
+          viewportFraction: 0.9,
+          autoPlay: true),
+      items: banners.map((bannerData) {
+        return Builder(
+          builder: (BuildContext context) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6.0),
+                    child: Image.network(
+                      "$bannerData",
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+            );
+          },
+        );
+      }).toList(),
+    );
   }
 }

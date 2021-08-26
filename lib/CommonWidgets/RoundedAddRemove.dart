@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/colors.dart';
 
 class RoundedAddRemove extends StatefulWidget {
   const RoundedAddRemove({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 74,
-      height:32,
+      height: 32,
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -29,19 +30,26 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                 child: Icon(
                   Icons.remove,
                   size: 15,
-                  color: Colors.grey,
+                  color: appPrimaryMaterialColor,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text("2",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 10,fontFamily: "Poppins"),),
+                child: Text(
+                  "2",
+                  style: TextStyle(
+                      color: appPrimaryMaterialColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                      fontFamily: "Poppins"),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Icon(
                   Icons.add,
                   size: 15,
-                  color: Colors.grey,
+                  color: appPrimaryMaterialColor,
                 ),
               ),
             ],

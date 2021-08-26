@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 
 typedef void BoolCallBack(bool value);
 

@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Views/CartScreen.dart';
-import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
-import 'package:multi_vendor_customer/Views/HomeScreen.dart';
-import 'package:multi_vendor_customer/Views/Location.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
-import 'package:multi_vendor_customer/Views/MyAccount.dart';
-import 'package:multi_vendor_customer/Views/MyOrder.dart';
-import 'package:multi_vendor_customer/Views/OrderDetails.dart';
 
 void main() {
   runApp(MyApp());
