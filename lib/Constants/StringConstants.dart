@@ -16,8 +16,9 @@ class StringConstants{
 class PageCollection{
   static const String home = '/home';
   static const String login = '/login';
-  static const String cart = '/cart';
-  static const String about_us = '/about_us';
+  static const String cart = '$home/cart';
+  static const String about_us = '$home/about_us';
   static const String myAccount = '/myAccount';
-  // static const String cart = '/cart';
+  static const String categories = '$home/categories';
+  static const String myOrders = '/myOrders';
 }

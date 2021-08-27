@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
-import 'package:multi_vendor_customer/Constants/RouteConfigure.dart';
+import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
@@ -92,8 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(AppIcons.shopping_cart,
                     size: 20, color: appPrimaryMaterialColor),
                 onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => CartScreen()));
                   Navigator.of(context).pushNamed(PageCollection.cart);
                 },
               ),
@@ -114,8 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => AboutUs()));
+                          Navigator.of(context).pushNamed(PageCollection.about_us);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
@@ -295,11 +292,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     TitleViewAll(
                         title: "Clothing",
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CategorySubScreen()),
-                          );
+                          String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"clothing"}).toString();
+                          Navigator.pushNamed(context, path);
                         }),
                     SizedBox(
                       height: 240,
@@ -311,7 +305,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 productData: productDataList.elementAt(index));
                           }),
                     ),
-                    TitleViewAll(title: "Headphone"),
+                    TitleViewAll(title: "Headphone",onPressed: (){
+                      String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"Headphone"}).toString();
+                      Navigator.pushNamed(context, path);
+                    },),
                     SizedBox(
                       height: 245,
                       child: ListView.builder(

@@ -29,6 +29,7 @@ class _TopSellingProductComponentState
               child: Image.network(
                   "https://www.bigbasket.com/media/uploads/p/xxl/263526-2_8-britannia-good-day-cashew-cookies.jpg"),
             ),
+            Space(width: 4,),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

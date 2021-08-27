@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/RouteConfigure.dart';
+import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';

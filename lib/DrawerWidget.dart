@@ -3,6 +3,7 @@ import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
 
 import 'CommonWidgets/Space.dart';
+import 'Constants/StringConstants.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -23,9 +24,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Space(
-                width:15
-              ),
+              Space(width: 15),
               ClipRRect(
                 borderRadius: BorderRadius.circular(70.0),
                 child: ClipOval(
@@ -61,15 +60,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       Icons.list_sharp,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (contextt)=>MyOrder()));
+                      Navigator.of(context).pushNamed(PageCollection.myOrders);
                     }),
                 ListTile(
                     title: Text("My Account"),
                     leading: Icon(Icons.account_circle),
                     enabled: true,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (contextt)=>MyAccount()));
-
+                      Navigator.of(context).pushNamed(PageCollection.myAccount);
                     }),
               ],
             ),
