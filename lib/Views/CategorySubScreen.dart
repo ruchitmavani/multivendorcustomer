@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
@@ -27,8 +26,9 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     setState(() {
       isLoading = true;
     });
-    await ProductController.getProductData("433202123326_9429828152").then(
-        (value) {
+    await ProductController.getProductData(
+            "433202123326_9429828152", "5552021105518_433202123326_9429828152")
+        .then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
@@ -67,19 +67,21 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
             });
             print(value);
           }),
-           Expanded(
-                  child: isLoading
-                      ? Center(
+          Expanded(
+            child: isLoading
+                ? Center(
                     child: CircularProgressIndicator(),
                   )
-                      :GridView.builder(
+                : GridView.builder(
                     itemCount: productDataList.length,
-                    padding: EdgeInsets.only(left: 10, right: 10, top: 8),
+                    padding:
+                        EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        crossAxisCount: isGrid ? 2 : 1,
-                        childAspectRatio: isGrid ? 0.75 : 3.5),
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      crossAxisCount: isGrid ? 2 : 1,
+                      childAspectRatio: isGrid ? 0.75 : 3.5,
+                    ),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         decoration: BoxDecoration(
@@ -121,14 +123,14 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                         ),
                                       ),
                                       Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                  topRight:
-                                                      Radius.circular(10.0),
-                                                  topLeft:
-                                                      Radius.circular(10.0))),
-                                          child: ProductDescription()),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10.0),
+                                              topLeft: Radius.circular(10.0)),
+                                        ),
+                                        child: ProductDescription(productDataList.elementAt(index)),
+                                      ),
                                     ],
                                   );
                                 });
@@ -144,8 +146,23 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                       Space(
                                         height: 5,
                                       ),
-                                      ProductRating(productDataList.elementAt(index).productRatingAverage),
-                                      ProductImage(productDataList.elementAt(index).productImageUrl),
+                                      ProductRating(productDataList
+                                          .elementAt(index)
+                                          .productRatingAverage),
+                                      ProductImage(
+                                        banners: productDataList
+                                                    .elementAt(index)
+                                                    .productImageUrl
+                                                    .length >
+                                                0
+                                            ? productDataList
+                                                .elementAt(index)
+                                                .productImageUrl
+                                            : [
+                                                "https://i.stack.imgur.com/y9DpT.jpg"
+                                              ],
+                                        gridView: isGrid,
+                                      ),
                                       ProductDetail(
                                         isGridView: isGrid,
                                         productData:
@@ -159,7 +176,20 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ProductImage(productDataList.elementAt(index).productImageUrl),
+                                        ProductImage(
+                                          banners: productDataList
+                                                      .elementAt(index)
+                                                      .productImageUrl
+                                                      .length >
+                                                  0
+                                              ? productDataList
+                                                  .elementAt(index)
+                                                  .productImageUrl
+                                              : [
+                                                  "https://i.stack.imgur.com/y9DpT.jpg"
+                                                ],
+                                          gridView: isGrid,
+                                        ),
                                         Space(width: 8),
                                         Expanded(
                                           child: ProductDetail(
@@ -177,7 +207,10 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   right: 8.0),
-                                              child: ProductRating(productDataList.elementAt(index).productRatingAverage),
+                                              child: ProductRating(
+                                                  productDataList
+                                                      .elementAt(index)
+                                                      .productRatingAverage),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -194,7 +227,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       );
                     },
                   ),
-                ),
+          ),
         ],
       ),
     );
@@ -222,6 +255,8 @@ class ProductDetail extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 11,
               color: Colors.grey.shade400),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         Space(height: 4),
         Row(
@@ -240,27 +275,23 @@ class ProductDetail extends StatelessWidget {
                       ),
                       top: 8,
                     ),
-                    Column(
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "\u{20B9}",
-                              style: TextStyle(
-                                  fontFamily: "",
-                                  fontSize: 11,
-                                  color: Colors.grey.shade700),
-                            ),
-                            Text(
-                              "${productData.productMrp}",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey.shade700,
-                                  fontSize: 11),
-                            )
-                          ],
+                        Text(
+                          "\u{20B9}",
+                          style: TextStyle(
+                              fontFamily: "",
+                              fontSize: 11,
+                              color: Colors.grey.shade700),
                         ),
+                        Text(
+                          "${productData.productMrp}",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey.shade700,
+                              fontSize: 11),
+                        )
                       ],
                     ),
                   ],
@@ -294,51 +325,38 @@ class ProductDetail extends StatelessWidget {
 }
 
 class ProductRating extends StatelessWidget {
-  double rating=0;
+  double rating = 0;
+
   ProductRating(this.rating);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(Icons.star, color: Colors.amber, size: 15),
-        Text("4.5", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))
+        Text(
+          "$rating",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+        ),
       ],
     );
   }
 }
 
 class ProductImage extends StatelessWidget {
+  bool gridView;
   List banners;
-  ProductImage(this.banners);
+
+  ProductImage({required this.banners, required this.gridView});
+
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-          height: 170.0,
-          aspectRatio: 16 / 9,
-          viewportFraction: 0.9,
-          autoPlay: true),
-      items: banners.map((bannerData) {
-        return Builder(
-          builder: (BuildContext context) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6.0),
-                    child: Image.network(
-                      "$bannerData",
-                      fit: BoxFit.cover,
-                    ),
-                  )),
-            );
-          },
-        );
-      }).toList(),
+    return Center(
+      child: SizedBox(
+        height: 110,
+        width: gridView ? null : MediaQuery.of(context).size.width * 0.2,
+        child: Image.network(banners.first),
+      ),
     );
   }
 }

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/RouteConfigure.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Views/CartScreen.dart';
+import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
+  setPathUrlStrategy();
   runApp(MyApp());
 }
 
@@ -49,6 +55,11 @@ class MyApp extends StatelessWidget {
               style: ButtonStyle(),
             )),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen());
+        initialRoute: PageCollection.home,
+        onGenerateRoute: RouteConfig.onGenerateRoute,
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => HomeScreen());
+      },
+    );
   }
 }

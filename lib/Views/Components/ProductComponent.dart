@@ -51,7 +51,7 @@ class _ProductComponentState extends State<ProductComponent> {
                 ),
                 Text("${widget.productData.productDescription}",
                     style: FontsTheme.descriptionText(
-                        size: 11, fontWeight: FontWeight.w500)),
+                        size: 11, fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
                 Space(height: 6),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 
 class ProductDescription extends StatefulWidget {
-  const ProductDescription({Key? key}) : super(key: key);
+  ProductData productData;
+
+  ProductDescription(this.productData);
 
   @override
   _ProductDescriptionState createState() => _ProductDescriptionState();
@@ -102,7 +105,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Sony Headphone",
+                              Text("${widget.productData.productName}",
                                   style: FontsTheme.boldTextStyle(size: 16)),
                               Space(height: 8),
                               Row(
@@ -120,9 +123,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                               Space(height: 8),
                               Text(
-                                  "Lorem ipsum dolor sit amet, consectetuer adipis"
-                                  "cing elit, sed diam nonummy nibh euismod"
-                                  "tincid unt ut laoreet dolore magna.",
+                                  "${widget.productData.productDescription}",
                                   style: FontsTheme.descriptionText(),
                                   textAlign: TextAlign.justify),
 
@@ -140,7 +141,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               Row(
                                 children: colorList.map<Widget>((e) {
                                   int index = colorList.indexOf(e);
-
                                   return GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -265,7 +265,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           style: FontsTheme.digitStyle(size: 16),
                           children: [
                         TextSpan(
-                            text: " 20.0",
+                            text: " ${widget.productData.productSellingPrice}",
                             style: FontsTheme.digitStyle(size: 15)),
                       ])),
                   ElevatedButton(

@@ -1,20 +1,19 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
-import 'package:multi_vendor_customer/Utils/StringConstants.dart';
 
 Dio dio = new Dio();
 
 class ProductController {
   /*-----------Get Product Data-----------*/
 
-  static Future<ResponseClass> getProductData(String vendorId) async {
+  static Future<ResponseClass> getProductData(String vendorId,String categoryId) async {
     String url = StringConstants.API_URL + StringConstants.vendor_all_product;
 
     //body Data
-    var data = {"vendor_uniq_id": "$vendorId"};
+    var data = {"vendor_uniq_id": "$vendorId","category_id":"$categoryId"};
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
