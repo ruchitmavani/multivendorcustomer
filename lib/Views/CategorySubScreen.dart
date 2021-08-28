@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
@@ -129,7 +132,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                               topRight: Radius.circular(10.0),
                                               topLeft: Radius.circular(10.0)),
                                         ),
-                                        child: ProductDescription(productDataList.elementAt(index)),
+                                        child: ProductDescription(
+                                            productDataList.elementAt(index)),
                                       ),
                                     ],
                                   );
@@ -351,11 +355,12 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(("${banners[0]}"));
     return Center(
       child: SizedBox(
         height: 110,
         width: gridView ? null : MediaQuery.of(context).size.width * 0.2,
-        child: Image.network(banners.first),
+        child: Image.network("${StringConstants.API_URL}"+banners.first),
       ),
     );
   }

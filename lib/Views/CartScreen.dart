@@ -1,6 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
+import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
+import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/exports.dart';
 
 class CartScreen extends StatefulWidget {
@@ -11,6 +17,58 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  bool isLoading = false;
+  bool isLoadingCustomer=false;
+  List<CartDataModel> productData = [];
+  CustomerDataModel customerData=CustomerDataModel(customerName: "", customerEmailAddress: "", customerMobileNumber: "", customerAddress: "not available", id: "", customerUniqId: "", createdDateTime:DateTime.now());
+
+  _loadCartData() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    await CartController.getCartData("134202143400_9898178410").then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          productData = value.data;
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  _loadCustomerData() async {
+    print("Calling");
+    setState(() {
+      isLoadingCustomer = true;
+    });
+    await CustomerController.getCustomerData("134202143400_9898178410").then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          customerData=value.data;
+          isLoadingCustomer = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingCustomer = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCartData();
+    _loadCustomerData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +118,7 @@ class _CartScreenState extends State<CartScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 1.0),
                           child: Text(
-                            "60, Mint Street,Sowcarpet...",
+                            "${customerData.customerAddress}",
                             style: FontsTheme.descriptionText(
                                 size: 13, color: Colors.black87),
                           ),
@@ -70,13 +128,12 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   color: Colors.grey.shade200),
-              SizedBox(height: 25),
               ListView.separated(
                 shrinkWrap: true,
                 //physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.all(0),
                 scrollDirection: Axis.vertical,
-                itemCount: 2,
+                itemCount: productData.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(
@@ -86,7 +143,8 @@ class _CartScreenState extends State<CartScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.network(
-                          "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
+                          StringConstants.API_URL +
+                              "${productData.elementAt(index).productDetails.first.productImageUrl.first}",
                           width: 55,
                         ),
                         Expanded(
@@ -95,79 +153,62 @@ class _CartScreenState extends State<CartScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Nike",
+                                Text(
+                                    "${productData.elementAt(index).productDetails.first.productName}",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.black87,
                                         fontWeight: FontWeight.w600)),
                                 Column(
                                   children: [
-                                    Stack(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Positioned(
-                                          child: Container(
-                                            height: 1.5,
-                                            color: Colors.red.shade600,
-                                            width: 44,
-                                          ),
-                                          top: 8,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        Column(
                                           children: [
-                                            Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "\u{20B9}",
-                                                      style: TextStyle(
-                                                          fontFamily: "",
-                                                          fontSize: 11,
-                                                          color: Colors
-                                                              .red.shade700),
-                                                    ),
-                                                    Text(
-                                                      "250.00",
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Colors
-                                                              .red.shade700,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "\u{20B9}",
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight:
+                                                      FontWeight.w400,
+                                                  color:
+                                                      Colors.red.shade700,
+                                                  fontSize: 12,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  decorationThickness: 3,
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "\u{20B9}",
-                                                      style: TextStyle(
-                                                          fontFamily: "",
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Colors.black87),
-                                                    ),
-                                                    Text(
-                                                      "250.00",
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
-                                                          color: Colors.black87,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "${productData.elementAt(index).productDetails.first.productMrp}",
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            RoundedAddRemove()
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "\u{20B9}",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    color: Colors.black87,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                    FontWeight.bold),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                    "${productData.elementAt(index).productDetails.first.productSellingPrice}",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
+                                        RoundedAddRemove()
                                       ],
                                     ),
                                   ],
@@ -185,7 +226,6 @@ class _CartScreenState extends State<CartScreen> {
                   thickness: 0.6,
                 ),
               ),
-              SizedBox(height: 35),
               Container(
                   child: Padding(
                       padding: const EdgeInsets.only(
@@ -292,9 +332,8 @@ class _CartScreenState extends State<CartScreen> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
-              spreadRadius:3,
+              spreadRadius: 3,
               blurRadius: 5,
-
             ),
           ],
         ),
@@ -303,7 +342,7 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: Container(
                 height: 48,
-                 color: Colors.white,
+                color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

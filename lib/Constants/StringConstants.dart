@@ -5,11 +5,19 @@ const String rupeesIcon="₹";
 class StringConstants{
 
   /*API & IMAGEURLS */
-  static String API_URL="http://192.168.1.8:8080/";
+  static String API_URL="http://192.168.1.7:8080/";
 // static String API_URL="http://18.221.208.96:8080/";
 
   /*API NAMES*/
+  //vendor
   static String vendor_all_product="vendor_all_product/";
+  static String category_wise__all_product_find="category_wise__all_product_find/";
+
+
+  //customer
+  static String cart_view="cart_view";
+  static String customer_view="customer_view";
+
 
 }
 

@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
+import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductController.dart';
+import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
@@ -34,17 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   bool isLoading = false;
-  List<ProductData> productDataList = [];
+  List<AllCategoryModel> productDataList = [];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  _getProduct() async {
+  _getCategoryWiseProduct() async {
     print("Calling");
     setState(() {
       isLoading = true;
     });
-    await ProductController.getProductData(
-            "433202123326_9429828152", "5552021105518_433202123326_9429828152")
+    await CategoryController.getCategoryWiseProduct("433202123326_9429828152")
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _getProduct();
+    _getCategoryWiseProduct();
   }
 
   @override
@@ -112,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed(PageCollection.about_us);
+                          Navigator.of(context)
+                              .pushNamed(PageCollection.about_us);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10.0),
@@ -289,39 +291,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             return RecentlyBought();
                           }),
                     ),
+                  ],
+                )),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: productDataList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
                     TitleViewAll(
-                        title: "Clothing",
+                        title: "${productDataList.elementAt(index).categoryName}",
                         onPressed: () {
-                          String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"clothing"}).toString();
+                          String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"${productDataList.elementAt(index).categoryName}"}).toString();
                           Navigator.pushNamed(context, path);
                         }),
                     SizedBox(
                       height: 240,
                       child: ListView.builder(
-                          itemCount: productDataList.length,
+                          itemCount: productDataList.elementAt(index).productDetails.length,
                           scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
+                          itemBuilder: (context, i) {
                             return ProductComponent(
-                                productData: productDataList.elementAt(index));
-                          }),
-                    ),
-                    TitleViewAll(title: "Headphone",onPressed: (){
-                      String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"Headphone"}).toString();
-                      Navigator.pushNamed(context, path);
-                    },),
-                    SizedBox(
-                      height: 245,
-                      child: ListView.builder(
-                          itemCount: productDataList.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return ProductComponent(
-                              productData: productDataList.elementAt(index),
-                            );
+                                productData: productDataList.elementAt(index).productDetails.elementAt(i));
                           }),
                     ),
                   ],
-                ))
+                );
+              },
+            ),
           ],
         ),
       ),
