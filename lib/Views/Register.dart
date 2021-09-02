@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
         });
         sharedPrefs.customer_email=value.data!.customerEmailAddress;
         sharedPrefs.customer_name=value.data!.customerName;
-        sharedPrefs.cutomer_id=value.data!.id;
+        sharedPrefs.cutomer_id=value.data!.customerUniqId;
         sharedPrefs.mobileNo=value.data!.customerMobileNumber;
         Navigator.pushNamed(context, PageCollection.home);
       } else {
