@@ -1,19 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
 import 'package:multi_vendor_customer/Views/OTPScreen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController mobileNo = new TextEditingController();
+  bool isLoading = false;
+
+  _sendOtp() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    await AuthController.sendOtp(mobileNo.text).then((value) {
+      if (value.success) {
+        print(value.success);
+        print(value.data);
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OTPScreen(mobileNumber: mobileNo.text,otp: value.data,),
+          ),
+        );
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +65,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: mobileNo,
                   hintText: "Mobile number",
                   maxLength: 10,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  ],
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                OTPScreen(mobileNumber: mobileNo.text)));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Send OTP"),
-                  ))
+              isLoading?CircularProgressIndicator():ElevatedButton(
+                onPressed: () {
+                  if(mobileNo.text.length==10){
+                  _sendOtp();}
+                  else{
+                    Fluttertoast.showToast(msg: "enter valid number");
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Send OTP"),
+                ),
+              ),
             ],
           ),
         ),

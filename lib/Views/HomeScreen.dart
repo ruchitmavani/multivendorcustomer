@@ -6,22 +6,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
-import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductController.dart';
-import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
-import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
-import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
-import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductController.dart';
+import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
-import 'package:multi_vendor_customer/Views/CartScreen.dart';
-import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:multi_vendor_customer/Views/Components/RecentlyBought.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
 import 'package:multi_vendor_customer/exports.dart';
-
-import 'AboutUs.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -292,32 +285,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                     ),
                   ],
-                )),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: productDataList.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    TitleViewAll(
-                        title: "${productDataList.elementAt(index).categoryName}",
-                        onPressed: () {
-                          String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"${productDataList.elementAt(index).categoryName}"}).toString();
-                          Navigator.pushNamed(context, path);
-                        }),
-                    SizedBox(
-                      height: 240,
-                      child: ListView.builder(
-                          itemCount: productDataList.elementAt(index).productDetails.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, i) {
-                            return ProductComponent(
-                                productData: productDataList.elementAt(index).productDetails.elementAt(i));
+                ),),
+            Container(
+              color: Colors.white,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: productDataList.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      TitleViewAll(
+                          title: "${productDataList.elementAt(index).categoryName}",
+                          onPressed: () {
+                            String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"${productDataList.elementAt(index).categoryName}"}).toString();
+                            Navigator.pushNamed(context, path);
                           }),
-                    ),
-                  ],
-                );
-              },
+                      SizedBox(
+                        height: 240,
+                        child: ListView.builder(
+                            itemCount: productDataList.elementAt(index).productDetails.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, i) {
+                              return ProductComponent(
+                                  productData: productDataList.elementAt(index).productDetails.elementAt(i));
+                            }),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),

@@ -4,7 +4,9 @@ import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
+import 'package:multi_vendor_customer/main.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -14,29 +16,37 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccountState extends State<MyAccount> {
-
-  bool isLoadingCustomer=false;
-  CustomerDataModel customerData=CustomerDataModel(customerName: "", customerEmailAddress: "", customerMobileNumber: "", customerAddress: "not available", id: "", customerUniqId: "", createdDateTime:DateTime.now());
-  TextEditingController name=TextEditingController();
-  TextEditingController email=TextEditingController();
-  TextEditingController mobile=TextEditingController();
-  TextEditingController dob=TextEditingController();
-  DateTime selectedDate=DateTime.now();
+  bool isLoadingCustomer = false;
+  CustomerDataModel customerData = CustomerDataModel(
+      customerName: "",
+      customerEmailAddress: "",
+      customerMobileNumber: "",
+      customerAddress: [],
+      id: "",
+      customerUniqId: "",
+      customerDob: DateTime.now());
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController mobile = TextEditingController();
+  TextEditingController dob = TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
   _loadCustomerData() async {
     print("Calling");
     setState(() {
       isLoadingCustomer = true;
     });
-    await CustomerController.getCustomerData("134202143400_9898178410").then((value) {
+    await CustomerController.getCustomerData("4102021111037_8488027477").then(
+        (value) {
       if (value.success) {
         print(value.success);
+        print(sharedPrefs.customer_email);
         setState(() {
-          customerData=value.data;
-          name.text=customerData.customerName;
-          email.text= customerData.customerEmailAddress;
-          mobile.text=customerData.customerMobileNumber;
-          // selectedDate=customerData.createdDateTime;
+          customerData = value.data;
+          name.text = customerData.customerName;
+          email.text = customerData.customerEmailAddress;
+          mobile.text = customerData.customerMobileNumber;
+          dob.text = DateFormat.yMd().format(customerData.customerDob);
           isLoadingCustomer = false;
         });
       }
@@ -110,7 +120,7 @@ class _MyAccountState extends State<MyAccount> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         _selectDate(context);
                       },
                       child: MyTextFormField(
@@ -183,9 +193,7 @@ class _MyAccountState extends State<MyAccount> {
             child: Text(
               "Save",
             ),
-            onPressed: () {
-
-            },
+            onPressed: () {},
           ),
         ),
       ),

@@ -20,7 +20,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isLoading = false;
   bool isLoadingCustomer=false;
   List<CartDataModel> productData = [];
-  CustomerDataModel customerData=CustomerDataModel(customerName: "", customerEmailAddress: "", customerMobileNumber: "", customerAddress: "not available", id: "", customerUniqId: "", createdDateTime:DateTime.now());
+  CustomerDataModel customerData=CustomerDataModel(customerName: "", customerEmailAddress: "", customerMobileNumber: "", customerAddress: [], id: "", customerUniqId: "", customerDob: DateTime.now());
 
   _loadCartData() async {
     print("Calling");
@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoadingCustomer = true;
     });
-    await CustomerController.getCustomerData("134202143400_9898178410").then((value) {
+    await CustomerController.getCustomerData("4102021111037_8488027477").then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
@@ -97,11 +97,11 @@ class _CartScreenState extends State<CartScreen> {
                                 size: 13, color: Colors.black54)),
                         Padding(
                           padding: const EdgeInsets.only(top: 1.0),
-                          child: Row(
+                          child: isLoadingCustomer?CircularProgressIndicator():Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Home",
+                                "${customerData.customerAddress.first.type}",
                                 style: FontsTheme.boldTextStyle(size: 13),
                               ),
                               Text(
@@ -117,8 +117,8 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 1.0),
-                          child: Text(
-                            "${customerData.customerAddress}",
+                          child:isLoadingCustomer?CircularProgressIndicator(): Text(
+                            "${customerData.customerAddress.first.address}",
                             style: FontsTheme.descriptionText(
                                 size: 13, color: Colors.black87),
                           ),

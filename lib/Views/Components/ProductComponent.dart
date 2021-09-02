@@ -5,9 +5,13 @@ import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 
+import '../CategorySubScreen.dart';
+
 class ProductComponent extends StatefulWidget {
   ProductData productData;
+
   ProductComponent({required this.productData});
+
   @override
   _ProductComponentState createState() => _ProductComponentState();
 }
@@ -42,16 +46,24 @@ class _ProductComponentState extends State<ProductComponent> {
                     child: SizedBox(
                         height: 120,
                         width: 100,
-                        child: Image.network(
-                            "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
+                        child: ProductImage(
+                          banners: widget.productData.productImageUrl.length > 0
+                              ? widget.productData.productImageUrl
+                              : ["https://i.stack.imgur.com/y9DpT.jpg"],
+                          gridView: false,
+                        ))),
                 Space(height: 8),
                 Text(
                   "${widget.productData.productName}",
                   style: FontsTheme.subTitleStyle(),
                 ),
-                Text("${widget.productData.productDescription}",
-                    style: FontsTheme.descriptionText(
-                        size: 11, fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                Text(
+                  "${widget.productData.productDescription}",
+                  style: FontsTheme.descriptionText(
+                      size: 11, fontWeight: FontWeight.w500),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 Space(height: 6),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,

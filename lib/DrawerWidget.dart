@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Views/MyAccount.dart';
-import 'package:multi_vendor_customer/Views/MyOrder.dart';
 
 import 'CommonWidgets/Space.dart';
 import 'Constants/StringConstants.dart';

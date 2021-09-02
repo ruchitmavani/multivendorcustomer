@@ -13,8 +13,6 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 
 class CategorySubScreen extends StatefulWidget {
-  const CategorySubScreen({Key? key}) : super(key: key);
-
   @override
   _CategorySubScreenState createState() => _CategorySubScreenState();
 }
@@ -30,7 +28,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
       isLoading = true;
     });
     await ProductController.getProductData(
-            "433202123326_9429828152", "5552021105518_433202123326_9429828152")
+            "433202123326_9429828152", "5342021113411_433202123326_9429828152")
         .then((value) {
       if (value.success) {
         print(value.success);

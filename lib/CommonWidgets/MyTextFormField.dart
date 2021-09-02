@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTextFormField extends StatelessWidget {
   late String? hintText;
@@ -22,6 +23,7 @@ class MyTextFormField extends StatelessWidget {
   late int? maxLines;
   late int? minLines;
   late bool? filled=true;
+  late List<TextInputFormatter>? inputFormatters;
 
   MyTextFormField(
       {this.hintText,
@@ -44,7 +46,7 @@ class MyTextFormField extends StatelessWidget {
       this.maxLines,
       this.minLines,
       this.contentPadding,
-      this.isenable = true});
+      this.isenable = true,this.inputFormatters});
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +87,10 @@ class MyTextFormField extends StatelessWidget {
               textInputAction: textInputAction,
               obscureText: isPassword,
               onFieldSubmitted: onFieldSubmitted,
+              inputFormatters: inputFormatters,
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade200,
+                  focusColor: Colors.green,
                   filled: filled??true,
                   hintText: "${hintText ?? ""}",
                   hintStyle: TextStyle(
