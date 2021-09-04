@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 import 'CommonWidgets/Space.dart';
 import 'Constants/StringConstants.dart';
@@ -11,9 +13,22 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+
+  bool isLoggedin=false;
+
+  @override
+  void initState() {
+    super.initState();
+    sharedPrefs.isLogin().then((value) {
+      setState(() {
+        isLoggedin=value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return isLoggedin?Drawer(
       child: Column(
         children: [
           Padding(
@@ -26,16 +41,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(70.0),
                 child: ClipOval(
-                  child: SizedBox(
+                  child: Container(
                       width: 50,
                       height: 50,
-                      child: Image.asset("images/profile.png")),
+                      color: appPrimaryMaterialColor,
+                      alignment: Alignment.center,
+                      child: Text("${sharedPrefs.customer_name}".substring(0,1),style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: 'popins'),),),
                 ),
               ),
               Space(width: 20),
               Expanded(
                 child: Text(
-                  "Neetu Nasir",
+                  "${sharedPrefs.customer_name}",
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               )
@@ -77,7 +94,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color(0xFFB14040).withAlpha(30))),
-                  onPressed: () {},
+                  onPressed: () {
+                    sharedPrefs.logout();
+                    if(Navigator.canPop(context))
+                      Navigator.pop(context);
+                  },
                   label: Text(
                     "LOGOUT",
                     style: TextStyle(
@@ -89,6 +110,52 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     Icons.logout,
                     color: Color(0xFFB14040),
                   )))
+        ],
+      ),
+    ):Drawer(
+      child: Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 15)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Space(width: 15),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(70.0),
+                child: ClipOval(
+                  child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Image.asset("images/profile.png")),
+                ),
+              ),
+              Space(width: 20),
+            ],
+          ),
+          Space(
+            height: 8,
+          ),
+          Divider(),
+          Expanded(
+            child: Column(
+              children: [
+                ListTile(
+                    title: Text("Home"),
+                    leading: Icon(Icons.home),
+                    onTap: () {}),
+                ListTile(
+                    title: Text("Log in"),
+                    leading: Icon(
+                      Icons.lock,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(PageCollection.login);
+                    }),
+              ],
+            ),
+          ),
         ],
       ),
     );

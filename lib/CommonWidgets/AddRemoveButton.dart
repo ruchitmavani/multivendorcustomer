@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 
 class AddRemoveButton extends StatefulWidget {
-
   @override
   _AddRemoveButtonState createState() => _AddRemoveButtonState();
 }
@@ -23,10 +22,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.remove,
-                  size: 18,
-                  color: Colors.white,
+                child: InkWell(
+                  onTap: (){},
+                  child: Icon(
+                    Icons.remove,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               Padding(
@@ -35,10 +37,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.add,
-                  size: 18,
-                  color: Colors.white,
+                child: InkWell(
+                  onTap: (){},
+                  child: Icon(
+                    Icons.add,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

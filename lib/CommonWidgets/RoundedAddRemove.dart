@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Utils/QuantityClass.dart';
+import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
-  const RoundedAddRemove({Key? key}) : super(key: key);
-
   @override
   _RoundedAddRemoveState createState() => _RoundedAddRemoveState();
 }
 
 class _RoundedAddRemoveState extends State<RoundedAddRemove> {
+
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<Quantity>(context);
     return SizedBox(
       width: 74,
       height: 32,
@@ -27,16 +29,21 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.remove,
-                  size: 15,
-                  color: appPrimaryMaterialColor,
+                child: InkWell(
+                   onTap: (){
+                     provider.decrement();
+                   },
+                  child: Icon(
+                    Icons.remove,
+                    size: 15,
+                    color: appPrimaryMaterialColor,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  "2",
+                  "${provider.quantity}",
                   style: TextStyle(
                       color: appPrimaryMaterialColor,
                       fontWeight: FontWeight.w600,
@@ -46,10 +53,15 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.add,
-                  size: 15,
-                  color: appPrimaryMaterialColor,
+                child: InkWell(
+                  onTap: (){
+                    provider.increment();
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 15,
+                    color: appPrimaryMaterialColor,
+                  ),
                 ),
               ),
             ],

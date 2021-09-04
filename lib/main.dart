@@ -3,15 +3,17 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
+import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'Utils/QuantityClass.dart';
 import 'Utils/SharedPrefs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   await sharedPrefs.init();
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(create: (_)=>Quantity(),child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

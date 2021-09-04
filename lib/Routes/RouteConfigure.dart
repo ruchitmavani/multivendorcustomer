@@ -9,7 +9,6 @@ import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
 import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
-import 'package:multi_vendor_customer/Views/Register.dart';
 
 class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -41,9 +40,12 @@ class RouteConfig {
           settings: settings,
         );
       case PageCollection.categories:
+        var id=routingData['categoryId'];
+        var name=routingData['categoryName'];
         return MaterialPageRoute<void>(
-          builder: (context) => CategorySubScreen(),
+          builder: (context) => CategorySubScreen(categoryId:id,categoryName: name,),
           settings: settings,
+
         );
       case PageCollection.myOrders:
         return MaterialPageRoute<void>(

@@ -34,6 +34,9 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   intl: ^0.17.0
 
+  #state management
+  provider: ^6.0.0
+
   #sms
   sms_autofill: ^2.0.1
 

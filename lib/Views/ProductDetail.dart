@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -18,6 +19,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   List<String> sizeList = ["S", "M", "L"];
   int currentIndex = 0;
   int currentSizeIndex = 0;
+  int displayImage=0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,63 +40,38 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   SizedBox(
                       height: 230,
                       child: Image.network(
-                          "https://images-na.ssl-images-amazon.com/images/I/61ihz46SLOL._SL1500_.jpg")),
+                          "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(displayImage)}")),
                   Space(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.circular(4.0)),
-                          width: 50,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Image.network(
-                                "https://images-na.ssl-images-amazon.com/images/I/61ihz46SLOL._SL1500_.jpg"),
-                          )),
-                      Space(width: 6),
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.circular(4.0)),
-                          width: 50,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Image.network(
-                                "https://images-na.ssl-images-amazon.com/images/I/61ihz46SLOL._SL1500_.jpg"),
-                          )),
-                      Space(width: 6),
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.circular(4.0)),
-                          width: 50,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Image.network(
-                                "https://images-na.ssl-images-amazon.com/images/I/61ihz46SLOL._SL1500_.jpg"),
-                          )),
-                      Space(width: 6),
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.circular(4.0)),
-                          width: 50,
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Image.network(
-                                "https://images-na.ssl-images-amazon.com/images/I/61ihz46SLOL._SL1500_.jpg"),
-                          )),
-                    ],
+                  Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.productData.productImageUrl.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            margin: EdgeInsets.only(right: 6),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade400),
+                                borderRadius: BorderRadius.circular(4.0)),
+                            width: 50,
+                            height: 50,
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    displayImage=index;
+                                  });
+                                },
+                                child: Image.network(
+                                    "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(index)}"),
+                              ),
+                            ));
+                      },
+                    ),
                   ),
                   Space(height: 30),
                   Row(
@@ -122,8 +99,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 ],
                               ),
                               Space(height: 8),
-                              Text(
-                                  "${widget.productData.productDescription}",
+                              Text("${widget.productData.productDescription}",
                                   style: FontsTheme.descriptionText(),
                                   textAlign: TextAlign.justify),
 

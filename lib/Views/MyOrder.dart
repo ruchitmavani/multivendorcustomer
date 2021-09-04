@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderComponent.dart';
 
 class MyOrder extends StatefulWidget {
@@ -11,6 +14,35 @@ class MyOrder extends StatefulWidget {
 }
 
 class _MyOrderState extends State<MyOrder> {
+  bool isLoading = false;
+  List<OrderDataModel> orderData=[];
+
+  _loadData() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    await OrderController.getOrder("134202143400_9898178410").then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          orderData=value.data;
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +56,9 @@ class _MyOrderState extends State<MyOrder> {
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: orderData.length,
           itemBuilder: (BuildContext context, int index) {
-            return OrderComponent();
+            return OrderComponent(orderData:orderData.elementAt(index));
           },
         ),
       ),

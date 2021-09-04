@@ -2,21 +2,22 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 
 import 'ProductContoller.dart';
 
-class CustomerController {
-  /*-----------Get Customer Data-----------*/
-  static Future<ResponseClass> getCustomerData(String customerId) async {
-    String url = StringConstants.API_URL + StringConstants.customer_view;
+class OrderController {
+
+  /*-----------Get Order Data-----------*/
+  static Future<ResponseClass> getOrder(String customerId) async {
+    String url = StringConstants.API_URL + StringConstants.my_order;
 
     //body Data
     var data = {"customer_uniq_id": "$customerId"};
 
-    ResponseClass<CustomerDataModel> responseClass =
-        ResponseClass(success: false, message: "Something went wrong");
+    ResponseClass<List<OrderDataModel>> responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -25,14 +26,17 @@ class CustomerController {
 
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
-        log("getCustomerData ${response.data}");
+        log("getOrder ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = CustomerDataModel.fromJson(response.data["data"]);
+        List productList = response.data["data"];
+        List<OrderDataModel> list =
+        productList.map((e) => OrderDataModel.fromJson(e)).toList();
+        responseClass.data = list;
       }
       return responseClass;
     } catch (e) {
-      print("getCustomerData ->>>" + e.toString());
+      print("getOrder ->>>" + e.toString());
       return responseClass;
     }
   }

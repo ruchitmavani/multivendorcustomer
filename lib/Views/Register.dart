@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -92,7 +90,7 @@ class _RegisterState extends State<Register> {
         });
         sharedPrefs.customer_email=value.data!.customerEmailAddress;
         sharedPrefs.customer_name=value.data!.customerName;
-        sharedPrefs.cutomer_id=value.data!.customerUniqId;
+        sharedPrefs.customer_id=value.data!.customerUniqId;
         sharedPrefs.mobileNo=value.data!.customerMobileNumber;
         Navigator.pushNamed(context, PageCollection.home);
       } else {

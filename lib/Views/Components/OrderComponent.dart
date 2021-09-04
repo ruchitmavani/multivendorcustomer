@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Views/OrderDetails.dart';
 
 class OrderComponent extends StatefulWidget {
-  const OrderComponent({Key? key}) : super(key: key);
+  final OrderDataModel orderData;
+  OrderComponent({required this.orderData});
 
   @override
   _OrderComponentState createState() => _OrderComponentState();

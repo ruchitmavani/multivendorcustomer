@@ -17,6 +17,8 @@ class StringConstants{
   static String customer_view="customer_view";
   static String customer_registration="customer_registration";
   static String customer_login="customer_login";
+  static String my_order="my_order";
+  static String vendor_coupon_validate="vendor_coupon_validate";
 
   /*---------------- SharedPreference Keys ------------------*/
   static String mobile_no = "mobileNo";

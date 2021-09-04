@@ -36,8 +36,8 @@ class _MyAccountState extends State<MyAccount> {
     setState(() {
       isLoadingCustomer = true;
     });
-    print(sharedPrefs.cutomer_id);
-    await CustomerController.getCustomerData("${sharedPrefs.cutomer_id}").then(
+    print(sharedPrefs.customer_id);
+    await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
         (value) {
       if (value.success) {
         print(value.success);

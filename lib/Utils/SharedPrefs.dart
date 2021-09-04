@@ -25,7 +25,7 @@ class SharedPrefs {
   String get customer_email =>
       _sharedPrefs!.getString(StringConstants.customer_email) ?? "";
 
-  String get cutomer_id =>
+  String get customer_id =>
       _sharedPrefs!.getString(StringConstants.cutomer_id) ?? "";
 
   String get customer_address_type =>
@@ -51,7 +51,7 @@ class SharedPrefs {
     _sharedPrefs!.setString(StringConstants.customer_email, value);
   }
 
-  set cutomer_id(String value) {
+  set customer_id(String value) {
     _sharedPrefs!.setString(StringConstants.cutomer_id, value);
   }
 
@@ -73,7 +73,7 @@ class SharedPrefs {
 
   /*--------------- Check Is Login or Not --------------------*/
   Future<bool> isLogin() async {
-    String customerId = sharedPrefs.cutomer_id;
+    String customerId = sharedPrefs.customer_id;
     if (customerId == "")
       return false;
     else

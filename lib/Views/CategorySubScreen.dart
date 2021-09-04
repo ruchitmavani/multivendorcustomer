@@ -13,6 +13,9 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 
 class CategorySubScreen extends StatefulWidget {
+  String categoryId;
+  String categoryName;
+  CategorySubScreen({required this.categoryName,required this.categoryId});
   @override
   _CategorySubScreenState createState() => _CategorySubScreenState();
 }
@@ -22,13 +25,14 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
   bool isLoading = false;
   List<ProductData> productDataList = [];
 
+
   _getProduct() async {
     print("Calling");
     setState(() {
       isLoading = true;
     });
     await ProductController.getProductData(
-            "433202123326_9429828152", "5342021113411_433202123326_9429828152")
+            "433202123326_9429828152", "${widget.categoryId}")
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -55,7 +59,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text("Clothing"),
+        title: Text("${widget.categoryName}"),
       ),
       body: Column(
         children: [
@@ -358,7 +362,7 @@ class ProductImage extends StatelessWidget {
       child: SizedBox(
         height: 110,
         width: gridView ? null : MediaQuery.of(context).size.width * 0.2,
-        child: Image.network("${StringConstants.API_URL}"+banners.first),
+        child: Image.network("${StringConstants.API_URL}" + banners.first),
       ),
     );
   }

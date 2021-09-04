@@ -23,7 +23,6 @@ class ProductData {
     required this.productDescription,
     required this.productVariationSizes,
     required this.productVariationColors,
-    required this.productVariationWeight,
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
@@ -47,7 +46,6 @@ class ProductData {
   String productDescription;
   List<ProductVariationSize> productVariationSizes;
   List<ProductVariationColor> productVariationColors;
-  List<ProductVariationWeight> productVariationWeight;
   int productTotalRating;
   int productRatingCountRecord;
   double productRatingAverage;
@@ -71,7 +69,6 @@ class ProductData {
     productDescription: json["product_description"],
     productVariationSizes: List<ProductVariationSize>.from(json["product_variation_sizes"].map((x) => ProductVariationSize.fromJson(x))),
     productVariationColors: List<ProductVariationColor>.from(json["product_variation_colors"].map((x) => ProductVariationColor.fromJson(x))),
-    productVariationWeight: List<ProductVariationWeight>.from(json["product_variation_weight"].map((x) => ProductVariationWeight.fromJson(x))),
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
@@ -96,7 +93,6 @@ class ProductData {
     "product_description": productDescription,
     "product_variation_sizes": List<dynamic>.from(productVariationSizes.map((x) => x.toJson())),
     "product_variation_colors": List<dynamic>.from(productVariationColors.map((x) => x.toJson())),
-    "product_variation_weight": List<dynamic>.from(productVariationWeight.map((x) => x.toJson())),
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
@@ -140,26 +136,6 @@ class ProductVariationSize {
 
   Map<String, dynamic> toJson() => {
     "size": size,
-    "mrp": mrp,
-  };
-}
-
-class ProductVariationWeight {
-  ProductVariationWeight({
-    required this.weight,
-    required this.mrp,
-  });
-
-  int weight;
-  int mrp;
-
-  factory ProductVariationWeight.fromJson(Map<String, dynamic> json) => ProductVariationWeight(
-    weight: json["weight"],
-    mrp: json["mrp"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "weight": weight,
     "mrp": mrp,
   };
 }

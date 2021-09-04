@@ -14,6 +14,7 @@ import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:multi_vendor_customer/Views/Components/RecentlyBought.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
+import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 import 'package:multi_vendor_customer/exports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    await CategoryController.getCategoryWiseProduct("433202123326_9429828152")
+    await CategoryController.getCategoryWiseProduct("657202115727_9429828152")
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _getCategoryWiseProduct();
+    // _getCategoryWiseProduct();
   }
 
   @override
@@ -297,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       TitleViewAll(
                           title: "${productDataList.elementAt(index).categoryName}",
                           onPressed: () {
-                            String path=Uri(path: PageCollection.categories,queryParameters: {"categoryId":"${productDataList.elementAt(index).categoryName}"}).toString();
+                            String path=Uri(path: PageCollection.categories,queryParameters: {"categoryName":"${productDataList.elementAt(index).categoryName}","categoryId":"${productDataList.elementAt(index).categoryId}"}).toString();
                             Navigator.pushNamed(context, path);
                           }),
                       SizedBox(
@@ -306,8 +307,48 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: productDataList.elementAt(index).productDetails.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, i) {
-                              return ProductComponent(
-                                  productData: productDataList.elementAt(index).productDetails.elementAt(i));
+                              return GestureDetector(
+                                onTap: (){
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (context) {
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15.0, bottom: 15.0),
+                                              child: SizedBox(
+                                                child: FloatingActionButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child:
+                                                    Icon(Icons.close, size: 16),
+                                                    backgroundColor: Colors.white),
+                                                width: 24,
+                                                height: 24,
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                    topRight: Radius.circular(10.0),
+                                                    topLeft: Radius.circular(10.0)),
+                                              ),
+                                              child: ProductDescription(productDataList.elementAt(index).productDetails.elementAt(i)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: ProductComponent(
+                                    productData: productDataList.elementAt(index).productDetails.elementAt(i)),
+                              );
                             }),
                       ),
                     ],
