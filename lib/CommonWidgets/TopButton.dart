@@ -28,47 +28,50 @@ class _TopButtonsState extends State<TopButtons> {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Expanded(
-              flex: 1,
-              child: TextButton.icon(
-                  onPressed: () {
-                    if(widget.onChanged !=null){
-                      setState(() {
-                        isGrid = !isGrid;
-                      });
-                      widget.onChanged!(isGrid);
-                    }
-                  },
-                  icon: Icon(isGrid ? Icons.grid_view : Icons.list,
-                      size: 20, color: Colors.grey.shade700),
-                  label: Text(
-                    isGrid ? "GridView" : "ListView",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        color: Colors.grey.shade700),
-                  ))),
-          Container(
-            color: Colors.grey.shade400,
-            height: 25,
-            width: 1,
-          ),
-          Expanded(
-              flex: 1,
-              child: TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_downward,
-                      size: 18, color: Colors.grey.shade700),
-                  label: Text(
-                    "Sort",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        color: Colors.grey.shade700),
-                  )))
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Expanded(
+                flex: 1,
+                child: TextButton.icon(
+                    onPressed: () {
+                      if(widget.onChanged !=null){
+                        setState(() {
+                          isGrid = !isGrid;
+                        });
+                        widget.onChanged!(isGrid);
+                      }
+                    },
+                    icon: Icon(isGrid ? Icons.grid_view : Icons.list,
+                        size: 20, color: Colors.grey.shade700),
+                    label: Text(
+                      isGrid ? "GridView" : "ListView",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.grey.shade700),
+                    ))),
+            Container(
+              color: Colors.grey.shade400,
+              height: 25,
+              width: 1,
+            ),
+            Expanded(
+                flex: 1,
+                child: TextButton.icon(
+                    onPressed: () {},
+                    icon: Icon(Icons.arrow_downward,
+                        size: 18, color: Colors.grey.shade700),
+                    label: Text(
+                      "Sort",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.grey.shade700),
+                    )))
+          ],
+        ),
       ),
     );
   }

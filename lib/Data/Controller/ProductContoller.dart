@@ -9,11 +9,12 @@ Dio dio = new Dio();
 class ProductController {
 
   /*-----------Get Product Data-----------*/
-  static Future<ResponseClass> getProductData(String vendorId,String categoryId) async {
+  static Future<ResponseClass> getProductData({required String vendorId,required String categoryId,required int limit,required int page}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_all_product;
 
     //body Data
-    var data = {"vendor_uniq_id": "$vendorId","category_id":"$categoryId"};
+    var data = {"vendor_uniq_id": "$vendorId","category_id":"$categoryId",  "limit":limit,
+      "page":page};
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -31,11 +32,43 @@ class ProductController {
         List productList = response.data["data"];
         List<ProductData> list =
             productList.map((e) => ProductData.fromJson(e)).toList();
-        responseClass.data = list;
+        responseClass.data = response.data["data"];
       }
       return responseClass;
     } catch (e) {
       print("getProductData ->>>" + e.toString());
+      return responseClass;
+    }
+  }
+
+  /*-----------Get Trending Product Data-----------*/
+  static Future<ResponseClass> getTrendingProduct({required String vendorId}) async {
+    String url = StringConstants.API_URL + StringConstants.top_selling_product;
+
+    //body Data
+    var data = {"vendor_uniq_id": "$vendorId"};
+
+    ResponseClass<List<ProductData>> responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("response -> ${response.data}");
+      if (response.statusCode == 200) {
+        log("getTrendingProductData ${response.data}");
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        List productList = response.data["data"];
+        List<ProductData> list =
+        productList.map((e) => ProductData.fromJson(e)).toList();
+        responseClass.data = list;
+      }
+      return responseClass;
+    } catch (e) {
+      print("getTrendingProductData ->>>" + e.toString());
       return responseClass;
     }
   }

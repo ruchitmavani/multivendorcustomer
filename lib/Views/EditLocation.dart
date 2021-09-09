@@ -7,14 +7,20 @@ import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 
-class Location extends StatefulWidget {
-  const Location({Key? key}) : super(key: key);
+class EditLocation extends StatefulWidget {
+  String subAddress;
+  String area;
+  String city;
+  String pincode;
+  int index;
+
+  EditLocation({required this.subAddress, required this.area, required this.city, required this.pincode,required this.index});
 
   @override
   _LocationState createState() => _LocationState();
 }
 
-class _LocationState extends State<Location> {
+class _LocationState extends State<EditLocation> {
   final GlobalKey<FormState> _addressKey = GlobalKey();
 
   TextEditingController subAddress = TextEditingController();
@@ -23,14 +29,17 @@ class _LocationState extends State<Location> {
   TextEditingController pincode = TextEditingController();
 
   _saveAdress(Address address) async {
-    if (addressList.contains(address)) {
-      Fluttertoast.showToast(msg: "Address Already Exist");
-    } else {
-      addressList.add(address);
-      print("$address");
-      if(Navigator.canPop(context))
-        Navigator.pop(context);
-    }
+    addressList[widget.index]=address;
+    if(Navigator.canPop(context))
+      Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    subAddress.text = widget.subAddress;
+    area.text = widget.area;
+    city.text = widget.city;
+    pincode.text = widget.pincode;
   }
 
   int defaultChoiceIndex = 0;
@@ -81,7 +90,9 @@ class _LocationState extends State<Location> {
                                     .textTheme
                                     .bodyText2!
                                     .copyWith(
-                                      color: defaultChoiceIndex == index? Colors.white:Colors.grey.shade600,
+                                      color: defaultChoiceIndex == index
+                                          ? Colors.white
+                                          : Colors.grey.shade600,
                                       fontSize: 12,
                                     ),
                               ),
@@ -111,9 +122,8 @@ class _LocationState extends State<Location> {
                           hintText: "area",
                           maxLines: 1,
                           controller: area,
-                          validator: (value){
-                            if(value!.isEmpty)
-                              return "enter area";
+                          validator: (value) {
+                            if (value!.isEmpty) return "enter area";
                           },
                         ),
                         Row(
@@ -211,7 +221,7 @@ class _LocationState extends State<Location> {
                     width: 0.8, color: Colors.deepPurpleAccent.shade200),*/
             ),
             child: Text(
-              "Save",
+              "Update Adress",
               style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,

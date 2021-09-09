@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
@@ -29,6 +30,8 @@ class CartController{
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
         log("getCartData ${response.data}");
+        if(responseClass.success==false)
+          throw FlutterError("No items in cart");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         List productList = response.data["data"];

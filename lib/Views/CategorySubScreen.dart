@@ -31,8 +31,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     setState(() {
       isLoading = true;
     });
-    await ProductController.getProductData(
-            "433202123326_9429828152", "${widget.categoryId}")
+    await ProductController.getProductData(vendorId:
+            "657202115727_9429828152", categoryId: "${widget.categoryId}",limit: 10,page: 1)
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -357,7 +357,6 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(("${banners[0]}"));
     return Center(
       child: SizedBox(
         height: 110,

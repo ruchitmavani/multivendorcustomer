@@ -6,6 +6,7 @@ String productDataToJson(ProductData data) => json.encode(data.toJson());
 
 class ProductData {
   ProductData({
+    required this.id,
     required this.vendorUniqId,
     required this.categoryId,
     required this.productId,
@@ -26,9 +27,9 @@ class ProductData {
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
-    required this.id,
   });
 
+  String id;
   String vendorUniqId;
   String categoryId;
   String productId;
@@ -39,7 +40,7 @@ class ProductData {
   String productName;
   int productMrp;
   int productSellingPrice;
-  List<TaxId> taxId;
+  List<String> taxId;
   int stockLeft;
   String unitType;
   List<String> productLiveTiming;
@@ -49,9 +50,9 @@ class ProductData {
   int productTotalRating;
   int productRatingCountRecord;
   double productRatingAverage;
-  String id;
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
+    id: json["_id"],
     vendorUniqId: json["vendor_uniq_id"],
     categoryId: json["category_id"],
     productId: json["product_id"],
@@ -62,7 +63,7 @@ class ProductData {
     productName: json["product_name"],
     productMrp: json["product_mrp"],
     productSellingPrice: json["product_selling_price"],
-    taxId: List<TaxId>.from(json["tax_id"].map((x) => TaxId.fromJson(x))),
+    taxId: List<String>.from(json["tax_id"].map((x) => x)),
     stockLeft: json["stock_left"],
     unitType: json["unit_type"],
     productLiveTiming: List<String>.from(json["product_live_timing"].map((x) => x)),
@@ -72,10 +73,10 @@ class ProductData {
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
-    id: json["_id"],
   );
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "vendor_uniq_id": vendorUniqId,
     "category_id": categoryId,
     "product_id": productId,
@@ -86,7 +87,7 @@ class ProductData {
     "product_name": productName,
     "product_mrp": productMrp,
     "product_selling_price": productSellingPrice,
-    "tax_id": List<dynamic>.from(taxId.map((x) => x.toJson())),
+    "tax_id": List<dynamic>.from(taxId.map((x) => x)),
     "stock_left": stockLeft,
     "unit_type": unitType,
     "product_live_timing": List<dynamic>.from(productLiveTiming.map((x) => x)),
@@ -96,27 +97,26 @@ class ProductData {
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
-    "_id": id,
   };
 }
 
 class ProductVariationColor {
   ProductVariationColor({
-    required this.color,
-    required this.mrp,
+    required this.colorCode,
+    required this.isActive,
   });
 
-  String color;
-  int mrp;
+  String colorCode;
+  bool isActive;
 
   factory ProductVariationColor.fromJson(Map<String, dynamic> json) => ProductVariationColor(
-    color: json["color"],
-    mrp: json["mrp"],
+    colorCode: json["color_code"],
+    isActive: json["is_active"],
   );
 
   Map<String, dynamic> toJson() => {
-    "color": color,
-    "mrp": mrp,
+    "color_code": colorCode,
+    "is_active": isActive,
   };
 }
 
@@ -124,58 +124,26 @@ class ProductVariationSize {
   ProductVariationSize({
     required this.size,
     required this.mrp,
+    required this.sellingPrice,
+    required this.isActive,
   });
 
   String size;
   int mrp;
+  int sellingPrice;
+  bool isActive;
 
   factory ProductVariationSize.fromJson(Map<String, dynamic> json) => ProductVariationSize(
     size: json["size"],
     mrp: json["mrp"],
+    sellingPrice: json["selling_price"],
+    isActive: json["is_active"],
   );
 
   Map<String, dynamic> toJson() => {
     "size": size,
     "mrp": mrp,
-  };
-}
-
-class TaxId {
-  TaxId({
-    required this.isTaxEnable,
-    required this.id,
-    required this.taxId,
-    required this.vendorUniqId,
-    required this.taxName,
-    required this.taxPercentage,
-    required this.createdDateTime
-  });
-
-  bool isTaxEnable;
-  String id;
-  String taxId;
-  String vendorUniqId;
-  String taxName;
-  int taxPercentage;
-  DateTime createdDateTime;
-
-  factory TaxId.fromJson(Map<String, dynamic> json) => TaxId(
-    isTaxEnable: json["is_tax_enable"],
-    id: json["_id"],
-    taxId: json["tax_id"],
-    vendorUniqId: json["vendor_uniq_id"],
-    taxName: json["tax_name"],
-    taxPercentage: json["tax_percentage"],
-    createdDateTime: DateTime.parse(json["created_date_time"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "is_tax_enable": isTaxEnable,
-    "_id": id,
-    "tax_id": taxId,
-    "vendor_uniq_id": vendorUniqId,
-    "tax_name": taxName,
-    "tax_percentage": taxPercentage,
-    "created_date_time": createdDateTime.toIso8601String()
+    "selling_price": sellingPrice,
+    "is_active": isActive,
   };
 }

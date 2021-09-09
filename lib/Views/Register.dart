@@ -5,6 +5,7 @@ import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
+import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
@@ -44,23 +45,36 @@ class _RegisterState extends State<Register> {
     setState(() {
       isLoading = true;
     });
+    List<Map<String, dynamic>> object = [];
+    for (int i = 0; i < addressList.length; i++) {
+      object.add({
+        "type": addressList.elementAt(i).type,
+        "subAddress": addressList.elementAt(i).subAddress,
+        "area": addressList.elementAt(i).area,
+        "city": addressList.elementAt(i).city,
+        "pincode": addressList.elementAt(i).pinCode,
+      });
+    }
     await AuthController.register(
             name: name.text,
             email: email.text,
             mobileNumber: mobile.text,
-            address: "123, Surat",
+            address: object,
             dob: dob.text)
         .then((value) {
       if (value.success) {
         print(value.success);
-        sharedPrefs.customer_email=customerData.customerEmailAddress;
+        sharedPrefs.customer_email = value.data!.customerEmailAddress;
+        sharedPrefs.customer_name = value.data!.customerName;
+        sharedPrefs.customer_id = value.data!.customerUniqId;
+        sharedPrefs.mobileNo = value.data!.customerMobileNumber;
         setState(() {
           customerData = value.data;
           name.text = customerData.customerName;
           email.text = customerData.customerEmailAddress;
           mobile.text = customerData.customerMobileNumber;
-          dob.text = DateFormat.yMd().format(customerData.customerDob);
-          isLoading = true;
+          dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
+          isLoading = false;
         });
         Navigator.pushNamed(context, PageCollection.home);
       } else {
@@ -72,36 +86,7 @@ class _RegisterState extends State<Register> {
     }, onError: (e) {
       print(e);
       setState(() {
-        isLoading = true;
-      });
-    });
-  }
-
-  _login() async {
-    print("Calling");
-    setState(() {
-      isLoadingCustomer = true;
-    });
-    await AuthController.login("${widget.mobile}").then((value) {
-      if (value.success) {
-        print(value.success);
-        setState(() {
-          isLoadingCustomer = false;
-        });
-        sharedPrefs.customer_email=value.data!.customerEmailAddress;
-        sharedPrefs.customer_name=value.data!.customerName;
-        sharedPrefs.customer_id=value.data!.customerUniqId;
-        sharedPrefs.mobileNo=value.data!.customerMobileNumber;
-        Navigator.pushNamed(context, PageCollection.home);
-      } else {
-        setState(() {
-          isLoadingCustomer = false;
-        });
-        Fluttertoast.showToast(msg: value.message);
-      }
-    }, onError: (e) {
-      setState(() {
-        isLoadingCustomer = false;
+        isLoading = false;
       });
     });
   }
@@ -110,7 +95,6 @@ class _RegisterState extends State<Register> {
   void initState() {
     super.initState();
     mobile.text = widget.mobile;
-    _login();
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -219,8 +203,41 @@ class _RegisterState extends State<Register> {
                               fontWeight: FontWeight.w600),
                         ),
                       ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: addressList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${addressList.elementAt(index).type}",
+                                style: TextStyle(
+                                    fontFamily: 'popins',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.height,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 16),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey.shade100),
+                                child: Text(
+                                  "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
+                                  style: TextStyle(
+                                    fontFamily: 'popins',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 3.0),
+                        padding: const EdgeInsets.only(top: 3.0, bottom: 12),
                         child: SizedBox(
                           height: 50,
                           width: MediaQuery.of(context).size.width,
@@ -232,9 +249,13 @@ class _RegisterState extends State<Register> {
                             ),
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Location()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Location(),
+                                ),
+                              ).then((value) {
+                                setState(() {});
+                              });
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +265,9 @@ class _RegisterState extends State<Register> {
                                   size: 16,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 4.0),
+                                  padding: const EdgeInsets.only(
+                                    left: 4.0,
+                                  ),
                                   child: Text(
                                     "Add Address",
                                     style: TextStyle(

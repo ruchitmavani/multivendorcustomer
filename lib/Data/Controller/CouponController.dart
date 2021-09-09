@@ -11,13 +11,14 @@ import 'ProductContoller.dart';
 class CouponController{
 
   /*-----------Get Cart Data-----------*/
-  static Future<ResponseClass> validateCoupon(String vendorId,String couponName) async {
+  static Future<ResponseClass> validateCoupon({required String vendorId,required String couponName,required String customerId}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_coupon_validate;
 
     //body Data
     var data ={
       "vendor_uniq_id" : "$vendorId",
-      "coupon_name" : "$couponName"
+      "coupon_name" : "$couponName",
+      "customer_uniq_id":"$customerId"
     };
 
     ResponseClass<CouponDataModel> responseClass =

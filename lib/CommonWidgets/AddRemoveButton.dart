@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Utils/Providers/QuantityClass.dart';
+import 'package:provider/provider.dart';
 
 class AddRemoveButton extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class AddRemoveButton extends StatefulWidget {
 class _AddRemoveButtonState extends State<AddRemoveButton> {
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<Quantity>(context);
     return SizedBox(
       width: 85,
       height:35,
@@ -23,7 +26,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    provider.decrement();
+                  },
                   child: Icon(
                     Icons.remove,
                     size: 18,
@@ -33,12 +38,14 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text("2",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 11,fontFamily: "Poppins"),),
+                child: Text("${provider.quantity}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 11,fontFamily: "Poppins"),),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    provider.increment();
+                  },
                   child: Icon(
                     Icons.add,
                     size: 18,

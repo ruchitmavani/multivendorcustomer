@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final customerDataModel = customerDataModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CustomerDataModel customerDataModelFromJson(String str) => CustomerDataModel.fromJson(json.decode(str));
@@ -47,19 +52,31 @@ class CustomerDataModel {
 class CustomerAddress {
   CustomerAddress({
     required this.type,
-    required this.address,
+    required this.subAddress,
+    required this.area,
+    required this.city,
+    required this.pincode,
   });
 
   String type;
-  String address;
+  String subAddress;
+  String area;
+  String city;
+  int pincode;
 
   factory CustomerAddress.fromJson(Map<String, dynamic> json) => CustomerAddress(
     type: json["type"],
-    address: json["address"],
+    subAddress: json["subAddress"],
+    area: json["area"],
+    city: json["city"],
+    pincode: json["pincode"],
   );
 
   Map<String, dynamic> toJson() => {
     "type": type,
-    "address": address,
+    "subAddress": subAddress,
+    "area": area,
+    "city": city,
+    "pincode": pincode,
   };
 }

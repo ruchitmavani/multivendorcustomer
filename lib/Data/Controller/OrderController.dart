@@ -10,7 +10,7 @@ import 'ProductContoller.dart';
 class OrderController {
 
   /*-----------Get Order Data-----------*/
-  static Future<ResponseClass> getOrder(String customerId) async {
+  static Future<ResponseClass<List<OrderDataModel>>> getOrder(String customerId) async {
     String url = StringConstants.API_URL + StringConstants.my_order;
 
     //body Data
@@ -36,7 +36,7 @@ class OrderController {
       }
       return responseClass;
     } catch (e) {
-      print("getOrder ->>>" + e.toString());
+      log("getOrder error->>>" + e.toString());
       return responseClass;
     }
   }

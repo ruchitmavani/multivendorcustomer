@@ -45,7 +45,7 @@ class AuthController{
   static Future<ResponseClass> register(
       {required String name,
       required String mobileNumber,
-      required String address,
+      required List<Map<String,dynamic>> address,
       required String email,
       required String dob}) async {
     String url = StringConstants.API_URL + StringConstants.customer_registration;
@@ -54,7 +54,7 @@ class AuthController{
     var data = {
       "customer_name": "$name",
       "customer_mobile_number" : "$mobileNumber",
-      "customer_address" : [{"type" : "Home","address":"$address"}],
+      "customer_address" : address,
       "customer_email_address" : "$email",
       "customer_DOB" : "$dob"
     };

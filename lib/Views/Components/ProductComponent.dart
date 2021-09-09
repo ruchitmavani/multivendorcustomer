@@ -4,6 +4,8 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/QuantityClass.dart';
+import 'package:provider/provider.dart';
 
 import '../CategorySubScreen.dart';
 
@@ -20,7 +22,7 @@ class _ProductComponentState extends State<ProductComponent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.only(left: 4.0, right: 4,top: 8.0, bottom: 8.0),
       child: SizedBox(
         width: 180,
         child: Container(
@@ -128,7 +130,52 @@ class _ProductComponentState extends State<ProductComponent> {
                       ],
                     ),
                     Space(width: 8),
-                    AddRemoveButton()
+                    SizedBox(
+                      width: 85,
+                      height:35,
+                      child: Card(
+                        elevation: 0,
+                        color: appPrimaryMaterialColor[700],
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: InkWell(
+                                  onTap: (){
+                                    Provider.of<Quantity>(context,listen: false).decrement();
+                                  },
+                                  child: Icon(
+                                    Icons.remove,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text("${Provider.of<Quantity>(context,listen: true).quantity}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 11,fontFamily: "Poppins"),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: InkWell(
+                                  onTap: (){
+                                    Provider.of<Quantity>(context,listen: false).increment();
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final cartDataModel = cartDataModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CartDataModel cartDataModelFromJson(String str) => CartDataModel.fromJson(json.decode(str));

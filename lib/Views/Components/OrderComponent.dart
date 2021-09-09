@@ -84,13 +84,13 @@ class _OrderComponentState extends State<OrderComponent> {
                             CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Copper Flask",
+                                "${widget.orderData.orderItems.first.productDetails.productName}",
                                 style: FontsTheme.boldTextStyle(
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w800
                                 ),
                               ),
-                              Text("and 21 other items...",
+                              Text("and ${widget.orderData.itemTotalAmount} other items...",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[400],
@@ -118,7 +118,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                           padding:
                                           const EdgeInsets.only(
                                               left: 2.0),
-                                          child: Text("6999",
+                                          child: Text("${widget.orderData.finalPaidAmount}",
                                               style:
                                               FontsTheme.digitStyle(
                                                   size: 13)),
@@ -155,7 +155,7 @@ class _OrderComponentState extends State<OrderComponent> {
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
-                              "The flash shop",
+                              "${widget.orderData.vendorUniqId}",
                               style: FontsTheme.subTitleStyle(),
                             ),
                           ),

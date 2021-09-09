@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatefulWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -63,10 +67,13 @@ class _AboutUsState extends State<AboutUs> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset("images/logo.png", width: 60, height: 60),
+                          Image.network(
+                              "${StringConstants.API_URL}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                              width: 60,
+                              height: 60),
                           Space(width: 8.0),
-                          Text("iCopper",
-                              style: FontsTheme.boldTextStyle(size: 17))
+                          // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
+                          //     style: FontsTheme.boldTextStyle(size: 17))
                         ],
                       ),
                     ),
@@ -74,12 +81,23 @@ class _AboutUsState extends State<AboutUs> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.call, color: appPrimaryMaterialColor),
+                      InkWell(
+                        onTap: () async {
+                          await launch(
+                              'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
+                        },
+                        child: Icon(Icons.call, color: appPrimaryMaterialColor),
+                      ),
                       Space(width: 8),
                       Container(height: 18, width: 0.9, color: Colors.grey),
                       Space(width: 8),
-                      SvgPicture.asset("images/whatsapp.svg"),
-                      Space(width: 8)
+                      InkWell(
+                          onTap: () async {
+                            await launch(
+                                "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                          },
+                          child: SvgPicture.asset("images/whatsapp.svg")),
+                      Space(width: 10)
                     ],
                   ),
                 ],
@@ -90,7 +108,7 @@ class _AboutUsState extends State<AboutUs> {
               height: 20,
             ),
             Image.network(
-              "https://thumbs.dreamstime.com/b/shopping-cart-supermarket-empty-shelves-40320116.jpg",
+              "${StringConstants.API_URL}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
               fit: BoxFit.fill,
               width: MediaQuery.of(context).size.width,
               height: 160,
@@ -100,7 +118,7 @@ class _AboutUsState extends State<AboutUs> {
             ),
             Center(
               child: Text(
-                "SHOP NAME",
+                "${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
                 style: FontsTheme.subTitleStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w700,
@@ -109,7 +127,7 @@ class _AboutUsState extends State<AboutUs> {
             ),
             Center(
               child: Text(
-                "Location",
+                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address}",
                 style: FontsTheme.subTitleStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
@@ -132,7 +150,7 @@ class _AboutUsState extends State<AboutUs> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
               child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut finibus consequat auctor. Vestibulum posuere turpis eu nulla laoreet dignissim. Aenean eu quam in ipsum facilisis maximus. Nullam tristique, orci vitae ullamcorper sollicitudin, tellus enim hendrerit justo, vitae tempor augue urna vel elit. Phasellus congue vitae enim quis suscipit. Mauris in hendrerit nulla, ut pulvinar neque. Curabitur ultrices libero ac nisi maximus lacinia. Sed at elit eleifend augue ultricies finibus quis non ex. Phasellus blandit mauris quis tortor pulvinar lacinia.",
+                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.aboutBusiness}",
                 textAlign: TextAlign.justify,
                 style: FontsTheme.subTitleStyle(
                     fontWeight: FontWeight.w500, size: 12),
@@ -174,9 +192,13 @@ class _AboutUsState extends State<AboutUs> {
                         child: PageView(
                             scrollDirection: Axis.horizontal,
                             controller: controller,
-                            children: imageList.map<Widget>((e) {
+                            children: Provider.of<VendorModelWrapper>(context,
+                                    listen: false)
+                                .vendorModel!
+                                .awordImageUrl
+                                .map<Widget>((e) {
                               return Image.network(
-                                "${e["image"]}",
+                                "${StringConstants.API_URL}$e",
                                 fit: BoxFit.fill,
                                 width: MediaQuery.of(context).size.width,
                               );
@@ -204,7 +226,7 @@ class _AboutUsState extends State<AboutUs> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15),
               child: Text(
-                "Location",
+                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address}",
                 style: FontsTheme.subTitleStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w700,
@@ -214,7 +236,7 @@ class _AboutUsState extends State<AboutUs> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
               child: Text(
-                "#48, Dummy Street, Placeholder area, Chennai - 89",
+                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address}",
                 textAlign: TextAlign.justify,
                 style: FontsTheme.subTitleStyle(
                     fontWeight: FontWeight.w500, size: 12),

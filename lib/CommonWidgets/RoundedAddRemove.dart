@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
-import 'package:multi_vendor_customer/Utils/QuantityClass.dart';
+import 'package:multi_vendor_customer/Utils/Providers/QuantityClass.dart';
 import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {

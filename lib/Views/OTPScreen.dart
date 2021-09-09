@@ -8,6 +8,7 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/Register.dart';
 
@@ -24,6 +25,41 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   TextEditingController otp = TextEditingController();
   bool isLoading = false;
+  bool isLoadingCustomer = false;
+
+  _login() async {
+    print("Calling");
+    setState(() {
+      isLoadingCustomer = true;
+    });
+    await AuthController.login("${widget.mobileNumber}").then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          isLoadingCustomer = false;
+        });
+        sharedPrefs.customer_email = value.data!.customerEmailAddress;
+        sharedPrefs.customer_name = value.data!.customerName;
+        sharedPrefs.customer_id = value.data!.customerUniqId;
+        sharedPrefs.mobileNo = value.data!.customerMobileNumber;
+        Navigator.pushNamed(context, PageCollection.home);
+      } else {
+        setState(() {
+          isLoadingCustomer = false;
+        });
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) {
+            return Register(widget.mobileNumber);
+          },
+        ));
+        Fluttertoast.showToast(msg: value.message);
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingCustomer = false;
+      });
+    });
+  }
 
   _sendOtp() async {
     print("Calling");
@@ -45,6 +81,11 @@ class _OTPScreenState extends State<OTPScreen> {
         isLoading = false;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -102,20 +143,20 @@ class _OTPScreenState extends State<OTPScreen> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (widget.otp == otp.text) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                        return Register(widget.mobileNumber);
-                      },));
-                    } else {
-                      Fluttertoast.showToast(msg: "Wrong otp");
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Verify OTP"),
-                  )),
+              isLoadingCustomer
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: () {
+                        if (widget.otp == otp.text) {
+                          _login();
+                        } else {
+                          Fluttertoast.showToast(msg: "Wrong otp");
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Verify OTP"),
+                      )),
               Space(
                 height: 15,
               ),

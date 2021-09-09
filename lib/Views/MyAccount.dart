@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
+import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
+import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:multi_vendor_customer/main.dart';
 
 class MyAccount extends StatefulWidget {
@@ -16,6 +20,7 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccountState extends State<MyAccount> {
+  bool isLoading = false;
   bool isLoadingCustomer = false;
   CustomerDataModel customerData = CustomerDataModel(
       customerName: "",
@@ -41,19 +46,78 @@ class _MyAccountState extends State<MyAccount> {
         (value) {
       if (value.success) {
         print(value.success);
-        print(sharedPrefs.customer_email);
+        print(sharedPrefs.customer_id);
+        customerData = value.data;
+        print(customerData);
+        addressList.clear();
+        for (int i = 0; i < customerData.customerAddress.length; i++) {
+          addressList.add(Address(
+              type: customerData.customerAddress.elementAt(i).type,
+              subAddress: customerData.customerAddress.elementAt(i).subAddress,
+              area: customerData.customerAddress.elementAt(i).area,
+              city: customerData.customerAddress.elementAt(i).city,
+              pinCode: customerData.customerAddress.elementAt(i).pincode));
+        }
         setState(() {
           customerData = value.data;
           name.text = customerData.customerName;
           email.text = customerData.customerEmailAddress;
           mobile.text = customerData.customerMobileNumber;
-          dob.text = DateFormat.yMd().format(customerData.customerDob);
+          dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
           isLoadingCustomer = false;
         });
       }
     }, onError: (e) {
       setState(() {
         isLoadingCustomer = false;
+      });
+    });
+  }
+
+  _updateCustomerData() async {
+    print("Calling");
+    setState(() {
+      isLoading = true;
+    });
+    List<Map<String, dynamic>> object = [];
+    for (int i = 0; i < addressList.length; i++) {
+      object.add({
+        "type": addressList.elementAt(i).type,
+        "subAddress": addressList.elementAt(i).subAddress,
+        "area": addressList.elementAt(i).area,
+        "city": addressList.elementAt(i).city,
+        "pincode": addressList.elementAt(i).pinCode,
+      });
+    }
+    await CustomerController.updateCustomerData(
+            customerId: sharedPrefs.customer_id,
+            name: name.text,
+            email: email.text,
+            mobileNumber: mobile.text,
+            address: object,
+            dob: dob.text)
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        sharedPrefs.customer_email = value.data!.customerEmailAddress;
+        sharedPrefs.customer_name = value.data!.customerName;
+        sharedPrefs.customer_id = value.data!.customerUniqId;
+        sharedPrefs.mobileNo = value.data!.customerMobileNumber;
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.pushNamed(context, PageCollection.home);
+        Fluttertoast.showToast(msg: "Account Update Success");
+      } else {
+        Fluttertoast.showToast(msg: value.message);
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      print(e);
+      setState(() {
+        isLoading = false;
       });
     });
   }
@@ -74,7 +138,7 @@ class _MyAccountState extends State<MyAccount> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        dob.text = DateFormat.yMd().format(selectedDate);
+        dob.text = DateFormat("yyyy-MM-dd").format(selectedDate);
       });
   }
 
@@ -146,8 +210,41 @@ class _MyAccountState extends State<MyAccount> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: addressList.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${addressList.elementAt(index).type}",
+                        style: TextStyle(
+                            fontFamily: 'popins',
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.height,
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey.shade100),
+                        child: Text(
+                          "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
+                          style: TextStyle(
+                            fontFamily: 'popins',
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 3.0),
+                padding: const EdgeInsets.only(top: 3.0, bottom: 12),
                 child: SizedBox(
                   height: 50,
                   width: MediaQuery.of(context).size.width,
@@ -157,27 +254,24 @@ class _MyAccountState extends State<MyAccount> {
                       side: BorderSide(width: 0.5, color: Colors.grey.shade400),
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Location()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SavedAddress(),
+                        ),
+                      ).then((value) {
+                        setState(() {});
+                      });
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          size: 16,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            "Add Address",
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        "Manage Address",
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),
@@ -190,12 +284,16 @@ class _MyAccountState extends State<MyAccount> {
         padding: const EdgeInsets.only(left: 13.0, right: 13, bottom: 18),
         child: SizedBox(
           height: 45,
-          child: ElevatedButton(
-            child: Text(
-              "Save",
-            ),
-            onPressed: () {},
-          ),
+          child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : ElevatedButton(
+                  child: Text(
+                    "Update",
+                  ),
+                  onPressed: () {
+                    _updateCustomerData();
+                  },
+                ),
         ),
       ),
     );

@@ -10,7 +10,10 @@ import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/exports.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -40,15 +43,20 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoading = true;
     });
-    await CartController.getCartData("68202120831_7698178410").then((value) {
+    await CartController.getCartData("${sharedPrefs.customer_id}").then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
           productData = value.data;
           isLoading = false;
         });
+      }else{
+        setState(() {
+          isLoading=false;
+        });
       }
     }, onError: (e) {
+      print(e);
       setState(() {
         isLoading = false;
       });
@@ -60,7 +68,7 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoadingCustomer = true;
     });
-    await CustomerController.getCustomerData("68202120831_7698178410").then(
+    await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
         (value) {
       if (value.success) {
         print(value.success);
@@ -81,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoadingCoupon = true;
     });
-    await CouponController.validateCoupon("657202115727_9429828152","${couponText.text}").then(
+    await CouponController.validateCoupon(vendorId: "657202115727_9429828152",customerId: "${sharedPrefs.customer_id}",couponName: "${couponText.text}").then(
             (value) {
           if (value.success) {
             print(value.success);
@@ -175,7 +183,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: FontsTheme.boldTextStyle(
                                               size: 13)),
                                       Text(
-                                          "${customerData.customerAddress.elementAt(index).address}",
+                                          "${customerData.customerAddress.elementAt(index).subAddress}",
                                           style: FontsTheme.descriptionText(
                                               size: 13, color: Colors.black87)),
                                     ],
@@ -370,7 +378,7 @@ class _CartScreenState extends State<CartScreen> {
                         child: isLoadingCustomer
                             ? CircularProgressIndicator()
                             : Text(
-                                "${customerData.customerAddress.elementAt(addressIndex).address}",
+                                "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
                                 style: FontsTheme.descriptionText(
                                     size: 13, color: Colors.black87),
                               ),
@@ -390,7 +398,7 @@ class _CartScreenState extends State<CartScreen> {
                       //physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(0),
                       scrollDirection: Axis.vertical,
-                      itemCount: productData.first.productId.length,
+                      itemCount: productData.length>0?productData.first.productId.length:0,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(
