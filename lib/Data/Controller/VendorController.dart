@@ -1,25 +1,21 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 
 import 'ProductContoller.dart';
 
 class VendorController {
-
   /*-----------Get Product Data-----------*/
   static Future<ResponseClass> getVendorData({required String vendorId}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_view;
 
     //body Data
-    var data ={
-      "vendor_uniq_id" : "$vendorId"
-    };
+    var data = {"vendor_uniq_id": "$vendorId"};
 
-    ResponseClass<VendorModel> responseClass =
-    ResponseClass(success: false, message: "Something went wrong");
+    ResponseClass<VendorDataModel> responseClass =
+        ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -31,7 +27,7 @@ class VendorController {
         log("getVendorData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = VendorModel.fromJson(response.data["data"]);
+        responseClass.data = VendorDataModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
@@ -40,5 +36,3 @@ class VendorController {
     }
   }
 }
-
-

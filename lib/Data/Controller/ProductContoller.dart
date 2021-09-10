@@ -32,7 +32,7 @@ class ProductController {
         List productList = response.data["data"];
         List<ProductData> list =
             productList.map((e) => ProductData.fromJson(e)).toList();
-        responseClass.data = response.data["data"];
+        responseClass.data = list;
       }
       return responseClass;
     } catch (e) {

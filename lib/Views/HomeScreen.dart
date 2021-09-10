@@ -13,7 +13,9 @@ import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductControl
 import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
@@ -32,12 +34,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<BannerDataModel> banners = [
-  ];
+  List<BannerDataModel> banners = [];
 
   bool isLoading = false;
   bool isGrid = false;
   List<AllCategoryModel> productDataList = [];
+  List<ProductData> topSelling = [];
+  DateTime now = DateTime.now();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -46,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    await CategoryController.getCategoryWiseProduct("${Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId}")
+    await CategoryController.getCategoryWiseProduct(
+            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -68,12 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     await BannerController.getBannerData(
-            "${Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId}")
+            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
-          banners=value.data!;
+          banners = value.data!;
           isLoading = false;
         });
       }
@@ -84,18 +88,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  _getTrendingData()async{
+  _getTrendingData() async {
     print("Calling");
     setState(() {
       isLoading = true;
     });
-    await ProductController.getTrendingProduct(vendorId: "${Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId}")
+    await ProductController.getTrendingProduct(
+            vendorId:
+                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
-          print(value.data);
           isLoading = false;
+          topSelling = value.data;
         });
       }
     }, onError: (e) {
@@ -113,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _getCategoryWiseProduct();
         _getBannerData();
         _getTrendingData();
+        Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
       });
   }
 
@@ -143,13 +150,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Badge(
               elevation: 0,
               position: BadgePosition.topEnd(top: 5, end: 0),
-              badgeContent: Text('3',
+              badgeContent: Text(
+                  '${Provider.of<CartDataWrapper>(context).totalItems}',
                   style: TextStyle(fontSize: 10, color: Colors.white)),
               child: IconButton(
                 icon: Icon(AppIcons.shopping_cart,
                     size: 20, color: appPrimaryMaterialColor),
                 onPressed: () {
-                  sharedPrefs.customer_id.isNotEmpty?Navigator.of(context).pushNamed(PageCollection.cart):Navigator.of(context).pushNamed(PageCollection.login);
+                  sharedPrefs.customer_id.isNotEmpty
+                      ? Navigator.of(context).pushNamed(PageCollection.cart)
+                      : Navigator.of(context).pushNamed(PageCollection.login);
                 },
               ),
             ),
@@ -268,7 +278,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontWeight: FontWeight.w600),
                                         children: [
                                       TextSpan(
-                                          text: "  10am - 10am",
+                                          text: Provider.of<VendorModelWrapper>(
+                                                      context)
+                                                  .vendorModel!
+                                                  .businessHours
+                                                  .elementAt(now.weekday)
+                                                  .isOpen
+                                              ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
+                                              : "  Closed",
                                           style: FontsTheme.valueStyle(
                                               color: Colors.black54,
                                               size: 11,
@@ -287,8 +304,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         size: 18,
                                         color: appPrimaryMaterialColor),
                                     InkWell(
-                                      onTap: (){
-                                        launch("https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.longitude.toString()}");
+                                      onTap: () {
+                                        launch(
+                                            "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
                                       },
                                       child: Text(" Direction",
                                           style: TextStyle(
@@ -321,10 +339,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: SizedBox(
                           height: 90,
                           child: ListView.builder(
-                              itemCount: 4,
+                              itemCount: topSelling.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return TopSellingProductComponent();
+                                return TopSellingProductComponent(
+                                  productData: topSelling.elementAt(index),
+                                );
                               }),
                         ),
                       ),

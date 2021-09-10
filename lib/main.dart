@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
       ChangeNotifierProvider(create: (_) => Quantity()),
+      ChangeNotifierProvider(create: (_) => CartDataWrapper()),
     ],
     child: MyApp(),
   ));

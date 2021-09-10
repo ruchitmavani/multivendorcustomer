@@ -31,7 +31,7 @@ class CartController{
       if (response.statusCode == 200) {
         log("getCartData ${response.data}");
         if(responseClass.success==false)
-          throw FlutterError("No items in cart");
+          return Future.error("No items in cart");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         List productList = response.data["data"];

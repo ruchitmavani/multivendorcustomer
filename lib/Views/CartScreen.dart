@@ -409,7 +409,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Image.network(
                                 StringConstants.API_URL +
-                                    "${productData.elementAt(index).productId.elementAt(index).productImageUrl.first}",
+                                    "${productData.elementAt(index).productDetails.elementAt(index).productImageUrl.first}",
                                 width: 55,
                               ),
                               Expanded(
@@ -420,7 +420,7 @@ class _CartScreenState extends State<CartScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "${productData.elementAt(index).productId.elementAt(index).productName}",
+                                          "${productData.elementAt(index).productDetails.elementAt(index).productName}",
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.black87,
@@ -452,7 +452,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${productData.elementAt(index).productId.elementAt(index).productMrp}",
+                                                              "${productData.elementAt(index).productDetails.elementAt(index).productMrp}",
                                                         ),
                                                       ],
                                                     ),
@@ -469,7 +469,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${productData.elementAt(index).productId.elementAt(index).productSellingPrice}",
+                                                              "${productData.elementAt(index).productDetails.elementAt(index).productSellingPrice}",
                                                         ),
                                                       ],
                                                     ),

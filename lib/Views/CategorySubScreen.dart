@@ -15,7 +15,9 @@ import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 class CategorySubScreen extends StatefulWidget {
   String categoryId;
   String categoryName;
-  CategorySubScreen({required this.categoryName,required this.categoryId});
+
+  CategorySubScreen({required this.categoryName, required this.categoryId});
+
   @override
   _CategorySubScreenState createState() => _CategorySubScreenState();
 }
@@ -25,14 +27,16 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
   bool isLoading = false;
   List<ProductData> productDataList = [];
 
-
   _getProduct() async {
     print("Calling");
     setState(() {
       isLoading = true;
     });
-    await ProductController.getProductData(vendorId:
-            "657202115727_9429828152", categoryId: "${widget.categoryId}",limit: 10,page: 1)
+    await ProductController.getProductData(
+            vendorId: "657202115727_9429828152",
+            categoryId: "${widget.categoryId}",
+            limit: 10,
+            page: 1)
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -85,7 +89,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                       crossAxisCount: isGrid ? 2 : 1,
-                      childAspectRatio: isGrid ? 0.75 : 3.5,
+                      childAspectRatio: isGrid ? 1 : 3.5,
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
@@ -143,15 +147,16 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10.0, right: 8.0, top: 6),
+                              left: 8.0,
+                              right: 8.0,
+                            ),
                             child: isGrid
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Space(
-                                        height: 5,
-                                      ),
                                       ProductRating(productDataList
                                           .elementAt(index)
                                           .productRatingAverage),
@@ -270,6 +275,7 @@ class ProductDetail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
@@ -303,6 +309,8 @@ class ProductDetail extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "\u{20B9}",

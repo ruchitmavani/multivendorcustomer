@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 
 class TopSellingProductComponent extends StatefulWidget {
+  ProductData productData;
+  TopSellingProductComponent({required this.productData});
   @override
   _TopSellingProductComponentState createState() =>
       _TopSellingProductComponentState();
@@ -27,7 +32,7 @@ class _TopSellingProductComponentState
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.network(
-                  "https://www.bigbasket.com/media/uploads/p/xxl/263526-2_8-britannia-good-day-cashew-cookies.jpg"),
+                  "${StringConstants.API_URL}${widget.productData.productImageUrl.first}"),
             ),
             Space(width: 4,),
             Column(
@@ -35,15 +40,23 @@ class _TopSellingProductComponentState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Good Day Biscuit",
+                  "${widget.productData.productName}",
                   style: FontsTheme.boldTextStyle(),
                 ),
-                Text("Small Pack",
-                    style: FontsTheme.descriptionText(
-                        fontWeight: FontWeight.w400, size: 13)),
+                ProductRating(
+                  widget.productData.productRatingAverage
+                ),
+                // SizedBox(
+                //   width: 70,
+                //   child: Text("${widget.productData.productDescription}",
+                //       overflow: TextOverflow.ellipsis,
+                //       maxLines: 1,
+                //       style: FontsTheme.descriptionText(
+                //           fontWeight: FontWeight.w400, size: 13)),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 1.0),
-                  child: Text("₹ 10.00",
+                  child: Text("₹ ${widget.productData.productSellingPrice}",
                       style: FontsTheme.digitStyle(
                           fontWeight: FontWeight.w400, size: 13)),
                 ),
