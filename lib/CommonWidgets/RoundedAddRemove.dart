@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
-import 'package:multi_vendor_customer/Utils/Providers/QuantityClass.dart';
-import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
   @override
@@ -12,7 +10,6 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
   @override
   Widget build(BuildContext context) {
-    var provider=Provider.of<Quantity>(context);
     return SizedBox(
       width: 74,
       height: 32,
@@ -31,7 +28,6 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                    onTap: (){
-                     provider.decrement();
                    },
                   child: Icon(
                     Icons.remove,
@@ -43,7 +39,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  "${provider.quantity}",
+                  "0",
                   style: TextStyle(
                       color: appPrimaryMaterialColor,
                       fontWeight: FontWeight.w600,
@@ -55,7 +51,6 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: (){
-                    provider.increment();
                   },
                   child: Icon(
                     Icons.add,

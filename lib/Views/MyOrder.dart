@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderComponent.dart';
 
 class MyOrder extends StatefulWidget {

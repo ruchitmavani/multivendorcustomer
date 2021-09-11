@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -226,7 +224,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   bottom: 6.0),
-                                              child: AddRemoveButton(),
+                                              //todo remove comment
+                                              // child: AddRemoveButton(),
                                             ),
                                           ],
                                         )
@@ -330,7 +329,8 @@ class ProductDetail extends StatelessWidget {
               ],
             ),
             Space(width: 4),
-            isGridView ? AddRemoveButton() : SizedBox()
+            //todo remove comment
+            // isGridView ? AddRemoveButton() : SizedBox()
           ],
         )
       ],

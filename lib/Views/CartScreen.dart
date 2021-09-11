@@ -43,11 +43,11 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoading = true;
     });
-    await CartController.getCartData("${sharedPrefs.customer_id}").then((value) {
+    await CartController.getCartData(customerId: "${sharedPrefs.customer_id}",vendorId: Provider.of<VendorModelWrapper>(context).vendorModel!.vendorUniqId).then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
-          productData = value.data;
+          productData = value.data!;
           isLoading = false;
         });
       }else{

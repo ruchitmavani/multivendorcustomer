@@ -14,6 +14,7 @@ import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _getCategoryWiseProduct();
         _getBannerData();
         _getTrendingData();
-        Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
+        Provider.of<CartDataWrapper>(context, listen: false).loadCartData(vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId);
       });
   }
 

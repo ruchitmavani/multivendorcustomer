@@ -9,7 +9,6 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/Register.dart';
 
 class OTPScreen extends StatefulWidget {

@@ -32,7 +32,7 @@ class _TopSellingProductComponentState
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.network(
-                  "${StringConstants.API_URL}${widget.productData.productImageUrl.first}"),
+                  "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",width: 60,),
             ),
             Space(width: 4,),
             Column(

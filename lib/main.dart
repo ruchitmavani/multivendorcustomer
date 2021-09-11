@@ -17,7 +17,6 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
-      ChangeNotifierProvider(create: (_) => Quantity()),
       ChangeNotifierProvider(create: (_) => CartDataWrapper()),
     ],
     child: MyApp(),

@@ -4,10 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/OTPScreen.dart';
 
 class LoginScreen extends StatefulWidget {

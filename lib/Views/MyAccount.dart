@@ -8,9 +8,7 @@ import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:multi_vendor_customer/Views/Location.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
-import 'package:multi_vendor_customer/main.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);

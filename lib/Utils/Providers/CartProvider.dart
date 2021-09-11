@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 class CartDataWrapper extends ChangeNotifier {
-  CartDataModel? cartData;
+  List<CartDataModel> cartData=[];
   int totalItems = 0;
 
-  Future loadCartData() async {
-    print("load cart data Calling");
+  Future loadCartData({required String vendorId}) async {
     if (sharedPrefs.customer_id.isEmpty) {
       return;
     }
-    await CartController.getCartData("${sharedPrefs.customer_id}").then(
+    print("vendor $vendorId");
+    await CartController.getCartData(customerId: "${sharedPrefs.customer_id}",vendorId: vendorId).then(
         (value) {
       if (value.success) {
         print(value.success);
-        cartData = value.data;
+        print(value.data);
+        cartData = value.data!;
+        totalItems=cartData.length;
         notifyListeners();
       } else {}
     }, onError: (e) {
