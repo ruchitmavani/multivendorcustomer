@@ -24,6 +24,8 @@ class StringConstants{
   static String customer_update="customer_update";
   static String product_add_to_cart="product_add_to_cart";
   static String search_product="search_product";
+  static String delete_cart="delete_cart";
+  static String cart_details_update="cart_details_update";
 
   /*---------------- SharedPreference Keys ------------------*/
   static String mobile_no = "mobileNo";

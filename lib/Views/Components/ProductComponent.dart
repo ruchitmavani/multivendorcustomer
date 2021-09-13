@@ -129,7 +129,7 @@ class _ProductComponentState extends State<ProductComponent> {
                       ],
                     ),
                     Space(width: 8),
-                    AddRemoveButton(productId: widget.productData.productId,),
+                    AddRemoveButton(productData: widget.productData,),
                   ],
                 )
               ],

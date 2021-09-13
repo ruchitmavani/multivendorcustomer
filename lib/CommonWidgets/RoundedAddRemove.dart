@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 
 class RoundedAddRemove extends StatefulWidget {
+  int q;
+
+  RoundedAddRemove(this.q);
+
   @override
   _RoundedAddRemoveState createState() => _RoundedAddRemoveState();
 }
 
 class _RoundedAddRemoveState extends State<RoundedAddRemove> {
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,8 +30,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                   onTap: (){
-                   },
+                  onTap: () {},
                   child: Icon(
                     Icons.remove,
                     size: 15,
@@ -39,7 +41,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  "0",
+                  "${widget.q}",
                   style: TextStyle(
                       color: appPrimaryMaterialColor,
                       fontWeight: FontWeight.w600,
@@ -50,8 +52,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                  onTap: (){
-                  },
+                  onTap: () {},
                   child: Icon(
                     Icons.add,
                     size: 15,

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 import 'ProductContoller.dart';
 
@@ -13,8 +14,12 @@ class CategoryController {
   static Future<ResponseClass> getCategoryWiseProduct(String vendorId) async {
     String url = StringConstants.API_URL + StringConstants.category_wise_all_product_find;
 
+    print(sharedPrefs.customer_id);
     //body Data
-    var data = {"vendor_uniq_id": "$vendorId"};
+    var data = sharedPrefs.customer_id==""?{"vendor_uniq_id": "$vendorId"}:{
+      "vendor_uniq_id" : "$vendorId",
+      "customer_uniq_id": "${sharedPrefs.customer_id}"
+    };
 
     ResponseClass<List<AllCategoryModel>> responseClass =
     ResponseClass(success: false, message: "Something went wrong");

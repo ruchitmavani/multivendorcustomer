@@ -96,8 +96,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           Color(0xFFB14040).withAlpha(30))),
                   onPressed: () {
                     sharedPrefs.logout();
-                    if(Navigator.canPop(context))
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, PageCollection.login);
                   },
                   label: Text(
                     "LOGOUT",

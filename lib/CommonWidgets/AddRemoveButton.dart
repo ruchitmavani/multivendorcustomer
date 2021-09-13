@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButton extends StatefulWidget {
-  String productId;
+  ProductData productData;
 
-  AddRemoveButton({required this.productId});
+  AddRemoveButton({required this.productData});
 
   @override
   _AddRemoveButtonState createState() => _AddRemoveButtonState();
@@ -15,23 +20,75 @@ class AddRemoveButton extends StatefulWidget {
 class _AddRemoveButtonState extends State<AddRemoveButton> {
   int q = 0;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print("___________");
-    for (int i = 0;
-        i < Provider.of<CartDataWrapper>(context).cartData.length;
-        i++) {
-      if (Provider.of<CartDataWrapper>(context, listen: false).cartData.elementAt(i).productId==widget.productId)
-        q = Provider.of<CartDataWrapper>(context, listen: false)
-            .cartData
-            .elementAt(i)
-            .productQuantity;
+  Future addToCart() async {
+    if (sharedPrefs.customer_id.isEmpty) {
+      Navigator.pushNamed(context, PageCollection.login);
     }
+    await CartController.addToCart(
+            customerId: "${sharedPrefs.customer_id}",
+            vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .vendorUniqId,
+            productId: widget.productData.productId,
+            quantity: 1,
+            mrp: widget.productData.productMrp,
+            isActive: widget.productData.productVariationSizes.first.isActive,
+            size: widget.productData.productVariationSizes.first.size,
+            colorCode:
+                widget.productData.productVariationColors.first.colorCode,
+            sellingPrice:
+                widget.productData.productVariationSizes.first.sellingPrice,
+            isColorActive:
+                widget.productData.productVariationColors.first.isActive)
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        print(value.data);
+        Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+            vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .vendorUniqId);
+        setState(() {
+          q++;
+        });
+      } else {}
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  Future deleteCart() async {
+    if (sharedPrefs.customer_id.isEmpty) {
+      Navigator.pushNamed(context, PageCollection.login);
+    }
+    await CartController.deleteCart(
+            cartId: "${widget.productData.cartDetails!.cartId}")
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        print(value.data);
+        setState(() {
+          if (q > 0) q--;
+        });
+        Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+            vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .vendorUniqId);
+      } else {}
+    }, onError: (e) {
+      print(e);
+    });
   }
 
   @override
-  void initState() {}
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      q = widget.productData.cartDetails == null
+          ? 0
+          : widget.productData.cartDetails!.productQuantity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +104,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      addToCart();
+                    },
                     child: Icon(
                       Icons.add,
                       size: 18,
@@ -72,7 +131,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          deleteCart();
+                        },
                         child: Icon(
                           Icons.remove,
                           size: 18,
@@ -83,7 +144,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        "$q",
+                        "${q}",
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -94,7 +155,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          addToCart();
+                        },
                         child: Icon(
                           Icons.add,
                           size: 18,

@@ -85,6 +85,8 @@ class ProductDetail {
     required this.productName,
     required this.productMrp,
     required this.productSellingPrice,
+    required this.bulkPriceList,
+    required this.isRequestPrice,
     required this.taxId,
     required this.stockLeft,
     required this.unitType,
@@ -95,9 +97,9 @@ class ProductDetail {
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
-    required this.orderedQuantity,
-    required this.productIsActive,
     required this.categoryIsActive,
+    required this.productIsActive,
+    required this.orderedQuantity,
   });
 
   String id;
@@ -111,6 +113,8 @@ class ProductDetail {
   String productName;
   int productMrp;
   int productSellingPrice;
+  List<dynamic> bulkPriceList;
+  bool isRequestPrice;
   List<String> taxId;
   int stockLeft;
   String unitType;
@@ -121,9 +125,9 @@ class ProductDetail {
   int productTotalRating;
   int productRatingCountRecord;
   int productRatingAverage;
-  int orderedQuantity;
-  bool productIsActive;
   bool categoryIsActive;
+  bool productIsActive;
+  int orderedQuantity;
 
   factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
     id: json["_id"],
@@ -137,6 +141,8 @@ class ProductDetail {
     productName: json["product_name"],
     productMrp: json["product_mrp"],
     productSellingPrice: json["product_selling_price"],
+    bulkPriceList: List<dynamic>.from(json["bulk_price_list"].map((x) => x)),
+    isRequestPrice: json["is_request_price"],
     taxId: List<String>.from(json["tax_id"].map((x) => x)),
     stockLeft: json["stock_left"],
     unitType: json["unit_type"],
@@ -147,9 +153,9 @@ class ProductDetail {
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
-    orderedQuantity: json["ordered_quantity"],
-    productIsActive: json["product_is_active"],
     categoryIsActive: json["category_is_active"],
+    productIsActive: json["product_is_active"],
+    orderedQuantity: json["ordered_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -164,6 +170,8 @@ class ProductDetail {
     "product_name": productName,
     "product_mrp": productMrp,
     "product_selling_price": productSellingPrice,
+    "bulk_price_list": List<dynamic>.from(bulkPriceList.map((x) => x)),
+    "is_request_price": isRequestPrice,
     "tax_id": List<dynamic>.from(taxId.map((x) => x)),
     "stock_left": stockLeft,
     "unit_type": unitType,
@@ -174,9 +182,9 @@ class ProductDetail {
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
-    "ordered_quantity": orderedQuantity,
-    "product_is_active": productIsActive,
     "category_is_active": categoryIsActive,
+    "product_is_active": productIsActive,
+    "ordered_quantity": orderedQuantity,
   };
 }
 

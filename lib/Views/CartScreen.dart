@@ -25,7 +25,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   bool isLoading = false;
   bool isLoadingCustomer = false;
-  bool isLoadingCoupon=false;
+  bool isLoadingCoupon = false;
   int addressIndex = 0;
   List<CartDataModel> productData = [];
   CustomerDataModel customerData = CustomerDataModel(
@@ -43,18 +43,44 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoading = true;
     });
-    await CartController.getCartData(customerId: "${sharedPrefs.customer_id}",vendorId: Provider.of<VendorModelWrapper>(context).vendorModel!.vendorUniqId).then((value) {
+    // await CartController.getCartData(customerId: "${sharedPrefs.customer_id}",vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId).then((value) {
+    //   if (value.success) {
+    //     print(value.success);
+    //     setState(() {
+    //       productData = value.data!;
+    //       isLoading = false;
+    //     });
+    //   }else{
+    //     setState(() {
+    //       isLoading=false;
+    //     });
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // });
+
+    if (sharedPrefs.customer_id.isEmpty) {
+      return;
+    }
+    print(
+        "vendor ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}");
+    await CartController.getCartData(
+            customerId: "${sharedPrefs.customer_id}",
+            vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .vendorUniqId)
+        .then((value) {
       if (value.success) {
-        print(value.success);
+        print("cart ====== ${value.success}");
+        print(value.data);
+        productData = value.data!;
         setState(() {
-          productData = value.data!;
           isLoading = false;
         });
-      }else{
-        setState(() {
-          isLoading=false;
-        });
-      }
+      } else {}
     }, onError: (e) {
       print(e);
       setState(() {
@@ -84,23 +110,26 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  _verifyCoupon()async{
+  _verifyCoupon() async {
     print("Calling");
     setState(() {
       isLoadingCoupon = true;
     });
-    await CouponController.validateCoupon(vendorId: "657202115727_9429828152",customerId: "${sharedPrefs.customer_id}",couponName: "${couponText.text}").then(
-            (value) {
-          if (value.success) {
-            print(value.success);
-            setState(() {
-              isLoadingCoupon = false;
-            });
-            // Navigator.of(context).pushNamed(PageCollection.cart);
-          }else{
-            Fluttertoast.showToast(msg: "${value.message}");
-          }
-        }, onError: (e) {
+    await CouponController.validateCoupon(
+            vendorId: "657202115727_9429828152",
+            customerId: "${sharedPrefs.customer_id}",
+            couponName: "${couponText.text}")
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          isLoadingCoupon = false;
+        });
+        // Navigator.of(context).pushNamed(PageCollection.cart);
+      } else {
+        Fluttertoast.showToast(msg: "${value.message}");
+      }
+    }, onError: (e) {
       setState(() {
         isLoadingCoupon = false;
       });
@@ -247,7 +276,8 @@ class _CartScreenState extends State<CartScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 16.0,bottom: 0),
+                            padding:
+                                const EdgeInsets.only(top: 16.0, bottom: 0),
                             child: Text(
                               "Enter Offer Coupon",
                               style: TextStyle(
@@ -398,7 +428,7 @@ class _CartScreenState extends State<CartScreen> {
                       //physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(0),
                       scrollDirection: Axis.vertical,
-                      itemCount: productData.length>0?productData.first.productId.length:0,
+                      itemCount: productData.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(
@@ -409,7 +439,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Image.network(
                                 StringConstants.API_URL +
-                                    "${productData.elementAt(index).productDetails.elementAt(index).productImageUrl.first}",
+                                    "${productData.elementAt(index).productDetails.first.productImageUrl.first}",
                                 width: 55,
                               ),
                               Expanded(
@@ -420,7 +450,7 @@ class _CartScreenState extends State<CartScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "${productData.elementAt(index).productDetails.elementAt(index).productName}",
+                                          "${productData.elementAt(index).productDetails.first.productName}",
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.black87,
@@ -432,7 +462,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   RichText(
                                                     text: TextSpan(
@@ -452,7 +483,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${productData.elementAt(index).productDetails.elementAt(index).productMrp}",
+                                                              "${productData.elementAt(index).productDetails.first.productMrp}",
                                                         ),
                                                       ],
                                                     ),
@@ -469,14 +500,16 @@ class _CartScreenState extends State<CartScreen> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${productData.elementAt(index).productDetails.elementAt(index).productSellingPrice}",
+                                                              "${productData.elementAt(index).productDetails.first.productSellingPrice}",
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                              RoundedAddRemove(),
+                                              RoundedAddRemove(productData
+                                                  .elementAt(index)
+                                                  .productQuantity),
                                             ],
                                           ),
                                         ],
@@ -609,7 +642,8 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: Container(
                 height: 48,
-                width: MediaQuery.of(context).size.width,
+                // width: MediaQuery.of(context).size.width,
+                width: 150,
                 color: appPrimaryMaterialColor,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 3.0),

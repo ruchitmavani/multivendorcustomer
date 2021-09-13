@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData()
+    Provider.of<VendorModelWrapper>(context,listen: false).loadVendorData()
       ..whenComplete(() {
         _getCategoryWiseProduct();
         _getBannerData();
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(CupertinoIcons.search,
                 size: 20, color: appPrimaryMaterialColor),
             onPressed: () {
-              Navigator.of(context).pushNamed(PageCollection.search);
+              Navigator.of(context).pushNamed(PageCollection.search).then((value) {initState();});
             },
           ),
           Padding(
@@ -159,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 20, color: appPrimaryMaterialColor),
                 onPressed: () {
                   sharedPrefs.customer_id.isNotEmpty
-                      ? Navigator.of(context).pushNamed(PageCollection.cart)
-                      : Navigator.of(context).pushNamed(PageCollection.login);
+                      ? Navigator.of(context).pushNamed(PageCollection.cart).then((value){initState();})
+                      : Navigator.of(context).pushNamed(PageCollection.login).then((value) {initState();});
                 },
               ),
             ),
@@ -278,19 +278,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: FontsTheme.descriptionText(
                                             fontWeight: FontWeight.w600),
                                         children: [
-                                      TextSpan(
-                                          text: Provider.of<VendorModelWrapper>(
-                                                      context)
-                                                  .vendorModel!
-                                                  .businessHours
-                                                  .elementAt(now.weekday)
-                                                  .isOpen
-                                              ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
-                                              : "  Closed",
-                                          style: FontsTheme.valueStyle(
-                                              color: Colors.black54,
-                                              size: 11,
-                                              fontWeight: FontWeight.w700))
+                                      // TextSpan(
+                                      //     text: Provider.of<VendorModelWrapper>(
+                                      //                 context)
+                                      //             .vendorModel!
+                                      //             .businessHours
+                                      //             .elementAt(now.weekday)
+                                      //             .isOpen
+                                      //         ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
+                                      //         : "  Closed",
+                                      //     style: FontsTheme.valueStyle(
+                                      //         color: Colors.black54,
+                                      //         size: 11,
+                                      //         fontWeight: FontWeight.w700))
                                     ])),
                                 Space(width: 20),
                                 Row(

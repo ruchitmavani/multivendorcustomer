@@ -15,11 +15,18 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
-  List<Color> colorList = [Colors.black87, Colors.red];
-  List<String> sizeList = ["S", "M", "L"];
+  List<ProductColor> colorList = [];
+  List<ProductSize> sizeList = [];
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage=0;
+
+  @override
+  void initState() {
+    super.initState();
+    colorList=widget.productData.productVariationColors;
+    sizeList=widget.productData.productVariationSizes;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +149,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               borderRadius:
                                                   BorderRadius.circular(50.0),
                                               child: Container(
-                                                  color: e,
+                                                  color: Color(int.parse(e.colorCode)),
                                                   height: 30,
                                                   width: 30)),
                                         ),
@@ -189,17 +196,18 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               borderRadius:
                                                   BorderRadius.circular(50.0),
                                               child: Container(
-                                                  child: Center(
-                                                      child: Text(e,
-                                                          style: FontsTheme.boldTextStyle(
-                                                              color: currentSizeIndex ==
-                                                                      index
-                                                                  ? appPrimaryMaterialColor
-                                                                  : Colors.grey
-                                                                      .shade400,
-                                                              size: 17))),
+                                                alignment: Alignment.center,
+                                                  margin: EdgeInsets.symmetric(horizontal: 4,),
+                                                  child: Text(e.size,
+                                                      style: FontsTheme.boldTextStyle(
+                                                          color: currentSizeIndex ==
+                                                                  index
+                                                              ? appPrimaryMaterialColor
+                                                              : Colors.grey
+                                                                  .shade400,
+                                                          size: 17)),
                                                   height: 28,
-                                                  width: 28)),
+                                                  )),
                                         ),
                                       ),
                                     ),
