@@ -19,25 +19,6 @@ class AboutUs extends StatefulWidget {
 class _AboutUsState extends State<AboutUs> {
   final PageController controller = PageController(initialPage: 0);
 
-  List imageList = [
-    {
-      "image":
-          "https://images.chinahighlights.com/allpicture/2017/03/36a97374b583420192ef523a_cut_800x500_61.jpg"
-    },
-    {
-      "image":
-          "https://images.livemint.com/img/2021/03/08/600x338/6c21da88-801a-11eb-bcbd-8b8cfe935532_1615228735852_1615228764880.jpg",
-    },
-    {
-      "image":
-          "https://textilevaluechain.in/wp-content/uploads/2020/12/ebc4e33a-8b9c-11e9-9d2e-e93f010d116d_1560186894115_1560187140142.jpg"
-    },
-    {
-      "image":
-          "https://thumbs.dreamstime.com/b/shopping-cart-supermarket-empty-shelves-40320116.jpg"
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,15 +69,15 @@ class _AboutUsState extends State<AboutUs> {
                         },
                         child: Icon(Icons.call, color: appPrimaryMaterialColor),
                       ),
-                      Space(width: 8),
-                      Container(height: 18, width: 0.9, color: Colors.grey),
-                      Space(width: 8),
-                      InkWell(
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
                           onTap: () async {
                             await launch(
                                 "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                           },
-                          child: SvgPicture.asset("images/whatsapp.svg")),
+                          child: SvgPicture.asset("images/whatsapp.svg")):Container(),
                       Space(width: 10)
                     ],
                   ),

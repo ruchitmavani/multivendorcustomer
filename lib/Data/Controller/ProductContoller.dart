@@ -116,4 +116,37 @@ class ProductController {
       return responseClass;
     }
   }
+
+  /*-----------Find Product Data-----------*/
+  static Future<ResponseClass<ProductData>> findProduct(
+      {required String productId,required String customerId}) async {
+    String url = StringConstants.API_URL + StringConstants.find_a_product;
+
+    //body Data
+    var data = {
+      "product_id" : "$productId",
+      "customer_uniq_id": "$customerId"
+    };
+
+    ResponseClass<ProductData> responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("find product response -> ${response.data}");
+      if (response.statusCode == 200) {
+        log("findProduct ${response.data}");
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        responseClass.data = ProductData.fromJson(response.data["data"]);
+      }
+      return responseClass;
+    } catch (e) {
+      print("findProduct ->>>" + e.toString());
+      return responseClass;
+    }
+  }
 }

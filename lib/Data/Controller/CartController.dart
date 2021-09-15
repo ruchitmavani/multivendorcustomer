@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Data/Models/AddToCartResponseModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 
@@ -48,7 +49,7 @@ class CartController {
   }
 
   /*-----------add to Cart-----------*/
-  static Future<ResponseClass> addToCart({
+  static Future<ResponseClass<AddtoCartResponseModel>> addToCart({
     required String customerId,
     required String vendorId,
     required String productId,
@@ -77,7 +78,7 @@ class CartController {
       "product_color": {"color_code": "$colorCode", "is_active": isColorActive}
     };
 
-    ResponseClass responseClass =
+    ResponseClass<AddtoCartResponseModel> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
@@ -90,7 +91,7 @@ class CartController {
         log("addToCart ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = response.data["data"];
+        responseClass.data = AddtoCartResponseModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
@@ -101,29 +102,12 @@ class CartController {
 
   /*-----------update Cart-----------*/
   static Future<ResponseClass> update({
-    required String cartId,
-    required int quantity,
-    required String size,
-    required int mrp,
-    required int sellingPrice,
-    required bool isActive,
-    required String colorCode,
-    required bool isColorActive,
+    required Map<String,dynamic> jsonMap,
   }) async {
     String url = StringConstants.API_URL + StringConstants.cart_details_update;
 
     //body Data
-    var data = {
-      "cart_id": "$cartId",
-      "product_quantity": quantity,
-      "product_size": {
-        "size": "$size",
-        "mrp": mrp,
-        "selling_price": sellingPrice,
-        "is_active": isActive
-      },
-      "product_color": {"color_code": "$colorCode", "is_active": isColorActive}
-    };
+    var data = jsonMap;
 
     ResponseClass responseClass =
         ResponseClass(success: false, message: "Something went wrong");

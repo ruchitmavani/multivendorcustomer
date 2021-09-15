@@ -10,6 +10,7 @@ import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/exports.dart';
@@ -27,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isLoadingCustomer = false;
   bool isLoadingCoupon = false;
   int addressIndex = 0;
-  List<CartDataModel> productData = [];
+  List<CartDataModel> cartData = [];
   CustomerDataModel customerData = CustomerDataModel(
       customerName: "",
       customerEmailAddress: "",
@@ -43,30 +44,10 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       isLoading = true;
     });
-    // await CartController.getCartData(customerId: "${sharedPrefs.customer_id}",vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId).then((value) {
-    //   if (value.success) {
-    //     print(value.success);
-    //     setState(() {
-    //       productData = value.data!;
-    //       isLoading = false;
-    //     });
-    //   }else{
-    //     setState(() {
-    //       isLoading=false;
-    //     });
-    //   }
-    // }, onError: (e) {
-    //   print(e);
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // });
-
-    if (sharedPrefs.customer_id.isEmpty) {
-      return;
+    if (sharedPrefs.customer_id.isEmpty || sharedPrefs.vendor_uniq_id == "") {
+      Navigator.pushReplacementNamed(context, PageCollection.home);
     }
-    print(
-        "vendor ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}");
+    print("vendor ${sharedPrefs.vendor_uniq_id}");
     await CartController.getCartData(
             customerId: "${sharedPrefs.customer_id}",
             vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
@@ -76,7 +57,7 @@ class _CartScreenState extends State<CartScreen> {
       if (value.success) {
         print("cart ====== ${value.success}");
         print(value.data);
-        productData = value.data!;
+        cartData = value.data!;
         setState(() {
           isLoading = false;
         });
@@ -116,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
       isLoadingCoupon = true;
     });
     await CouponController.validateCoupon(
-            vendorId: "657202115727_9429828152",
+            vendorId: "${sharedPrefs.vendor_uniq_id}",
             customerId: "${sharedPrefs.customer_id}",
             couponName: "${couponText.text}")
         .then((value) {
@@ -139,7 +120,11 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    _loadCartData();
+    Provider.of<CartDataWrapper>(context, listen: false)
+        .loadCartData(vendorId: sharedPrefs.vendor_uniq_id)
+        .then((value) {
+      _loadCartData();
+    });
     _loadCustomerData();
   }
 
@@ -425,100 +410,106 @@ class _CartScreenState extends State<CartScreen> {
                     )
                   : ListView.separated(
                       shrinkWrap: true,
-                      //physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(0),
                       scrollDirection: Axis.vertical,
-                      itemCount: productData.length,
+                      itemCount: cartData.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 12.0, right: 12, top: 8, bottom: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                StringConstants.API_URL +
-                                    "${productData.elementAt(index).productDetails.first.productImageUrl.first}",
-                                width: 55,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "${productData.elementAt(index).productDetails.first.productName}",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.w600)),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "\u{20B9}",
-                                                      style: TextStyle(
-                                                        fontFamily: "Poppins",
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color:
-                                                            Colors.red.shade700,
-                                                        fontSize: 12,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
-                                                        decorationThickness: 3,
-                                                      ),
-                                                      children: [
-                                                        TextSpan(
-                                                          text:
-                                                              "${productData.elementAt(index).productDetails.first.productMrp}",
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "\u{20B9}",
-                                                      style: TextStyle(
+                        return GestureDetector(
+                          onTap: (){
+                            // Navigator.push();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 12.0, right: 12, top: 8, bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  StringConstants.API_URL +
+                                      "${cartData.elementAt(index).productDetails.first.productImageUrl.first}",
+                                  width: 55,
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "${cartData.elementAt(index).productDetails.first.productName}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w600)),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "\u{20B9}",
+                                                        style: TextStyle(
                                                           fontFamily: "Poppins",
-                                                          color: Colors.black87,
-                                                          fontSize: 12,
                                                           fontWeight:
-                                                              FontWeight.bold),
-                                                      children: [
-                                                        TextSpan(
-                                                          text:
-                                                              "${productData.elementAt(index).productDetails.first.productSellingPrice}",
+                                                              FontWeight.w400,
+                                                          color:
+                                                              Colors.red.shade700,
+                                                          fontSize: 12,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                          decorationThickness: 3,
                                                         ),
-                                                      ],
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                "${cartData.elementAt(index).productDetails.first.productMrp}",
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              RoundedAddRemove(productData
-                                                  .elementAt(index)
-                                                  .productQuantity),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        text: "\u{20B9}",
+                                                        style: TextStyle(
+                                                            fontFamily: "Poppins",
+                                                            color: Colors.black87,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold),
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                "${cartData.elementAt(index).productDetails.first.productSellingPrice}",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                RoundedAddRemove(
+                                                  q: cartData
+                                                      .elementAt(index)
+                                                      .productQuantity,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -643,7 +634,6 @@ class _CartScreenState extends State<CartScreen> {
               child: Container(
                 height: 48,
                 // width: MediaQuery.of(context).size.width,
-                width: 150,
                 color: appPrimaryMaterialColor,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 3.0),

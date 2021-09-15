@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 
 class RoundedAddRemove extends StatefulWidget {
   int q;
 
-  RoundedAddRemove(this.q);
+  RoundedAddRemove({required this.q});
 
   @override
   _RoundedAddRemoveState createState() => _RoundedAddRemoveState();
@@ -29,13 +30,10 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.remove,
-                    size: 15,
-                    color: appPrimaryMaterialColor,
-                  ),
+                child: Icon(
+                  Icons.remove,
+                  size: 15,
+                  color: appPrimaryMaterialColor,
                 ),
               ),
               Padding(
@@ -51,13 +49,10 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.add,
-                    size: 15,
-                    color: appPrimaryMaterialColor,
-                  ),
+                child: Icon(
+                  Icons.add,
+                  size: 15,
+                  color: appPrimaryMaterialColor,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
@@ -6,6 +7,7 @@ import 'package:multi_vendor_customer/Views/OrderDetails.dart';
 
 class OrderComponent extends StatefulWidget {
   final OrderDataModel orderData;
+
   OrderComponent({required this.orderData});
 
   @override
@@ -18,7 +20,13 @@ class _OrderComponentState extends State<OrderComponent> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => OrderDetails()));
+          context,
+          MaterialPageRoute(
+            builder: (_) => OrderDetails(
+              orderData: widget.orderData,
+            ),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 5.0),
@@ -37,60 +45,45 @@ class _OrderComponentState extends State<OrderComponent> {
                 children: [
                   Row(
                     children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Image.network(
-                                "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
-                                width: 23,
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.only(left: 3.0),
-                                child: Image.network(
-                                  "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
-                                  width: 23,
-                                ),
-                              ),
-                            ],
+                      Container(
+                        constraints:
+                            BoxConstraints(maxHeight: 49, maxWidth: 49),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: widget.orderData.orderItems.length >= 4
+                              ? 4
+                              : widget.orderData.orderItems.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 3,
+                            mainAxisSpacing: 3,
+                            childAspectRatio: 1,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 3.0),
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
-                                  width: 23,
-                                ),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(left: 3.0),
-                                  child: Image.network(
-                                    "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
-                                    width: 23,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          itemBuilder: (context, index) {
+                            return Image.network(
+                              "${StringConstants.API_URL}${widget.orderData.orderItems.first.productDetails.productImageUrl.elementAt(index)}",
+                              width: 23,
+                              height: 23,
+                            );
+                          },
+                        ),
                       ),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 13.0),
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "${widget.orderData.orderItems.first.productDetails.productName}",
                                 style: FontsTheme.boldTextStyle(
                                     color: Colors.black87,
-                                    fontWeight: FontWeight.w800
-                                ),
+                                    fontWeight: FontWeight.w800),
                               ),
-                              Text("and ${widget.orderData.itemTotalAmount} other items...",
+                              Text(
+                                  "and ${widget.orderData.orderItems.length-1} other items...",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[400],
@@ -98,29 +91,26 @@ class _OrderComponentState extends State<OrderComponent> {
                                     fontStyle: FontStyle.italic,
                                   )),
                               Padding(
-                                padding:
-                                const EdgeInsets.only(top: 6.0),
+                                padding: const EdgeInsets.only(top: 6.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Total amount",
                                         style: FontsTheme.subTitleStyle(
-                                            fontWeight:
-                                            FontWeight.w700,color: Colors.grey)),
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.grey)),
                                     Row(
                                       children: [
                                         Text("\u{20B9}",
-                                            style:
-                                            FontsTheme.digitStyle(
+                                            style: FontsTheme.digitStyle(
                                                 size: 13)),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(
-                                              left: 2.0),
-                                          child: Text("${widget.orderData.finalPaidAmount}",
-                                              style:
-                                              FontsTheme.digitStyle(
+                                              const EdgeInsets.only(left: 2.0),
+                                          child: Text(
+                                              "${widget.orderData.finalPaidAmount}",
+                                              style: FontsTheme.digitStyle(
                                                   size: 13)),
                                         )
                                       ],
@@ -155,14 +145,14 @@ class _OrderComponentState extends State<OrderComponent> {
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
-                              "${widget.orderData.vendorUniqId}",
+                              "${widget.orderData.vendorDetails.businessName}",
                               style: FontsTheme.subTitleStyle(),
                             ),
                           ),
-                          Text("Sowcarpet",
+                          Text(
+                              "${widget.orderData.vendorDetails.businessCategory}",
                               style: FontsTheme.subTitleStyle(
-                                  size: 11,
-                                  fontWeight: FontWeight.w500)),
+                                  size: 11, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Padding(
@@ -174,7 +164,7 @@ class _OrderComponentState extends State<OrderComponent> {
                             color: appPrimaryMaterialColor.shade100,
                             //border: Border.all(color: Colors.white, width: 1.5),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(17.0)),
+                                BorderRadius.all(Radius.circular(17.0)),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(3.0),
@@ -182,8 +172,7 @@ class _OrderComponentState extends State<OrderComponent> {
                               child: Text(
                                 "Track order",
                                 style: FontsTheme.boldTextStyle(
-                                    color: appPrimaryMaterialColor,
-                                    size: 11),
+                                    color: appPrimaryMaterialColor, size: 11),
                               ),
                             ),
                           ),

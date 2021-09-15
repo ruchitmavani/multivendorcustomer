@@ -213,22 +213,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                         await launch(
                                             'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                                       },
-                                      child: Icon(Icons.call,
-                                          color: appPrimaryMaterialColor),
+                                      child: Icon(Icons.call, color: appPrimaryMaterialColor),
                                     ),
-                                    Space(width: 8),
-                                    Container(
-                                        height: 18,
-                                        width: 0.9,
-                                        color: Colors.grey),
-                                    Space(width: 8),
-                                    InkWell(
+                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
+                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
                                         onTap: () async {
                                           await launch(
                                               "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                                         },
-                                        child: SvgPicture.asset(
-                                            "images/whatsapp.svg")),
+                                        child: SvgPicture.asset("images/whatsapp.svg")):Container(),
                                     Space(width: 10)
                                   ],
                                 ),
@@ -278,19 +273,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: FontsTheme.descriptionText(
                                             fontWeight: FontWeight.w600),
                                         children: [
-                                      // TextSpan(
-                                      //     text: Provider.of<VendorModelWrapper>(
-                                      //                 context)
-                                      //             .vendorModel!
-                                      //             .businessHours
-                                      //             .elementAt(now.weekday)
-                                      //             .isOpen
-                                      //         ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
-                                      //         : "  Closed",
-                                      //     style: FontsTheme.valueStyle(
-                                      //         color: Colors.black54,
-                                      //         size: 11,
-                                      //         fontWeight: FontWeight.w700))
+                                      TextSpan(
+                                          text: Provider.of<VendorModelWrapper>(
+                                                      context)
+                                                  .vendorModel!
+                                                  .businessHours
+                                                  .elementAt(now.weekday)
+                                                  .isOpen
+                                              ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
+                                              : "  Closed",
+                                          style: FontsTheme.valueStyle(
+                                              color: Colors.black54,
+                                              size: 11,
+                                              fontWeight: FontWeight.w700))
                                     ])),
                                 Space(width: 20),
                                 Row(

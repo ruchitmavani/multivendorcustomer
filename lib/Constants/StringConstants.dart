@@ -12,6 +12,8 @@ class StringConstants{
   static String category_wise_all_product_find="category_wise_all_product_find/";
   static String vendor_send_sms="vendor_send_sms";
   static String vendor_view="vendor_view";
+  static String vendor_all_banner = "vendor_all_banner";
+  static String top_selling_product = "top_selling_product";
 
 
   //customer
@@ -26,18 +28,33 @@ class StringConstants{
   static String search_product="search_product";
   static String delete_cart="delete_cart";
   static String cart_details_update="cart_details_update";
+  static String find_a_product="find_a_product";
 
   /*---------------- SharedPreference Keys ------------------*/
+
+  //customer
   static String mobile_no = "mobileNo";
   static String customer_name = "customer_name";
   static String customer_email = "customer_email";
   static String cutomer_id = "cutomer_id";
   static String customer_address_type = "customer_address_type";
   static String customer_address = "customer_address";
+
+  //vendor
   static String vendor_uniq_id = "vendor_uniq_id";
   static String vendor_email_address = "email_address";
-  static String vendor_all_banner = "vendor_all_banner";
-  static String top_selling_product = "top_selling_product";
+  static String vendorUniqId="vendorUniqId";
+  static String businessName="businessName";
+  static String businessCategory="businessCategory";
+  static String vendorMobileNumber="mobileNumber";
+  static String emailAddress="emailAddress";
+  static String gstNumber="gstNumber";
+  static String storeLink="storeLink";
+  static String logo="logo";
+  static String latitude="latitude";
+  static String longitude="longitude";
+  static String isWhatsappSupport="isWhatsappSupport";
+
 
 }
 

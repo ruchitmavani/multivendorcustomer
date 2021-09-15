@@ -2,18 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 
 class OrderDetailComponent extends StatefulWidget {
-  const OrderDetailComponent({Key? key}) : super(key: key);
+  final ProductDetails productDetail;
+  final int quantity;
+
+  OrderDetailComponent({required this.productDetail,required this.quantity});
 
   @override
   _OrderDetailComponentState createState() => _OrderDetailComponentState();
 }
 
 class _OrderDetailComponentState extends State<OrderDetailComponent> {
-
   void ratingBottomSheet(BuildContext context, int price) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -36,20 +40,24 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Copper flask CF-125",
+                      Text("${widget.productDetail.productName}",
                           style: FontsTheme.descriptionText(size: 15)),
                       Row(
                         children: [
                           Text("\u{20B9}",
                               style: FontsTheme.digitStyle(
-                                  size: 14, colors: Colors.black54,fontWeight: FontWeight.w500)),
+                                  size: 14,
+                                  colors: Colors.black54,
+                                  fontWeight: FontWeight.w500)),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 2.0,
                             ),
                             child: Text("$price",
                                 style: FontsTheme.digitStyle(
-                                    size: 14, colors: Colors.black54,fontWeight: FontWeight.w500)),
+                                    size: 14,
+                                    colors: Colors.black54,
+                                    fontWeight: FontWeight.w500)),
                           ),
                         ],
                       ),
@@ -115,7 +123,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(
-            "https://thumbs.dreamstime.com/b/transparent-photoshop-psd-png-seamless-grid-pattern-background-transparent-photoshop-psd-png-seamless-grid-pattern-background-grey-175598426.jpg",
+            "${StringConstants.API_URL}${widget.productDetail.productImageUrl.first}",
             width: 55,
           ),
           Expanded(
@@ -128,7 +136,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Copper flash CF-125",
+                      Text("${widget.productDetail.productName}",
                           style: FontsTheme.valueStyle(
                               size: 13, fontWeight: FontWeight.w600)),
                       GestureDetector(
@@ -144,8 +152,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                               width: 2,
                             ),
                             GestureDetector(
-                              onTap: (){
-                                ratingBottomSheet(context,25);
+                              onTap: () {
+                                ratingBottomSheet(context, 25);
                                 FocusScope.of(context).unfocus();
                               },
                               child: Text(
@@ -168,14 +176,18 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Qty : 1",
+                      Text("Qty : ${widget.quantity
+                      }",
                           style: FontsTheme.descriptionText(
                               fontWeight: FontWeight.w500)),
                       Row(
                         children: [
                           Text("\u{20B9}",
-                              style: FontsTheme.digitStyle(size: 14,fontWeight: FontWeight.w500)),
-                          Text(" 249", style: FontsTheme.digitStyle(size: 14,fontWeight: FontWeight.w500)),
+                              style: FontsTheme.digitStyle(
+                                  size: 14, fontWeight: FontWeight.w500)),
+                          Text(" ${widget.productDetail.productSellingPrice}",
+                              style: FontsTheme.digitStyle(
+                                  size: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ],

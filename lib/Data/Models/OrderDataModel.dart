@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final orderDataModel = orderDataModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<OrderDataModel> orderDataModelFromJson(String str) => List<OrderDataModel>.from(json.decode(str).map((x) => OrderDataModel.fromJson(x)));
@@ -6,6 +11,7 @@ String orderDataModelToJson(List<OrderDataModel> data) => json.encode(List<dynam
 
 class OrderDataModel {
   OrderDataModel({
+    required this.id,
     required this.customerUniqId,
     required this.vendorUniqId,
     required this.orderItems,
@@ -21,10 +27,11 @@ class OrderDataModel {
     required this.deliveryCharges,
     required this.taxAmount,
     required this.couponAmount,
-    required this.id,
     required this.orderId,
+    required this.vendorDetails,
   });
 
+  String id;
   String customerUniqId;
   String vendorUniqId;
   List<OrderItem> orderItems;
@@ -40,10 +47,11 @@ class OrderDataModel {
   int deliveryCharges;
   int taxAmount;
   int couponAmount;
-  String id;
   String orderId;
+  VendorDetails vendorDetails;
 
   factory OrderDataModel.fromJson(Map<String, dynamic> json) => OrderDataModel(
+    id: json["_id"],
     customerUniqId: json["customer_uniq_id"],
     vendorUniqId: json["vendor_uniq_id"],
     orderItems: List<OrderItem>.from(json["order_items"].map((x) => OrderItem.fromJson(x))),
@@ -59,11 +67,12 @@ class OrderDataModel {
     deliveryCharges: json["delivery_charges"],
     taxAmount: json["tax_amount"],
     couponAmount: json["coupon_amount"],
-    id: json["_id"],
     orderId: json["order_id"],
+    vendorDetails: VendorDetails.fromJson(json["vendor_details"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "customer_uniq_id": customerUniqId,
     "vendor_uniq_id": vendorUniqId,
     "order_items": List<dynamic>.from(orderItems.map((x) => x.toJson())),
@@ -79,8 +88,8 @@ class OrderDataModel {
     "delivery_charges": deliveryCharges,
     "tax_amount": taxAmount,
     "coupon_amount": couponAmount,
-    "_id": id,
     "order_id": orderId,
+    "vendor_details": vendorDetails.toJson(),
   };
 }
 
@@ -176,6 +185,8 @@ class ProductDetails {
     required this.productRatingCountRecord,
     required this.productRatingAverage,
     required this.orderedQuantity,
+    required this.productIsActive,
+    required this.categoryIsActive,
   });
 
   String id;
@@ -200,6 +211,8 @@ class ProductDetails {
   int productRatingCountRecord;
   int productRatingAverage;
   int orderedQuantity;
+  bool productIsActive;
+  bool categoryIsActive;
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
     id: json["_id"],
@@ -224,6 +237,8 @@ class ProductDetails {
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
     orderedQuantity: json["ordered_quantity"],
+    productIsActive: json["product_is_active"],
+    categoryIsActive: json["category_is_active"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -249,6 +264,8 @@ class ProductDetails {
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
     "ordered_quantity": orderedQuantity,
+    "product_is_active": productIsActive,
+    "category_is_active": categoryIsActive,
   };
 }
 
@@ -313,5 +330,137 @@ class TaxId {
     "vendor_uniq_id": vendorUniqId,
     "tax_name": taxName,
     "tax_percentage": taxPercentage,
+  };
+}
+
+class VendorDetails {
+  VendorDetails({
+    required this.vendorUniqId,
+    required this.businessName,
+    required this.businessCategory,
+    required this.mobileNumber,
+    required this.emailAddress,
+    required this.gstNumber,
+    required this.storeLink,
+    required this.logo,
+    required this.latitude,
+    required this.longitude,
+    required this.coverImageUrl,
+    required this.awordImageUrl,
+    required this.address,
+    required this.aboutBusiness,
+    required this.businessHours,
+    required this.profileCompletedPercentage,
+    required this.profilePercentageCount,
+    required this.createdDateTime,
+    required this.isOnline,
+    required this.isDeliveryCharges,
+    required this.isStorePickupEnable,
+    required this.isWhatsappChatSupport,
+    required this.colorTheme,
+  });
+
+  String vendorUniqId;
+  String businessName;
+  String businessCategory;
+  String mobileNumber;
+  String emailAddress;
+  String gstNumber;
+  String storeLink;
+  String logo;
+  double latitude;
+  double longitude;
+  String coverImageUrl;
+  List<String> awordImageUrl;
+  String address;
+  String aboutBusiness;
+  List<BusinessHour> businessHours;
+  int profileCompletedPercentage;
+  List<String> profilePercentageCount;
+  DateTime createdDateTime;
+  bool isOnline;
+  bool isDeliveryCharges;
+  bool isStorePickupEnable;
+  bool isWhatsappChatSupport;
+  String colorTheme;
+
+  factory VendorDetails.fromJson(Map<String, dynamic> json) => VendorDetails(
+    vendorUniqId: json["vendor_uniq_id"],
+    businessName: json["business_name"],
+    businessCategory: json["business_category"],
+    mobileNumber: json["mobile_number"],
+    emailAddress: json["email_address"],
+    gstNumber: json["gst_number"],
+    storeLink: json["store_link"],
+    logo: json["logo"],
+    latitude: json["latitude"].toDouble(),
+    longitude: json["longitude"].toDouble(),
+    coverImageUrl: json["cover_image_url"],
+    awordImageUrl: List<String>.from(json["aword_image_url"].map((x) => x)),
+    address: json["address"],
+    aboutBusiness: json["about_business"],
+    businessHours: List<BusinessHour>.from(json["business_hours"].map((x) => BusinessHour.fromJson(x))),
+    profileCompletedPercentage: json["profile_completed_percentage"],
+    profilePercentageCount: List<String>.from(json["profile_percentage_count"].map((x) => x)),
+    createdDateTime: DateTime.parse(json["created_date_time"]),
+    isOnline: json["is_online"],
+    isDeliveryCharges: json["is_delivery_charges"],
+    isStorePickupEnable: json["is_store_pickup_enable"],
+    isWhatsappChatSupport: json["is_whatsapp_chat_support"],
+    colorTheme: json["color_theme"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "vendor_uniq_id": vendorUniqId,
+    "business_name": businessName,
+    "business_category": businessCategory,
+    "mobile_number": mobileNumber,
+    "email_address": emailAddress,
+    "gst_number": gstNumber,
+    "store_link": storeLink,
+    "logo": logo,
+    "latitude": latitude,
+    "longitude": longitude,
+    "cover_image_url": coverImageUrl,
+    "aword_image_url": List<dynamic>.from(awordImageUrl.map((x) => x)),
+    "address": address,
+    "about_business": aboutBusiness,
+    "business_hours": List<dynamic>.from(businessHours.map((x) => x.toJson())),
+    "profile_completed_percentage": profileCompletedPercentage,
+    "profile_percentage_count": List<dynamic>.from(profilePercentageCount.map((x) => x)),
+    "created_date_time": createdDateTime.toIso8601String(),
+    "is_online": isOnline,
+    "is_delivery_charges": isDeliveryCharges,
+    "is_store_pickup_enable": isStorePickupEnable,
+    "is_whatsapp_chat_support": isWhatsappChatSupport,
+    "color_theme": colorTheme,
+  };
+}
+
+class BusinessHour {
+  BusinessHour({
+    required this.day,
+    required this.openTime,
+    required this.closeTime,
+    required this.isOpen,
+  });
+
+  String day;
+  String openTime;
+  String closeTime;
+  bool isOpen;
+
+  factory BusinessHour.fromJson(Map<String, dynamic> json) => BusinessHour(
+    day: json["day"],
+    openTime: json["openTime"],
+    closeTime: json["closeTime"],
+    isOpen: json["isOpen"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "day": day,
+    "openTime": openTime,
+    "closeTime": closeTime,
+    "isOpen": isOpen,
   };
 }

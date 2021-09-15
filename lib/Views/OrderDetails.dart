@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetails extends StatefulWidget {
-  const OrderDetails({Key? key}) : super(key: key);
+  final OrderDataModel orderData;
+
+  OrderDetails({required this.orderData});
 
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
@@ -128,17 +134,19 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset("images/logo.png", width: 60, height: 60),
+                  Image.network("${StringConstants.API_URL}${sharedPrefs.logo}",
+                      width: 60, height: 60),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 11.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("The flash shop",
+                          Text("${widget.orderData.vendorDetails.businessName}",
                               style: FontsTheme.valueStyle(
                                   fontWeight: FontWeight.w600, size: 14)),
-                          Text("Sowcarpet",
+                          Text(
+                              "${widget.orderData.vendorDetails.businessCategory}",
                               style: FontsTheme.valueStyle(
                                   fontWeight: FontWeight.w600, size: 11)),
                         ],
@@ -148,18 +156,31 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.call,
-                        color: appPrimaryMaterialColor,
-                        size: 20,
+                      InkWell(
+                        onTap: () async {
+                          await launch(
+                              'tel: ${widget.orderData.vendorDetails.mobileNumber}');
+                        },
+                        child: Icon(Icons.call, color: appPrimaryMaterialColor),
                       ),
-                      Space(width: 8),
-                      Container(height: 18, width: 0.9, color: Colors.grey),
-                      Space(width: 8),
-                      SvgPicture.asset(
-                        "images/whatsapp.svg",
-                        width: 20,
-                      ),
+                      widget.orderData.vendorDetails.isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      widget.orderData.vendorDetails.isWhatsappChatSupport
+                          ? Container(
+                              height: 18, width: 0.9, color: Colors.grey)
+                          : Container(),
+                      widget.orderData.vendorDetails.isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      widget.orderData.vendorDetails.isWhatsappChatSupport
+                          ? InkWell(
+                              onTap: () async {
+                                await launch(
+                                    "https://wa.me/${widget.orderData.vendorDetails.mobileNumber}");
+                              },
+                              child: SvgPicture.asset("images/whatsapp.svg"))
+                          : Container(),
                       Space(width: 10)
                     ],
                   ),
@@ -181,9 +202,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.all(0),
                         scrollDirection: Axis.vertical,
-                        itemCount: 4,
+                        itemCount: widget.orderData.orderItems.length,
                         itemBuilder: (context, index) {
-                          return OrderDetailComponent();
+                          return OrderDetailComponent(
+                            productDetail: widget.orderData.orderItems
+                                .elementAt(index)
+                                .productDetails,
+                            quantity: widget.orderData.orderItems.elementAt(index).productQuantity,
+                          );
                         },
                         separatorBuilder: (context, index) => Divider(
                           color: Colors.grey[300],
@@ -205,8 +231,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Text("Discount Applied",
                                     style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("- \u{20B9}" + "256.00",
-                                    style: FontsTheme.valueStyle(size: 14,fontWeight: FontWeight.w500)),
+                                trailing: Text("- \u{20B9}" + "${widget.orderData.couponAmount}",
+                                    style: FontsTheme.valueStyle(
+                                        size: 14, fontWeight: FontWeight.w500)),
                               ),
                             ),
                           ),
@@ -217,10 +244,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title:
-                                    Text("Tax", style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("\u{20B9}" + "256.00",
-                                    style: FontsTheme.valueStyle(size: 14,fontWeight: FontWeight.w500)),
+                                title: Text("Tax",
+                                    style: FontsTheme.valueStyle(size: 14)),
+                                trailing: Text("\u{20B9}" + "${widget.orderData.taxAmount}",
+                                    style: FontsTheme.valueStyle(
+                                        size: 14, fontWeight: FontWeight.w500)),
                               ),
                             ),
                           ),
@@ -233,8 +261,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Text("Shipping Fee",
                                     style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("\u{20B9}" + "256.00",
-                                    style: FontsTheme.valueStyle(size: 14,fontWeight: FontWeight.w500)),
+                                trailing: Text("\u{20B9}" + "${widget.orderData.deliveryCharges}",
+                                    style: FontsTheme.valueStyle(
+                                        size: 14, fontWeight: FontWeight.w500)),
                               ),
                             ),
                           ),
@@ -246,9 +275,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
                                 title: Text("Total",
-                                    style: FontsTheme.valueStyle(size: 16,fontWeight: FontWeight.w700)),
-                                trailing: Text("\u{20B9}" + " " + "256.00",
-                                    style: FontsTheme.valueStyle(size: 16,fontWeight: FontWeight.w700)),
+                                    style: FontsTheme.valueStyle(
+                                        size: 16, fontWeight: FontWeight.w700)),
+                                trailing: Text("\u{20B9}" + " " + "${widget.orderData.finalPaidAmount}",
+                                    style: FontsTheme.valueStyle(
+                                        size: 16, fontWeight: FontWeight.w700)),
                               ),
                             ),
                           ),
@@ -286,9 +317,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     )
                   ],
                 ),
-                onPressed: () {
-
-                },
+                onPressed: () {},
               ),
             ),
           ],
