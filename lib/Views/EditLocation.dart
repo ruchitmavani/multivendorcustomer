@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
@@ -36,6 +35,7 @@ class _LocationState extends State<EditLocation> {
 
   @override
   void initState() {
+    super.initState();
     subAddress.text = widget.subAddress;
     area.text = widget.area;
     city.text = widget.city;

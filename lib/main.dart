@@ -7,7 +7,6 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'Utils/Providers/QuantityClass.dart';
 import 'Utils/SharedPrefs.dart';
 
 void main() async {

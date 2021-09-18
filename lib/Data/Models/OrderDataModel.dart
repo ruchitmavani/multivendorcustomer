@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final orderDataModel = orderDataModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<OrderDataModel> orderDataModelFromJson(String str) => List<OrderDataModel>.from(json.decode(str).map((x) => OrderDataModel.fromJson(x)));
@@ -184,7 +179,6 @@ class ProductDetails {
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
-    required this.orderedQuantity,
     required this.productIsActive,
     required this.categoryIsActive,
   });
@@ -209,8 +203,7 @@ class ProductDetails {
   List<ProductColor> productVariationColors;
   int productTotalRating;
   int productRatingCountRecord;
-  int productRatingAverage;
-  int orderedQuantity;
+  double productRatingAverage;
   bool productIsActive;
   bool categoryIsActive;
 
@@ -236,7 +229,6 @@ class ProductDetails {
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
-    orderedQuantity: json["ordered_quantity"],
     productIsActive: json["product_is_active"],
     categoryIsActive: json["category_is_active"],
   );
@@ -263,7 +255,6 @@ class ProductDetails {
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
-    "ordered_quantity": orderedQuantity,
     "product_is_active": productIsActive,
     "category_is_active": categoryIsActive,
   };

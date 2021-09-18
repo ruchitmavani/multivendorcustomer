@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
@@ -16,14 +18,24 @@ class CartDataWrapper extends ChangeNotifier {
             customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
         .then((value) {
       if (value.success) {
-        print(value.success);
-        print(value.data);
+        log("---- cart length ${value.data!.length}");
         cartData = value.data!;
         totalItems = cartData.length;
         notifyListeners();
-      } else {}
+      } else {
+        notifyListeners();
+      }
     }, onError: (e) {
       print(e);
     });
+  }
+
+  getIndividualQuantity({required String productId}) {
+    for (int i = 0; i < cartData.length; i++) {
+      if (cartData.elementAt(i).productId == productId) {
+        return cartData.elementAt(i).productQuantity;
+      }
+    }
+    return 0;
   }
 }

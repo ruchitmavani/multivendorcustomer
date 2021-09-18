@@ -10,12 +10,11 @@ import 'ProductContoller.dart';
 
 class CartController {
   /*-----------Get Cart Data-----------*/
-  static Future<ResponseClass> getCartData(
+  static Future<ResponseClass<List<CartDataModel>>> getCartData(
       {required String vendorId, required String customerId}) async {
     String url = StringConstants.API_URL + StringConstants.cart_view;
 
     //body Data
-    print("load cart calling");
     print("$customerId");
     var data = {
       "vendor_uniq_id": "$vendorId",

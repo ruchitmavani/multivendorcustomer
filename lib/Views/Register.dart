@@ -41,7 +41,6 @@ class _RegisterState extends State<Register> {
   DateTime selectedDate = DateTime.now();
 
   _uploadCustomerData() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });

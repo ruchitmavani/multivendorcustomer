@@ -14,7 +14,6 @@ import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
-import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -38,15 +37,33 @@ class _HomeScreenState extends State<HomeScreen> {
   List<BannerDataModel> banners = [];
 
   bool isLoading = false;
-  bool isGrid = false;
+  bool isGrid = true;
   List<AllCategoryModel> productDataList = [];
-  List<ProductData> topSelling = [];
+  List<ProductData> trendingProducts = [];
+  List<ProductData> recentlyBought = [];
   DateTime now = DateTime.now();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  @override
+  void initState() {
+    super.initState();
+    getInitialData();
+  }
+
+  getInitialData()async {
+   await Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData();
+   Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+       vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+           .vendorModel!
+           .vendorUniqId);
+   _getCategoryWiseProduct();
+   _getBannerData();
+   _getTrendingData();
+   _recentlyBought();
+  }
+
   _getCategoryWiseProduct() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });
@@ -68,7 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _getBannerData() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });
@@ -90,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _getTrendingData() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });
@@ -102,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         print(value.success);
         setState(() {
           isLoading = false;
-          topSelling = value.data;
+          trendingProducts = value.data;
         });
       }
     }, onError: (e) {
@@ -112,16 +127,28 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<VendorModelWrapper>(context,listen: false).loadVendorData()
-      ..whenComplete(() {
-        _getCategoryWiseProduct();
-        _getBannerData();
-        _getTrendingData();
-        Provider.of<CartDataWrapper>(context, listen: false).loadCartData(vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId);
+  _recentlyBought() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (sharedPrefs.customer_id.isEmpty) {
+      return;
+    }
+    await ProductController.recentlyBought(
+            customerId: "${sharedPrefs.customer_id}")
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        setState(() {
+          isLoading = false;
+          recentlyBought = value.data!;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
       });
+    });
   }
 
   @override
@@ -143,7 +170,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(CupertinoIcons.search,
                 size: 20, color: appPrimaryMaterialColor),
             onPressed: () {
-              Navigator.of(context).pushNamed(PageCollection.search).then((value) {initState();});
+              Navigator.of(context)
+                  .pushNamed(PageCollection.search)
+                  .then((value) {
+                initState();
+              });
             },
           ),
           Padding(
@@ -159,8 +190,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 20, color: appPrimaryMaterialColor),
                 onPressed: () {
                   sharedPrefs.customer_id.isNotEmpty
-                      ? Navigator.of(context).pushNamed(PageCollection.cart).then((value){initState();})
-                      : Navigator.of(context).pushNamed(PageCollection.login).then((value) {initState();});
+                      ? Navigator.of(context)
+                          .pushNamed(PageCollection.cart)
+                          .then((value) {
+                          initState();
+                        })
+                      : Navigator.of(context)
+                          .pushNamed(PageCollection.login)
+                          .then((value) {
+                          initState();
+                        });
                 },
               ),
             ),
@@ -213,17 +252,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                         await launch(
                                             'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                                       },
-                                      child: Icon(Icons.call, color: appPrimaryMaterialColor),
+                                      child: Icon(Icons.call,
+                                          color: appPrimaryMaterialColor),
                                     ),
-                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
-                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                                    Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
-                                        onTap: () async {
-                                          await launch(
-                                              "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                                        },
-                                        child: SvgPicture.asset("images/whatsapp.svg")):Container(),
+                                    Provider.of<VendorModelWrapper>(context,
+                                                listen: false)
+                                            .vendorModel!
+                                            .isWhatsappChatSupport
+                                        ? Space(width: 8)
+                                        : Container(),
+                                    Provider.of<VendorModelWrapper>(context,
+                                                listen: false)
+                                            .vendorModel!
+                                            .isWhatsappChatSupport
+                                        ? Container(
+                                            height: 18,
+                                            width: 0.9,
+                                            color: Colors.grey)
+                                        : Container(),
+                                    Provider.of<VendorModelWrapper>(context,
+                                                listen: false)
+                                            .vendorModel!
+                                            .isWhatsappChatSupport
+                                        ? Space(width: 8)
+                                        : Container(),
+                                    Provider.of<VendorModelWrapper>(context,
+                                                listen: false)
+                                            .vendorModel!
+                                            .isWhatsappChatSupport
+                                        ? InkWell(
+                                            onTap: () async {
+                                              await launch(
+                                                  "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                                            },
+                                            child: SvgPicture.asset(
+                                                "images/whatsapp.svg"))
+                                        : Container(),
                                     Space(width: 10)
                                   ],
                                 ),
@@ -335,11 +399,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: SizedBox(
                           height: 90,
                           child: ListView.builder(
-                              itemCount: topSelling.length,
+                              itemCount: trendingProducts.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return TopSellingProductComponent(
-                                  productData: topSelling.elementAt(index),
+                                  productData:
+                                      trendingProducts.elementAt(index),
                                 );
                               }),
                         ),
@@ -365,21 +430,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         color: Colors.white,
-                        child: Column(
-                          children: [
-                            TitleViewAll(
-                              title: "Recently bought",
-                            ),
-                            SizedBox(
-                              height: 245,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return RecentlyBought();
-                                  }),
-                            ),
-                          ],
-                        ),
+                        child: recentlyBought.length == 0
+                            ? Container()
+                            : Column(
+                                children: [
+                                  TitleViewAll(
+                                    title: "Recently bought",
+                                    onPressed: () {},
+                                  ),
+                                  SizedBox(
+                                    height: 245,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: recentlyBought.length,
+                                        itemBuilder: (context, index) {
+                                          return RecentlyBought(
+                                            productData:
+                                                recentlyBought.elementAt(index),
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              ),
                       ),
                       categoryWiseProducts(),
                     ],
@@ -404,12 +476,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget categoryWiseProducts() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),
       color: Colors.white,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: productDataList.length,
+        scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleViewAll(
                   title: "${productDataList.elementAt(index).categoryName}",
@@ -423,13 +498,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     }).toString();
                     Navigator.pushNamed(context, path).then((value) {});
                   }),
-              Container(
-                height: 240,
-                padding: EdgeInsets.symmetric(horizontal: 4),
+              SizedBox(
+                height: 245,
                 child: ListView.builder(
+                  shrinkWrap: true,
+                    scrollDirection: isGrid?Axis.horizontal:Axis.vertical,
                     itemCount:
                         productDataList.elementAt(index).productDetails.length,
-                    scrollDirection: Axis.horizontal,
                     itemBuilder: (context, i) {
                       return GestureDetector(
                         onTap: () {
@@ -472,11 +547,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               });
                         },
-                        child: ProductComponent(
-                            productData: productDataList
-                                .elementAt(index)
-                                .productDetails
-                                .elementAt(i)),
+                        child: isGrid
+                            ? ProductComponentGrid(
+                                productData: productDataList
+                                    .elementAt(index)
+                                    .productDetails
+                                    .elementAt(i))
+                            : ProductComponentList(
+                                productData: productDataList
+                                    .elementAt(index)
+                                    .productDetails
+                                    .elementAt(i)),
                       );
                     }),
               ),

@@ -9,7 +9,7 @@ class StringConstants{
   /*API NAMES*/
   //vendor
   static String vendor_all_product="vendor_all_product/";
-  static String category_wise_all_product_find="category_wise_all_product_find/";
+  // static String category_wise_all_product_find="category_wise_all_product_find/";
   static String vendor_send_sms="vendor_send_sms";
   static String vendor_view="vendor_view";
   static String vendor_all_banner = "vendor_all_banner";
@@ -29,6 +29,8 @@ class StringConstants{
   static String delete_cart="delete_cart";
   static String cart_details_update="cart_details_update";
   static String find_a_product="find_a_product";
+  static String recently_bought_product="recently_bought_product";
+  static String customer_category_wise_all_product_find="customer_category_wise_all_product_find";
 
   /*---------------- SharedPreference Keys ------------------*/
 

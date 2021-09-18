@@ -12,7 +12,6 @@ import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
-import 'package:multi_vendor_customer/Views/StoreLoadingScreen.dart';
 
 class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -68,11 +67,6 @@ class RouteConfig {
         builder: (context) => Location(),
         settings: settings,
       );
-      case PageCollection.loading:
-        return MaterialPageRoute<void>(
-          builder: (context) => StoreLoading(),
-          settings: settings,
-        );
       case PageCollection.search:
         return MaterialPageRoute<void>(
           builder: (context) => Search(),

@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoadingCustomer = false;
 
   _sendOtp() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });

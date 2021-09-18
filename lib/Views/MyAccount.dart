@@ -35,7 +35,6 @@ class _MyAccountState extends State<MyAccount> {
   DateTime selectedDate = DateTime.now();
 
   _loadCustomerData() async {
-    print("Calling");
     setState(() {
       isLoadingCustomer = true;
     });
@@ -73,7 +72,6 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   _updateCustomerData() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });

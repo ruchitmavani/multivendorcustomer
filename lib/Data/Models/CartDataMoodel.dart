@@ -108,7 +108,6 @@ class ProductDetail {
     required this.productRatingAverage,
     required this.categoryIsActive,
     required this.productIsActive,
-    required this.orderedQuantity,
   });
 
   String id;
@@ -136,7 +135,6 @@ class ProductDetail {
   int productRatingAverage;
   bool categoryIsActive;
   bool productIsActive;
-  int orderedQuantity;
 
   factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
         id: json["_id"],
@@ -171,7 +169,6 @@ class ProductDetail {
         productRatingAverage: json["product_rating_average"],
         categoryIsActive: json["category_is_active"],
         productIsActive: json["product_is_active"],
-        orderedQuantity: json["ordered_quantity"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -203,7 +200,6 @@ class ProductDetail {
         "product_rating_average": productRatingAverage,
         "category_is_active": categoryIsActive,
         "product_is_active": productIsActive,
-        "ordered_quantity": orderedQuantity,
       };
 }
 

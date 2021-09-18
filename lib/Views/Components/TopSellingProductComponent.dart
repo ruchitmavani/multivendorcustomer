@@ -7,9 +7,13 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 
+import '../ProductDetail.dart';
+
 class TopSellingProductComponent extends StatefulWidget {
   ProductData productData;
+
   TopSellingProductComponent({required this.productData});
+
   @override
   _TopSellingProductComponentState createState() =>
       _TopSellingProductComponentState();
@@ -20,7 +24,7 @@ class _TopSellingProductComponentState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4.0, right:4),
+      padding: const EdgeInsets.only(left: 4.0, right: 4),
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -32,54 +36,82 @@ class _TopSellingProductComponentState
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.network(
-                  "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",width: 60,),
+                "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
+                width: 60,
+              ),
             ),
-            Space(width: 4,),
+            Space(
+              width: 4,
+            ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "${widget.productData.productName}",
                   style: FontsTheme.boldTextStyle(),
                 ),
-                ProductRating(
-                  widget.productData.productRatingAverage
-                ),
-                // SizedBox(
-                //   width: 70,
-                //   child: Text("${widget.productData.productDescription}",
-                //       overflow: TextOverflow.ellipsis,
-                //       maxLines: 1,
-                //       style: FontsTheme.descriptionText(
-                //           fontWeight: FontWeight.w400, size: 13)),
-                // ),
+                ProductRating(widget.productData.productRatingAverage),
                 Padding(
                   padding: const EdgeInsets.only(top: 1.0),
                   child: Text("₹ ${widget.productData.productSellingPrice}",
                       style: FontsTheme.digitStyle(
                           fontWeight: FontWeight.w400, size: 13)),
                 ),
-                Space(width: 30),
+
               ],
             ),
             Space(width: 8),
             Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                  width: 40,
-                  height: 25,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          elevation: MaterialStateProperty.all<double>(0),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              appPrimaryMaterialColor)),
-                      onPressed: () {},
-                      child: Icon(
-                        AppIcons.rightarrow,
-                        color: Colors.white,
-                        size: 12,
-                      ))),
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    elevation: MaterialStateProperty.all<double>(0),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        appPrimaryMaterialColor)),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 15.0, bottom: 15.0),
+                              child: SizedBox(
+                                child: FloatingActionButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Icon(Icons.close, size: 16),
+                                    backgroundColor: Colors.white),
+                                width: 24,
+                                height: 24,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(10.0),
+                                    topLeft: Radius.circular(10.0)),
+                              ),
+                              child: ProductDescription(widget.productData),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                child: Icon(
+                  AppIcons.rightarrow,
+                  color: Colors.white,
+                  size: 12,
+                ),
+              ),
             )
           ],
         ),

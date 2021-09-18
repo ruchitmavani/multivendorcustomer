@@ -21,7 +21,6 @@ class ProductData {
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
-    required this.orderedQuantity,
     required this.productIsActive,
     required this.categoryIsActive,
     required this.cartDetails,
@@ -50,7 +49,6 @@ class ProductData {
   int productTotalRating;
   int productRatingCountRecord;
   double productRatingAverage;
-  int orderedQuantity;
   bool productIsActive;
   bool categoryIsActive;
   CartDetails? cartDetails;
@@ -79,7 +77,6 @@ class ProductData {
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"].toDouble(),
-    orderedQuantity: json["ordered_quantity"],
     productIsActive: json["product_is_active"],
     categoryIsActive: json["category_is_active"],
     cartDetails: json["cart_details"] == null || json["cart_details"] == {}? null : CartDetails.fromJson(json["cart_details"]),
@@ -109,7 +106,6 @@ class ProductData {
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
-    "ordered_quantity": orderedQuantity,
     "product_is_active": productIsActive,
     "category_is_active": categoryIsActive,
     "cart_details": cartDetails == null ? null : cartDetails!.toJson(),

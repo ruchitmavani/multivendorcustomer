@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 Dio dio = new Dio();
 
@@ -16,12 +17,17 @@ class ProductController {
     String url = StringConstants.API_URL + StringConstants.vendor_all_product;
 
     //body Data
-    var data = {
-      "vendor_uniq_id": "$vendorId",
+    var data = sharedPrefs.customer_id.isEmpty?{  "vendor_uniq_id": "$vendorId",
+      "category_id": "$categoryId",
+      "limit": limit,
+      "page": page}:{  "vendor_uniq_id": "$vendorId",
+    "customer_uniq_id":"${sharedPrefs.customer_id}",
       "category_id": "$categoryId",
       "limit": limit,
       "page": page
+
     };
+    print(data);
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -100,7 +106,7 @@ class ProductController {
         data: data,
       );
 
-      log("response -> ${response.data}");
+      log("search response -> ${response.data}");
       if (response.statusCode == 200) {
         log("searchProduct ${response.data}");
         responseClass.success = response.data["is_success"];
@@ -119,15 +125,18 @@ class ProductController {
 
   /*-----------Find Product Data-----------*/
   static Future<ResponseClass<ProductData>> findProduct(
-      {required String productId,required String customerId}) async {
+      {required String productId}) async {
     String url = StringConstants.API_URL + StringConstants.find_a_product;
 
     //body Data
-    var data = {
+    var data = sharedPrefs.customer_id.isEmpty?{
+      "product_id" : "$productId"
+    }:{
       "product_id" : "$productId",
-      "customer_uniq_id": "$customerId"
+      "customer_uniq_id": "${sharedPrefs.customer_id}"
     };
 
+    print(data);
     ResponseClass<ProductData> responseClass =
     ResponseClass(success: false, message: "Something went wrong");
     try {
@@ -146,6 +155,41 @@ class ProductController {
       return responseClass;
     } catch (e) {
       print("findProduct ->>>" + e.toString());
+      return responseClass;
+    }
+  }
+
+  /*-----------Recently Bought Product Data-----------*/
+  static Future<ResponseClass<List<ProductData>>> recentlyBought(
+      {required String customerId}) async {
+    String url = StringConstants.API_URL + StringConstants.recently_bought_product;
+
+    //body Data
+    var data = {
+      "customer_uniq_id": "$customerId"
+    };
+
+    ResponseClass<List<ProductData>> responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("recently bought response -> ${response.data}");
+      if (response.statusCode == 200) {
+        log("recently bought ${response.data}");
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        List productList = response.data["data"];
+        List<ProductData> list =
+        productList.map((e) => ProductData.fromJson(e)).toList();
+        responseClass.data = list;
+      }
+      return responseClass;
+    } catch (e) {
+      print("recently bought ->>>" + e.toString());
       return responseClass;
     }
   }

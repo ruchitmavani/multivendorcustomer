@@ -27,11 +27,12 @@ class _OTPScreenState extends State<OTPScreen> {
   bool isLoadingCustomer = false;
 
   _login() async {
-    print("Calling");
     setState(() {
       isLoadingCustomer = true;
     });
+    print("${widget.mobileNumber}");
     await AuthController.login("${widget.mobileNumber}").then((value) {
+      print(value);
       if (value.success) {
         print(value.success);
         setState(() {
@@ -61,7 +62,6 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _sendOtp() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 
 class RecentlyBought extends StatefulWidget {
+  final ProductData productData;
+
+  RecentlyBought({required this.productData});
+
   @override
   _RecentlyBoughtState createState() => _RecentlyBoughtState();
 }
@@ -35,17 +41,21 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
               children: [
                 Space(height: 8),
                 Center(
-                    child: SizedBox(
-                        height: 120,
-                        width: 100,
-                        child: Image.network(
-                            "https://i.pinimg.com/originals/5d/ff/fc/5dfffc72a434a57037433570ec391dc1.png"))),
+                  child: SizedBox(
+                    height: 120,
+                    width: 100,
+                    child: Image.network(
+                        "${StringConstants.API_URL}${widget.productData.productImageUrl.first}"),
+                  ),
+                ),
                 Space(height: 8),
                 Text(
-                  "Product name",
+                  "${widget.productData.productName}",
                   style: FontsTheme.subTitleStyle(),
                 ),
-                Text("Description",
+                Text("${widget.productData.productDescription}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: FontsTheme.descriptionText(
                         size: 11, fontWeight: FontWeight.w500)),
                 Space(height: 6),
@@ -54,6 +64,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Stack(
                           children: [
@@ -77,7 +88,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                                           color: Colors.grey.shade700),
                                     ),
                                     Text(
-                                      "250.00",
+                                      "${widget.productData.productMrp}",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.w400,
@@ -100,7 +111,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                                   color: Colors.black87),
                             ),
                             Text(
-                              "250.00",
+                              "${widget.productData.productSellingPrice}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: Colors.black87,
@@ -112,7 +123,6 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                       ],
                     ),
                     Space(width: 8),
-                    // AddRemoveButton()
                   ],
                 )
               ],

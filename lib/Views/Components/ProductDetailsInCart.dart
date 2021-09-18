@@ -1,22 +1,21 @@
+
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
-import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
-import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 
-class ProductDescription extends StatefulWidget {
-  ProductData productData;
+class ProductDescriptionInCart extends StatefulWidget {
+  ProductDetail productData;
 
-  ProductDescription(this.productData);
+  ProductDescriptionInCart(this.productData);
 
   @override
-  _ProductDescriptionState createState() => _ProductDescriptionState();
+  _ProductDescriptionInCartState createState() => _ProductDescriptionInCartState();
 }
 
-class _ProductDescriptionState extends State<ProductDescription> {
+class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   List<ProductColor> colorList = [];
   List<ProductSize> sizeList = [];
   int currentIndex = 0;
@@ -24,36 +23,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
   int displayImage = 0;
   int finalPrice = 0;
   int finalColor=0;
-  bool isLoading=false;
-
-  _loadData()async{
-    setState(() {
-      isLoading = true;
-    });
-    await ProductController.findProduct(
-        productId: "${widget.productData.productId}")
-        .then((value) {
-      if (value.success) {
-        setState(() {
-          isLoading = false;
-          widget.productData=value.data!;
-        });
-      }else{
-        setState(() {
-        isLoading=false;
-        });
-      }
-    }, onError: (e) {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _loadData();
     colorList = widget.productData.productVariationColors;
     sizeList = widget.productData.productVariationSizes;
     finalPrice=widget.productData.productSellingPrice;
@@ -62,7 +35,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading?Center(child: CircularProgressIndicator(),): SizedBox(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,22 +139,22 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     },
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: currentIndex == index
                                             ? BoxDecoration(
-                                                border: Border.all(
-                                                    width: 2,
-                                                    color:
-                                                        appPrimaryMaterialColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(50.0))
+                                            border: Border.all(
+                                                width: 2,
+                                                color:
+                                                appPrimaryMaterialColor),
+                                            borderRadius:
+                                            BorderRadius.circular(50.0))
                                             : null,
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(50.0),
+                                              BorderRadius.circular(50.0),
                                               child: Container(
                                                   color: Color(
                                                       int.parse(e.colorCode)),
@@ -214,7 +187,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     },
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             border: Border.all(
@@ -223,12 +196,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                     ? appPrimaryMaterialColor
                                                     : Colors.grey.shade400),
                                             borderRadius:
-                                                BorderRadius.circular(5.0)),
+                                            BorderRadius.circular(5.0)),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(50.0),
+                                              BorderRadius.circular(50.0),
                                               child: Container(
                                                 alignment: Alignment.center,
                                                 margin: EdgeInsets.symmetric(
@@ -238,10 +211,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                     "${e.size}  \u{20B9}${e.sellingPrice}",
                                                     style: FontsTheme.subTitleStyle(
                                                         color: currentSizeIndex ==
-                                                                index
+                                                            index
                                                             ? appPrimaryMaterialColor
                                                             : Colors
-                                                                .grey.shade400,
+                                                            .grey.shade400,
                                                         size: 12)),
                                                 height: 20,
                                               )),
@@ -291,7 +264,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           ),
                         ]),
                   ),
-                  AddRemoveButton(productData: widget.productData,isRounded: false,)
+
+                  // AddToCartButton(productData: widget.productData)
                 ],
               ),
             ),

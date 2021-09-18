@@ -18,7 +18,6 @@ class _MyOrderState extends State<MyOrder> {
   List<OrderDataModel> orderData = [];
 
   _loadData() async {
-    print("Calling");
     setState(() {
       isLoading = true;
     });

@@ -140,7 +140,10 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           style: FontsTheme.valueStyle(
                               size: 13, fontWeight: FontWeight.w600)),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          ratingBottomSheet(context, 25);
+                          FocusScope.of(context).unfocus();
+                        },
                         child: Row(
                           children: [
                             Icon(
@@ -151,19 +154,13 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                             Space(
                               width: 2,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                ratingBottomSheet(context, 25);
-                                FocusScope.of(context).unfocus();
-                              },
-                              child: Text(
-                                "Rate",
-                                style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: appPrimaryMaterialColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                            Text(
+                              "Rate",
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: appPrimaryMaterialColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
