@@ -20,7 +20,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3),
+      padding: const EdgeInsets.all(4),
       child: SizedBox(
         width: 180,
         height: 245,
@@ -109,6 +109,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     AddRemoveButton(
                       productData: widget.productData,
                       isRounded: true,
+                      sizeIndex: 0,
+                      colorIndex: 0,
                     ),
                   ],
                 )
@@ -217,6 +219,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       AddRemoveButton(
                         productData: widget.productData,
                         isRounded: true,
+                        colorIndex: 0,
+                        sizeIndex: 0,
                       ),
                     ],
                   )

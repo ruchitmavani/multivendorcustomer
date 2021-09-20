@@ -132,7 +132,7 @@ class ProductDetail {
   List<ProductColor> productVariationColors;
   int productTotalRating;
   int productRatingCountRecord;
-  int productRatingAverage;
+  double productRatingAverage;
   bool categoryIsActive;
   bool productIsActive;
 

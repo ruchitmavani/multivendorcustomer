@@ -14,8 +14,10 @@ import 'package:provider/provider.dart';
 class AddRemoveButton extends StatefulWidget {
   ProductData productData;
   bool isRounded = true;
+  int colorIndex=0;
+  int sizeIndex=0;
 
-  AddRemoveButton({required this.productData, required this.isRounded});
+  AddRemoveButton({required this.productData, required this.isRounded,required this.colorIndex,required this.sizeIndex});
 
   @override
   _AddRemoveButtonState createState() => _AddRemoveButtonState();
@@ -36,8 +38,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             : widget.productData.cartDetails!.productQuantity;
       });
     });
-
-    // updateQuantity();
   }
 
   Future addToCart() async {
@@ -53,14 +53,14 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             productId: widget.productData.productId,
             quantity: 1,
             mrp: widget.productData.productMrp,
-            isActive: widget.productData.productVariationSizes.first.isActive,
-            size: widget.productData.productVariationSizes.first.size,
+            isActive: widget.productData.productVariationSizes.elementAt(widget.sizeIndex).isActive,
+            size: widget.productData.productVariationSizes.elementAt(widget.sizeIndex).size,
             colorCode:
-                widget.productData.productVariationColors.first.colorCode,
+                widget.productData.productVariationColors.elementAt(widget.colorIndex).colorCode,
             sellingPrice:
-                widget.productData.productVariationSizes.first.sellingPrice,
+                widget.productData.productVariationSizes.elementAt(widget.sizeIndex).sellingPrice,
             isColorActive:
-                widget.productData.productVariationColors.first.isActive)
+                widget.productData.productVariationColors.elementAt(widget.colorIndex).isActive)
         .then((value) {
       if (value.success) {
         setState(() {
@@ -125,13 +125,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   @override
   void didUpdateWidget(oldWidget) {
-
     updateQuantity();
   }
 
   updateQuantity() {
       q = Provider.of<CartDataWrapper>(context,listen: false)
           .getIndividualQuantity(productId: widget.productData.productId);
+      print("q uapdted to $q");
     setState(() {});
   }
 

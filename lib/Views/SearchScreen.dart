@@ -5,6 +5,8 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
 
+import 'ProductDetail.dart';
+
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
@@ -28,10 +30,8 @@ class _SearchState extends State<Search> {
         isLoading = false;
       });
       if (value.success) {
-        print(value.success);
-        setState(() {
-          productList = value.data;
-        });
+        productList = value.data;
+        setState(() {});
       }
     }, onError: (e) {
       setState(() {
@@ -70,8 +70,8 @@ class _SearchState extends State<Search> {
                         decoration: new InputDecoration(
                             hintText: 'Search', border: InputBorder.none),
                         onChanged: (value) {
-                          setState(() {});
                           _search(search.text);
+                          setState(() {});
                         },
                       ),
                       trailing: search.text.isEmpty
@@ -91,12 +91,16 @@ class _SearchState extends State<Search> {
           ),
           SliverToBoxAdapter(
             child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
+                ? Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 4),
-                  child: GridView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 4),
+                    child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 180,
                         mainAxisExtent: 245,
@@ -105,11 +109,53 @@ class _SearchState extends State<Search> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: productList.length,
                       itemBuilder: (context, index) {
-                        return ProductComponentGrid(
-                            productData: productList.elementAt(index));
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 15.0, bottom: 15.0),
+                                        child: SizedBox(
+                                          child: FloatingActionButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                setState(() {});
+                                              },
+                                              child:
+                                                  Icon(Icons.close, size: 16),
+                                              backgroundColor: Colors.white),
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10.0),
+                                              topLeft: Radius.circular(10.0)),
+                                        ),
+                                        child: ProductDescription(
+                                            productList.elementAt(index)),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: ProductComponentGrid(
+                              productData: productList.elementAt(index)),
+                        );
                       },
                     ),
-                ),
+                  ),
           ),
         ],
       ),

@@ -24,7 +24,7 @@ class _TopSellingProductComponentState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4.0, right: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -38,6 +38,8 @@ class _TopSellingProductComponentState
               child: Image.network(
                 "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
                 width: 60,
+                alignment: Alignment.center,
+
               ),
             ),
             Space(

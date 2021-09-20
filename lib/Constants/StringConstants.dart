@@ -72,6 +72,6 @@ class PageCollection{
   static const String savedAddress = '/savedAddress';
   static const String location = '/location';
   static const String loading = '/loading';
-  static const String search = '/search';
+  static const String search = '$home/search';
 
 }

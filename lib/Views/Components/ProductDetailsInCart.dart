@@ -1,15 +1,24 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:provider/provider.dart';
 
 class ProductDescriptionInCart extends StatefulWidget {
   ProductDetail productData;
+  String cartID;
+  ProductSize size;
+  ProductColor color;
 
-  ProductDescriptionInCart(this.productData);
+  ProductDescriptionInCart({required this.productData,required this.size,required this.color,required this.cartID});
 
   @override
   _ProductDescriptionInCartState createState() => _ProductDescriptionInCartState();
@@ -18,6 +27,7 @@ class ProductDescriptionInCart extends StatefulWidget {
 class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   List<ProductColor> colorList = [];
   List<ProductSize> sizeList = [];
+  bool isLoading=false;
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage = 0;
@@ -31,6 +41,28 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     sizeList = widget.productData.productVariationSizes;
     finalPrice=widget.productData.productSellingPrice;
     finalColor=int.parse(widget.productData.productVariationColors.first.colorCode);
+    currentIndex=widget.productData.productVariationColors.indexWhere((element) => element.colorCode==widget.color.colorCode);
+    currentSizeIndex=widget.productData.productVariationSizes.indexWhere((element) => element.size==widget.size.size);
+    print(currentIndex);
+  }
+
+  _updateCartDaetails()async{
+    await CartController.update(jsonMap: {
+      "cart_id": "${widget.cartID}",
+      "product_size":widget.productData.productVariationSizes.elementAt(currentSizeIndex).toJson(),
+      "product_color":widget.productData.productVariationColors.elementAt(currentIndex).toJson()
+    })
+        .then((value) {
+      if (value.success) {
+        print("cart ${value.data}");
+        Fluttertoast.showToast(msg: "Update success");
+        Provider.of<CartDataWrapper>(context,listen: false).loadCartData(vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId);
+      } else {
+        Fluttertoast.showToast(msg: "Update failed");
+      }
+    }, onError: (e) {
+      print(e);
+    });
   }
 
   @override
@@ -264,8 +296,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                           ),
                         ]),
                   ),
-
-                  // AddToCartButton(productData: widget.productData)
+                  ElevatedButton(onPressed: (){_updateCartDaetails();}, child: Text("Update")),
                 ],
               ),
             ),

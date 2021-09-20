@@ -36,7 +36,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<BannerDataModel> banners = [];
 
-  bool isLoading = false;
+  bool isLoadingTop = false;
+  bool isLoadingCate = false;
+  bool isLoadingRece = false;
+  bool isLoadingBan = false;
   bool isGrid = true;
   List<AllCategoryModel> productDataList = [];
   List<ProductData> trendingProducts = [];
@@ -51,21 +54,22 @@ class _HomeScreenState extends State<HomeScreen> {
     getInitialData();
   }
 
-  getInitialData()async {
-   await Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData();
-   Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-       vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-           .vendorModel!
-           .vendorUniqId);
-   _getCategoryWiseProduct();
-   _getBannerData();
-   _getTrendingData();
-   _recentlyBought();
+  getInitialData() async {
+    await Provider.of<VendorModelWrapper>(context, listen: false)
+        .loadVendorData();
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+            .vendorModel!
+            .vendorUniqId);
+    _getCategoryWiseProduct();
+    _getBannerData();
+    _getTrendingData();
+    _recentlyBought();
   }
 
   _getCategoryWiseProduct() async {
     setState(() {
-      isLoading = true;
+      isLoadingCate = true;
     });
     await CategoryController.getCategoryWiseProduct(
             "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
@@ -74,19 +78,23 @@ class _HomeScreenState extends State<HomeScreen> {
         print(value.success);
         setState(() {
           productDataList = value.data;
-          isLoading = false;
+          isLoadingCate = false;
+        });
+      } else {
+        setState(() {
+          isLoadingCate = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoading = false;
+        isLoadingCate = false;
       });
     });
   }
 
   _getBannerData() async {
     setState(() {
-      isLoading = true;
+      isLoadingBan = true;
     });
     await BannerController.getBannerData(
             "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
@@ -95,19 +103,19 @@ class _HomeScreenState extends State<HomeScreen> {
         print(value.success);
         setState(() {
           banners = value.data!;
-          isLoading = false;
+          isLoadingBan = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoading = false;
+        isLoadingBan = false;
       });
     });
   }
 
   _getTrendingData() async {
     setState(() {
-      isLoading = true;
+      isLoadingTop = true;
     });
     await ProductController.getTrendingProduct(
             vendorId:
@@ -116,37 +124,41 @@ class _HomeScreenState extends State<HomeScreen> {
       if (value.success) {
         print(value.success);
         setState(() {
-          isLoading = false;
+          isLoadingTop = false;
           trendingProducts = value.data;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoading = false;
+        isLoadingTop = false;
       });
     });
   }
 
   _recentlyBought() async {
-    setState(() {
-      isLoading = true;
-    });
     if (sharedPrefs.customer_id.isEmpty) {
       return;
     }
+    setState(() {
+      isLoadingRece = true;
+    });
     await ProductController.recentlyBought(
             customerId: "${sharedPrefs.customer_id}")
         .then((value) {
       if (value.success) {
         print(value.success);
         setState(() {
-          isLoading = false;
+          isLoadingRece = false;
           recentlyBought = value.data!;
+        });
+      } else {
+        setState(() {
+          isLoadingRece = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoading = false;
+        isLoadingRece = false;
       });
     });
   }
@@ -384,31 +396,46 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 10),
-                        child: Row(
-                          children: [
-                            Text("Top Selling Products",
-                                style: FontsTheme.boldTextStyle(size: 15)),
-                          ],
+                      isLoadingTop
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    height: 12,
+                                    width: 12,
+                                    child: CircularProgressIndicator()),
+                              ),
+                            )
+                          : trendingProducts.length != 0
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, top: 10),
+                                  child: Row(
+                                    children: [
+                                      Text("Top Selling Products",
+                                          style: FontsTheme.boldTextStyle(
+                                              size: 15)),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                      if (trendingProducts.length != 0)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 4.0, bottom: 12, right: 4, left: 4),
+                          child: SizedBox(
+                            height: 90,
+                            child: ListView.builder(
+                                itemCount: trendingProducts.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return TopSellingProductComponent(
+                                    productData:
+                                        trendingProducts.elementAt(index),
+                                  );
+                                }),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 4.0, bottom: 12, right: 4, left: 4),
-                        child: SizedBox(
-                          height: 90,
-                          child: ListView.builder(
-                              itemCount: trendingProducts.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return TopSellingProductComponent(
-                                  productData:
-                                      trendingProducts.elementAt(index),
-                                );
-                              }),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -430,30 +457,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         color: Colors.white,
-                        child: recentlyBought.length == 0
-                            ? Container()
-                            : Column(
-                                children: [
-                                  TitleViewAll(
-                                    title: "Recently bought",
-                                    onPressed: () {},
+                        child: isLoadingRece
+                            ? Center(
+                                child: SizedBox(
+                                    width: 12,
+                                    height: 12,
+                                    child: CircularProgressIndicator()),
+                              )
+                            : recentlyBought.length == 0
+                                ? Container()
+                                : Column(
+                                    children: [
+                                      TitleViewAll(
+                                        title: "Recently bought",
+                                        onPressed: () {},
+                                      ),
+                                      SizedBox(
+                                        height: 245,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: recentlyBought.length,
+                                            itemBuilder: (context, index) {
+                                              return RecentlyBought(
+                                                productData: recentlyBought
+                                                    .elementAt(index),
+                                              );
+                                            }),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 245,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: recentlyBought.length,
-                                        itemBuilder: (context, index) {
-                                          return RecentlyBought(
-                                            productData:
-                                                recentlyBought.elementAt(index),
-                                          );
-                                        }),
-                                  ),
-                                ],
-                              ),
                       ),
-                      categoryWiseProducts(),
+                      isLoadingCate
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : categoryWiseProducts(),
                     ],
                   ),
                 ),
@@ -475,96 +516,120 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget categoryWiseProducts() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      color: Colors.white,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: productDataList.length,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return productDataList.length == 0
+        ? Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TitleViewAll(
-                  title: "${productDataList.elementAt(index).categoryName}",
-                  onPressed: () {
-                    String path =
-                        Uri(path: PageCollection.categories, queryParameters: {
-                      "categoryName":
-                          "${productDataList.elementAt(index).categoryName}",
-                      "categoryId":
-                          "${productDataList.elementAt(index).categoryId}"
-                    }).toString();
-                    Navigator.pushNamed(context, path).then((value) {});
-                  }),
-              SizedBox(
-                height: 245,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                    scrollDirection: isGrid?Axis.horizontal:Axis.vertical,
-                    itemCount:
-                        productDataList.elementAt(index).productDetails.length,
-                    itemBuilder: (context, i) {
-                      return GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15.0, bottom: 15.0),
-                                      child: SizedBox(
-                                        child: FloatingActionButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Icon(Icons.close, size: 16),
-                                            backgroundColor: Colors.white),
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(10.0),
-                                            topLeft: Radius.circular(10.0)),
-                                      ),
-                                      child: ProductDescription(productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i)),
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
-                        child: isGrid
-                            ? ProductComponentGrid(
-                                productData: productDataList
-                                    .elementAt(index)
-                                    .productDetails
-                                    .elementAt(i))
-                            : ProductComponentList(
-                                productData: productDataList
-                                    .elementAt(index)
-                                    .productDetails
-                                    .elementAt(i)),
-                      );
-                    }),
-              ),
+              Text("No Products Available"),
             ],
+          )
+        : Container(
+            color: Colors.white,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: productDataList.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleViewAll(
+                        title:
+                            "${productDataList.elementAt(index).categoryName}",
+                        onPressed: () {
+                          String path = Uri(
+                              path: PageCollection.categories,
+                              queryParameters: {
+                                "categoryName":
+                                    "${productDataList.elementAt(index).categoryName}",
+                                "categoryId":
+                                    "${productDataList.elementAt(index).categoryId}"
+                              }).toString();
+                          Navigator.pushNamed(context, path).then((value) {});
+                        }),
+                    SizedBox(
+                      height: 245,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection:
+                                isGrid ? Axis.horizontal : Axis.vertical,
+                            itemCount: productDataList
+                                .elementAt(index)
+                                .productDetails
+                                .length,
+                            itemBuilder: (context, i) {
+                              return GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (context) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15.0, bottom: 15.0),
+                                              child: SizedBox(
+                                                child: FloatingActionButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Icon(Icons.close,
+                                                        size: 16),
+                                                    backgroundColor:
+                                                        Colors.white),
+                                                width: 24,
+                                                height: 24,
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(10.0),
+                                                    topLeft:
+                                                        Radius.circular(10.0)),
+                                              ),
+                                              child: ProductDescription(
+                                                  productDataList
+                                                      .elementAt(index)
+                                                      .productDetails
+                                                      .elementAt(i)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: isGrid
+                                    ? ProductComponentGrid(
+                                        productData: productDataList
+                                            .elementAt(index)
+                                            .productDetails
+                                            .elementAt(i))
+                                    : ProductComponentList(
+                                        productData: productDataList
+                                            .elementAt(index)
+                                            .productDetails
+                                            .elementAt(i)),
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
   }
 }

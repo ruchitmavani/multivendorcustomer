@@ -7,7 +7,15 @@ import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 class CartDataWrapper extends ChangeNotifier {
   List<CartDataModel> cartData = [];
+  bool _isLoading=true;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool isLoading) {
+    _isLoading = isLoading;
+  }
   int totalItems = 0;
+  late int totalAmount;
 
   Future loadCartData({required String vendorId}) async {
     if (sharedPrefs.customer_id.isEmpty) {
@@ -21,6 +29,11 @@ class CartDataWrapper extends ChangeNotifier {
         log("---- cart length ${value.data!.length}");
         cartData = value.data!;
         totalItems = cartData.length;
+        totalAmount=0;
+        for(int i=0;i<cartData.length;i++){
+          totalAmount=totalAmount+(cartData.elementAt(i).productQuantity*cartData.elementAt(i).productSize.sellingPrice);
+        }
+        isLoading=false;
         notifyListeners();
       } else {
         notifyListeners();

@@ -62,7 +62,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading?Center(child: CircularProgressIndicator(),): SizedBox(
+    return isLoading?SizedBox( height: MediaQuery.of(context).size.height / 1.2,child: Center(child: CircularProgressIndicator(),)) : SizedBox(
       height: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -291,7 +291,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           ),
                         ]),
                   ),
-                  AddRemoveButton(productData: widget.productData,isRounded: false,)
+                  AddRemoveButton(productData: widget.productData,isRounded: false,colorIndex: currentIndex,sizeIndex: currentSizeIndex,)
                 ],
               ),
             ),

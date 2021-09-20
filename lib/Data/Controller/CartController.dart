@@ -105,6 +105,7 @@ class CartController {
   }) async {
     String url = StringConstants.API_URL + StringConstants.cart_details_update;
 
+    print(jsonMap);
     //body Data
     var data = jsonMap;
 
@@ -116,16 +117,16 @@ class CartController {
         data: data,
       );
 
-      log("response -> ${response.data}");
+      log("updateCart response -> ${response.data}");
       if (response.statusCode == 200) {
-        log("addToCart ${response.data}");
+        log("updateCart  ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         responseClass.data = response.data["data"];
       }
       return responseClass;
     } catch (e) {
-      print("addToCart ->>>" + e.toString());
+      print("update Cart ->>>" + e.toString());
       return responseClass;
     }
   }
