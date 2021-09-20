@@ -28,14 +28,14 @@ class CouponController{
 
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
-        log("getCartData ${response.data}");
+        log("couponData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         responseClass.data = CouponDataModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
-      print("getCartData ->>>" + e.toString());
+      print("couponData ->>>" + e.toString());
       return responseClass;
     }
   }

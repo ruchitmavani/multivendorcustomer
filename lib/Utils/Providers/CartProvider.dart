@@ -1,21 +1,27 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
+import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 class CartDataWrapper extends ChangeNotifier {
   List<CartDataModel> cartData = [];
-  bool _isLoading=true;
+  bool _isLoading = true;
+  bool isCouponApplied=false;
 
   bool get isLoading => _isLoading;
 
   set isLoading(bool isLoading) {
     _isLoading = isLoading;
   }
+
   int totalItems = 0;
-  late int totalAmount;
+  late double totalAmount;
+  late double tax;
+  late int shipping;
 
   Future loadCartData({required String vendorId}) async {
     if (sharedPrefs.customer_id.isEmpty) {
@@ -26,20 +32,53 @@ class CartDataWrapper extends ChangeNotifier {
             customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
         .then((value) {
       if (value.success) {
-        log("---- cart length ${value.data!.length}");
         cartData = value.data!;
         totalItems = cartData.length;
-        totalAmount=0;
-        for(int i=0;i<cartData.length;i++){
-          totalAmount=totalAmount+(cartData.elementAt(i).productQuantity*cartData.elementAt(i).productSize.sellingPrice);
+        totalAmount = 0;
+        for (int i = 0; i < cartData.length; i++) {
+          totalAmount = totalAmount +
+              (cartData.elementAt(i).productQuantity *
+                  cartData.elementAt(i).productSize.sellingPrice);
         }
-        isLoading=false;
+        tax = 0;
+        for (int i = 0; i < cartData.length; i++) {
+          print(i);
+          for (int j = 0;
+              j < cartData.elementAt(i).productDetails.first.taxId.length;
+              j++) {
+            tax=tax+
+                (cartData.elementAt(i).productDetails.first.taxDetails.elementAt(j).taxPercentage*cartData.elementAt(i).productQuantity *
+                    cartData.elementAt(i).productSize.sellingPrice/100);
+          }
+        }
+        totalAmount=totalAmount+tax;
+        isLoading = false;
         notifyListeners();
       } else {
         notifyListeners();
       }
     }, onError: (e) {
       print(e);
+    });
+  }
+
+  verifyCoupon(String coupon) async {
+    await CouponController.validateCoupon(
+        vendorId: "${sharedPrefs.vendor_uniq_id}",
+        customerId: "${sharedPrefs.customer_id}",
+        couponName: "${coupon}")
+        .then((value) {
+      if (value.success) {
+        print(value.success);
+        Fluttertoast.showToast(msg: "${value.message}");
+        isCouponApplied=true;
+
+        notifyListeners();
+      } else {
+        Fluttertoast.showToast(msg: "${value.message}");
+      }
+    }, onError: (e) {
+      Fluttertoast.showToast(msg: "Apply Coupon failed, Please try after Sometime!");
     });
   }
 

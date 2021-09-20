@@ -105,30 +105,6 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  _verifyCoupon() async {
-    setState(() {
-      isLoadingCoupon = true;
-    });
-    await CouponController.validateCoupon(
-            vendorId: "${sharedPrefs.vendor_uniq_id}",
-            customerId: "${sharedPrefs.customer_id}",
-            couponName: "${couponText.text}")
-        .then((value) {
-      if (value.success) {
-        print(value.success);
-        setState(() {
-          isLoadingCoupon = false;
-        });
-      } else {
-        Fluttertoast.showToast(msg: "${value.message}");
-      }
-    }, onError: (e) {
-      setState(() {
-        isLoadingCoupon = false;
-      });
-    });
-  }
-
   Widget changeAddress() {
     return GestureDetector(
       onTap: () {
@@ -280,14 +256,14 @@ class _CartScreenState extends State<CartScreen> {
                               hintText: "Enter Coupon",
                             ),
                           ),
-                          Padding(
+                         Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
+                            child:  Provider.of<CartDataWrapper>(context).isCouponApplied?Text("Apply Coupon Success",style: TextStyle(color: appPrimaryMaterialColor),):Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    _verifyCoupon();
+                                    Provider.of<CartDataWrapper>(context,listen: false).verifyCoupon(couponText.text);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -637,7 +613,9 @@ class _CartScreenState extends State<CartScreen> {
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                     title: Text("Tax"),
-                    trailing: Text("\u{20B9} 0"),
+                    trailing: Text(Provider.of<CartDataWrapper>(context).isLoading
+                        ? "0"
+                        :"\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
                   ),
                 ),
               ),
