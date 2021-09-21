@@ -3,12 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CouponDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class CouponController{
 
-  /*-----------Get Cart Data-----------*/
-  static Future<ResponseClass> validateCoupon({required String vendorId,required String couponName,required String customerId}) async {
+  /*-----------Validate Coupon Data-----------*/
+  static Future<ResponseClass<CouponDataModel>> validateCoupon({required String vendorId,required String couponName,required String customerId}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_coupon_validate;
 
     //body Data

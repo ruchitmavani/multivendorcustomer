@@ -83,6 +83,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                     fontWeight: FontWeight.w800),
                               ),
                               Text(
+                                  widget.orderData.orderItems.length-1==0?"1 item":
                                   "and ${widget.orderData.orderItems.length-1} other items...",
                                   style: TextStyle(
                                     fontSize: 12,
@@ -162,7 +163,6 @@ class _OrderComponentState extends State<OrderComponent> {
                           width: 85,
                           decoration: BoxDecoration(
                             color: appPrimaryMaterialColor.shade100,
-                            //border: Border.all(color: Colors.white, width: 1.5),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(17.0)),
                           ),

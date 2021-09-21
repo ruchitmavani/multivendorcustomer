@@ -10,7 +10,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/BannerController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductController.dart';
-import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';

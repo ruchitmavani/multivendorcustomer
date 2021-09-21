@@ -6,7 +6,7 @@ import 'package:multi_vendor_customer/Data/Models/AddToCartResponseModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class CartController {
   /*-----------Get Cart Data-----------*/

@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class BannerController {
   /*-----------Get Banner Data-----------*/

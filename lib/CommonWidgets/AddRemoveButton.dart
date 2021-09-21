@@ -1,3 +1,5 @@
+// ignore_for_file: must_call_super, must_be_immutable
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -79,6 +81,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   Future deleteCart() async {
     log("--cart id $cartId");
+    log("--cart id ${widget.productData.cartDetails!.cartId}");
 
     await CartController.deleteCart(
             cartId: cartId != null

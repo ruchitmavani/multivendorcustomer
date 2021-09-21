@@ -98,7 +98,7 @@ class _MyAccountState extends State<MyAccount> {
         sharedPrefs.customer_email = value.data!.customerEmailAddress;
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
-        sharedPrefs.mobileNo = value.data!.customerMobileNumber;
+        sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
         setState(() {
           isLoading = false;
         });

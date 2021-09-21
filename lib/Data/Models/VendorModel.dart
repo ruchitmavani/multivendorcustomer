@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final vendorDataModel = vendorDataModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));
@@ -25,6 +30,8 @@ class VendorDataModel {
     required this.profilePercentageCount,
     required this.isOnline,
     required this.isDeliveryCharges,
+    required this.deliveryCharges,
+    required this.freeDeliveryAboveAmount,
     required this.isStorePickupEnable,
     required this.isWhatsappChatSupport,
     required this.colorTheme,
@@ -49,6 +56,8 @@ class VendorDataModel {
   List<String> profilePercentageCount;
   bool isOnline;
   bool isDeliveryCharges;
+  int deliveryCharges;
+  int freeDeliveryAboveAmount;
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;
   String colorTheme;
@@ -73,6 +82,8 @@ class VendorDataModel {
     profilePercentageCount: List<String>.from(json["profile_percentage_count"].map((x) => x)),
     isOnline: json["is_online"],
     isDeliveryCharges: json["is_delivery_charges"],
+    deliveryCharges: json["delivery_charges"],
+    freeDeliveryAboveAmount: json["free_delivery_above_amount"],
     isStorePickupEnable: json["is_store_pickup_enable"],
     isWhatsappChatSupport: json["is_whatsapp_chat_support"],
     colorTheme: json["color_theme"],
@@ -98,6 +109,8 @@ class VendorDataModel {
     "profile_percentage_count": List<dynamic>.from(profilePercentageCount.map((x) => x)),
     "is_online": isOnline,
     "is_delivery_charges": isDeliveryCharges,
+    "delivery_charges": deliveryCharges,
+    "free_delivery_above_amount": freeDeliveryAboveAmount,
     "is_store_pickup_enable": isStorePickupEnable,
     "is_whatsapp_chat_support": isWhatsappChatSupport,
     "color_theme": colorTheme,

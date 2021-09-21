@@ -1,3 +1,5 @@
+// ignore_for_file: must_call_super, must_be_immutable, unnecessary_brace_in_string_interps
+
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';

@@ -16,8 +16,8 @@ class SharedPrefs {
   }
 
   // Getter
-  String get mobileNo =>
-      _sharedPrefs!.getString(StringConstants.mobile_no) ?? "";
+  String get customer_mobileNo =>
+      _sharedPrefs!.getString(StringConstants.customer_mobileno) ?? "";
 
   String get customer_name =>
       _sharedPrefs!.getString(StringConstants.customer_name) ?? "";
@@ -64,8 +64,8 @@ class SharedPrefs {
 
   // Setter
 
-  set mobileNo(String value) {
-    _sharedPrefs!.setString(StringConstants.mobile_no, value);
+  set customer_mobileNo(String value) {
+    _sharedPrefs!.setString(StringConstants.customer_mobileno, value);
   }
 
   set customer_name(String value) {

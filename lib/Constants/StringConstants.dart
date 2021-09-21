@@ -3,7 +3,7 @@ const String rupeesIcon="₹";
 class StringConstants{
 
   /*API & IMAGEURLS */
-  static String API_URL="http://192.168.1.8:8080/";
+  static String API_URL="http://192.168.1.13:8080/";
   // static String API_URL="http://18.221.208.96:8080/";
 
   /*API NAMES*/
@@ -31,11 +31,14 @@ class StringConstants{
   static String find_a_product="find_a_product";
   static String recently_bought_product="recently_bought_product";
   static String customer_category_wise_all_product_find="customer_category_wise_all_product_find";
+  static String customer_add_rating="customer_add_rating";
+  static String view_rating="view_rating";
+  static String add_order="add_order";
 
   /*---------------- SharedPreference Keys ------------------*/
 
   //customer
-  static String mobile_no = "mobileNo";
+  static String customer_mobileno = "mobileNo";
   static String customer_name = "customer_name";
   static String customer_email = "customer_email";
   static String cutomer_id = "cutomer_id";

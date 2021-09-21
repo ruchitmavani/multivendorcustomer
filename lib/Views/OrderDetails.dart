@@ -1,6 +1,6 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -9,6 +9,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -21,97 +22,8 @@ class OrderDetails extends StatefulWidget {
 }
 
 class _OrderDetailsState extends State<OrderDetails> {
-  void ratingBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(15.0),
-              topRight: const Radius.circular(15.0)),
-        ),
-        context: context,
-        builder: (ctx) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 19.0, right: 19, top: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Rate your Order for",
-                    style: FontsTheme.boldTextStyle(size: 17)),
-                Padding(
-                  padding: const EdgeInsets.only(top: 22.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Copper flask CF-125",
-                          style: FontsTheme.descriptionText(size: 15)),
-                      Row(
-                        children: [
-                          Text("\u{20B9}",
-                              style: FontsTheme.digitStyle(
-                                  size: 15, colors: Colors.black54)),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 2.0,
-                            ),
-                            child: Text("249",
-                                style: FontsTheme.digitStyle(
-                                    size: 14, colors: Colors.black54)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: RatingBar(
-                    initialRating: 3,
-                    itemSize: 33,
-                    direction: Axis.horizontal,
-                    tapOnlyMode: true,
-                    ignoreGestures: false,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    ratingWidget: RatingWidget(
-                      full: Icon(
-                        Icons.star,
-                        color: appPrimaryMaterialColor,
-                      ),
-                      half: Icon(
-                        Icons.star,
-                        color: Colors.grey.shade300,
-                      ),
-                      empty: Icon(
-                        Icons.star,
-                        color: Colors.grey.shade300,
-                      ),
-                    ),
-                    onRatingUpdate: (rating) {},
-                  ),
-                ),
-                Space(height: 40),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 25.0),
-                  child: SizedBox(
-                    height: 44,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      child: Text(
-                        "Save",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
+
+  LineStyle lineStyle=LineStyle(color: Colors.grey.shade300,thickness: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -205,16 +117,118 @@ class _OrderDetailsState extends State<OrderDetails> {
                         itemCount: widget.orderData.orderItems.length,
                         itemBuilder: (context, index) {
                           return OrderDetailComponent(
+                            orderId: widget.orderData.orderId,
                             productDetail: widget.orderData.orderItems
                                 .elementAt(index)
                                 .productDetails,
-                            quantity: widget.orderData.orderItems.elementAt(index).productQuantity,
+                            quantity: widget.orderData.orderItems
+                                .elementAt(index)
+                                .productQuantity,
                           );
                         },
                         separatorBuilder: (context, index) => Divider(
                           color: Colors.grey[300],
                           thickness: 0.6,
                         ),
+                      ),
+                    ),
+                    Container(
+                      constraints: BoxConstraints(maxHeight: 55),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(color: Colors.grey.shade300,width: MediaQuery.of(context).size.width-80,height: 3,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (widget.orderData.orderStatus=="pending") TimelineTile(
+                                alignment: TimelineAlign.center,
+                                axis: TimelineAxis.horizontal,
+                                isFirst: true,
+                                beforeLineStyle: lineStyle,
+                                afterLineStyle: lineStyle,
+                                indicatorStyle: IndicatorStyle(
+                                    color: appPrimaryMaterialColor,
+                                    iconStyle: IconStyle(iconData: Icons.watch,color: Colors.white,fontSize: 16),
+                                    height: 22,
+                                    width: 22
+
+                                ),
+                                endChild: Text(
+                                  "Pending",
+                                  style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                                ),
+                              ),
+                              if (widget.orderData.orderStatus=="pending"||widget.orderData.orderStatus=="delivered") TimelineTile(
+                                alignment: TimelineAlign.center,
+                                axis: TimelineAxis.horizontal,
+                                isFirst: true,
+                                beforeLineStyle: lineStyle,
+                                afterLineStyle: lineStyle,
+                                indicatorStyle: IndicatorStyle(
+                                  color: appPrimaryMaterialColor,
+                                  iconStyle: IconStyle(iconData: Icons.done,color: Colors.white,fontSize: 16),
+                                  height: 22,
+                                  width: 22
+
+                                ),
+                                endChild: Text(
+                                  "Accepted",
+                                  style:
+                                      TextStyle(color: Colors.black, fontSize: 12),
+                                ),
+                              ),
+                              if (widget.orderData.orderStatus=="delivered"||widget.orderData.orderStatus=="pending")TimelineTile(
+                                alignment: TimelineAlign.center,
+                                axis: TimelineAxis.horizontal,
+                                beforeLineStyle: lineStyle,
+                                afterLineStyle: lineStyle,
+                                isFirst: true,
+                                indicatorStyle: IndicatorStyle(
+                                    color: appPrimaryMaterialColor,
+                                    iconStyle: IconStyle(iconData: Icons.access_time,color: Colors.white,fontSize: 16),
+                                    height: 22,
+                                    width: 22
+                                ),
+                                endChild: Text(
+                                  "Dispatched",
+                                  style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                                ),
+                              ),if (widget.orderData.orderStatus!="delivered")TimelineTile(
+                                alignment: TimelineAlign.center,
+                                axis: TimelineAxis.horizontal,
+                                isLast: true,
+                                beforeLineStyle: lineStyle,
+                                afterLineStyle: lineStyle,
+                                endChild: Text(
+                                  "",
+                                  style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                                ),
+                              ),
+                              if (widget.orderData.orderStatus=="delivered")TimelineTile(
+                                alignment: TimelineAlign.center,
+                                axis: TimelineAxis.horizontal,
+                                isLast: true,
+                                beforeLineStyle: lineStyle,
+                                afterLineStyle: lineStyle,
+                                indicatorStyle: IndicatorStyle(
+                                    color: appPrimaryMaterialColor,
+                                    iconStyle: IconStyle(iconData: Icons.airport_shuttle,color: Colors.white,fontSize: 16),
+                                    height: 22,
+                                    width: 22
+                                ),
+                                endChild: Text(
+                                  "Delivered",
+                                  style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
@@ -231,7 +245,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Text("Discount Applied",
                                     style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("- \u{20B9}" + "${widget.orderData.couponAmount}",
+                                trailing: Text(
+                                    "- \u{20B9}" +
+                                        "${widget.orderData.couponAmount}",
                                     style: FontsTheme.valueStyle(
                                         size: 14, fontWeight: FontWeight.w500)),
                               ),
@@ -246,7 +262,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Text("Tax",
                                     style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("\u{20B9}" + "${widget.orderData.taxAmount}",
+                                trailing: Text(
+                                    "\u{20B9}" +
+                                        "${widget.orderData.taxAmount}",
                                     style: FontsTheme.valueStyle(
                                         size: 14, fontWeight: FontWeight.w500)),
                               ),
@@ -261,7 +279,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Text("Shipping Fee",
                                     style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text("\u{20B9}" + "${widget.orderData.deliveryCharges}",
+                                trailing: Text(
+                                    "\u{20B9}" +
+                                        "${widget.orderData.deliveryCharges}",
                                     style: FontsTheme.valueStyle(
                                         size: 14, fontWeight: FontWeight.w500)),
                               ),
@@ -277,7 +297,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 title: Text("Total",
                                     style: FontsTheme.valueStyle(
                                         size: 16, fontWeight: FontWeight.w700)),
-                                trailing: Text("\u{20B9}" + " " + "${widget.orderData.finalPaidAmount}",
+                                trailing: Text(
+                                    "\u{20B9}" +
+                                        " " +
+                                        "${widget.orderData.finalPaidAmount}",
                                     style: FontsTheme.valueStyle(
                                         size: 16, fontWeight: FontWeight.w700)),
                               ),

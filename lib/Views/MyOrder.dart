@@ -53,13 +53,22 @@ class _MyOrderState extends State<MyOrder> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-        child: ListView.builder(
-          itemCount: orderData.length,
-          itemBuilder: (BuildContext context, int index) {
-            return OrderComponent(orderData: orderData.elementAt(index));
-          },
-        ),
+        padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10,bottom: 10),
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : orderData.length == 0
+                ? Center(
+                    child: Text("No orders Available"),
+                  )
+                : ListView.builder(
+                    itemCount: orderData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return OrderComponent(
+                          orderData: orderData.elementAt(index));
+                    },
+                  ),
       ),
     );
   }

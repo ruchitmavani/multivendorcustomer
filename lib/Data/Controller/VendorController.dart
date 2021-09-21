@@ -4,7 +4,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class VendorController {
   /*-----------Get Product Data-----------*/

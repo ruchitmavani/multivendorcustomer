@@ -93,10 +93,12 @@ class ProductController {
     String url = StringConstants.API_URL + StringConstants.search_product;
 
     //body Data
-    var data = {
+    var data = sharedPrefs.customer_id.isEmpty?{
       "vendor_uniq_id" : "$vendorId",
       "text" : "$searchString"
-    };
+    }:{  "vendor_uniq_id" : "$vendorId",
+      "customer_uniq_id" : "${sharedPrefs.customer_id}",
+      "text" : "$searchString"};
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -193,4 +195,6 @@ class ProductController {
       return responseClass;
     }
   }
+
+
 }

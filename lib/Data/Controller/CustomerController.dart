@@ -5,7 +5,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class CustomerController {
   /*-----------Get Customer Data-----------*/

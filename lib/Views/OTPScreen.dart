@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +43,7 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_email = value.data!.customerEmailAddress;
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
-        sharedPrefs.mobileNo = value.data!.customerMobileNumber;
+        sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
         Navigator.pushNamed(context, PageCollection.home);
       } else {
         setState(() {

@@ -5,19 +5,14 @@ import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
-import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
-import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
-
-import 'ProductDetail.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -50,39 +45,6 @@ class _CartScreenState extends State<CartScreen> {
         .loadCartData(vendorId: sharedPrefs.vendor_uniq_id)
         .then((value) {});
     _loadCustomerData();
-  }
-
-  _updateCart() async {
-    if (sharedPrefs.customer_id.isEmpty || sharedPrefs.vendor_uniq_id == "") {
-      Navigator.pushReplacementNamed(context, PageCollection.home);
-    }
-    print("vendor ${sharedPrefs.vendor_uniq_id}");
-    await CartController.getCartData(
-            customerId: "${sharedPrefs.customer_id}",
-            vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .vendorUniqId)
-        .then((value) {
-      if (value.success) {
-        print("cart ${value.data}");
-        cartData = value.data!;
-        totalAmount = 0;
-        for (int i = 0; i < cartData.length; i++) {
-          totalAmount = totalAmount +
-              (cartData.elementAt(i).productQuantity *
-                  cartData.elementAt(i).productSize.sellingPrice);
-          print(totalAmount);
-        }
-        setState(() {
-          isLoading = false;
-        });
-      } else {}
-    }, onError: (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   _loadCustomerData() async {
@@ -258,7 +220,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                          Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child:  Provider.of<CartDataWrapper>(context).isCouponApplied?Text("Apply Coupon Success",style: TextStyle(color: appPrimaryMaterialColor),):Row(
+                            child:  Provider.of<CartDataWrapper>(context).isCouponApplied?Text("Apply Coupon Success 😊!",style: TextStyle(color: appPrimaryMaterialColor),):Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ElevatedButton(
@@ -599,8 +561,8 @@ class _CartScreenState extends State<CartScreen> {
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     dense: true,
-                    title: Text("Discount Applied"),
-                    trailing: Text("- \u{20B9} 0"),
+                    title: Text(Provider.of<CartDataWrapper>(context).isCouponApplied?"Discount Applied(${couponText.text})":"Discount Applied"),
+                    trailing: Text(Provider.of<CartDataWrapper>(context).isCouponApplied?"- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}":"\u{20B9} 0"),
                   ),
                 ),
               ),
@@ -704,19 +666,22 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             Flexible(
-              child: Container(
-                height: 48,
-                color: appPrimaryMaterialColor,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
-                  child: Center(
-                    child: Text(
-                      "PAY",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          fontSize: 15),
+              child: InkWell(
+                onTap: (){Fluttertoast.showToast(msg: "Order Success");},
+                child: Container(
+                  height: 48,
+                  color: appPrimaryMaterialColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Center(
+                      child: Text(
+                        "PAY",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontSize: 15),
+                      ),
                     ),
                   ),
                 ),

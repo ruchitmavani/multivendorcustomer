@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Data/Controller/ProductContoller.dart';
+import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
@@ -64,8 +65,9 @@ class _SearchState extends State<Search> {
                 Expanded(
                   child: Card(
                     child: new ListTile(
-                      leading: new Icon(Icons.search),
+                      leading: new Icon(Icons.search,color: appPrimaryMaterialColor,),
                       title: new TextField(
+                        autofocus: true,
                         controller: search,
                         decoration: new InputDecoration(
                             hintText: 'Search', border: InputBorder.none),

@@ -6,7 +6,7 @@ import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
-import 'ProductContoller.dart';
+import 'ProductController.dart';
 
 class CategoryController {
   /*-----------Get Product Data-----------*/
