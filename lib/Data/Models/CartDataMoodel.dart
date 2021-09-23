@@ -25,7 +25,7 @@ class CartDataModel {
   String cartId;
   ProductSize productSize;
   ProductColor productColor;
-  List<ProductDetail> productDetails;
+  List<CartProductDetail> productDetails;
 
   factory CartDataModel.fromJson(Map<String, dynamic> json) => CartDataModel(
     id: json["_id"],
@@ -36,7 +36,7 @@ class CartDataModel {
     cartId: json["cart_id"],
     productSize: ProductSize.fromJson(json["product_size"]),
     productColor: ProductColor.fromJson(json["product_color"]),
-    productDetails: List<ProductDetail>.from(json["product_details"].map((x) => ProductDetail.fromJson(x))),
+    productDetails: List<CartProductDetail>.from(json["product_details"].map((x) => CartProductDetail.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -72,8 +72,8 @@ class ProductColor {
   };
 }
 
-class ProductDetail {
-  ProductDetail({
+class CartProductDetail {
+  CartProductDetail({
     required this.id,
     required this.vendorUniqId,
     required this.categoryId,
@@ -129,7 +129,7 @@ class ProductDetail {
   bool productIsActive;
   List<TaxDetail> taxDetails;
 
-  factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
+  factory CartProductDetail.fromJson(Map<String, dynamic> json) => CartProductDetail(
     id: json["_id"],
     vendorUniqId: json["vendor_uniq_id"],
     categoryId: json["category_id"],
@@ -148,8 +148,8 @@ class ProductDetail {
     unitType: json["unit_type"],
     productLiveTiming: List<String>.from(json["product_live_timing"].map((x) => x)),
     productDescription: json["product_description"],
-    productVariationSizes: List<ProductSize>.from(json["product_variation_sizes"].map((x) => ProductSize.fromJson(x))),
-    productVariationColors: List<ProductColor>.from(json["product_variation_colors"].map((x) => ProductColor.fromJson(x))),
+    productVariationSizes: json["product_variation_sizes"]==null?[]:List<ProductSize>.from(json["product_variation_sizes"].map((x) => ProductSize.fromJson(x))),
+    productVariationColors: json["product_variation_colors"]==null?[]:List<ProductColor>.from(json["product_variation_colors"].map((x) => ProductColor.fromJson(x))),
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],

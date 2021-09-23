@@ -8,7 +8,7 @@ class VendorModelWrapper with ChangeNotifier {
   bool isLoaded = false;
 
   Future loadVendorData() async {
-    await VendorController.getVendorData(vendorId: "657202115727_9429828152")
+    await VendorController.getVendorData(vendorId: "4502021105036_7698178411")
         .then((value) {
       if (value.success) {
         print(value.success);

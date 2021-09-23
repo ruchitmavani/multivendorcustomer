@@ -59,23 +59,34 @@ class CartController {
     required bool isActive,
     required String colorCode,
     required bool isColorActive,
+    required bool isVarientAvailable,
   }) async {
     String url = StringConstants.API_URL + StringConstants.product_add_to_cart;
 
     //body Data
-    var data = {
-      "customer_uniq_id": "$customerId",
-      "vendor_uniq_id": "$vendorId",
-      "product_id": "$productId",
-      "product_quantity": quantity,
-      "product_size": {
-        "size": "$size",
-        "mrp": mrp,
-        "selling_price": sellingPrice,
-        "is_active": isActive
-      },
-      "product_color": {"color_code": "$colorCode", "is_active": isColorActive}
-    };
+    var data = isVarientAvailable
+        ? {
+            "customer_uniq_id": "$customerId",
+            "vendor_uniq_id": "$vendorId",
+            "product_id": "$productId",
+            "product_quantity": quantity,
+            "product_size": {
+              "size": "$size",
+              "mrp": mrp,
+              "selling_price": sellingPrice,
+              "is_active": isActive
+            },
+            "product_color": {
+              "color_code": "$colorCode",
+              "is_active": isColorActive
+            }
+          }
+        : {
+            "customer_uniq_id": "$customerId",
+            "vendor_uniq_id": "$vendorId",
+            "product_id": "$productId",
+            "product_quantity": quantity,
+          };
 
     ResponseClass<AddtoCartResponseModel> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -90,7 +101,8 @@ class CartController {
         log("addToCart ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = AddtoCartResponseModel.fromJson(response.data["data"]);
+        responseClass.data =
+            AddtoCartResponseModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
@@ -101,7 +113,7 @@ class CartController {
 
   /*-----------update Cart-----------*/
   static Future<ResponseClass> update({
-    required Map<String,dynamic> jsonMap,
+    required Map<String, dynamic> jsonMap,
   }) async {
     String url = StringConstants.API_URL + StringConstants.cart_details_update;
 

@@ -14,7 +14,7 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:provider/provider.dart';
 
 class ProductDescriptionInCart extends StatefulWidget {
-  ProductDetail productData;
+  CartProductDetail productData;
   String cartID;
   ProductSize size;
   ProductColor color;
