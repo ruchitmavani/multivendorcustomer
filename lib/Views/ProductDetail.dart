@@ -25,10 +25,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
   int currentSizeIndex = 0;
   int displayImage = 0;
   int finalPrice = 0;
-  int finalColor=0;
-  bool isLoading=false;
+  int finalColor = 0;
+  bool isLoading = false;
 
-  _loadData()async{
+  _loadData() async {
     setState(() {
       isLoading = true;
     });
@@ -38,11 +38,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
       if (value.success) {
         setState(() {
           isLoading = false;
-          widget.productData=value.data!;
+          widget.productData = value.data!;
         });
-      }else{
+      } else {
         setState(() {
-        isLoading=false;
+          isLoading = false;
         });
       }
     }, onError: (e) {
@@ -56,16 +56,31 @@ class _ProductDescriptionState extends State<ProductDescription> {
   void initState() {
     super.initState();
     _loadData();
-    colorList = widget.productData.productVariationColors;
-    sizeList = widget.productData.productVariationSizes;
-    finalPrice=widget.productData.productSellingPrice;
-    finalColor=int.parse(widget.productData.productVariationColors.first.colorCode);
+    if (widget.productData.productVariationColors.length != 0) {
+      colorList = widget.productData.productVariationColors;
+    }
+    if (widget.productData.productVariationSizes.length != 0) {
+      sizeList = widget.productData.productVariationSizes;
+    }
+    finalPrice = widget.productData.productSellingPrice;
+    if (widget.productData.productVariationColors.length != 0) {
+      finalColor =
+          int.parse(widget.productData.productVariationColors.first.colorCode);
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading?SizedBox( height: MediaQuery.of(context).size.height / 1.2,child: Center(child: CircularProgressIndicator(),)) : SizedBox(
-      height: MediaQuery.of(context).size.height / 1.2,
+    return isLoading
+        ? SizedBox(height: MediaQuery
+        .of(context)
+        .size
+        .height / 1.2, child: Center(child: CircularProgressIndicator(),))
+        : SizedBox(
+      height: MediaQuery
+          .of(context)
+          .size
+          .height / 1.2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -81,7 +96,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   SizedBox(
                       height: 230,
                       child: Image.network(
-                          "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(displayImage)}")),
+                          "${StringConstants.API_URL +
+                              widget.productData.productImageUrl.elementAt(
+                                  displayImage)}")),
                   Space(height: 20),
                   Container(
                     height: 50,
@@ -108,7 +125,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   });
                                 },
                                 child: Image.network(
-                                    "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(index)}"),
+                                    "${StringConstants.API_URL +
+                                        widget.productData.productImageUrl
+                                            .elementAt(index)}"),
                               ),
                             ));
                       },
@@ -133,7 +152,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2.0),
                                     child: Text(
-                                        "${widget.productData.productRatingAverage}",
+                                        "${widget.productData
+                                            .productRatingAverage}",
                                         style: FontsTheme.valueStyle(
                                             size: 11,
                                             fontWeight: FontWeight.w600)),
@@ -148,13 +168,13 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               // Color Option
 
                               Space(height: 20),
-                              Text(
+                              if (widget.productData.productVariationColors.length!=0) Text(
                                 "Color option",
                                 style: FontsTheme.subTitleStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w600,
                                     size: 13),
-                              ),
+                              ) ,
                               Space(height: 8),
                               Row(
                                 children: colorList.map<Widget>((e) {
@@ -163,27 +183,26 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     onTap: () {
                                       setState(() {
                                         currentIndex = index;
-
                                       });
                                     },
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: currentIndex == index
                                             ? BoxDecoration(
-                                                border: Border.all(
-                                                    width: 2,
-                                                    color:
-                                                        appPrimaryMaterialColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(50.0))
+                                            border: Border.all(
+                                                width: 2,
+                                                color:
+                                                appPrimaryMaterialColor),
+                                            borderRadius:
+                                            BorderRadius.circular(50.0))
                                             : null,
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(50.0),
+                                              BorderRadius.circular(50.0),
                                               child: Container(
                                                   color: Color(
                                                       int.parse(e.colorCode)),
@@ -195,10 +214,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   );
                                 }).toList(),
                               ),
-
                               // Size Option
                               Space(height: 18),
-                              Text("Size Option",
+                              if (widget.productData.productVariationSizes.length!=0) Text("Size Option",
                                   style: FontsTheme.subTitleStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w600,
@@ -211,12 +229,14 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     onTap: () {
                                       setState(() {
                                         currentSizeIndex = index;
-                                        finalPrice=sizeList.elementAt(index).sellingPrice;
+                                        finalPrice = sizeList
+                                            .elementAt(index)
+                                            .sellingPrice;
                                       });
                                     },
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             border: Border.all(
@@ -225,25 +245,27 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                     ? appPrimaryMaterialColor
                                                     : Colors.grey.shade400),
                                             borderRadius:
-                                                BorderRadius.circular(5.0)),
+                                            BorderRadius.circular(5.0)),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(50.0),
+                                              BorderRadius.circular(50.0),
                                               child: Container(
                                                 alignment: Alignment.center,
                                                 margin: EdgeInsets.symmetric(
                                                   horizontal: 4,
                                                 ),
                                                 child: Text(
-                                                    "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                    style: FontsTheme.subTitleStyle(
+                                                    "${e.size}  \u{20B9}${e
+                                                        .sellingPrice}",
+                                                    style: FontsTheme
+                                                        .subTitleStyle(
                                                         color: currentSizeIndex ==
-                                                                index
+                                                            index
                                                             ? appPrimaryMaterialColor
                                                             : Colors
-                                                                .grey.shade400,
+                                                            .grey.shade400,
                                                         size: 12)),
                                                 height: 20,
                                               )),
@@ -293,7 +315,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           ),
                         ]),
                   ),
-                  AddRemoveButton(productData: widget.productData,isRounded: false,colorIndex: currentIndex,sizeIndex: currentSizeIndex,)
+                  AddRemoveButton(productData: widget.productData,
+                    isRounded: false,
+                    colorIndex: currentIndex,
+                    sizeIndex: currentSizeIndex,)
                 ],
               ),
             ),

@@ -37,7 +37,7 @@ class _TopSellingProductComponentState
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child:widget.productData.productImageUrl.length==0? Image.network(
+              child:widget.productData.productImageUrl.length!=0? Image.network(
                 "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
                 width: 60,
                 alignment: Alignment.center,
@@ -61,7 +61,6 @@ class _TopSellingProductComponentState
                       style: FontsTheme.digitStyle(
                           fontWeight: FontWeight.w400, size: 13)),
                 ),
-
               ],
             ),
             Space(width: 8),

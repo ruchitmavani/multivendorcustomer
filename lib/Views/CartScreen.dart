@@ -617,7 +617,8 @@ class _CartScreenState extends State<CartScreen> {
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               dense: true,
-                              title: Text("Shipping Fee(Not applicable in TakeAway)"),
+                              title: Text(
+                                  "Shipping Fee(Not applicable in TakeAway)"),
                               trailing: Text(
                                   "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
                             ),
@@ -699,11 +700,13 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return PaymentOptions();
-                    },
-                  ));
+                  if (Provider.of<CartDataWrapper>(context).totalItems > 0) {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return PaymentOptions();
+                      },
+                    ));
+                  }
                 },
                 child: Container(
                   height: 48,

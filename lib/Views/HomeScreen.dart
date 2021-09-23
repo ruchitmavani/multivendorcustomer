@@ -219,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Provider.of<VendorModelWrapper>(context).isLoaded
-          ? CustomScrollView(
+          ? Provider.of<VendorModelWrapper>(context).vendorModel!=null?CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: Column(
@@ -499,7 +499,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ],
-            )
+            ):Center(
+        child: Text("No Vendor Found"),
+      )
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
