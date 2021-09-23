@@ -3,8 +3,8 @@ const String rupeesIcon="₹";
 class StringConstants{
 
   /*API & IMAGEURLS */
-  static String API_URL="http://192.168.1.13:8080/";
-  // static String API_URL="http://18.221.208.96:8080/";
+  // static String API_URL="http://192.168.1.13:8080/";
+  static String API_URL="http://18.221.208.96:8080/";
 
   /*API NAMES*/
   //vendor
@@ -76,5 +76,7 @@ class PageCollection{
   static const String location = '/location';
   static const String loading = '/loading';
   static const String search = '$home/search';
+  static const String product = '/product';
+
 
 }

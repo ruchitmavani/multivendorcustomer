@@ -24,21 +24,41 @@ class CategorySubScreen extends StatefulWidget {
 class _CategorySubScreenState extends State<CategorySubScreen> {
   bool isGrid = true;
   bool isLoading = false;
+  bool isLoadingBottom = false;
+  int page = 1;
+  int maxPages = 1;
+  List<String> sortKeyList=["NtoO","OtoN","spHtoL","spLtoH"];
   List<ProductData> productDataList = [];
+  var scrollController = ScrollController();
 
-  _getProduct() async {
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      pagination();
+    });
+    _getProduct(sortKeyList.first);
+  }
+
+  _getProduct(String sortKey) async {
     setState(() {
       isLoading = true;
     });
     await ProductController.getProductData(
             vendorId: "${sharedPrefs.vendor_uniq_id}",
             categoryId: "${widget.categoryId}",
-            limit: 10,
-            page: 1)
+            limit: 15,sortKey: sortKey.split(".").last,
+            page: page)
         .then((value) {
       if (value.success) {
+        print(value.pagination.last.toJson());
+        print(value.pagination.last.page);
+        maxPages = value.pagination.last.page;
         setState(() {
-          productDataList = value.data;
+          productDataList.clear();
+          value.data!.forEach((element) {
+            productDataList.add(element);
+          });
           isLoading = false;
           for (int i = 0; i < productDataList.length; i++) {
             print(productDataList.elementAt(i).cartDetails);
@@ -52,10 +72,47 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getProduct();
+  _getProductPage() async {
+    setState(() {
+      isLoadingBottom = true;
+    });
+    await ProductController.getProductData(
+        vendorId: "${sharedPrefs.vendor_uniq_id}",
+        categoryId: "${widget.categoryId}",
+        limit: 15,
+        page: page,sortKey: sortKeyList[0])
+        .then((value) {
+      if (value.success) {
+        print(value.pagination.last.toJson());
+        print(value.pagination.last.page);
+        maxPages = value.pagination.last.page;
+        setState(() {
+          value.data!.forEach((element) {
+            productDataList.add(element);
+          });
+          isLoadingBottom = false;
+          for (int i = 0; i < productDataList.length; i++) {
+            print(productDataList.elementAt(i).cartDetails);
+          }
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingBottom = false;
+      });
+    });
+  }
+
+  void pagination() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      setState(() {
+        if (page >= 1 && page != maxPages) {
+          page = page + 1;
+          _getProductPage();
+        }
+      });
+    }
   }
 
   @override
@@ -75,7 +132,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
               isGrid = value;
             });
             print(value);
-          }),
+          },onClick: (value){_getProduct(value);}),
           Expanded(
             child: isLoading
                 ? Center(
@@ -85,6 +142,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 6.0, vertical: 6),
                     child: GridView.builder(
+                      controller: scrollController,
                       itemCount: productDataList.length,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent:
@@ -148,6 +206,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                     ),
                   ),
           ),
+          isLoadingBottom?CircularProgressIndicator():Container(),
         ],
       ),
     );

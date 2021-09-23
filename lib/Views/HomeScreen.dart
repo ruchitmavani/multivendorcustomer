@@ -562,12 +562,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .productDetails
                                 .length,
                             itemBuilder: (context, i) {
+                              String path = Uri(
+                                  path: PageCollection.product,
+                                  queryParameters: {
+                                    "productName":
+                                    "${productDataList.elementAt(index).productDetails.elementAt(i).productName}",
+                                    "id":
+                                    "${productDataList.elementAt(index).productDetails.elementAt(i).productId}"
+                                  }).toString();
                               return GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
                                       context: context,
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
+                                      routeSettings: RouteSettings(name: path),
                                       builder: (context) {
                                         return Column(
                                           crossAxisAlignment:

@@ -37,12 +37,11 @@ class _TopSellingProductComponentState
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
+              child:widget.productData.productImageUrl.length==0? Image.network(
                 "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
                 width: 60,
                 alignment: Alignment.center,
-
-              ),
+              ):Container(),
             ),
             Space(
               width: 4,

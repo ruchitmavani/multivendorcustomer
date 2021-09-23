@@ -9,8 +9,10 @@ import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart';
+import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
 
@@ -218,31 +220,40 @@ class _CartScreenState extends State<CartScreen> {
                               hintText: "Enter Coupon",
                             ),
                           ),
-                         Padding(
+                          Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child:  Provider.of<CartDataWrapper>(context).isCouponApplied?Text("Apply Coupon Success 😊!",style: TextStyle(color: appPrimaryMaterialColor),):Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Provider.of<CartDataWrapper>(context,listen: false).verifyCoupon(couponText.text);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("Apply"),
+                            child: Provider.of<CartDataWrapper>(context)
+                                    .isCouponApplied
+                                ? Text(
+                                    "Apply Coupon Success 😊!",
+                                    style: TextStyle(
+                                        color: appPrimaryMaterialColor),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Provider.of<CartDataWrapper>(context,
+                                                  listen: false)
+                                              .verifyCoupon(couponText.text);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Apply"),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          couponText.clear();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Cancel"),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    couponText.clear();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("Cancel"),
-                                  ),
-                                ),
-                              ],
-                            ),
                           )
                         ],
                       ),
@@ -421,7 +432,12 @@ class _CartScreenState extends State<CartScreen> {
                                                                   10.0)),
                                                 ),
                                                 child: ProductDescriptionInCart(
-                                                  cartID: Provider.of<CartDataWrapper>(context).cartData.elementAt(index).cartId,
+                                                  cartID: Provider.of<
+                                                              CartDataWrapper>(
+                                                          context)
+                                                      .cartData
+                                                      .elementAt(index)
+                                                      .cartId,
                                                   productData: cartProvider
                                                       .elementAt(index)
                                                       .productDetails
@@ -561,8 +577,14 @@ class _CartScreenState extends State<CartScreen> {
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     dense: true,
-                    title: Text(Provider.of<CartDataWrapper>(context).isCouponApplied?"Discount Applied(${couponText.text})":"Discount Applied"),
-                    trailing: Text(Provider.of<CartDataWrapper>(context).isCouponApplied?"- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}":"\u{20B9} 0"),
+                    title: Text(
+                        Provider.of<CartDataWrapper>(context).isCouponApplied
+                            ? "Discount Applied(${couponText.text})"
+                            : "Discount Applied"),
+                    trailing: Text(Provider.of<CartDataWrapper>(context)
+                            .isCouponApplied
+                        ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
+                        : "\u{20B9} 0"),
                   ),
                 ),
               ),
@@ -575,25 +597,34 @@ class _CartScreenState extends State<CartScreen> {
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                     title: Text("Tax"),
-                    trailing: Text(Provider.of<CartDataWrapper>(context).isLoading
+                    trailing: Text(Provider.of<CartDataWrapper>(context)
+                            .isLoading
                         ? "0"
-                        :"\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
+                        : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
                   ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-                child: SizedBox(
-                  height: 25,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                    title: Text("Shipping Fee"),
-                    trailing: Text("\u{20B9} 0"),
-                  ),
-                ),
-              ),
+              Provider.of<VendorModelWrapper>(context).isLoaded
+                  ? Provider.of<VendorModelWrapper>(context)
+                              .vendorModel!
+                              .isDeliveryCharges ==
+                          true
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 16),
+                          child: SizedBox(
+                            height: 25,
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text("Shipping Fee(Not applicable in TakeAway)"),
+                              trailing: Text(
+                                  "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+                            ),
+                          ),
+                        )
+                      : Container()
+                  : CircularProgressIndicator(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
@@ -611,7 +642,7 @@ class _CartScreenState extends State<CartScreen> {
                     trailing: Text(
                       Provider.of<CartDataWrapper>(context).isLoading
                           ? "0"
-                          : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount}",
+                          : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
                       style: FontsTheme.boldTextStyle(
                         size: 14,
                       ),
@@ -653,7 +684,7 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text(
                         Provider.of<CartDataWrapper>(context).isLoading
                             ? "0"
-                            : "${Provider.of<CartDataWrapper>(context).totalAmount}",
+                            : "${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
                         style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w500,
@@ -667,7 +698,13 @@ class _CartScreenState extends State<CartScreen> {
             ),
             Flexible(
               child: InkWell(
-                onTap: (){Fluttertoast.showToast(msg: "Order Success");},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return PaymentOptions();
+                    },
+                  ));
+                },
                 child: Container(
                   height: 48,
                   color: appPrimaryMaterialColor,

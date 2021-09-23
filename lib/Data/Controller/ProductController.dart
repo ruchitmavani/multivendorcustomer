@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Data/Models/PaginationModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -13,23 +14,25 @@ class ProductController {
       {required String vendorId,
       required String categoryId,
       required int limit,
-      required int page}) async {
+      required int page,required String sortKey}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_all_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty?{  "vendor_uniq_id": "$vendorId",
       "category_id": "$categoryId",
       "limit": limit,
+      "sort" : sortKey,
       "page": page}:{  "vendor_uniq_id": "$vendorId",
     "customer_uniq_id":"${sharedPrefs.customer_id}",
       "category_id": "$categoryId",
+      "sort" : sortKey,
       "limit": limit,
       "page": page
 
     };
     print(data);
 
-    ResponseClass<List<ProductData>> responseClass =
+    ResponseClass responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
@@ -46,6 +49,7 @@ class ProductController {
         List<ProductData> list =
             productList.map((e) => ProductData.fromJson(e)).toList();
         responseClass.data = list;
+        responseClass.pagination=PaginationModel.fromJson(response.data["pagination"]);
       }
       return responseClass;
     } catch (e) {
