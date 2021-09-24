@@ -22,7 +22,9 @@ class OrderDataModel {
     required this.deliveryCharges,
     required this.taxAmount,
     required this.couponAmount,
+    required this.couponId,
     required this.orderId,
+    required this.deliveryAddress,
     required this.vendorDetails,
   });
 
@@ -42,7 +44,9 @@ class OrderDataModel {
   int deliveryCharges;
   int taxAmount;
   int couponAmount;
+  String couponId;
   String orderId;
+  DeliveryAddress deliveryAddress;
   VendorDetails vendorDetails;
 
   factory OrderDataModel.fromJson(Map<String, dynamic> json) => OrderDataModel(
@@ -62,7 +66,9 @@ class OrderDataModel {
     deliveryCharges: json["delivery_charges"],
     taxAmount: json["tax_amount"],
     couponAmount: json["coupon_amount"],
+    couponId: json["coupon_id"],
     orderId: json["order_id"],
+    deliveryAddress: DeliveryAddress.fromJson(json["delivery_address"]),
     vendorDetails: VendorDetails.fromJson(json["vendor_details"]),
   );
 
@@ -83,8 +89,42 @@ class OrderDataModel {
     "delivery_charges": deliveryCharges,
     "tax_amount": taxAmount,
     "coupon_amount": couponAmount,
+    "coupon_id": couponId,
     "order_id": orderId,
+    "delivery_address": deliveryAddress.toJson(),
     "vendor_details": vendorDetails.toJson(),
+  };
+}
+
+class DeliveryAddress {
+  DeliveryAddress({
+    required this.type,
+    required this.subAddress,
+    required this.area,
+    required this.city,
+    required this.pincode,
+  });
+
+  String type;
+  String subAddress;
+  String area;
+  String city;
+  int pincode;
+
+  factory DeliveryAddress.fromJson(Map<String, dynamic> json) => DeliveryAddress(
+    type: json["type"],
+    subAddress: json["subAddress"],
+    area: json["area"],
+    city: json["city"],
+    pincode: json["pincode"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "type": type,
+    "subAddress": subAddress,
+    "area": area,
+    "city": city,
+    "pincode": pincode,
   };
 }
 
@@ -107,8 +147,8 @@ class OrderItem {
   String productId;
   int productQuantity;
   String cartId;
-  ProductSize productSize;
-  ProductColor productColor;
+  ProductSize? productSize;
+  ProductColor? productColor;
   ProductDetails productDetails;
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -118,8 +158,8 @@ class OrderItem {
     productId: json["product_id"],
     productQuantity: json["product_quantity"],
     cartId: json["cart_id"],
-    productSize: ProductSize.fromJson(json["product_size"]),
-    productColor: ProductColor.fromJson(json["product_color"]),
+    productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
+    productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
     productDetails: ProductDetails.fromJson(json["product_details"]),
   );
 
@@ -130,8 +170,8 @@ class OrderItem {
     "product_id": productId,
     "product_quantity": productQuantity,
     "cart_id": cartId,
-    "product_size": productSize.toJson(),
-    "product_color": productColor.toJson(),
+    "product_size": productSize == null ? null : productSize!.toJson(),
+    "product_color": productColor == null ? null : productColor!.toJson(),
     "product_details": productDetails.toJson(),
   };
 }
@@ -169,6 +209,8 @@ class ProductDetails {
     required this.productName,
     required this.productMrp,
     required this.productSellingPrice,
+    required this.bulkPriceList,
+    required this.isRequestPrice,
     required this.taxId,
     required this.stockLeft,
     required this.unitType,
@@ -179,8 +221,9 @@ class ProductDetails {
     required this.productTotalRating,
     required this.productRatingCountRecord,
     required this.productRatingAverage,
-    required this.productIsActive,
     required this.categoryIsActive,
+    required this.productIsActive,
+    required this.orderedQuantity,
   });
 
   String id;
@@ -194,6 +237,8 @@ class ProductDetails {
   String productName;
   int productMrp;
   int productSellingPrice;
+  List<dynamic> bulkPriceList;
+  bool isRequestPrice;
   List<TaxId> taxId;
   int stockLeft;
   String unitType;
@@ -204,8 +249,9 @@ class ProductDetails {
   int productTotalRating;
   int productRatingCountRecord;
   double productRatingAverage;
-  bool productIsActive;
   bool categoryIsActive;
+  bool productIsActive;
+  int orderedQuantity;
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
     id: json["_id"],
@@ -219,6 +265,8 @@ class ProductDetails {
     productName: json["product_name"],
     productMrp: json["product_mrp"],
     productSellingPrice: json["product_selling_price"],
+    bulkPriceList: List<dynamic>.from(json["bulk_price_list"].map((x) => x)),
+    isRequestPrice: json["is_request_price"],
     taxId: List<TaxId>.from(json["tax_id"].map((x) => TaxId.fromJson(x))),
     stockLeft: json["stock_left"],
     unitType: json["unit_type"],
@@ -229,8 +277,9 @@ class ProductDetails {
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"],
-    productIsActive: json["product_is_active"],
     categoryIsActive: json["category_is_active"],
+    productIsActive: json["product_is_active"],
+    orderedQuantity: json["ordered_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -245,6 +294,8 @@ class ProductDetails {
     "product_name": productName,
     "product_mrp": productMrp,
     "product_selling_price": productSellingPrice,
+    "bulk_price_list": List<dynamic>.from(bulkPriceList.map((x) => x)),
+    "is_request_price": isRequestPrice,
     "tax_id": List<dynamic>.from(taxId.map((x) => x.toJson())),
     "stock_left": stockLeft,
     "unit_type": unitType,
@@ -255,8 +306,9 @@ class ProductDetails {
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
-    "product_is_active": productIsActive,
     "category_is_active": categoryIsActive,
+    "product_is_active": productIsActive,
+    "ordered_quantity": orderedQuantity,
   };
 }
 
@@ -346,6 +398,8 @@ class VendorDetails {
     required this.createdDateTime,
     required this.isOnline,
     required this.isDeliveryCharges,
+    required this.deliveryCharges,
+    required this.freeDeliveryAboveAmount,
     required this.isStorePickupEnable,
     required this.isWhatsappChatSupport,
     required this.colorTheme,
@@ -371,6 +425,8 @@ class VendorDetails {
   DateTime createdDateTime;
   bool isOnline;
   bool isDeliveryCharges;
+  int deliveryCharges;
+  int freeDeliveryAboveAmount;
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;
   String colorTheme;
@@ -396,6 +452,8 @@ class VendorDetails {
     createdDateTime: DateTime.parse(json["created_date_time"]),
     isOnline: json["is_online"],
     isDeliveryCharges: json["is_delivery_charges"],
+    deliveryCharges: json["delivery_charges"],
+    freeDeliveryAboveAmount: json["free_delivery_above_amount"],
     isStorePickupEnable: json["is_store_pickup_enable"],
     isWhatsappChatSupport: json["is_whatsapp_chat_support"],
     colorTheme: json["color_theme"],
@@ -422,6 +480,8 @@ class VendorDetails {
     "created_date_time": createdDateTime.toIso8601String(),
     "is_online": isOnline,
     "is_delivery_charges": isDeliveryCharges,
+    "delivery_charges": deliveryCharges,
+    "free_delivery_above_amount": freeDeliveryAboveAmount,
     "is_store_pickup_enable": isStorePickupEnable,
     "is_whatsapp_chat_support": isWhatsappChatSupport,
     "color_theme": colorTheme,
@@ -455,3 +515,5 @@ class BusinessHour {
     "isOpen": isOpen,
   };
 }
+
+

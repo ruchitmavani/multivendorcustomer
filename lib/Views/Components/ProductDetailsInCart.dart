@@ -16,8 +16,8 @@ import 'package:provider/provider.dart';
 class ProductDescriptionInCart extends StatefulWidget {
   CartProductDetail productData;
   String cartID;
-  ProductSize size;
-  ProductColor color;
+  ProductSize? size;
+  ProductColor? color;
 
   ProductDescriptionInCart({required this.productData,required this.size,required this.color,required this.cartID});
 
@@ -38,12 +38,18 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   @override
   void initState() {
     super.initState();
-    colorList = widget.productData.productVariationColors;
-    sizeList = widget.productData.productVariationSizes;
+     if(widget.productData.productVariationColors.length!=0){
+       colorList =widget.productData.productVariationColors;
+     };
+     if(widget.productData.productVariationSizes.length!=0){
+    sizeList = widget.productData.productVariationSizes;}
     finalPrice=widget.productData.productSellingPrice;
-    finalColor=int.parse(widget.productData.productVariationColors.first.colorCode);
-    currentIndex=widget.productData.productVariationColors.indexWhere((element) => element.colorCode==widget.color.colorCode);
-    currentSizeIndex=widget.productData.productVariationSizes.indexWhere((element) => element.size==widget.size.size);
+    if(widget.productData.productVariationColors.length!=0){
+    finalColor=int.parse(widget.productData.productVariationColors.first.colorCode);}
+    if(widget.productData.productVariationColors.length!=0){
+    currentIndex=widget.productData.productVariationColors.indexWhere((element) => element.colorCode==widget.color!.colorCode);}
+    if(widget.productData.productVariationSizes.length!=0){
+    currentSizeIndex=widget.productData.productVariationSizes.indexWhere((element) => element.size==widget.size!.size);}
     print(currentIndex);
   }
 
@@ -152,13 +158,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                               // Color Option
 
                               Space(height: 20),
-                              Text(
+                              widget.productData.productVariationColors.length!=0?Text(
                                 "Color option",
                                 style: FontsTheme.subTitleStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w600,
                                     size: 13),
-                              ),
+                              ):Container(),
                               Space(height: 8),
                               Row(
                                 children: colorList.map<Widget>((e) {
@@ -202,11 +208,11 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
 
                               // Size Option
                               Space(height: 18),
-                              Text("Size Option",
+                              widget.productData.productVariationSizes.length!=0?Text("Size Option",
                                   style: FontsTheme.subTitleStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w600,
-                                      size: 13)),
+                                      size: 13)):Container(),
                               Space(height: 8),
                               Row(
                                 children: sizeList.map<Widget>((e) {

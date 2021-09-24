@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final cartDataModel = cartDataModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<CartDataModel> cartDataModelFromJson(String str) => List<CartDataModel>.from(json.decode(str).map((x) => CartDataModel.fromJson(x)));
@@ -14,6 +19,7 @@ class CartDataModel {
     required this.cartId,
     required this.productSize,
     required this.productColor,
+    required this.createdDateTime,
     required this.productDetails,
   });
 
@@ -23,8 +29,9 @@ class CartDataModel {
   String productId;
   int productQuantity;
   String cartId;
-  ProductSize productSize;
-  ProductColor productColor;
+  ProductSize? productSize;
+  ProductColor? productColor;
+  DateTime createdDateTime;
   List<CartProductDetail> productDetails;
 
   factory CartDataModel.fromJson(Map<String, dynamic> json) => CartDataModel(
@@ -34,8 +41,9 @@ class CartDataModel {
     productId: json["product_id"],
     productQuantity: json["product_quantity"],
     cartId: json["cart_id"],
-    productSize: ProductSize.fromJson(json["product_size"]),
-    productColor: ProductColor.fromJson(json["product_color"]),
+    productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
+    productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
+    createdDateTime: DateTime.parse(json["created_date_time"]),
     productDetails: List<CartProductDetail>.from(json["product_details"].map((x) => CartProductDetail.fromJson(x))),
   );
 
@@ -46,8 +54,9 @@ class CartDataModel {
     "product_id": productId,
     "product_quantity": productQuantity,
     "cart_id": cartId,
-    "product_size": productSize.toJson(),
-    "product_color": productColor.toJson(),
+    "product_size": productSize == null ? null : productSize!.toJson(),
+    "product_color": productColor == null ? null : productColor!.toJson(),
+    "created_date_time": createdDateTime.toIso8601String(),
     "product_details": List<dynamic>.from(productDetails.map((x) => x.toJson())),
   };
 }
@@ -99,6 +108,9 @@ class CartProductDetail {
     required this.productRatingAverage,
     required this.categoryIsActive,
     required this.productIsActive,
+    required this.orderedQuantity,
+    required this.createdDateTime,
+    required this.v,
     required this.taxDetails,
   });
 
@@ -124,9 +136,12 @@ class CartProductDetail {
   List<ProductColor> productVariationColors;
   int productTotalRating;
   int productRatingCountRecord;
-  double productRatingAverage;
+  int productRatingAverage;
   bool categoryIsActive;
   bool productIsActive;
+  int orderedQuantity;
+  DateTime createdDateTime;
+  int v;
   List<TaxDetail> taxDetails;
 
   factory CartProductDetail.fromJson(Map<String, dynamic> json) => CartProductDetail(
@@ -155,6 +170,9 @@ class CartProductDetail {
     productRatingAverage: json["product_rating_average"],
     categoryIsActive: json["category_is_active"],
     productIsActive: json["product_is_active"],
+    orderedQuantity: json["ordered_quantity"],
+    createdDateTime: DateTime.parse(json["created_date_time"]),
+    v: json["__v"],
     taxDetails: List<TaxDetail>.from(json["tax_details"].map((x) => TaxDetail.fromJson(x))),
   );
 
@@ -184,6 +202,9 @@ class CartProductDetail {
     "product_rating_average": productRatingAverage,
     "category_is_active": categoryIsActive,
     "product_is_active": productIsActive,
+    "ordered_quantity": orderedQuantity,
+    "created_date_time": createdDateTime.toIso8601String(),
+    "__v": v,
     "tax_details": List<dynamic>.from(taxDetails.map((x) => x.toJson())),
   };
 }
@@ -224,6 +245,8 @@ class TaxDetail {
     required this.vendorUniqId,
     required this.taxName,
     required this.taxPercentage,
+    required this.createdDateTime,
+    required this.v,
   });
 
   bool isTaxEnable;
@@ -232,6 +255,8 @@ class TaxDetail {
   String vendorUniqId;
   String taxName;
   int taxPercentage;
+  DateTime createdDateTime;
+  int v;
 
   factory TaxDetail.fromJson(Map<String, dynamic> json) => TaxDetail(
     isTaxEnable: json["is_tax_enable"],
@@ -240,6 +265,8 @@ class TaxDetail {
     vendorUniqId: json["vendor_uniq_id"],
     taxName: json["tax_name"],
     taxPercentage: json["tax_percentage"],
+    createdDateTime: DateTime.parse(json["created_date_time"]),
+    v: json["__v"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -249,5 +276,7 @@ class TaxDetail {
     "vendor_uniq_id": vendorUniqId,
     "tax_name": taxName,
     "tax_percentage": taxPercentage,
+    "created_date_time": createdDateTime.toIso8601String(),
+    "__v": v,
   };
 }

@@ -95,7 +95,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   Future deleteCart() async {
     log("--cart id $cartId");
-    log("--cart id ${widget.productData.cartDetails!.cartId}");
 
     await CartController.deleteCart(
             cartId: cartId != null

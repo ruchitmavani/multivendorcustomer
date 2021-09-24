@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
@@ -13,9 +12,7 @@ class CartDataWrapper extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  set isLoading(bool isLoading) {
-    _isLoading = isLoading;
-  }
+  set isLoading(bool isLoading) => _isLoading = isLoading;
 
   int totalItems = 0;
   late double totalAmount;
@@ -25,7 +22,7 @@ class CartDataWrapper extends ChangeNotifier {
 
   Future loadCartData({required String vendorId}) async {
     if (sharedPrefs.customer_id.isEmpty) {
-      cartData=[];
+      cartData = [];
       return;
     }
     print("vendor $vendorId");
@@ -33,13 +30,20 @@ class CartDataWrapper extends ChangeNotifier {
             customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
         .then((value) {
       if (value.success) {
+        print(value.data);
         cartData = value.data!;
         totalItems = cartData.length;
         totalAmount = 0;
         for (int i = 0; i < cartData.length; i++) {
           totalAmount = totalAmount +
               (cartData.elementAt(i).productQuantity *
-                  cartData.elementAt(i).productSize.sellingPrice);
+                  (cartData.elementAt(i).productSize == null
+                      ? cartData
+                          .elementAt(i)
+                          .productDetails
+                          .first
+                          .productSellingPrice
+                      : cartData.elementAt(i).productSize!.sellingPrice));
         }
         tax = 0;
         for (int i = 0; i < cartData.length; i++) {
@@ -56,13 +60,19 @@ class CartDataWrapper extends ChangeNotifier {
                         .elementAt(j)
                         .taxPercentage *
                     cartData.elementAt(i).productQuantity *
-                    cartData.elementAt(i).productSize.sellingPrice /
+                    (cartData.elementAt(i).productSize == null
+                        ? cartData
+                        .elementAt(i)
+                        .productDetails
+                        .first
+                        .productSellingPrice
+                        : cartData.elementAt(i).productSize!.sellingPrice) /
                     100);
           }
         }
         totalAmount = totalAmount + tax;
         isLoading = false;
-        isCouponApplied=false;
+        isCouponApplied = false;
         notifyListeners();
       } else {
         notifyListeners();
@@ -76,7 +86,7 @@ class CartDataWrapper extends ChangeNotifier {
     await CouponController.validateCoupon(
             vendorId: "${sharedPrefs.vendor_uniq_id}",
             customerId: "${sharedPrefs.customer_id}",
-            couponName: "${coupon}")
+            couponName: "$coupon")
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -89,15 +99,15 @@ class CartDataWrapper extends ChangeNotifier {
         }
         if (value.data!.couponType == "percentage") {
           if (totalAmount >= value.data!.minAmount) {
-            double temp=totalAmount-(totalAmount*value.data!.offerPercentage/100);
-            if(temp<=value.data!.offerUptoAmount){
-              totalAmount=totalAmount-temp;
-              discount=totalAmount*value.data!.offerPercentage/100;
-            }else{
-              totalAmount=totalAmount-value.data!.offerUptoAmount;
-              discount=value.data!.offerUptoAmount.toDouble();
+            double temp =
+                totalAmount - (totalAmount * value.data!.offerPercentage / 100);
+            if (temp <= value.data!.offerUptoAmount) {
+              totalAmount = totalAmount - temp;
+              discount = totalAmount * value.data!.offerPercentage / 100;
+            } else {
+              totalAmount = totalAmount - value.data!.offerUptoAmount;
+              discount = value.data!.offerUptoAmount.toDouble();
             }
-
           }
         }
         isCouponApplied = true;
