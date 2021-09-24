@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -700,10 +699,10 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  if (Provider.of<CartDataWrapper>(context).totalItems > 0) {
+                  if (Provider.of<CartDataWrapper>(context,listen: false).totalItems > 0) {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return PaymentOptions();
+                        return PaymentOptions(Address: customerData.customerAddress.elementAt(addressIndex),);
                       },
                     ));
                   }

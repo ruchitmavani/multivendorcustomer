@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
+        print(value.data);
         setState(() {
           productDataList = value.data;
           isLoadingCate = false;

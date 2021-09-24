@@ -59,24 +59,24 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             productId: widget.productData.productId,
             quantity: 1,
             mrp: widget.productData.productMrp,
-            isActive: widget.productData.productVariationSizes.length != 0
-                ? widget.productData.productVariationSizes
+            isActive: widget.productData.productVariationSizes!.length != 0
+                ? widget.productData.productVariationSizes!
                     .elementAt(widget.sizeIndex)
                     .isActive
                 : false,
-            size: widget.productData.productVariationSizes.length!=0?widget.productData.productVariationSizes
+            size: widget.productData.productVariationSizes!.length!=0?widget.productData.productVariationSizes!
                 .elementAt(widget.sizeIndex)
                 .size:"",
-            colorCode:widget.productData.productVariationColors.length!=0? widget.productData.productVariationColors
+            colorCode:widget.productData.productVariationColors!.length!=0? widget.productData.productVariationColors!
                 .elementAt(widget.colorIndex)
                 .colorCode:"3242161711",
-            sellingPrice: widget.productData.productVariationSizes.length!=0?widget.productData.productVariationSizes
+            sellingPrice: widget.productData.productVariationSizes!.length!=0?widget.productData.productVariationSizes!
                 .elementAt(widget.sizeIndex)
                 .sellingPrice:0,
-            isColorActive: widget.productData.productVariationColors.length!=0?widget.productData.productVariationColors
+            isColorActive: widget.productData.productVariationColors!.length!=0?widget.productData.productVariationColors!
                 .elementAt(widget.colorIndex)
                 .isActive:false,
-            isVarientAvailable: widget.productData.productVariationColors.length!=0?true:false)
+            isVarientAvailable: widget.productData.productVariationColors!.length!=0?true:false)
         .then((value) {
       if (value.success) {
         setState(() {

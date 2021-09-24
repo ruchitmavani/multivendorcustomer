@@ -56,16 +56,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
   void initState() {
     super.initState();
     _loadData();
-    if (widget.productData.productVariationColors.length != 0) {
-      colorList = widget.productData.productVariationColors;
+    if (widget.productData.productVariationColors!.length != 0) {
+      colorList = widget.productData.productVariationColors!;
     }
-    if (widget.productData.productVariationSizes.length != 0) {
-      sizeList = widget.productData.productVariationSizes;
+    if (widget.productData.productVariationSizes!.length != 0) {
+      sizeList = widget.productData.productVariationSizes!;
     }
     finalPrice = widget.productData.productSellingPrice;
-    if (widget.productData.productVariationColors.length != 0) {
+    if (widget.productData.productVariationColors!.length != 0) {
       finalColor =
-          int.parse(widget.productData.productVariationColors.first.colorCode);
+          int.parse(widget.productData.productVariationColors!.first.colorCode);
     };
   }
 
@@ -168,7 +168,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               // Color Option
 
                               Space(height: 20),
-                              if (widget.productData.productVariationColors.length!=0) Text(
+                              if (widget.productData.productVariationColors!.length!=0) Text(
                                 "Color option",
                                 style: FontsTheme.subTitleStyle(
                                     color: Colors.black54,
@@ -216,7 +216,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                               // Size Option
                               Space(height: 18),
-                              if (widget.productData.productVariationSizes.length!=0) Text("Size Option",
+                              if (widget.productData.productVariationSizes!.length!=0) Text("Size Option",
                                   style: FontsTheme.subTitleStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w600,

@@ -36,7 +36,7 @@ class _TopSellingProductComponentState
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child:widget.productData.productImageUrl.length!=0? Image.network(
                 "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
                 width: 60,

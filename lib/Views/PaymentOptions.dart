@@ -1,17 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
+import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:provider/provider.dart';
 
 class PaymentOptions extends StatefulWidget {
-  const PaymentOptions({Key? key}) : super(key: key);
+  CustomerAddress Address;
+
+  PaymentOptions({required this.Address,});
 
   @override
   _PaymentOptionsState createState() => _PaymentOptionsState();
 }
-enum paymentMethods{COD,PAY_ONLINE,TAKEAWAY}
+enum paymentMethods { COD, PAY_ONLINE, TAKEAWAY }
 
 class _PaymentOptionsState extends State<PaymentOptions> {
-  paymentMethods _selection=paymentMethods.COD;
+  paymentMethods _selection = paymentMethods.COD;
+  bool isLoadingCate = false;
+
+  _addOrder() async {
+    setState(() {
+      isLoadingCate = true;
+    });
+    await OrderController.addOrder(
+        type: "${_selection
+            .toString()
+            .split(".")
+            .last}",
+        address: widget.Address,
+        couponAmount: Provider
+            .of<CartDataWrapper>(context,listen: false)
+            .discount
+            .toInt(),
+        couponId: "",
+        deliveryCharge
+        :0,
+        finalPaid
+        :Provider.of<CartDataWrapper>(context,listen: false).totalAmount.toInt(),
+        paidAmount
+        :Provider.of<CartDataWrapper>(context,listen: false).totalAmount.toInt(),
+        refundAmount
+        :0,
+        taxAmount
+        :Provider.of<CartDataWrapper>(context,listen: false).tax.toInt(),
+        totalAmount
+        :Provider.of<CartDataWrapper>(context,listen: false).totalAmount.toInt())
+        .then((value) {
+      if (value.success) {
+        print(value.data);
+        setState(() {
+          isLoadingCate = false;
+          Fluttertoast.showToast(msg: "Order Success");
+          Navigator.pushReplacementNamed(context, PageCollection.home);
+        });
+      } else {
+        setState(() {
+          isLoadingCate = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingCate = false;
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +100,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       setState(() {
                         _selection = value!;
                         print(value);
-
                       });
                     },
                   ),
@@ -61,7 +118,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       setState(() {
                         _selection = value!;
                         print(value);
-
                       });
                     },
                   ),
@@ -102,10 +158,16 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         child: Row(
           children: [
             Flexible(
-              child: InkWell(
+              child: isLoadingCate?Center(child: CircularProgressIndicator(),):InkWell(
                 onTap: () {
-                  if(_selection.toString().split(".").last=="COD"||_selection.toString().split(".").last=="TAKEAWAY"){
-
+                  if (_selection
+                      .toString()
+                      .split(".")
+                      .last == "COD" || _selection
+                      .toString()
+                      .split(".")
+                      .last == "TAKEAWAY") {
+                    _addOrder();
                   }
                 },
                 child: Container(
@@ -115,7 +177,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     padding: const EdgeInsets.only(left: 3.0),
                     child: Center(
                       child: Text(
-                        "Next",
+                        "Order",
                         style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w700,

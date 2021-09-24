@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final vendorDataModel = vendorDataModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));

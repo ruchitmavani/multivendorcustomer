@@ -44,8 +44,8 @@ class ProductData {
   String unitType;
   List<String> productLiveTiming;
   String productDescription;
-  List<ProductSize> productVariationSizes;
-  List<ProductColor> productVariationColors;
+  List<ProductSize>? productVariationSizes;
+  List<ProductColor>? productVariationColors;
   int productTotalRating;
   int productRatingCountRecord;
   double productRatingAverage;
@@ -72,8 +72,8 @@ class ProductData {
     unitType: json["unit_type"],
     productLiveTiming: List<String>.from(json["product_live_timing"].map((x) => x)),
     productDescription: json["product_description"],
-    productVariationSizes: json["product_variation_sizes"]==null?[]:List<ProductSize>.from(json["product_variation_sizes"].map((x) => ProductSize.fromJson(x))),
-    productVariationColors: json["product_variation_colors"]==null?[]:List<ProductColor>.from(json["product_variation_colors"].map((x) => ProductColor.fromJson(x))),
+    productVariationSizes: json["product_variation_sizes"]==[]?null:List<ProductSize>.from(json["product_variation_sizes"].map((x) => ProductSize.fromJson(x))),
+    productVariationColors: json["product_variation_colors"]==[]?null:List<ProductColor>.from(json["product_variation_colors"].map((x) => ProductColor.fromJson(x))),
     productTotalRating: json["product_total_rating"],
     productRatingCountRecord: json["product_rating_count_record"],
     productRatingAverage: json["product_rating_average"].toDouble(),
@@ -101,8 +101,8 @@ class ProductData {
     "unit_type": unitType,
     "product_live_timing": List<dynamic>.from(productLiveTiming.map((x) => x)),
     "product_description": productDescription,
-    "product_variation_sizes": List<dynamic>.from(productVariationSizes.map((x) => x.toJson())),
-    "product_variation_colors": List<dynamic>.from(productVariationColors.map((x) => x.toJson())),
+    "product_variation_sizes": List<dynamic>.from(productVariationSizes!.map((x) => x.toJson())),
+    "product_variation_colors": List<dynamic>.from(productVariationColors!.map((x) => x.toJson())),
     "product_total_rating": productTotalRating,
     "product_rating_count_record": productRatingCountRecord,
     "product_rating_average": productRatingAverage,
@@ -132,8 +132,8 @@ class CartDetails {
   int productQuantity;
   String id;
   String cartId;
-  ProductSize productSize;
-  ProductColor productColor;
+  ProductSize? productSize;
+  ProductColor? productColor;
 
   factory CartDetails.fromJson(Map<String, dynamic> json) => CartDetails(
     customerUniqId: json["customer_uniq_id"],
@@ -142,8 +142,8 @@ class CartDetails {
     productQuantity: json["product_quantity"],
     id: json["_id"],
     cartId: json["cart_id"],
-    productSize: ProductSize.fromJson(json["product_size"]),
-    productColor: ProductColor.fromJson(json["product_color"]),
+    productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
+    productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -153,8 +153,8 @@ class CartDetails {
     "product_quantity": productQuantity,
     "_id": id,
     "cart_id": cartId,
-    "product_size": productSize.toJson(),
-    "product_color": productColor.toJson(),
+    "product_size": productSize == null ? null : productSize!.toJson(),
+    "product_color": productColor == null ? null : productColor!.toJson(),
   };
 }
 
