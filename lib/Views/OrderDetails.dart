@@ -133,13 +133,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Container(
-                      constraints: BoxConstraints(maxHeight: 55),
+                      constraints: BoxConstraints(maxHeight: 55,maxWidth: MediaQuery.of(context).size.width),
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Container(color: Colors.grey.shade300,width: MediaQuery.of(context).size.width-80,height: 3,),
+                          Container(color: Colors.grey.shade300,height: 3,margin: EdgeInsets.symmetric(horizontal: 40),),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
                             children: [
                               if (widget.orderData.orderStatus=="pending") TimelineTile(
                                 alignment: TimelineAlign.center,

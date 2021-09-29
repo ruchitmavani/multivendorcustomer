@@ -26,6 +26,7 @@ class VendorModelWrapper with ChangeNotifier {
         sharedPrefs.latitude=vendorModel!.latitude;
         sharedPrefs.businessCategory=vendorModel!.businessCategory;
         sharedPrefs.storeLink=vendorModel!.storeLink;
+        sharedPrefs.colorTheme=vendorModel!.colorTheme;
       }
     }, onError: (e) {
       print(e);

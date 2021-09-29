@@ -1,9 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
+import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
@@ -15,6 +18,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   await sharedPrefs.init();
+  await Hive.initFlutter();
+  Hive.registerAdapter(DemoHiveAdapter());
+  await Hive.openBox<DemoHive>("demo");
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),

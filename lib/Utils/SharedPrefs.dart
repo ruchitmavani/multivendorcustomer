@@ -62,6 +62,9 @@ class SharedPrefs {
   bool get isWhatsappSupport =>
       _sharedPrefs!.getBool(StringConstants.isWhatsappSupport) ?? false;
 
+  String get colorTheme =>
+      _sharedPrefs!.getString(StringConstants.color_theme) ?? "";
+
   // Setter
 
   set customer_mobileNo(String value) {
@@ -130,6 +133,10 @@ class SharedPrefs {
 
   set isWhatsappSupport(bool value) {
     _sharedPrefs!.setBool(StringConstants.isWhatsappSupport, value);
+  }
+
+  set colorTheme(String value){
+    _sharedPrefs!.setString(StringConstants.color_theme, value);
   }
 
   /*--------------- Check Is Login or Not --------------------*/

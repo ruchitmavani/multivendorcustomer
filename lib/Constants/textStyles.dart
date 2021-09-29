@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Constants/colors.dart';
 
-const TextStyle boldTitleText = TextStyle(
+TextStyle boldTitleText = TextStyle(
     fontSize: 13,
-    color: Color(0xFF24293D),
+    color: appPrimaryMaterialColor,
     fontWeight: FontWeight.w600,
     fontFamily: 'Poppins');
 

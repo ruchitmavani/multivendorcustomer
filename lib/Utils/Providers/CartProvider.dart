@@ -82,6 +82,10 @@ class CartDataWrapper extends ChangeNotifier {
     });
   }
 
+  Future addToCart()async{
+
+  }
+
   verifyCoupon(String coupon) async {
     await CouponController.validateCoupon(
             vendorId: "${sharedPrefs.vendor_uniq_id}",

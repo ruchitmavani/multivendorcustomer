@@ -10,6 +10,7 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:multi_vendor_customer/Views/ProductDetail.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategorySubScreen extends StatefulWidget {
   String categoryId;
@@ -27,7 +28,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
   bool isLoadingBottom = false;
   int page = 1;
   int maxPages = 1;
-  List<String> sortKeyList=["NtoO","OtoN","spHtoL","spLtoH"];
+  List<String> sortKeyList = ["NtoO", "OtoN", "spHtoL", "spLtoH"];
   List<ProductData> productDataList = [];
   var scrollController = ScrollController();
 
@@ -47,7 +48,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     await ProductController.getProductData(
             vendorId: "${sharedPrefs.vendor_uniq_id}",
             categoryId: "${widget.categoryId}",
-            limit: 15,sortKey: sortKey.split(".").last,
+            limit: 15,
+            sortKey: sortKey.split(".").last,
             page: page)
         .then((value) {
       if (value.success) {
@@ -77,10 +79,11 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
       isLoadingBottom = true;
     });
     await ProductController.getProductData(
-        vendorId: "${sharedPrefs.vendor_uniq_id}",
-        categoryId: "${widget.categoryId}",
-        limit: 15,
-        page: page,sortKey: sortKeyList[0])
+            vendorId: "${sharedPrefs.vendor_uniq_id}",
+            categoryId: "${widget.categoryId}",
+            limit: 15,
+            page: page,
+            sortKey: sortKeyList[0])
         .then((value) {
       if (value.success) {
         print(value.pagination.last.toJson());
@@ -132,12 +135,35 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
               isGrid = value;
             });
             print(value);
-          },onClick: (value){_getProduct(value);}),
+          }, onClick: (value) {
+            _getProduct(value);
+          }),
           Expanded(
             child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.builder(
+              itemCount: 8,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width*0.5,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8
+                      ),
+                      itemBuilder: (context, index) {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.grey[300]!,
+                          period: Duration(seconds: 2),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width-20,
+                            height: 100,
+                            decoration: ShapeDecoration(
+                              color: Colors.grey[300]!, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                          ),
+                        );
+                      },),
+                )
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 6.0, vertical: 6),
@@ -146,7 +172,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       itemCount: productDataList.length,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent:
-                            isGrid ? 180 : MediaQuery.of(context).size.width,
+                            isGrid ? 190 : MediaQuery.of(context).size.width,
+
                         mainAxisExtent: isGrid ? 245 : 120,
                         childAspectRatio: isGrid ? 0.75 : 3.5,
                         crossAxisSpacing: 3,
@@ -206,7 +233,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                     ),
                   ),
           ),
-          isLoadingBottom?CircularProgressIndicator():Container(),
+          isLoadingBottom ? CircularProgressIndicator() : Container(),
         ],
       ),
     );

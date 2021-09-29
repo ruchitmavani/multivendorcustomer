@@ -59,6 +59,7 @@ class StringConstants{
   static String latitude="latitude";
   static String longitude="longitude";
   static String isWhatsappSupport="isWhatsappSupport";
+  static String color_theme="color_theme";
 
 
 }
@@ -77,6 +78,4 @@ class PageCollection{
   static const String loading = '/loading';
   static const String search = '$home/search';
   static const String product = '/product';
-
-
 }

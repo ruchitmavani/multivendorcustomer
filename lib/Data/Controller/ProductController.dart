@@ -39,8 +39,7 @@ class ProductController {
         url,
         data: data,
       );
-
-      log("response -> ${response.data}");
+      log("Product Data response -> ${response.data}");
       if (response.statusCode == 200) {
         log("getProductData ${response.data}");
         responseClass.success = response.data["is_success"];

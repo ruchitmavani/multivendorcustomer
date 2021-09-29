@@ -14,6 +14,7 @@ import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart
 import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -317,7 +318,21 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.only(
                       top: 10.0, bottom: 10, left: 12, right: 12),
                   child: isLoadingCustomer
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.grey[300]!,
+                          period: Duration(seconds: 2),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 20,
+                            height: 60,
+                            decoration: ShapeDecoration(
+                              color: Colors.grey[300]!,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                          ),
+                        ))
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -366,10 +381,28 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   child: Provider.of<CartDataWrapper>(context).isLoading
                       ? Center(
-                          child: SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator()))
+                          child: ListView.builder(
+                            itemCount: 3,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.white,
+                                highlightColor: Colors.grey[300]!,
+                                period: Duration(seconds: 2),
+                                child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  width: MediaQuery.of(context).size.width - 20,
+                                  height: 60,
+                                  decoration: ShapeDecoration(
+                                    color: Colors.grey[300]!,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
                       : cartProvider.length == 0
                           ? Center(
                               child: Padding(
@@ -624,7 +657,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         )
                       : Container()
-                  : CircularProgressIndicator(),
+                  : Center(child: CircularProgressIndicator()),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
@@ -699,10 +732,15 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  if (Provider.of<CartDataWrapper>(context,listen: false).totalItems > 0) {
+                  if (Provider.of<CartDataWrapper>(context, listen: false)
+                          .totalItems >
+                      0) {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return PaymentOptions(Address: customerData.customerAddress.elementAt(addressIndex),);
+                        return PaymentOptions(
+                          Address: customerData.customerAddress
+                              .elementAt(addressIndex),
+                        );
                       },
                     ));
                   }

@@ -66,52 +66,58 @@ class _TopSellingProductComponentState
             Space(width: 8),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all<double>(0),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        appPrimaryMaterialColor)),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15.0, bottom: 15.0),
-                              child: SizedBox(
-                                child: FloatingActionButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Icon(Icons.close, size: 16),
-                                    backgroundColor: Colors.white),
-                                width: 24,
-                                height: 24,
+              child: SizedBox(
+                width: 35,
+                child: InkWell(
+                  onTap: (){
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 15.0, bottom: 15.0),
+                                child: SizedBox(
+                                  child: FloatingActionButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Icon(Icons.close, size: 16),
+                                      backgroundColor: Colors.white),
+                                  width: 24,
+                                  height: 24,
+                                ),
                               ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(10.0),
-                                    topLeft: Radius.circular(10.0)),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10.0),
+                                      topLeft: Radius.circular(10.0)),
+                                ),
+                                child: ProductDescription(widget.productData),
                               ),
-                              child: ProductDescription(widget.productData),
-                            ),
-                          ],
-                        );
-                      });
-                },
-                child: Icon(
-                  AppIcons.rightarrow,
-                  color: Colors.white,
-                  size: 12,
+                            ],
+                          );
+                        });
+                  },
+                  child: Card(
+                    color: appPrimaryMaterialColor,
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 6),
+                      child: Icon(
+                        AppIcons.rightarrow,
+                        color: Colors.white,
+                        size: 11,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             )

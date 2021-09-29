@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
-Map<int,Color> appPrimaryColor = {
-  50: Color.fromRGBO(179, 117, 239, .1),
-  100: Color.fromRGBO(179, 117, 239, .2),
-  200: Color.fromRGBO(179, 117, 239, .3),
-  300: Color.fromRGBO(179, 117, 239, .4),
-  400: Color.fromRGBO(179, 117, 239, .5),
-  500: Color.fromRGBO(179, 117, 239, .6),
-  600: Color.fromRGBO(179, 117, 239, .7),
-  700: Color.fromRGBO(179, 117, 239, .8),
-  800: Color.fromRGBO(179, 117, 239, .9),
-  900: Color.fromRGBO(179, 117, 239, 1)
+Map<int, Color> appPrimaryColor = {
+  50: Color.fromRGBO(extRed(), extGreen(), extBlue(), .1),
+  100: Color.fromRGBO(extRed(), extGreen(), extBlue(), .2),
+  200: Color.fromRGBO(extRed(), extGreen(), extBlue(), .3),
+  300: Color.fromRGBO(extRed(), extGreen(), extBlue(), .4),
+  400: Color.fromRGBO(extRed(), extGreen(), extBlue(), .5),
+  500: Color.fromRGBO(extRed(), extGreen(), extBlue(), .6),
+  600: Color.fromRGBO(extRed(), extGreen(), extBlue(), .7),
+  700: Color.fromRGBO(extRed(), extGreen(), extBlue(), .8),
+  800: Color.fromRGBO(extRed(), extGreen(), extBlue(), .9),
+  900: Color.fromRGBO(extRed(), extGreen(), extBlue(), 1)
 };
 
-MaterialColor appPrimaryMaterialColor =
-MaterialColor(0xFFB375EF, appPrimaryColor);
+MaterialColor appPrimaryMaterialColor = MaterialColor(
+    int.parse(
+        sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme),
+    appPrimaryColor);
+
+int extRed() {
+  return Color(int.parse(
+          sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme))
+      .red;
+}
+
+int extGreen() {
+  return Color(int.parse(
+          sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme))
+      .green;
+}
+
+int extBlue() {
+  return Color(int.parse(
+          sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme))
+      .blue;
+}

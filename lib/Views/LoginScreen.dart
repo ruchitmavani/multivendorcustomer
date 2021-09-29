@@ -91,15 +91,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text("Send OTP"),
                       ),
                     ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, PageCollection.home);
-                  },
-                  child: Text(
-                    "skip",
-                    style: TextStyle(color: appPrimaryMaterialColor),
-                  ))
+              Space(
+                height: 15,
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushReplacementNamed(
+                      context, PageCollection.home);
+                },
+                child: Text("skip",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    )),
+              ),
             ],
           ),
         ),

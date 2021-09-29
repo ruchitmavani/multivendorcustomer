@@ -6,8 +6,9 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 
-import '../CategorySubScreen.dart';
+
 
 class ProductComponentGrid extends StatefulWidget {
   ProductData productData;
@@ -25,7 +26,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       padding: const EdgeInsets.all(4),
       child: SizedBox(
         width: 180,
-        height: 245,
+        height: 251,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -39,7 +40,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 8.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 8.0,bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -166,7 +167,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
             Expanded(
               flex: 1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

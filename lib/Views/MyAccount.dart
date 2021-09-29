@@ -9,6 +9,7 @@ import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -150,33 +151,51 @@ class _MyAccountState extends State<MyAccount> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15),
-        child: SingleChildScrollView(
+        child: isLoadingCustomer?GridView.builder(
+          itemCount: 8,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: MediaQuery.of(context).size.width,
+              mainAxisExtent: 60,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 8
+          ),
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.white,
+              highlightColor: Colors.grey[300]!,
+              period: Duration(seconds: 2),
+              child: Container(
+                width: MediaQuery.of(context).size.width-20,
+                height: 100,
+                decoration: ShapeDecoration(
+                  color: Colors.grey[300]!, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
+            );
+          },): SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 15,
-              ),
               MyTextFormField(
                 lable: "Name",
                 controller: name,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: const EdgeInsets.only(top: 4.0),
                 child: MyTextFormField(
                   lable: "Email address",
                   controller: email,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: const EdgeInsets.only(top: 4.0),
                 child: MyTextFormField(
                   lable: "Mobile number",
                   controller: mobile,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: const EdgeInsets.only(top: 4.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -197,7 +216,7 @@ class _MyAccountState extends State<MyAccount> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 25.0, bottom: 4.0),
+                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0,left: 4,right: 4),
                 child: Text(
                   "Address",
                   style: TextStyle(
@@ -213,20 +232,23 @@ class _MyAccountState extends State<MyAccount> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${addressList.elementAt(index).type}",
-                        style: TextStyle(
-                            fontFamily: 'popins',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          "${addressList.elementAt(index).type}",
+                          style: TextStyle(
+                              fontFamily: 'popins',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.height,
-                        margin: EdgeInsets.symmetric(vertical: 8),
+                        margin: EdgeInsets.only(bottom: 8,top: 4),
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(8),
                             color: Colors.grey.shade100),
                         child: Text(
                           "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",

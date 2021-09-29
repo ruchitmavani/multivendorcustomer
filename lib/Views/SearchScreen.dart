@@ -5,6 +5,7 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'ProductDetail.dart';
 
@@ -94,10 +95,30 @@ class _SearchState extends State<Search> {
           SliverToBoxAdapter(
             child: isLoading
                 ? Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    padding: const EdgeInsets.all(8),
+                    child:GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: 14,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent:180,
+                          mainAxisExtent: 245,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8
+                      ),
+                      itemBuilder: (context, index) {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.grey[300]!,
+                          period: Duration(seconds: 2),
+                          child: Container(
+                            width:180,
+                            height: 100,
+                            decoration: ShapeDecoration(
+                              color: Colors.grey[300]!, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                          ),
+                        );
+                      },),
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(

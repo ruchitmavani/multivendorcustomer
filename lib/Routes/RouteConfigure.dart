@@ -18,6 +18,7 @@ class RouteConfig {
     var routingData = settings.name!.getRoutingData;
     switch (routingData.route) {
       case PageCollection.home:
+        var id = routingData[''];
         return MaterialPageRoute<void>(
           builder: (context) => HomeScreen(),
           settings: settings,

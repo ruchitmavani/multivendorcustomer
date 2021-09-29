@@ -161,7 +161,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 child: Card(
                   shape: CircleBorder(),
                   elevation: 0,
-                  color: appPrimaryMaterialColor[700],
+                  color: appPrimaryMaterialColor,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -198,7 +198,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             height: 35,
             child: Card(
               elevation: 0,
-              color: appPrimaryMaterialColor[700],
+              color: appPrimaryMaterialColor,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
