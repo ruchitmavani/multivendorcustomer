@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'CartDataMoodel.dart';
+import 'CartDataModel.dart';
+import 'ProductModel.dart';
 
 AddtoCartResponseModel addtoCartResponseModelFromJson(String str) =>
     AddtoCartResponseModel.fromJson(json.decode(str));

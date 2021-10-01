@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
+
 import 'Utils/SharedPrefs.dart';
 
 void main() async {
@@ -25,6 +26,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
       ChangeNotifierProvider(create: (_) => CartDataWrapper()),
+      ChangeNotifierProvider(create: (_)=>CustomColor())
     ],
     child: MyApp(),
   ));
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                       fontFamily: "Poppins")),
-              actionsIconTheme: IconThemeData(color: appPrimaryMaterialColor)),
+              actionsIconTheme: IconThemeData(color: Provider.of<CustomColor>(context).appPrimaryMaterialColor)),
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
                 primary: Colors.grey.shade600,
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               onPrimary: Colors.white,
-              primary: appPrimaryMaterialColor,
+              primary: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
               elevation: 0,
               textStyle: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           fontFamily: 'Poppins',
-          primaryColor: appPrimaryMaterialColor,
+          primaryColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
           primarySwatch: Colors.grey,
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(),

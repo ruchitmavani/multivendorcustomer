@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 
-TextStyle boldTitleText = TextStyle(
-    fontSize: 13,
-    color: appPrimaryMaterialColor,
-    fontWeight: FontWeight.w600,
-    fontFamily: 'Poppins');
+// TextStyle boldTitleText = TextStyle(
+//     fontSize: 13,
+//     color: appPrimaryMaterialColor,
+//     fontWeight: FontWeight.w600,
+//     fontFamily: 'Poppins');
 
 class FontsTheme {
   static TextStyle boldTextStyle(

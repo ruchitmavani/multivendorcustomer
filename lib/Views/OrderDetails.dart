@@ -1,14 +1,14 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
+import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -73,7 +73,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           await launch(
                               'tel: ${widget.orderData.vendorDetails.mobileNumber}');
                         },
-                        child: Icon(Icons.call, color: appPrimaryMaterialColor),
+                        child: Icon(Icons.call, color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
                       ),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
                           ? Space(width: 8)
@@ -149,7 +149,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 beforeLineStyle: lineStyle,
                                 afterLineStyle: lineStyle,
                                 indicatorStyle: IndicatorStyle(
-                                    color: appPrimaryMaterialColor,
+                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                     iconStyle: IconStyle(iconData: Icons.watch,color: Colors.white,fontSize: 16),
                                     height: 22,
                                     width: 22
@@ -168,7 +168,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 beforeLineStyle: lineStyle,
                                 afterLineStyle: lineStyle,
                                 indicatorStyle: IndicatorStyle(
-                                  color: appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                   iconStyle: IconStyle(iconData: Icons.done,color: Colors.white,fontSize: 16),
                                   height: 22,
                                   width: 22
@@ -187,7 +187,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 afterLineStyle: lineStyle,
                                 isFirst: true,
                                 indicatorStyle: IndicatorStyle(
-                                    color: appPrimaryMaterialColor,
+                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                     iconStyle: IconStyle(iconData: Icons.access_time,color: Colors.white,fontSize: 16),
                                     height: 22,
                                     width: 22
@@ -216,7 +216,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 beforeLineStyle: lineStyle,
                                 afterLineStyle: lineStyle,
                                 indicatorStyle: IndicatorStyle(
-                                    color: appPrimaryMaterialColor,
+                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                     iconStyle: IconStyle(iconData: Icons.airport_shuttle,color: Colors.white,fontSize: 16),
                                     height: 22,
                                     width: 22

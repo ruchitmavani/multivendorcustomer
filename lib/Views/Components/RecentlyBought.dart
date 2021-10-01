@@ -4,6 +4,8 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 class RecentlyBought extends StatefulWidget {
   final ProductData productData;
@@ -66,40 +68,18 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          children: [
-                            Positioned(
-                              child: Container(
-                                height: 2,
-                                color: appPrimaryMaterialColor.shade900,
-                                width: 120,
-                              ),
-                              top: 8,
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "\u{20B9}",
-                                      style: TextStyle(
-                                          fontFamily: "",
-                                          fontSize: 11,
-                                          color: Colors.grey.shade700),
-                                    ),
-                                    Text(
-                                      "${widget.productData.productMrp}",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.grey.shade700,
-                                          fontSize: 11),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        Text(
+                          "\u{20B9} ${widget.productData.productMrp}",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey.shade700,
+                              fontSize: 11,
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor:
+                                  Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
+                              decorationThickness: 3),
                         ),
                         Row(
                           children: [
@@ -122,7 +102,6 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                         ),
                       ],
                     ),
-                    Space(width: 8),
                   ],
                 )
               ],

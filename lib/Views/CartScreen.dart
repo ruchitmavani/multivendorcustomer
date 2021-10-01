@@ -5,9 +5,10 @@ import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart';
@@ -43,10 +44,11 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CartDataWrapper>(context, listen: false)
-        .loadCartData(vendorId: sharedPrefs.vendor_uniq_id)
-        .then((value) {});
-    _loadCustomerData();
+    // Provider.of<CartDataWrapper>(context, listen: false)
+    //     .loadCartData(vendorId: sharedPrefs.vendor_uniq_id);
+    if (sharedPrefs.customer_id.isNotEmpty) {
+      _loadCustomerData();
+    }
   }
 
   _loadCustomerData() async {
@@ -134,13 +136,15 @@ class _CartScreenState extends State<CartScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "${customerData.customerAddress.elementAt(index).type}",
-                                          style: FontsTheme.boldTextStyle(
-                                              size: 13)),
+                                        "${customerData.customerAddress.elementAt(index).type}",
+                                        style:
+                                            FontsTheme.boldTextStyle(size: 13),
+                                      ),
                                       Text(
-                                          "${customerData.customerAddress.elementAt(index).subAddress}",
-                                          style: FontsTheme.descriptionText(
-                                              size: 13, color: Colors.black87)),
+                                        "${customerData.customerAddress.elementAt(index).subAddress}",
+                                        style: FontsTheme.descriptionText(
+                                            size: 13, color: Colors.black87),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -227,7 +231,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ? Text(
                                     "Apply Coupon Success 😊!",
                                     style: TextStyle(
-                                        color: appPrimaryMaterialColor),
+                                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
                                   )
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -286,7 +290,7 @@ class _CartScreenState extends State<CartScreen> {
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 11,
-                        color: appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                         fontWeight: FontWeight.w600),
                   )
                 ],
@@ -313,7 +317,7 @@ class _CartScreenState extends State<CartScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              if (sharedPrefs.customer_id.isNotEmpty) Container(
                 child: Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, bottom: 10, left: 12, right: 12),
@@ -464,16 +468,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                   10.0)),
                                                 ),
                                                 child: ProductDescriptionInCart(
-                                                  cartID: Provider.of<
-                                                              CartDataWrapper>(
-                                                          context)
-                                                      .cartData
+                                                  productId: cartProvider
                                                       .elementAt(index)
-                                                      .cartId,
-                                                  productData: cartProvider
-                                                      .elementAt(index)
-                                                      .productDetails
-                                                      .first,
+                                                      .productId,
                                                   color: cartProvider
                                                       .elementAt(index)
                                                       .productColor,
@@ -497,7 +494,7 @@ class _CartScreenState extends State<CartScreen> {
                                       children: [
                                         Image.network(
                                           StringConstants.API_URL +
-                                              "${cartProvider.elementAt(index).productDetails.first.productImageUrl.first}",
+                                              "${cartProvider.elementAt(index).productImageUrl.first}",
                                           width: 55,
                                           height: 55,
                                         ),
@@ -510,7 +507,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    "${cartProvider.elementAt(index).productDetails.first.productName}",
+                                                    "${cartProvider.elementAt(index).productName}",
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.black87,
@@ -552,7 +549,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                 children: [
                                                                   TextSpan(
                                                                     text:
-                                                                        "${cartProvider.elementAt(index).productDetails.first.productMrp}",
+                                                                        "${cartProvider.elementAt(index).productMrp}",
                                                                   ),
                                                                 ],
                                                               ),
@@ -574,16 +571,16 @@ class _CartScreenState extends State<CartScreen> {
                                                                 children: [
                                                                   TextSpan(
                                                                     text:
-                                                                        "${cartProvider.elementAt(index).productDetails.first.productSellingPrice}",
+                                                                        "${cartProvider.elementAt(index).productSellingPrice}",
                                                                   ),
                                                                 ],
                                                               ),
                                                             ),
                                                           ],
                                                         ),
+                                                        //TODO: unimplemented so implement it :)
                                                         RoundedAddRemove(
-                                                          cartData: cartProvider
-                                                              .elementAt(index),
+                                                          productId: cartProvider.elementAt(index).productId,
                                                         ),
                                                       ],
                                                     ),
@@ -747,7 +744,7 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: Container(
                   height: 48,
-                  color: appPrimaryMaterialColor,
+                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 3.0),
                     child: Center(

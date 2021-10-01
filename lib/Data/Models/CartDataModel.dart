@@ -1,9 +1,6 @@
-// To parse this JSON data, do
-//
-//     final cartDataModel = cartDataModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
+
+import 'ProductModel.dart';
 
 List<CartDataModel> cartDataModelFromJson(String str) => List<CartDataModel>.from(json.decode(str).map((x) => CartDataModel.fromJson(x)));
 
@@ -58,26 +55,6 @@ class CartDataModel {
     "product_color": productColor == null ? null : productColor!.toJson(),
     "created_date_time": createdDateTime.toIso8601String(),
     "product_details": List<dynamic>.from(productDetails.map((x) => x.toJson())),
-  };
-}
-
-class ProductColor {
-  ProductColor({
-    required this.colorCode,
-    required this.isActive,
-  });
-
-  String colorCode;
-  bool isActive;
-
-  factory ProductColor.fromJson(Map<String, dynamic> json) => ProductColor(
-    colorCode: json["color_code"],
-    isActive: json["is_active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "color_code": colorCode,
-    "is_active": isActive,
   };
 }
 
@@ -209,74 +186,3 @@ class CartProductDetail {
   };
 }
 
-class ProductSize {
-  ProductSize({
-    required this.size,
-    required this.mrp,
-    required this.sellingPrice,
-    required this.isActive,
-  });
-
-  String size;
-  int mrp;
-  int sellingPrice;
-  bool isActive;
-
-  factory ProductSize.fromJson(Map<String, dynamic> json) => ProductSize(
-    size: json["size"],
-    mrp: json["mrp"],
-    sellingPrice: json["selling_price"],
-    isActive: json["is_active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "size": size,
-    "mrp": mrp,
-    "selling_price": sellingPrice,
-    "is_active": isActive,
-  };
-}
-
-class TaxDetail {
-  TaxDetail({
-    required this.isTaxEnable,
-    required this.id,
-    required this.taxId,
-    required this.vendorUniqId,
-    required this.taxName,
-    required this.taxPercentage,
-    required this.createdDateTime,
-    required this.v,
-  });
-
-  bool isTaxEnable;
-  String id;
-  String taxId;
-  String vendorUniqId;
-  String taxName;
-  int taxPercentage;
-  DateTime createdDateTime;
-  int v;
-
-  factory TaxDetail.fromJson(Map<String, dynamic> json) => TaxDetail(
-    isTaxEnable: json["is_tax_enable"],
-    id: json["_id"],
-    taxId: json["tax_id"],
-    vendorUniqId: json["vendor_uniq_id"],
-    taxName: json["tax_name"],
-    taxPercentage: json["tax_percentage"],
-    createdDateTime: DateTime.parse(json["created_date_time"]),
-    v: json["__v"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "is_tax_enable": isTaxEnable,
-    "_id": id,
-    "tax_id": taxId,
-    "vendor_uniq_id": vendorUniqId,
-    "tax_name": taxName,
-    "tax_percentage": taxPercentage,
-    "created_date_time": createdDateTime.toIso8601String(),
-    "__v": v,
-  };
-}

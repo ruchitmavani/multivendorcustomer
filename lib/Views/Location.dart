@@ -6,6 +6,8 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 class Location extends StatefulWidget {
   const Location({Key? key}) : super(key: key);
@@ -86,7 +88,7 @@ class _LocationState extends State<Location> {
                                     ),
                               ),
                               selected: defaultChoiceIndex == index,
-                              selectedColor: appPrimaryMaterialColor,
+                              selectedColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                               onSelected: (value) {
                                 setState(() {
                                   defaultChoiceIndex =

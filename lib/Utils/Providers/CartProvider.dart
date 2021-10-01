@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 class CartDataWrapper extends ChangeNotifier {
-  List<CartDataModel> cartData = [];
+  List<NewCartModel> cartData = [];
   bool _isLoading = true;
   bool isCouponApplied = false;
 
@@ -21,70 +21,57 @@ class CartDataWrapper extends ChangeNotifier {
   late int shipping;
 
   Future loadCartData({required String vendorId}) async {
-    if (sharedPrefs.customer_id.isEmpty) {
-      cartData = [];
-      return;
-    }
+    // if (sharedPrefs.customer_id.isEmpty) {
+    //   totalItems = cartData.length;
+    //   isLoading = false;
+    //   isCouponApplied = false;
+    //   tax = 0;
+    //   totalAmount = 1100;
+    //   notifyListeners();
+    //   return;
+    // }
     print("vendor $vendorId");
-    await CartController.getCartData(
-            customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
-        .then((value) {
-      if (value.success) {
-        print(value.data);
-        cartData = value.data!;
-        totalItems = cartData.length;
-        totalAmount = 0;
-        for (int i = 0; i < cartData.length; i++) {
-          totalAmount = totalAmount +
-              (cartData.elementAt(i).productQuantity *
-                  (cartData.elementAt(i).productSize == null
-                      ? cartData
-                          .elementAt(i)
-                          .productDetails
-                          .first
-                          .productSellingPrice
-                      : cartData.elementAt(i).productSize!.sellingPrice));
-        }
-        tax = 0;
-        for (int i = 0; i < cartData.length; i++) {
-          print(i);
-          for (int j = 0;
-              j < cartData.elementAt(i).productDetails.first.taxId.length;
-              j++) {
-            tax = tax +
-                (cartData
-                        .elementAt(i)
-                        .productDetails
-                        .first
-                        .taxDetails
-                        .elementAt(j)
-                        .taxPercentage *
-                    cartData.elementAt(i).productQuantity *
-                    (cartData.elementAt(i).productSize == null
-                        ? cartData
-                        .elementAt(i)
-                        .productDetails
-                        .first
-                        .productSellingPrice
-                        : cartData.elementAt(i).productSize!.sellingPrice) /
-                    100);
-          }
-        }
-        totalAmount = totalAmount + tax;
-        isLoading = false;
-        isCouponApplied = false;
-        notifyListeners();
-      } else {
-        notifyListeners();
+    // await CartController.getCartData(
+    //         customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
+    //     .then((value) {
+    //   if (value.success) {
+    //     print(value.data);
+    // cartData = value.data!;
+    totalItems = cartData.length;
+    totalAmount = 0;
+    for (int i = 0; i < cartData.length; i++) {
+      totalAmount = totalAmount +
+          (cartData.elementAt(i).productQuantity *
+              (cartData.elementAt(i).productSize == null
+                  ? cartData.elementAt(i).productSellingPrice
+                  : cartData.elementAt(i).productSize!.sellingPrice));
+    }
+    tax = 0;
+    for (int i = 0; i < cartData.length; i++) {
+      print(i);
+      for (int j = 0; j < cartData.elementAt(i).taxDetails.length; j++) {
+        tax = tax +
+            (cartData.elementAt(i).taxDetails.elementAt(j).taxPercentage *
+                cartData.elementAt(i).productQuantity *
+                (cartData.elementAt(i).productSize == null
+                    ? cartData.elementAt(i).productSellingPrice
+                    : cartData.elementAt(i).productSize!.sellingPrice) /
+                100);
       }
-    }, onError: (e) {
-      print(e);
-    });
+    }
+    totalAmount = totalAmount + tax;
+    isLoading = false;
+    isCouponApplied = false;
+    notifyListeners();
+    //   } else {
+    //     notifyListeners();
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
   }
 
-  Future addToCart()async{
-
-  }
+  Future addToCart() async {}
 
   verifyCoupon(String coupon) async {
     await CouponController.validateCoupon(
@@ -132,5 +119,20 @@ class CartDataWrapper extends ChangeNotifier {
       }
     }
     return 0;
+  }
+
+  incrementQuantity({required int quantity, required String productId}) {
+    print(cartData.indexWhere((element) => element.productId == productId));
+    cartData
+        .elementAt(
+            cartData.indexWhere((element) => element.productId == productId))
+        .productQuantity = quantity;
+    notifyListeners();
+  }
+
+  deleteFromCart({required String productId}) {
+    cartData.removeAt(
+        cartData.indexWhere((element) => element.productId == productId));
+    notifyListeners();
   }
 }

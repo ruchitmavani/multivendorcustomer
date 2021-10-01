@@ -3,7 +3,9 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/OrderDetails.dart';
+import 'package:provider/provider.dart';
 
 class OrderComponent extends StatefulWidget {
   final OrderDataModel orderData;
@@ -160,7 +162,7 @@ class _OrderComponentState extends State<OrderComponent> {
                         height: 28,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: appPrimaryMaterialColor.shade100,
+                          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor.shade100,
                           borderRadius:
                               BorderRadius.all(Radius.circular(17.0)),
                         ),
@@ -170,7 +172,7 @@ class _OrderComponentState extends State<OrderComponent> {
                             child: Text(
                               "Track order",
                               style: FontsTheme.boldTextStyle(
-                                  color: appPrimaryMaterialColor, size: 11),
+                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor, size: 11),
                             ),
                           ),
                         ),

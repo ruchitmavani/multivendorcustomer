@@ -7,7 +7,9 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
+import 'package:provider/provider.dart';
 
 import '../ProductDetail.dart';
 
@@ -107,7 +109,7 @@ class _TopSellingProductComponentState
                         });
                   },
                   child: Card(
-                    color: appPrimaryMaterialColor,
+                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 6),

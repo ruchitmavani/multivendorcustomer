@@ -6,6 +6,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +98,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 ListTile(
                   title: const Text('Cash on Delivery'),
                   leading: Radio<paymentMethods>(
-                    activeColor: appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                     value: paymentMethods.COD,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
@@ -116,7 +117,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Pay Online'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.PAY_ONLINE,
-                    activeColor: appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
                       setState(() {
@@ -134,7 +135,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Take Away'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.TAKEAWAY,
-                    activeColor: appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
                       setState(() {
@@ -176,7 +177,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       },
                       child: Container(
                         height: 48,
-                        color: appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 3.0),
                           child: Center(

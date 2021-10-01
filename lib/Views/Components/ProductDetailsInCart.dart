@@ -1,6 +1,3 @@
-
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -8,75 +5,109 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:provider/provider.dart';
 
 class ProductDescriptionInCart extends StatefulWidget {
-  CartProductDetail productData;
-  String cartID;
+  String productId;
   ProductSize? size;
   ProductColor? color;
 
-  ProductDescriptionInCart({required this.productData,required this.size,required this.color,required this.cartID});
+  ProductDescriptionInCart(
+      {required this.productId, required this.size, required this.color});
 
   @override
-  _ProductDescriptionInCartState createState() => _ProductDescriptionInCartState();
+  _ProductDescriptionInCartState createState() =>
+      _ProductDescriptionInCartState();
 }
 
 class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   List<ProductColor> colorList = [];
   List<ProductSize> sizeList = [];
-  bool isLoading=false;
+  bool isLoading = false;
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage = 0;
   int finalPrice = 0;
-  int finalColor=0;
+  int finalColor = 0;
+  late ProductData productData;
 
   @override
   void initState() {
     super.initState();
-     if(widget.productData.productVariationColors.length!=0){
-       colorList =widget.productData.productVariationColors;
-     };
-     if(widget.productData.productVariationSizes.length!=0){
-    sizeList = widget.productData.productVariationSizes;}
-    finalPrice=widget.productData.productSellingPrice;
-    if(widget.productData.productVariationColors.length!=0){
-    finalColor=int.parse(widget.productData.productVariationColors.first.colorCode);}
-    if(widget.productData.productVariationColors.length!=0){
-    currentIndex=widget.productData.productVariationColors.indexWhere((element) => element.colorCode==widget.color!.colorCode);}
-    if(widget.productData.productVariationSizes.length!=0){
-    currentSizeIndex=widget.productData.productVariationSizes.indexWhere((element) => element.size==widget.size!.size);}
-    print(currentIndex);
+    _loadData();
   }
 
-  _updateCartDaetails()async{
-    await CartController.update(jsonMap: {
-      "cart_id": "${widget.cartID}",
-      "product_size":widget.productData.productVariationSizes.elementAt(currentSizeIndex).toJson(),
-      "product_color":widget.productData.productVariationColors.elementAt(currentIndex).toJson()
-    })
-        .then((value) {
+  _loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await ProductController.findProduct(productId: "${widget.productId}").then(
+        (value) {
       if (value.success) {
-        print("cart ${value.data}");
-        Fluttertoast.showToast(msg: "Update success");
-        Provider.of<CartDataWrapper>(context,listen: false).loadCartData(vendorId: Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.vendorUniqId);
+        setState(() {
+          isLoading = false;
+          productData = value.data!;
+          if(productData.productVariationColors!.length!=0){
+            colorList =productData.productVariationColors!;
+          };
+          if(productData.productVariationSizes!.length!=0){
+            sizeList = productData.productVariationSizes!;}
+          finalPrice=productData.productSellingPrice;
+          if(productData.productVariationColors!.length!=0){
+            finalColor=int.parse(productData.productVariationColors!.first.colorCode);}
+          if(productData.productVariationColors!.length!=0){
+            currentIndex=productData.productVariationColors!.indexWhere((element) => element.colorCode==widget.color!.colorCode);}
+          if(productData.productVariationSizes!.length!=0){
+            currentSizeIndex=productData.productVariationSizes!.indexWhere((element) => element.size==widget.size!.size);}
+          print(currentIndex);
+        });
       } else {
-        Fluttertoast.showToast(msg: "Update failed");
+        setState(() {
+          isLoading = false;
+        });
       }
     }, onError: (e) {
-      print(e);
+      setState(() {
+        isLoading = false;
+      });
     });
+  }
+
+  _updateCartDaetails() async {
+    // await CartController.update(jsonMap: {
+    //   "product_size": productData.productVariationSizes!
+    //       .elementAt(currentSizeIndex)
+    //       .toJson(),
+    //   "product_color":
+    //       productData.productVariationColors!.elementAt(currentIndex).toJson()
+    // }).then((value) {
+    //   if (value.success) {
+    //     print("cart ${value.data}");
+    //     Fluttertoast.showToast(msg: "Update success");
+    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+    //             .vendorModel!
+    //             .vendorUniqId);
+    //   } else {
+    //     Fluttertoast.showToast(msg: "Update failed");
+    //   }
+    // }, onError: (e) {
+    //   print(e);
+    // });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.2,
-      child: Column(
+      child: isLoading? Center(child: CircularProgressIndicator(),):Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -91,14 +122,14 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                   SizedBox(
                       height: 230,
                       child: Image.network(
-                          "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(displayImage)}")),
+                          "${StringConstants.API_URL + productData.productImageUrl.elementAt(displayImage)}")),
                   Space(height: 20),
                   Container(
                     height: 50,
                     alignment: Alignment.center,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: widget.productData.productImageUrl.length,
+                      itemCount: productData.productImageUrl.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Container(
@@ -118,7 +149,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                   });
                                 },
                                 child: Image.network(
-                                    "${StringConstants.API_URL + widget.productData.productImageUrl.elementAt(index)}"),
+                                    "${StringConstants.API_URL + productData.productImageUrl.elementAt(index)}"),
                               ),
                             ));
                       },
@@ -133,7 +164,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${widget.productData.productName}",
+                              Text("${productData.productName}",
                                   style: FontsTheme.boldTextStyle(size: 16)),
                               Space(height: 8),
                               Row(
@@ -143,7 +174,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2.0),
                                     child: Text(
-                                        "${widget.productData.productRatingAverage}",
+                                        "${productData.productRatingAverage}",
                                         style: FontsTheme.valueStyle(
                                             size: 11,
                                             fontWeight: FontWeight.w600)),
@@ -151,20 +182,22 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                 ],
                               ),
                               Space(height: 8),
-                              Text("${widget.productData.productDescription}",
+                              Text("${productData.productDescription}",
                                   style: FontsTheme.descriptionText(),
                                   textAlign: TextAlign.justify),
 
                               // Color Option
 
                               Space(height: 20),
-                              widget.productData.productVariationColors.length!=0?Text(
-                                "Color option",
-                                style: FontsTheme.subTitleStyle(
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w600,
-                                    size: 13),
-                              ):Container(),
+                              productData.productVariationColors!.length != 0
+                                  ? Text(
+                                      "Color option",
+                                      style: FontsTheme.subTitleStyle(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w600,
+                                          size: 13),
+                                    )
+                                  : Container(),
                               Space(height: 8),
                               Row(
                                 children: colorList.map<Widget>((e) {
@@ -173,27 +206,26 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     onTap: () {
                                       setState(() {
                                         currentIndex = index;
-
                                       });
                                     },
                                     child: Padding(
                                       padding:
-                                      const EdgeInsets.only(right: 8.0),
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: currentIndex == index
                                             ? BoxDecoration(
-                                            border: Border.all(
-                                                width: 2,
-                                                color:
-                                                appPrimaryMaterialColor),
-                                            borderRadius:
-                                            BorderRadius.circular(50.0))
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color:
+                                                        Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                                                borderRadius:
+                                                    BorderRadius.circular(50.0))
                                             : null,
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                              BorderRadius.circular(50.0),
+                                                  BorderRadius.circular(50.0),
                                               child: Container(
                                                   color: Color(
                                                       int.parse(e.colorCode)),
@@ -208,11 +240,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
 
                               // Size Option
                               Space(height: 18),
-                              widget.productData.productVariationSizes.length!=0?Text("Size Option",
-                                  style: FontsTheme.subTitleStyle(
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w600,
-                                      size: 13)):Container(),
+                              productData.productVariationSizes!.length != 0
+                                  ? Text("Size Option",
+                                      style: FontsTheme.subTitleStyle(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w600,
+                                          size: 13))
+                                  : Container(),
                               Space(height: 8),
                               Row(
                                 children: sizeList.map<Widget>((e) {
@@ -221,26 +255,28 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     onTap: () {
                                       setState(() {
                                         currentSizeIndex = index;
-                                        finalPrice=sizeList.elementAt(index).sellingPrice;
+                                        finalPrice = sizeList
+                                            .elementAt(index)
+                                            .sellingPrice;
                                       });
                                     },
                                     child: Padding(
                                       padding:
-                                      const EdgeInsets.only(right: 8.0),
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             border: Border.all(
                                                 width: 1,
                                                 color: currentSizeIndex == index
-                                                    ? appPrimaryMaterialColor
+                                                    ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
                                                     : Colors.grey.shade400),
                                             borderRadius:
-                                            BorderRadius.circular(5.0)),
+                                                BorderRadius.circular(5.0)),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2.0),
                                           child: ClipRRect(
                                               borderRadius:
-                                              BorderRadius.circular(50.0),
+                                                  BorderRadius.circular(50.0),
                                               child: Container(
                                                 alignment: Alignment.center,
                                                 margin: EdgeInsets.symmetric(
@@ -250,10 +286,10 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                     "${e.size}  \u{20B9}${e.sellingPrice}",
                                                     style: FontsTheme.subTitleStyle(
                                                         color: currentSizeIndex ==
-                                                            index
-                                                            ? appPrimaryMaterialColor
+                                                                index
+                                                            ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
                                                             : Colors
-                                                            .grey.shade400,
+                                                                .grey.shade400,
                                                         size: 12)),
                                                 height: 20,
                                               )),
@@ -303,7 +339,11 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                           ),
                         ]),
                   ),
-                  ElevatedButton(onPressed: (){_updateCartDaetails();}, child: Text("Update")),
+                  ElevatedButton(
+                      onPressed: () {
+                        _updateCartDaetails();
+                      },
+                      child: Text("Update")),
                 ],
               ),
             ),

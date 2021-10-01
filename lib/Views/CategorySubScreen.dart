@@ -172,7 +172,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       itemCount: productDataList.length,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent:
-                            isGrid ? 190 : MediaQuery.of(context).size.width,
+                            isGrid ? 200 : MediaQuery.of(context).size.width,
 
                         mainAxisExtent: isGrid ? 245 : 120,
                         childAspectRatio: isGrid ? 0.75 : 3.5,

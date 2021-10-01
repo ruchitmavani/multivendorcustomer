@@ -20,6 +20,7 @@ import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
@@ -68,6 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _getBannerData();
     _getTrendingData();
     _recentlyBought();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // executes after build
+      Provider.of<CustomColor>(context, listen: false).updateColor();
+    });
   }
 
   _getCategoryWiseProduct() async {
@@ -194,7 +199,9 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
-                size: 20, color: appPrimaryMaterialColor),
+                size: 20,
+                color:
+                    Provider.of<CustomColor>(context).appPrimaryMaterialColor),
             onPressed: () {
               Navigator.of(context)
                   .pushNamed(PageCollection.search)
@@ -213,19 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontSize: 10, color: Colors.white)),
               child: IconButton(
                 icon: Icon(AppIcons.shopping_cart,
-                    size: 20, color: appPrimaryMaterialColor),
+                    size: 20,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor),
                 onPressed: () {
-                  sharedPrefs.customer_id.isNotEmpty
-                      ? Navigator.of(context)
-                          .pushNamed(PageCollection.cart)
-                          .then((value) {
-                          initState();
-                        })
-                      : Navigator.of(context)
-                          .pushNamed(PageCollection.login)
-                          .then((value) {
-                          initState();
-                        });
+                  Navigator.of(context).pushNamed(PageCollection.cart);
                 },
               ),
             ),
@@ -282,7 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                                           },
                                           child: Icon(Icons.call,
-                                              color: appPrimaryMaterialColor),
+                                              color: Provider.of<CustomColor>(
+                                                      context)
+                                                  .appPrimaryMaterialColor),
                                         ),
                                         Provider.of<VendorModelWrapper>(context,
                                                     listen: false)
@@ -394,7 +395,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         )),
                                         Icon(Icons.directions,
                                             size: 18,
-                                            color: appPrimaryMaterialColor),
+                                            color: Provider.of<CustomColor>(
+                                                    context)
+                                                .appPrimaryMaterialColor),
                                         InkWell(
                                           onTap: () {
                                             launch(
@@ -403,8 +406,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Text(" Direction",
                                               style: TextStyle(
                                                   fontSize: 11,
-                                                  color:
-                                                      appPrimaryMaterialColor,
+                                                  color: Provider.of<
+                                                          CustomColor>(context)
+                                                      .appPrimaryMaterialColor,
                                                   fontWeight: FontWeight.w600)),
                                         ),
                                       ],

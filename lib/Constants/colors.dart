@@ -14,10 +14,10 @@ Map<int, Color> appPrimaryColor = {
   900: Color.fromRGBO(extRed(), extGreen(), extBlue(), 1)
 };
 
-MaterialColor appPrimaryMaterialColor = MaterialColor(
-    int.parse(
-        sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme),
-    appPrimaryColor);
+// MaterialColor appPrimaryMaterialColor = MaterialColor(
+//     int.parse(
+//         sharedPrefs.colorTheme == "" ? "4294922320" : sharedPrefs.colorTheme),
+//     appPrimaryColor);
 
 int extRed() {
   return Color(int.parse(

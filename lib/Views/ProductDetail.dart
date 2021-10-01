@@ -8,6 +8,8 @@ import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 class ProductDescription extends StatefulWidget {
   ProductData productData;
@@ -168,13 +170,14 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               // Color Option
 
                               Space(height: 20),
-                              if (widget.productData.productVariationColors!.length!=0) Text(
+                              if (widget.productData.productVariationColors!
+                                  .length != 0) Text(
                                 "Color option",
                                 style: FontsTheme.subTitleStyle(
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w600,
                                     size: 13),
-                              ) ,
+                              ),
                               Space(height: 8),
                               Row(
                                 children: colorList.map<Widget>((e) {
@@ -194,7 +197,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             border: Border.all(
                                                 width: 2,
                                                 color:
-                                                appPrimaryMaterialColor),
+                                                Provider.of<CustomColor>(context).appPrimaryMaterialColor),
                                             borderRadius:
                                             BorderRadius.circular(50.0))
                                             : null,
@@ -216,7 +219,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                               // Size Option
                               Space(height: 18),
-                              if (widget.productData.productVariationSizes!.length!=0) Text("Size Option",
+                              if (widget.productData.productVariationSizes!
+                                  .length != 0) Text("Size Option",
                                   style: FontsTheme.subTitleStyle(
                                       color: Colors.black54,
                                       fontWeight: FontWeight.w600,
@@ -242,7 +246,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             border: Border.all(
                                                 width: 1,
                                                 color: currentSizeIndex == index
-                                                    ? appPrimaryMaterialColor
+                                                    ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
                                                     : Colors.grey.shade400),
                                             borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -263,7 +267,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                         .subTitleStyle(
                                                         color: currentSizeIndex ==
                                                             index
-                                                            ? appPrimaryMaterialColor
+                                                            ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
                                                             : Colors
                                                             .grey.shade400,
                                                         size: 12)),

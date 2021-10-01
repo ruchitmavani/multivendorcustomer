@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 class TitleViewAll extends StatelessWidget {
   final String? title;
@@ -21,7 +22,7 @@ class TitleViewAll extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: appPrimaryMaterialColor),
+                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
               ))
         ],
       ),

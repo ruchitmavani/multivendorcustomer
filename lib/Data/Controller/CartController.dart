@@ -3,14 +3,15 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/AddToCartResponseModel.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataMoodel.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 
 import 'ProductController.dart';
 
 class CartController {
   /*-----------Get Cart Data-----------*/
-  static Future<ResponseClass<List<CartDataModel>>> getCartData(
+  static Future<ResponseClass<List<NewCartModel>>> getCartData(
       {required String vendorId, required String customerId}) async {
     String url = StringConstants.API_URL + StringConstants.cart_view;
 
@@ -21,7 +22,7 @@ class CartController {
       "customer_uniq_id": "$customerId"
     };
 
-    ResponseClass<List<CartDataModel>> responseClass = ResponseClass(
+    ResponseClass<List<NewCartModel>> responseClass = ResponseClass(
       success: false,
       message: "Something went wrong",
     );
@@ -36,8 +37,8 @@ class CartController {
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         List productList = response.data["data"];
-        List<CartDataModel> list =
-            productList.map((e) => CartDataModel.fromJson(e)).toList();
+        List<NewCartModel> list =
+            productList.map((e) => NewCartModel.fromJson(e)).toList();
         responseClass.data = list;
       }
       return responseClass;

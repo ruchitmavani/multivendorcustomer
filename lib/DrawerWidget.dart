@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:provider/provider.dart';
 
 import 'CommonWidgets/Space.dart';
 import 'Constants/StringConstants.dart';
+import 'Utils/Providers/ColorProvider.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   child: Container(
                       width: 50,
                       height: 50,
-                      color: appPrimaryMaterialColor,
+                      color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                       alignment: Alignment.center,
                       child: Text("${sharedPrefs.customer_name}".substring(0,1),style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: 'popins'),),),
                 ),

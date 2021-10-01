@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 typedef void BoolCallBack(bool value);
 typedef void StringCallBack(String value);
@@ -104,7 +105,7 @@ class _TopButtonsState extends State<TopButtons> {
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.NtoO,
                                           groupValue: _selection,
-                                          activeColor: appPrimaryMaterialColor,
+                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
 
                                           onChanged: (SortKeys? value) {
                                             setState(() {
@@ -120,7 +121,7 @@ class _TopButtonsState extends State<TopButtons> {
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.OtoN,
                                           groupValue: _selection,
-                                          activeColor: appPrimaryMaterialColor,
+                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
 
                                           onChanged: (SortKeys? value) {
                                             setState(() {
@@ -136,7 +137,7 @@ class _TopButtonsState extends State<TopButtons> {
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.spHtoL,
                                           groupValue: _selection,
-                                          activeColor: appPrimaryMaterialColor,
+                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
 
                                           onChanged: (SortKeys? value) {
                                             setState(() {

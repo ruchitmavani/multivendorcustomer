@@ -6,7 +6,9 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -25,7 +27,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
-        width: 180,
+        width: 200,
         height: 251,
         child: Container(
           decoration: BoxDecoration(
@@ -81,7 +83,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 3,
-                              decorationColor: appPrimaryMaterialColor,
+                              decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               color: Colors.grey.shade700,
@@ -108,7 +110,6 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                         ),
                       ],
                     ),
-                    Space(width: 8),
                     AddRemoveButton(
                       productData: widget.productData,
                       isRounded: true,
@@ -174,7 +175,11 @@ class _ProductComponentListState extends State<ProductComponentList> {
                     children: [
                       Text(
                         "${widget.productData.productName}",
-                        style: boldTitleText,
+                        style:  TextStyle(
+                            fontSize: 13,
+                            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins'),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right:4.0),
@@ -203,7 +208,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 decorationThickness: 3,
-                                decorationColor: appPrimaryMaterialColor,
+                                decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey.shade700,

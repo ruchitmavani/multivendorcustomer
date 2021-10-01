@@ -8,7 +8,9 @@ import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/RatingController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailComponent extends StatefulWidget {
   final ProductDetails productDetail;
@@ -134,7 +136,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                     ratingWidget: RatingWidget(
                       full: Icon(
                         Icons.star,
-                        color: appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                       ),
                       half: Icon(
                         Icons.star,
@@ -209,7 +211,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           children: [
                             Icon(
                               Icons.star,
-                              color: appPrimaryMaterialColor,
+                              color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                               size: 11,
                             ),
                             Space(
@@ -219,7 +221,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                               "Rate",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
-                                  color: appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600),
                             ),

@@ -7,6 +7,8 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
 class EditLocation extends StatefulWidget {
   String subAddress;
@@ -99,7 +101,7 @@ class _LocationState extends State<EditLocation> {
                                     ),
                               ),
                               selected: defaultChoiceIndex == index,
-                              selectedColor: appPrimaryMaterialColor,
+                              selectedColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                               onSelected: (value) {
                                 setState(() {
                                   defaultChoiceIndex =
