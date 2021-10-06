@@ -78,7 +78,7 @@ class _AboutUsState extends State<AboutUs> {
                             await launch(
                                 "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                           },
-                          child: SvgPicture.asset("images/whatsapp.svg")):Container(),
+                          child: SvgPicture.asset("images/whatsapp.svg",color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,)):Container(),
                       Space(width: 10)
                     ],
                   ),

@@ -729,6 +729,10 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
+                  if(sharedPrefs.customer_id.isEmpty){
+                    Navigator.pushNamed(context, PageCollection.login);
+                    return;
+                  }
                   if (Provider.of<CartDataWrapper>(context, listen: false)
                           .totalItems >
                       0) {

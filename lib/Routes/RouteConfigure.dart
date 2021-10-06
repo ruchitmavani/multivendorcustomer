@@ -1,24 +1,35 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Routes/ExtensionMethods.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/AboutUs.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
+import 'package:multi_vendor_customer/Views/LoadScreen.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
 import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
+import 'package:provider/provider.dart';
 
 class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     var routingData = settings.name!.getRoutingData;
+    print("== ${routingData.route}");
     switch (routingData.route) {
+      case PageCollection.store:
+        return MaterialPageRoute<void>(
+          builder: (context) => Loading(),
+          settings: settings,
+        );
       case PageCollection.home:
-        var id = routingData[''];
         return MaterialPageRoute<void>(
           builder: (context) => HomeScreen(),
           settings: settings,
@@ -64,10 +75,10 @@ class RouteConfig {
           settings: settings,
         );
       case PageCollection.location:
-      return MaterialPageRoute<void>(
-        builder: (context) => Location(),
-        settings: settings,
-      );
+        return MaterialPageRoute<void>(
+          builder: (context) => Location(),
+          settings: settings,
+        );
       case PageCollection.search:
         return MaterialPageRoute<void>(
           builder: (context) => Search(),

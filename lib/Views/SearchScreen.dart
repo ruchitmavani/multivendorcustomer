@@ -45,7 +45,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData();
+    // Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData();
   }
 
   @override

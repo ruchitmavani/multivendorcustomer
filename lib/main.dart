@@ -10,6 +10,7 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
+import 'package:multi_vendor_customer/Views/LoadScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -78,10 +79,10 @@ class MyApp extends StatelessWidget {
             style: ButtonStyle(),
           )),
       debugShowCheckedModeBanner: false,
-      initialRoute: PageCollection.home,
+      initialRoute: PageCollection.store,
       onGenerateRoute: RouteConfig.onGenerateRoute,
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (_) => HomeScreen());
+        return MaterialPageRoute(builder: (_) => Loading());
       },
     );
   }

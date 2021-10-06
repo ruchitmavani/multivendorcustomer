@@ -78,4 +78,6 @@ class PageCollection{
   static const String loading = '/loading';
   static const String search = '$home/search';
   static const String product = '/product';
+  static const String store = '/veer0411';
+
 }

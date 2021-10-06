@@ -18,7 +18,6 @@ import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
-import 'package:multi_vendor_customer/Utils/Hive/DemoModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -60,15 +59,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getInitialData() async {
     await Provider.of<VendorModelWrapper>(context, listen: false)
-        .loadVendorData();
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+        .loadVendorData(sharedPrefs.storeLink);
+
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
     _recentlyBought();
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
+            .vendorModel!
+            .vendorUniqId);
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // executes after build
       Provider.of<CustomColor>(context, listen: false).updateColor();
@@ -173,409 +173,389 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var vendorProvider = Provider.of<VendorModelWrapper>(context).vendorModel;
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.grey[200],
-      drawer: DrawerWidget(),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     final demo = DemoHive()
-      //       ..demo = "okay"
-      //       ..model = "okay";
-      //     final box = Boxes.getDemo();
-      //     box.add(demo);
-      //     print(Boxes.getDemo().listenable());
-      //   },
-      //   child: Text("O"),
-      // ),
-      appBar: AppBar(
-        leading: IconButton(
-          splashColor: Colors.transparent,
-          icon: Icon(AppIcons.drawer, color: Colors.black87, size: 15),
-          onPressed: () {
-            _scaffoldKey.currentState!.openDrawer();
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(CupertinoIcons.search,
-                size: 20,
-                color:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+        key: _scaffoldKey,
+        backgroundColor: Colors.grey[200],
+        drawer: DrawerWidget(),
+        appBar: AppBar(
+          leading: IconButton(
+            splashColor: Colors.transparent,
+            icon: Icon(AppIcons.drawer, color: Colors.black87, size: 15),
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(PageCollection.search)
-                  .then((value) {
-                initState();
-              });
+              _scaffoldKey.currentState!.openDrawer();
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Badge(
-              elevation: 0,
-              position: BadgePosition.topEnd(top: 5, end: 0),
-              badgeContent: Text(
-                  '${Provider.of<CartDataWrapper>(context).totalItems}',
-                  style: TextStyle(fontSize: 10, color: Colors.white)),
-              child: IconButton(
-                icon: Icon(AppIcons.shopping_cart,
-                    size: 20,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(PageCollection.cart);
-                },
+          actions: [
+            IconButton(
+              icon: Icon(CupertinoIcons.search,
+                  size: 20,
+                  color: Provider.of<CustomColor>(context)
+                      .appPrimaryMaterialColor),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(PageCollection.search)
+                    .then((value) {
+                  initState();
+                });
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Badge(
+                elevation: 0,
+                position: BadgePosition.topEnd(top: 5, end: 0),
+                badgeContent: Text(
+                    '${Provider.of<CartDataWrapper>(context).totalItems}',
+                    style: TextStyle(fontSize: 10, color: Colors.white)),
+                child: IconButton(
+                  icon: Icon(AppIcons.shopping_cart,
+                      size: 20,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(PageCollection.cart);
+                  },
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Provider.of<VendorModelWrapper>(context).isLoaded
-          ? Provider.of<VendorModelWrapper>(context).vendorModel != null
-              ? CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(PageCollection.about_us);
-                                      },
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.network(
-                                                "${StringConstants.API_URL}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
-                                                width: 60,
-                                                height: 60),
-                                            Space(width: 8.0),
-                                            Text(
-                                                "${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
-                                                style: FontsTheme.boldTextStyle(
-                                                    size: 17))
-                                          ],
-                                        ),
+          ],
+        ),
+        body: vendorProvider != null
+            ? CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamed(PageCollection.about_us);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.network(
+                                              "${StringConstants.API_URL}${vendorProvider.logo}",
+                                              width: 60,
+                                              height: 60),
+                                          Space(width: 8.0),
+                                          Text("${vendorProvider.businessName}",
+                                              style: FontsTheme.boldTextStyle(
+                                                  size: 17))
+                                        ],
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () async {
-                                            await launch(
-                                                'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
-                                          },
-                                          child: Icon(Icons.call,
-                                              color: Provider.of<CustomColor>(
-                                                      context)
-                                                  .appPrimaryMaterialColor),
-                                        ),
-                                        Provider.of<VendorModelWrapper>(context,
-                                                    listen: false)
-                                                .vendorModel!
-                                                .isWhatsappChatSupport
-                                            ? Space(width: 8)
-                                            : Container(),
-                                        Provider.of<VendorModelWrapper>(context,
-                                                    listen: false)
-                                                .vendorModel!
-                                                .isWhatsappChatSupport
-                                            ? Container(
-                                                height: 18,
-                                                width: 0.9,
-                                                color: Colors.grey)
-                                            : Container(),
-                                        Provider.of<VendorModelWrapper>(context,
-                                                    listen: false)
-                                                .vendorModel!
-                                                .isWhatsappChatSupport
-                                            ? Space(width: 8)
-                                            : Container(),
-                                        Provider.of<VendorModelWrapper>(context,
-                                                    listen: false)
-                                                .vendorModel!
-                                                .isWhatsappChatSupport
-                                            ? InkWell(
-                                                onTap: () async {
-                                                  await launch(
-                                                      "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                                                },
-                                                child: SvgPicture.asset(
-                                                    "images/whatsapp.svg"))
-                                            : Container(),
-                                        Space(width: 10)
-                                      ],
-                                    ),
-                                  ],
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                ),
-                                Space(
-                                  height: 12,
-                                ),
-                                CarouselSlider(
-                                  options: CarouselOptions(
-                                      height: 170.0,
-                                      aspectRatio: 16 / 9,
-                                      viewportFraction: 0.9,
-                                      autoPlay: true),
-                                  items: banners.map((bannerData) {
-                                    return Builder(
-                                      builder: (BuildContext context) {
-                                        return SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Card(
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
-                                                child: Image.network(
-                                                  "${StringConstants.API_URL}${bannerData.bannerUrl}",
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )),
-                                        );
-                                      },
-                                    );
-                                  }).toList(),
-                                ),
-                                Space(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RichText(
-                                        text: TextSpan(
-                                            text: "Shop Timing :",
-                                            style: FontsTheme.descriptionText(
-                                                fontWeight: FontWeight.w600),
-                                            children: [
-                                          TextSpan(
-                                              text: Provider.of<
-                                                              VendorModelWrapper>(
-                                                          context)
-                                                      .vendorModel!
-                                                      .businessHours
-                                                      .elementAt(now.weekday)
-                                                      .isOpen
-                                                  ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
-                                                  : "  Closed",
-                                              style: FontsTheme.valueStyle(
-                                                  color: Colors.black54,
-                                                  size: 11,
-                                                  fontWeight: FontWeight.w700))
-                                        ])),
-                                    Space(width: 20),
-                                    Row(
-                                      children: [
-                                        RichText(
-                                            text: TextSpan(
-                                          text: "Location:",
-                                          style: FontsTheme.descriptionText(
-                                              fontWeight: FontWeight.w600),
-                                        )),
-                                        Icon(Icons.directions,
-                                            size: 18,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          await launch(
+                                              'tel: ${vendorProvider.mobileNumber}');
+                                        },
+                                        child: Icon(Icons.call,
                                             color: Provider.of<CustomColor>(
                                                     context)
                                                 .appPrimaryMaterialColor),
-                                        InkWell(
-                                          onTap: () {
-                                            launch(
-                                                "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                                          },
-                                          child: Text(" Direction",
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Provider.of<
-                                                          CustomColor>(context)
-                                                      .appPrimaryMaterialColor,
-                                                  fontWeight: FontWeight.w600)),
-                                        ),
+                                      ),
+                                      vendorProvider.isWhatsappChatSupport
+                                          ? Space(width: 8)
+                                          : Container(),
+                                      vendorProvider.isWhatsappChatSupport
+                                          ? Container(
+                                              height: 18,
+                                              width: 0.9,
+                                              color: Colors.grey)
+                                          : Container(),
+                                      vendorProvider.isWhatsappChatSupport
+                                          ? Space(width: 8)
+                                          : Container(),
+                                      vendorProvider.isWhatsappChatSupport
+                                          ? InkWell(
+                                              onTap: () async {
+                                                await launch(
+                                                    "https://wa.me/${vendorProvider.mobileNumber}");
+                                              },
+                                              child: SvgPicture.asset(
+                                                "images/whatsapp.svg",
+                                                color: Provider.of<CustomColor>(
+                                                        context)
+                                                    .appPrimaryMaterialColor,
+                                              ))
+                                          : Container(),
+                                      Space(width: 10)
+                                    ],
+                                  ),
+                                ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                              Space(
+                                height: 12,
+                              ),
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                    height: 170.0,
+                                    aspectRatio: 16 / 9,
+                                    viewportFraction: 0.9,
+                                    autoPlay: true),
+                                items: banners.map((bannerData) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              child: Image.network(
+                                                "${StringConstants.API_URL}${bannerData.bannerUrl}",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )),
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                              Space(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Shop Timing :",
+                                      style: FontsTheme.descriptionText(
+                                          fontWeight: FontWeight.w600),
+                                      children: [
+                                        vendorProvider.businessHours.length == 0
+                                            ? TextSpan(
+                                                text:  "  Open",
+                                                style: FontsTheme.valueStyle(
+                                                    color: Colors.black54,
+                                                    size: 11,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              )
+                                            : TextSpan(
+                                                text: Provider.of<
+                                                                VendorModelWrapper>(
+                                                            context)
+                                                        .vendorModel!
+                                                        .businessHours
+                                                        .elementAt(now.weekday)
+                                                        .isOpen
+                                                    ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
+                                                    : "  Closed",
+                                                style: FontsTheme.valueStyle(
+                                                    color: Colors.black54,
+                                                    size: 11,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                Space(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Space(width: 20),
+                                  Row(
+                                    children: [
+                                      RichText(
+                                          text: TextSpan(
+                                        text: "Location:",
+                                        style: FontsTheme.descriptionText(
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                      Icon(Icons.directions,
+                                          size: 18,
+                                          color:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor),
+                                      InkWell(
+                                        onTap: () {
+                                          launch(
+                                              "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                        },
+                                        child: Text(" Direction",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Provider.of<CustomColor>(
+                                                        context)
+                                                    .appPrimaryMaterialColor,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Space(
+                                height: 20,
+                              ),
+                            ],
                           ),
-                          isLoadingTop
-                              ? Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.white,
-                                      highlightColor: Colors.grey[300]!,
-                                      period: Duration(seconds: 2),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                20,
-                                        height: 100,
-                                        decoration: ShapeDecoration(
-                                          color: Colors.grey[300]!,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                        ),
+                        ),
+                        isLoadingTop
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.white,
+                                    highlightColor: Colors.grey[300]!,
+                                    period: Duration(seconds: 2),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          20,
+                                      height: 100,
+                                      decoration: ShapeDecoration(
+                                        color: Colors.grey[300]!,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
                                       ),
                                     ),
                                   ),
-                                )
-                              : trendingProducts.length != 0
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10.0, top: 10),
-                                      child: Row(
-                                        children: [
-                                          Text("Top Selling Products",
-                                              style: FontsTheme.boldTextStyle(
-                                                  size: 15)),
-                                        ],
-                                      ),
-                                    )
-                                  : Container(),
-                          if (trendingProducts.length != 0)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 4.0, bottom: 12, right: 4, left: 4),
-                              child: SizedBox(
-                                height: 90,
-                                child: ListView.builder(
-                                    itemCount: trendingProducts.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return TopSellingProductComponent(
-                                        productData:
-                                            trendingProducts.elementAt(index),
-                                      );
-                                    }),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    SliverAppBar(
-                      pinned: true,
-                      snap: false,
-                      floating: true,
-                      flexibleSpace: TopButtons(
-                        onChanged: (value) {
-                          setState(() {
-                            isGrid = value;
-                          });
-                        },
-                      ),
-                      automaticallyImplyLeading: false,
-                    ),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.white,
-                            child: isLoadingRece
-                                ? Center(
-                                    child: SizedBox(width: 12, height: 12),
+                                ),
+                              )
+                            : trendingProducts.length != 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, top: 10),
+                                    child: Row(
+                                      children: [
+                                        Text("Top Selling Products",
+                                            style: FontsTheme.boldTextStyle(
+                                                size: 15)),
+                                      ],
+                                    ),
                                   )
-                                : recentlyBought.length == 0
-                                    ? Container()
-                                    : Column(
-                                        children: [
-                                          TitleViewAll(
-                                            title: "Recently bought",
-                                            onPressed: () {},
-                                          ),
-                                          SizedBox(
-                                            height: 245,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 4.0),
-                                              child: ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount:
-                                                      recentlyBought.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return RecentlyBought(
+                                : Container(),
+                        if (trendingProducts.length != 0)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 4.0, bottom: 12, right: 4, left: 4),
+                            child: SizedBox(
+                              height: 90,
+                              child: ListView.builder(
+                                  itemCount: trendingProducts.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return TopSellingProductComponent(
+                                      productData:
+                                          trendingProducts.elementAt(index),
+                                    );
+                                  }),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SliverAppBar(
+                    pinned: true,
+                    snap: false,
+                    floating: true,
+                    flexibleSpace: TopButtons(
+                      onChanged: (value) {
+                        setState(() {
+                          isGrid = value;
+                        });
+                      },
+                    ),
+                    automaticallyImplyLeading: false,
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.white,
+                          child: isLoadingRece
+                              ? Center(
+                                  child: SizedBox(width: 12, height: 12),
+                                )
+                              : recentlyBought.length == 0
+                                  ? Container()
+                                  : Column(
+                                      children: [
+                                        TitleViewAll(
+                                          title: "Recently bought",
+                                          onPressed: () {},
+                                        ),
+                                        SizedBox(
+                                          height: 245,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    recentlyBought.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 8.0),
+                                                    child: RecentlyBought(
                                                       productData:
                                                           recentlyBought
                                                               .elementAt(index),
-                                                    );
-                                                  }),
-                                            ),
+                                                    ),
+                                                  );
+                                                }),
                                           ),
-                                        ],
-                                      ),
-                          ),
-                          isLoadingCate
-                              ? Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.white,
-                                      highlightColor: Colors.grey[300]!,
-                                      period: Duration(seconds: 2),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                20,
-                                        height: 200,
-                                        decoration: ShapeDecoration(
-                                          color: Colors.grey[300]!,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
                                         ),
+                                      ],
+                                    ),
+                        ),
+                        isLoadingCate
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.white,
+                                    highlightColor: Colors.grey[300]!,
+                                    period: Duration(seconds: 2),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          20,
+                                      height: 200,
+                                      decoration: ShapeDecoration(
+                                        color: Colors.grey[300]!,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
                                       ),
                                     ),
                                   ),
-                                )
-                              : categoryWiseProducts(),
-                        ],
-                      ),
+                                ),
+                              )
+                            : categoryWiseProducts(),
+                      ],
                     ),
-                  ],
-                )
-              : Center(
-                  child: Text("No Vendor Found"),
-                )
-          : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 10,
                   ),
-                  Text("Store is Loading"),
                 ],
-              ),
-            ),
-    );
+              )
+            : Center(
+                child: Text("No Vendor Found"),
+              ));
   }
 
   Widget categoryWiseProducts() {
@@ -584,6 +564,16 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Space(
+                height: 40,
+              ),
+              SvgPicture.asset(
+                "images/error.svg",
+                color:
+                    Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                width: 30,
+                height: 30,
+              ),
               Text("No Products Available"),
             ],
           )
@@ -629,7 +619,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .length,
                             itemBuilder: (context, i) {
                               String path = Uri(
-                                  path: PageCollection.product,
+                                  path: PageCollection.home +
+                                      PageCollection.product,
                                   queryParameters: {
                                     "productName":
                                         "${productDataList.elementAt(index).productDetails.elementAt(i).productName}",
@@ -657,7 +648,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: FloatingActionButton(
                                                     onPressed: () {
                                                       Navigator.of(context)
-                                                          .pop();
+                                                          .pop
+                                                          .call();
                                                     },
                                                     child: Icon(Icons.close,
                                                         size: 16),

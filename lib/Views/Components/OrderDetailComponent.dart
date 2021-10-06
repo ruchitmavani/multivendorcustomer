@@ -77,7 +77,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
     });
   }
 
-  void ratingBottomSheet(BuildContext context, int price) {
+  void ratingBottomSheet(BuildContext context, double price) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

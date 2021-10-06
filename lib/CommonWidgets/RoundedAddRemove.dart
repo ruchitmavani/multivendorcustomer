@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
@@ -71,6 +72,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
     provider.incrementQuantity(
         quantity: quantity, productId: widget.productId);
+    provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
   }
 
   @override

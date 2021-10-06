@@ -8,6 +8,8 @@ import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:multi_vendor_customer/Views/CheckOut.dart';
 import 'package:provider/provider.dart';
 
 class PaymentOptions extends StatefulWidget {
@@ -41,6 +43,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     .discount
                     .toInt()
                 : 0,
+            orders:
+                Provider.of<CartDataWrapper>(context, listen: false).cartData,
             couponId: "",
             deliveryCharge: 0,
             finalPaid: Provider.of<CartDataWrapper>(context, listen: false)
@@ -62,6 +66,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         setState(() {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
+          Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
           Navigator.pushReplacementNamed(context, PageCollection.home);
         });
       } else {
@@ -73,6 +78,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       setState(() {
         isLoadingCate = false;
       });
+      print(e);
     });
   }
 
@@ -98,7 +104,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 ListTile(
                   title: const Text('Cash on Delivery'),
                   leading: Radio<paymentMethods>(
-                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
                     value: paymentMethods.COD,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
@@ -117,7 +124,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Pay Online'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.PAY_ONLINE,
-                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
                       setState(() {
@@ -135,7 +143,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Take Away'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.TAKEAWAY,
-                    activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    activeColor: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
                       setState(() {
@@ -174,10 +183,29 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                                 "TAKEAWAY") {
                           _addOrder();
                         }
+                        if (_selection.toString().split(".").last ==
+                            "PAY_ONLINE") {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Webpayment(
+                                price: Provider.of<CartDataWrapper>(context,
+                                            listen: false)
+                                        .totalAmount
+                                        .toInt() *
+                                    100,
+                                name: sharedPrefs.customer_name,
+                                image: "${StringConstants.API_URL}${sharedPrefs.logo}",
+                                addOrder: _addOrder,
+
+                              );
+                            },
+                          ));
+                        }
                       },
                       child: Container(
                         height: 48,
-                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 3.0),
                           child: Center(

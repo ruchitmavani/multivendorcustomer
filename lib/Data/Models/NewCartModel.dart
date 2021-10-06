@@ -15,9 +15,7 @@ String newCartModelToJson(List<NewCartModel> data) => json.encode(List<dynamic>.
 class NewCartModel {
   NewCartModel({
     required this.productId,
-    required this.vendorUniqId,
-    required this.customerUniqId,
-    required this.productQuantity,
+     required this.productQuantity,
     required this.productSize,
     required this.productColor,
     required this.productImageUrl,
@@ -29,8 +27,6 @@ class NewCartModel {
   });
 
   String productId;
-  String vendorUniqId;
-  String customerUniqId;
   int productQuantity;
   ProductSize? productSize;
   ProductColor? productColor;
@@ -43,8 +39,6 @@ class NewCartModel {
 
   factory NewCartModel.fromJson(Map<String, dynamic> json) => NewCartModel(
     productId: json["product_id"],
-    vendorUniqId: json["vendor_uniq_id"],
-    customerUniqId: json["customer_uniq_id"] == null ? null : json["customer_uniq_id"],
     productQuantity: json["product_quantity"],
     productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
     productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
@@ -58,8 +52,6 @@ class NewCartModel {
 
   Map<String, dynamic> toJson() => {
     "product_id": productId,
-    "vendor_uniq_id": vendorUniqId,
-    "customer_uniq_id": customerUniqId == null ? null : customerUniqId,
     "product_quantity": productQuantity,
     "product_size": productSize == null ? null : productSize!.toJson(),
     "product_color": productColor == null ? null : productColor!.toJson(),

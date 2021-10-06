@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:html';
 
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -51,17 +54,30 @@ class OrderController {
       required int finalPaid,
       required int totalAmount,
       required int deliveryCharge,
+      required List<NewCartModel> orders,
       required int couponAmount,
       required int taxAmount,
       required String couponId,
       required CustomerAddress address}) async {
     String url = StringConstants.API_URL + StringConstants.add_order;
 
+    print(window.localStorage);
     //body Data
+    List<AddOrder> productList = [];
+    for (int i = 0; i < orders.length; i++) {
+      print(i);
+      productList.add(AddOrder(
+          productId: orders.elementAt(i).productId,
+          productSize: orders.elementAt(i).productSize,
+          productColor: orders.elementAt(i).productColor,
+          productQuantity: orders.elementAt(i).productQuantity));
+    }
+
     var data = couponAmount == 0
         ? {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
             "vendor_uniq_id": "${sharedPrefs.vendor_uniq_id}",
+            "order_items": productList,
             "payment_type": "$type",
             "paid_amount": paidAmount,
             "refund_amount": refundAmount,
@@ -75,6 +91,7 @@ class OrderController {
         : {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
             "vendor_uniq_id": "${sharedPrefs.vendor_uniq_id}",
+            "order_items": productList,
             "payment_type": "$type",
             "paid_amount": paidAmount,
             "refund_amount": refundAmount,
@@ -86,6 +103,8 @@ class OrderController {
             "coupon_id": "$couponId",
             "delivery_address": address.toJson(),
           };
+
+    print(data);
 
     ResponseClass<List<OrderDataModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");

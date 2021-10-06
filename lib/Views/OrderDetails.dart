@@ -22,8 +22,7 @@ class OrderDetails extends StatefulWidget {
 }
 
 class _OrderDetailsState extends State<OrderDetails> {
-
-  LineStyle lineStyle=LineStyle(color: Colors.grey.shade300,thickness: 2);
+  LineStyle lineStyle = LineStyle(color: Colors.grey.shade300, thickness: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                           await launch(
                               'tel: ${widget.orderData.vendorDetails.mobileNumber}');
                         },
-                        child: Icon(Icons.call, color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                        child: Icon(Icons.call,
+                            color: Provider.of<CustomColor>(context)
+                                .appPrimaryMaterialColor),
                       ),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
                           ? Space(width: 8)
@@ -91,7 +92,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 await launch(
                                     "https://wa.me/${widget.orderData.vendorDetails.mobileNumber}");
                               },
-                              child: SvgPicture.asset("images/whatsapp.svg"))
+                              child: SvgPicture.asset(
+                                "images/whatsapp.svg",
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                              ),
+                            )
                           : Container(),
                       Space(width: 10)
                     ],
@@ -133,100 +139,124 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Container(
-                      constraints: BoxConstraints(maxHeight: 55,maxWidth: MediaQuery.of(context).size.width),
+                      constraints: BoxConstraints(
+                          maxHeight: 55,
+                          maxWidth: MediaQuery.of(context).size.width),
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Container(color: Colors.grey.shade300,height: 3,margin: EdgeInsets.symmetric(horizontal: 40),),
+                          Container(
+                            color: Colors.grey.shade300,
+                            height: 3,
+                            margin: EdgeInsets.symmetric(horizontal: 40),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              if (widget.orderData.orderStatus=="pending") TimelineTile(
-                                alignment: TimelineAlign.center,
-                                axis: TimelineAxis.horizontal,
-                                isFirst: true,
-                                beforeLineStyle: lineStyle,
-                                afterLineStyle: lineStyle,
-                                indicatorStyle: IndicatorStyle(
-                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                    iconStyle: IconStyle(iconData: Icons.watch,color: Colors.white,fontSize: 16),
-                                    height: 22,
-                                    width: 22
-
+                              if (widget.orderData.orderStatus == "pending")
+                                TimelineTile(
+                                  alignment: TimelineAlign.center,
+                                  axis: TimelineAxis.horizontal,
+                                  isFirst: true,
+                                  beforeLineStyle: lineStyle,
+                                  afterLineStyle: lineStyle,
+                                  indicatorStyle: IndicatorStyle(
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      iconStyle: IconStyle(
+                                          iconData: Icons.watch,
+                                          color: Colors.white,
+                                          fontSize: 16),
+                                      height: 22,
+                                      width: 22),
+                                  endChild: Text(
+                                    "Pending",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
                                 ),
-                                endChild: Text(
-                                  "Pending",
-                                  style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
+                              if (widget.orderData.orderStatus == "pending" ||
+                                  widget.orderData.orderStatus == "delivered")
+                                TimelineTile(
+                                  alignment: TimelineAlign.center,
+                                  axis: TimelineAxis.horizontal,
+                                  isFirst: true,
+                                  beforeLineStyle: lineStyle,
+                                  afterLineStyle: lineStyle,
+                                  indicatorStyle: IndicatorStyle(
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      iconStyle: IconStyle(
+                                          iconData: Icons.done,
+                                          color: Colors.white,
+                                          fontSize: 16),
+                                      height: 22,
+                                      width: 22),
+                                  endChild: Text(
+                                    "Accepted",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
                                 ),
-                              ),
-                              if (widget.orderData.orderStatus=="pending"||widget.orderData.orderStatus=="delivered") TimelineTile(
-                                alignment: TimelineAlign.center,
-                                axis: TimelineAxis.horizontal,
-                                isFirst: true,
-                                beforeLineStyle: lineStyle,
-                                afterLineStyle: lineStyle,
-                                indicatorStyle: IndicatorStyle(
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                  iconStyle: IconStyle(iconData: Icons.done,color: Colors.white,fontSize: 16),
-                                  height: 22,
-                                  width: 22
-
+                              if (widget.orderData.orderStatus == "delivered" ||
+                                  widget.orderData.orderStatus == "pending")
+                                TimelineTile(
+                                  alignment: TimelineAlign.center,
+                                  axis: TimelineAxis.horizontal,
+                                  beforeLineStyle: lineStyle,
+                                  afterLineStyle: lineStyle,
+                                  isFirst: true,
+                                  indicatorStyle: IndicatorStyle(
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      iconStyle: IconStyle(
+                                          iconData: Icons.access_time,
+                                          color: Colors.white,
+                                          fontSize: 16),
+                                      height: 22,
+                                      width: 22),
+                                  endChild: Text(
+                                    "Dispatched",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
                                 ),
-                                endChild: Text(
-                                  "Accepted",
-                                  style:
-                                      TextStyle(color: Colors.black, fontSize: 12),
+                              if (widget.orderData.orderStatus != "delivered")
+                                TimelineTile(
+                                  alignment: TimelineAlign.center,
+                                  axis: TimelineAxis.horizontal,
+                                  isLast: true,
+                                  beforeLineStyle: lineStyle,
+                                  afterLineStyle: lineStyle,
+                                  endChild: Text(
+                                    "",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
                                 ),
-                              ),
-                              if (widget.orderData.orderStatus=="delivered"||widget.orderData.orderStatus=="pending")TimelineTile(
-                                alignment: TimelineAlign.center,
-                                axis: TimelineAxis.horizontal,
-                                beforeLineStyle: lineStyle,
-                                afterLineStyle: lineStyle,
-                                isFirst: true,
-                                indicatorStyle: IndicatorStyle(
-                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                    iconStyle: IconStyle(iconData: Icons.access_time,color: Colors.white,fontSize: 16),
-                                    height: 22,
-                                    width: 22
+                              if (widget.orderData.orderStatus == "delivered")
+                                TimelineTile(
+                                  alignment: TimelineAlign.center,
+                                  axis: TimelineAxis.horizontal,
+                                  isLast: true,
+                                  beforeLineStyle: lineStyle,
+                                  afterLineStyle: lineStyle,
+                                  indicatorStyle: IndicatorStyle(
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      iconStyle: IconStyle(
+                                          iconData: Icons.airport_shuttle,
+                                          color: Colors.white,
+                                          fontSize: 16),
+                                      height: 22,
+                                      width: 22),
+                                  endChild: Text(
+                                    "Delivered",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
                                 ),
-                                endChild: Text(
-                                  "Dispatched",
-                                  style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                                ),
-                              ),if (widget.orderData.orderStatus!="delivered")TimelineTile(
-                                alignment: TimelineAlign.center,
-                                axis: TimelineAxis.horizontal,
-                                isLast: true,
-                                beforeLineStyle: lineStyle,
-                                afterLineStyle: lineStyle,
-                                endChild: Text(
-                                  "",
-                                  style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                                ),
-                              ),
-                              if (widget.orderData.orderStatus=="delivered")TimelineTile(
-                                alignment: TimelineAlign.center,
-                                axis: TimelineAxis.horizontal,
-                                isLast: true,
-                                beforeLineStyle: lineStyle,
-                                afterLineStyle: lineStyle,
-                                indicatorStyle: IndicatorStyle(
-                                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                    iconStyle: IconStyle(iconData: Icons.airport_shuttle,color: Colors.white,fontSize: 16),
-                                    height: 22,
-                                    width: 22
-                                ),
-                                endChild: Text(
-                                  "Delivered",
-                                  style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                                ),
-                              ),
                             ],
                           ),
                         ],

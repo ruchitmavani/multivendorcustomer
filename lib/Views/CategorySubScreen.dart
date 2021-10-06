@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -141,29 +143,32 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
           Expanded(
             child: isLoading
                 ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.builder(
-              itemCount: 8,
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                      itemCount: 8,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: MediaQuery.of(context).size.width*0.5,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8
-                      ),
+                          maxCrossAxisExtent:
+                              MediaQuery.of(context).size.width * 0.5,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8),
                       itemBuilder: (context, index) {
                         return Shimmer.fromColors(
                           baseColor: Colors.white,
                           highlightColor: Colors.grey[300]!,
                           period: Duration(seconds: 2),
                           child: Container(
-                            width: MediaQuery.of(context).size.width-20,
+                            width: MediaQuery.of(context).size.width - 20,
                             height: 100,
                             decoration: ShapeDecoration(
-                              color: Colors.grey[300]!, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              color: Colors.grey[300]!,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
                             ),
                           ),
                         );
-                      },),
-                )
+                      },
+                    ),
+                  )
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 6.0, vertical: 6),
@@ -173,7 +178,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent:
                             isGrid ? 200 : MediaQuery.of(context).size.width,
-
                         mainAxisExtent: isGrid ? 245 : 120,
                         childAspectRatio: isGrid ? 0.75 : 3.5,
                         crossAxisSpacing: 3,
@@ -182,11 +186,20 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
+                            String path = Uri(
+                                path: PageCollection.product,
+                                queryParameters: {
+                                  "productName":
+                                      "${productDataList.elementAt(index).productName}",
+                                  "id":
+                                      "${productDataList.elementAt(index).productId}"
+                                }).toString();
                             showModalBottomSheet(
                                 useRootNavigator: true,
                                 context: context,
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
+                                routeSettings: RouteSettings(name: path),
                                 builder: (context) {
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,

@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -9,7 +11,9 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDescription extends StatefulWidget {
   ProductData productData;
@@ -58,6 +62,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
   void initState() {
     super.initState();
     _loadData();
+
+    print(window.location.href);
     if (widget.productData.productVariationColors!.length != 0) {
       colorList = widget.productData.productVariationColors!;
     }
@@ -319,7 +325,23 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           ),
                         ]),
                   ),
-                  AddRemoveButton(productData: widget.productData,
+                  widget.productData.isRequestPrice?ElevatedButton(
+                    onPressed: () {
+                      launch(
+                         "https://wa.me/${sharedPrefs.vendorMobileNumber}"
+                      );
+                    },
+                    child: Text("Request Price",
+                        style: FontsTheme.boldTextStyle(color: Colors.white)),
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all<double>(0),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor),
+                      foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ):AddRemoveButton(productData: widget.productData,
                     isRounded: false,
                     colorIndex: currentIndex,
                     sizeIndex: currentSizeIndex,)

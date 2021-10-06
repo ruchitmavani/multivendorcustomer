@@ -110,7 +110,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                         ),
                       ],
                     ),
-                    AddRemoveButton(
+                    if (!widget.productData.isRequestPrice) AddRemoveButton(
                       productData: widget.productData,
                       isRounded: true,
                       sizeIndex: 0,
@@ -224,7 +224,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                           ),
                         ],
                       ),
-                      AddRemoveButton(
+                      if (!widget.productData.isRequestPrice)AddRemoveButton(
                         productData: widget.productData,
                         isRounded: true,
                         colorIndex: 0,
