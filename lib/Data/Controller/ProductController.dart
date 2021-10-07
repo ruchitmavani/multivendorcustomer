@@ -14,22 +14,27 @@ class ProductController {
       {required String vendorId,
       required String categoryId,
       required int limit,
-      required int page,required String sortKey}) async {
+      required int page,
+      required String sortKey}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_all_product;
 
     //body Data
-    var data = sharedPrefs.customer_id.isEmpty?{  "vendor_uniq_id": "$vendorId",
-      "category_id": "$categoryId",
-      "limit": limit,
-      "sort" : sortKey,
-      "page": page}:{  "vendor_uniq_id": "$vendorId",
-    "customer_uniq_id":"${sharedPrefs.customer_id}",
-      "category_id": "$categoryId",
-      "sort" : sortKey,
-      "limit": limit,
-      "page": page
-
-    };
+    var data = sharedPrefs.customer_id.isEmpty
+        ? {
+            "vendor_uniq_id": "$vendorId",
+            "category_id": "$categoryId",
+            "limit": limit,
+            "sort": sortKey,
+            "page": page
+          }
+        : {
+            "vendor_uniq_id": "$vendorId",
+            "customer_uniq_id": "${sharedPrefs.customer_id}",
+            "category_id": "$categoryId",
+            "sort": sortKey,
+            "limit": limit,
+            "page": page
+          };
     print(data);
 
     ResponseClass responseClass =
@@ -48,7 +53,8 @@ class ProductController {
         List<ProductData> list =
             productList.map((e) => ProductData.fromJson(e)).toList();
         responseClass.data = list;
-        responseClass.pagination=PaginationModel.fromJson(response.data["pagination"]);
+        responseClass.pagination =
+            PaginationModel.fromJson(response.data["pagination"]);
       }
       return responseClass;
     } catch (e) {
@@ -92,16 +98,17 @@ class ProductController {
 
   /*-----------Search Product Data-----------*/
   static Future<ResponseClass> searchProduct(
-      {required String vendorId,required String searchString}) async {
+      {required String vendorId, required String searchString}) async {
     String url = StringConstants.API_URL + StringConstants.search_product;
 
     //body Data
-    var data = sharedPrefs.customer_id.isEmpty?{
-      "vendor_uniq_id" : "$vendorId",
-      "text" : "$searchString"
-    }:{  "vendor_uniq_id" : "$vendorId",
-      "customer_uniq_id" : "${sharedPrefs.customer_id}",
-      "text" : "$searchString"};
+    var data = sharedPrefs.customer_id.isEmpty
+        ? {"vendor_uniq_id": "$vendorId", "text": "$searchString"}
+        : {
+            "vendor_uniq_id": "$vendorId",
+            "customer_uniq_id": "${sharedPrefs.customer_id}",
+            "text": "$searchString"
+          };
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -134,16 +141,16 @@ class ProductController {
     String url = StringConstants.API_URL + StringConstants.find_a_product;
 
     //body Data
-    var data = sharedPrefs.customer_id.isEmpty?{
-      "product_id" : "$productId"
-    }:{
-      "product_id" : "$productId",
-      "customer_uniq_id": "${sharedPrefs.customer_id}"
-    };
+    var data = sharedPrefs.customer_id.isEmpty
+        ? {"product_id": "$productId"}
+        : {
+            "product_id": "$productId",
+            "customer_uniq_id": "${sharedPrefs.customer_id}"
+          };
 
     print(data);
     ResponseClass<ProductData> responseClass =
-    ResponseClass(success: false, message: "Something went wrong");
+        ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -167,15 +174,14 @@ class ProductController {
   /*-----------Recently Bought Product Data-----------*/
   static Future<ResponseClass<List<ProductData>>> recentlyBought(
       {required String customerId}) async {
-    String url = StringConstants.API_URL + StringConstants.recently_bought_product;
+    String url =
+        StringConstants.API_URL + StringConstants.recently_bought_product;
 
     //body Data
-    var data = {
-      "customer_uniq_id": "$customerId"
-    };
+    var data = {"customer_uniq_id": "$customerId"};
 
     ResponseClass<List<ProductData>> responseClass =
-    ResponseClass(success: false, message: "Something went wrong");
+        ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -189,7 +195,7 @@ class ProductController {
         responseClass.message = response.data["message"];
         List productList = response.data["data"];
         List<ProductData> list =
-        productList.map((e) => ProductData.fromJson(e)).toList();
+            productList.map((e) => ProductData.fromJson(e)).toList();
         responseClass.data = list;
       }
       return responseClass;

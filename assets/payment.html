@@ -14,7 +14,8 @@
    const email = urlParams.get('email')
    const color = urlParams.get('color')
    const customerPhone = urlParams.get('customerPhone')
-   const shopname = urlParams.get('shopname')
+   const shopname = urlParams.get('shopname') 
+    const orderId = urlParams.get('orderid')
 
 
       options = {
@@ -23,10 +24,11 @@
           "name":shopname,
           "description": name,
           "image":image,
+          "order_id":orderId,
           "handler": function (response){
              window.parent.postMessage("SUCCESS","*");      //2
              window.localStorage.setItem("payment_id",response.razorpay_payment_id);
-             window.localStorage.setItem("order_id",response.razorpay_order_id);
+             window.localStorage.setItem("signature",response.razorpay_signature);
              alert("Payment id: "+response.razorpay_payment_id)
              alert("order id: "+ response.razorpay_order_id);
               alert("signature "+ response.razorpay_signature);

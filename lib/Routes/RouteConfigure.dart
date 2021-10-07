@@ -23,12 +23,17 @@ class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     var routingData = settings.name!.getRoutingData;
     print("== ${routingData.route}");
-    switch (routingData.route) {
-      case PageCollection.store:
-        return MaterialPageRoute<void>(
-          builder: (context) => Loading(),
-          settings: settings,
-        );
+    List<String> length=routingData.route.split("/");
+    print(length);
+      // if(length.last=="home"){
+      //   return MaterialPageRoute<void>(
+      //             builder: (context) => HomeScreen(),
+      //             settings: settings,
+      //           );
+      // }
+
+
+    switch (length.last) {
       case PageCollection.home:
         return MaterialPageRoute<void>(
           builder: (context) => HomeScreen(),

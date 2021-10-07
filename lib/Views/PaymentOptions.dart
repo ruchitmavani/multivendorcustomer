@@ -1,9 +1,12 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
+import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -28,6 +31,42 @@ enum paymentMethods { COD, PAY_ONLINE, TAKEAWAY }
 class _PaymentOptionsState extends State<PaymentOptions> {
   paymentMethods _selection = paymentMethods.COD;
   bool isLoadingCate = false;
+  late String orderId;
+
+  @override
+  void initState() {
+    super.initState();
+    _generateOrderId();
+  }
+
+  _generateOrderId()async{
+    setState(() {
+      isLoadingCate = true;
+    });
+    await PaymentController.generateOrderId(Provider.of<CartDataWrapper>(context, listen: false)
+        .totalAmount
+        .toInt())
+        .then((value) {
+      if (value.success) {
+        print(value.data);
+        setState(() {
+          isLoadingCate = false;
+          Fluttertoast.showToast(msg: "${value.data!.orderId}");
+          orderId=value.data!.orderId;
+          window.localStorage["orderId"]=orderId;
+        });
+      } else {
+        setState(() {
+          isLoadingCate = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingCate = false;
+      });
+      print(e);
+    });
+  }
 
   _addOrder() async {
     setState(() {
@@ -68,6 +107,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           Fluttertoast.showToast(msg: "Order Success");
           Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
           Navigator.pushReplacementNamed(context, PageCollection.home);
+          print("payment id  ${window.localStorage["payment_id"]}");
+          print("signature ${window.localStorage["signature"]}");
+          _verifyPayment();
         });
       } else {
         setState(() {
@@ -81,6 +123,26 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       print(e);
     });
   }
+
+  _verifyPayment()async{
+    await PaymentController.paymentVerify()
+        .then((value) {
+      if (value.success) {
+        print(value.data);
+
+          isLoadingCate = false;
+          Fluttertoast.showToast(msg: "${value.data!.orderId}");
+          orderId=value.data!.orderId;
+          window.localStorage["orderId"]=orderId;
+
+      } else {
+      }
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +258,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                                 name: sharedPrefs.customer_name,
                                 image: "${StringConstants.API_URL}${sharedPrefs.logo}",
                                 addOrder: _addOrder,
+                                orderId:orderId,
 
                               );
                             },

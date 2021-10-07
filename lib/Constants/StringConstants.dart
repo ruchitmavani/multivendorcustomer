@@ -3,8 +3,8 @@ const String rupeesIcon="₹";
 class StringConstants{
 
   /*API & IMAGEURLS */
-  // static String API_URL="http://192.168.1.13:8080/";
-  static String API_URL="http://18.221.208.96:8080/";
+  static String API_URL="http://192.168.1.11:8080/";
+  // static String API_URL="http://18.221.208.96:8080/";
 
   /*API NAMES*/
   //vendor
@@ -34,6 +34,8 @@ class StringConstants{
   static String customer_add_rating="customer_add_rating";
   static String view_rating="view_rating";
   static String add_order="add_order";
+  static String create_payment_orderId="create_payment_orderId";
+  static String payment_verify="payment_verify";
 
   /*---------------- SharedPreference Keys ------------------*/
 
@@ -68,16 +70,16 @@ class PageCollection{
   static const String home = '/home';
   static const String login = '/login';
   static const String cart = '$home/cart';
-  static const String about_us = '$home/about_us';
-  static const String myAccount = '/myAccount';
-  static const String categories = '$home/categories';
-  static const String myOrders = '/myOrders';
-  static const String register = '/register';
-  static const String savedAddress = '/savedAddress';
-  static const String location = '/location';
-  static const String loading = '/loading';
-  static const String search = '$home/search';
-  static const String product = '/product';
-  static const String store = '/veer0411';
+  static const String about_us = '${home}about_us/';
+  static const String myAccount = '/myAccount/';
+  static const String categories = '${home}categories/';
+  static const String myOrders = '/myOrders/';
+  static const String register = '/register/';
+  static const String savedAddress = '/savedAddress/';
+  static const String location = '/location/';
+  static const String loading = '/loading/';
+  static const String search = '${home}search';
+  static const String product = '/product/';
+  static const String store = 'veer0411/';
 
 }

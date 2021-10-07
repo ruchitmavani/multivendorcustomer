@@ -17,6 +17,7 @@ import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -60,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
   getInitialData() async {
     await Provider.of<VendorModelWrapper>(context, listen: false)
         .loadVendorData(sharedPrefs.storeLink);
-
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(PageCollection.cart);
+                    Navigator.of(context).pushNamed(helper(PageCollection.cart));
                   },
                 ),
               ),

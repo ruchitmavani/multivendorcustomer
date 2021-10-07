@@ -27,7 +27,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
       ChangeNotifierProvider(create: (_) => CartDataWrapper()),
-      ChangeNotifierProvider(create: (_)=>CustomColor())
+      ChangeNotifierProvider(create: (_) => CustomColor())
     ],
     child: MyApp(),
   ));
@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                       fontFamily: "Poppins")),
-              actionsIconTheme: IconThemeData(color: Provider.of<CustomColor>(context).appPrimaryMaterialColor)),
+              actionsIconTheme: IconThemeData(
+                  color: Provider.of<CustomColor>(context)
+                      .appPrimaryMaterialColor)),
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
                 primary: Colors.grey.shade600,
@@ -64,7 +66,8 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               onPrimary: Colors.white,
-              primary: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+              primary:
+                  Provider.of<CustomColor>(context).appPrimaryMaterialColor,
               elevation: 0,
               textStyle: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -73,13 +76,14 @@ class MyApp extends StatelessWidget {
             ),
           ),
           fontFamily: 'Poppins',
-          primaryColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+          primaryColor:
+              Provider.of<CustomColor>(context).appPrimaryMaterialColor,
           primarySwatch: Colors.grey,
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(),
           )),
       debugShowCheckedModeBanner: false,
-      initialRoute: PageCollection.store,
+      // initialRoute: PageCollection.home,
       onGenerateRoute: RouteConfig.onGenerateRoute,
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (_) => Loading());

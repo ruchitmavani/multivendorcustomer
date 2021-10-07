@@ -11,10 +11,11 @@ import 'package:multi_vendor_customer/Views/Components/UiFake.dart'
 class Webpayment extends StatelessWidget {
   final String? name;
   final String? image;
+  final String orderId;
   final int? price;
   Function addOrder;
 
-  Webpayment({this.name, this.price, this.image,required this.addOrder});
+  Webpayment({this.name, this.price, this.image,required this.addOrder,required this.orderId,});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class Webpayment extends StatelessWidget {
       });
 
       element.src =
-          'assets/payment.html?name=${sharedPrefs.businessCategory}&price=$price&image=$image&email=${sharedPrefs.customer_email}&customerPhone=${sharedPrefs.customer_mobileNo}&shopname=${sharedPrefs.businessName}&color=${int.parse(sharedPrefs.colorTheme).toRadixString(16).substring(2)}';
+          'assets/payment.html?name=${sharedPrefs.businessCategory}&price=$price&image=$image&email=${sharedPrefs.customer_email}&customerPhone=${sharedPrefs.customer_mobileNo}&shopname=${sharedPrefs.businessName}&color=${int.parse(sharedPrefs.colorTheme).toRadixString(16).substring(2)}&orderid=${orderId}';
       element.style.border = 'none';
 
       return element;
