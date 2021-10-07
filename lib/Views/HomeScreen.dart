@@ -1,8 +1,11 @@
+import 'dart:html';
+
 import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -59,8 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getInitialData() async {
-    await Provider.of<VendorModelWrapper>(context, listen: false)
-        .loadVendorData(sharedPrefs.storeLink);
+    // await Provider.of<VendorModelWrapper>(context, listen: false)
+    //     .loadVendorData(window.localStorage.);
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
@@ -214,7 +217,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(helper(PageCollection.cart));
+                    // Navigator.of(context).pushNamed(helper(PageCollection.cart));
+                    GoRouter.of(context).go(PageCollection.cart);
+
                   },
                 ),
               ),
@@ -235,8 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed(PageCollection.about_us);
+                                      // Navigator.of(context)
+                                      //     .pushNamed(PageCollection.about_us);
+                                      GoRouter.of(context).go(PageCollection.about_us);
                                     },
                                     child: Padding(
                                       padding:

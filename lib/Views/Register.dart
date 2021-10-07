@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -75,7 +76,8 @@ class _RegisterState extends State<Register> {
           dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
           isLoading = false;
         });
-        Navigator.pushNamed(context, PageCollection.home);
+        // Navigator.pushNamed(context, PageCollection.home);
+        GoRouter.of(context).go('/'+PageCollection.home);
       } else {
         Fluttertoast.showToast(msg: value.message);
         setState(() {

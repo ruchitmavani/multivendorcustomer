@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
@@ -106,7 +107,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
           Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
-          Navigator.pushReplacementNamed(context, PageCollection.home);
+          // Navigator.pushReplacementNamed(context, PageCollection.home);
+          GoRouter.of(context).go(PageCollection.home);
           print("payment id  ${window.localStorage["payment_id"]}");
           print("signature ${window.localStorage["signature"]}");
           _verifyPayment();

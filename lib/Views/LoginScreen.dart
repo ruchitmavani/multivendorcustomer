@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -95,8 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  Navigator.pushReplacementNamed(
-                      context, PageCollection.home);
+                  // Navigator.pushReplacementNamed(
+                  //     context, PageCollection.home);
+                  GoRouter.of(context).go('/'+PageCollection.home);
                 },
                 child: Text("skip",
                     style: TextStyle(

@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -26,7 +27,8 @@ class _LoadingState extends State<Loading> {
         .loadVendorData(id)
         .then((value) {
           print(value);
-      Navigator.pushReplacementNamed(context, PageCollection.home);
+      // Navigator.pushReplacementNamed(context, e);
+          GoRouter.of(context).push('/'+PageCollection.home);
     });
   }
 

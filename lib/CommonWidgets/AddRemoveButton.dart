@@ -1,7 +1,6 @@
 // ignore_for_file: must_call_super, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';

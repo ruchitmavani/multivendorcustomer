@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           Color(0xFFB14040).withAlpha(30))),
                   onPressed: () {
                     sharedPrefs.logout();
-                      Navigator.pushReplacementNamed(context, PageCollection.login);
+                      // Navigator.pushReplacementNamed(context, PageCollection.login);
+                    GoRouter.of(context).go(PageCollection.login);
+
                   },
                   label: Text(
                     "LOGOUT",
@@ -152,7 +155,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       Icons.lock,
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(PageCollection.login);
+                      // Navigator.of(context).pushNamed(PageCollection.login);
+                      GoRouter.of(context).go(PageCollection.login);
                     }),
               ],
             ),

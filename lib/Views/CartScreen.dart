@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RoundedAddRemove.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -730,7 +731,8 @@ class _CartScreenState extends State<CartScreen> {
               child: InkWell(
                 onTap: () {
                   if(sharedPrefs.customer_id.isEmpty){
-                    Navigator.pushNamed(context, PageCollection.login);
+                    // Navigator.pushNamed(context, PageCollection.login);
+                    GoRouter.of(context).go(PageCollection.login);
                     return;
                   }
                   if (Provider.of<CartDataWrapper>(context, listen: false)

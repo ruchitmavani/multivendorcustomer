@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -44,7 +45,9 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
         sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
-        Navigator.pushNamed(context, PageCollection.home);
+        // Navigator.pushNamed(context, PageCollection.home);
+        GoRouter.of(context).go('/'+PageCollection.home);
+
       } else {
         setState(() {
           isLoadingCustomer = false;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -103,7 +104,9 @@ class _MyAccountState extends State<MyAccount> {
         setState(() {
           isLoading = false;
         });
-        Navigator.pushNamed(context, PageCollection.home);
+        // Navigator.pushNamed(context, PageCollection.home);
+        GoRouter.of(context).go('/'+PageCollection.home);
+
         Fluttertoast.showToast(msg: "Account Update Success");
       } else {
         Fluttertoast.showToast(msg: value.message);
