@@ -78,14 +78,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       Icons.list_sharp,
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(PageCollection.myOrders);
+                      GoRouter.of(context).push(PageCollection.myOrders);
                     }),
                 ListTile(
                     title: Text("My Account"),
                     leading: Icon(Icons.account_circle),
                     enabled: true,
                     onTap: () {
-                      Navigator.of(context).pushNamed(PageCollection.myAccount);
+                      GoRouter.of(context).push(PageCollection.myAccount);
                     }),
               ],
             ),
@@ -99,9 +99,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           Color(0xFFB14040).withAlpha(30))),
                   onPressed: () {
                     sharedPrefs.logout();
-                      // Navigator.pushReplacementNamed(context, PageCollection.login);
                     GoRouter.of(context).go(PageCollection.login);
-
                   },
                   label: Text(
                     "LOGOUT",
@@ -155,7 +153,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       Icons.lock,
                     ),
                     onTap: () {
-                      // Navigator.of(context).pushNamed(PageCollection.login);
                       GoRouter.of(context).go(PageCollection.login);
                     }),
               ],

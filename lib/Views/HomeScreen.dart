@@ -29,7 +29,6 @@ import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:multi_vendor_customer/Views/Components/RecentlyBought.dart';
 import 'package:multi_vendor_customer/Views/Components/TopSellingProductComponent.dart';
-import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -42,7 +41,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<BannerDataModel> banners = [];
-
   bool isLoadingTop = false;
   bool isLoadingCate = false;
   bool isLoadingRece = false;
@@ -62,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getInitialData() async {
-    // await Provider.of<VendorModelWrapper>(context, listen: false)
-    //     .loadVendorData(window.localStorage.);
+    await Provider.of<VendorModelWrapper>(context, listen: false)
+        .loadVendorData(window.localStorage["storeId"]!);
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
@@ -196,11 +194,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Provider.of<CustomColor>(context)
                       .appPrimaryMaterialColor),
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(PageCollection.search)
-                    .then((value) {
-                  initState();
-                });
+                // Navigator.of(context)
+                //     .pushNamed(PageCollection.search)
+                //     .then((value) {
+                //   initState();
+                // });
+                GoRouter.of(context).push(PageCollection.search);
               },
             ),
             Padding(
@@ -217,9 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor),
                   onPressed: () {
-                    // Navigator.of(context).pushNamed(helper(PageCollection.cart));
-                    GoRouter.of(context).go(PageCollection.cart);
-
+                    GoRouter.of(context).push(PageCollection.cart);
                   },
                 ),
               ),
@@ -242,7 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onTap: () {
                                       // Navigator.of(context)
                                       //     .pushNamed(PageCollection.about_us);
-                                      GoRouter.of(context).go(PageCollection.about_us);
+                                      GoRouter.of(context)
+                                          .go(PageCollection.about_us);
                                     },
                                     child: Padding(
                                       padding:
@@ -356,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         vendorProvider.businessHours.length == 0
                                             ? TextSpan(
-                                                text:  "  Open",
+                                                text: "  Open",
                                                 style: FontsTheme.valueStyle(
                                                     color: Colors.black54,
                                                     size: 11,
@@ -605,7 +603,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "categoryId":
                                     "${productDataList.elementAt(index).categoryId}"
                               }).toString();
-                          Navigator.pushNamed(context, path);
+                          context.go(helper(PageCollection.categories +
+                              '/${productDataList.elementAt(index).categoryId}'));
                         }),
                     SizedBox(
                       height: isGrid ? 251 : null,
@@ -635,54 +634,57 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }).toString();
                               return GestureDetector(
                                 onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      routeSettings: RouteSettings(name: path),
-                                      builder: (context) {
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 15.0, bottom: 15.0),
-                                              child: SizedBox(
-                                                child: FloatingActionButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop
-                                                          .call();
-                                                    },
-                                                    child: Icon(Icons.close,
-                                                        size: 16),
-                                                    backgroundColor:
-                                                        Colors.white),
-                                                width: 24,
-                                                height: 24,
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(10.0),
-                                                    topLeft:
-                                                        Radius.circular(10.0)),
-                                              ),
-                                              child: ProductDescription(
-                                                  productDataList
-                                                      .elementAt(index)
-                                                      .productDetails
-                                                      .elementAt(i)),
-                                            ),
-                                          ],
-                                        );
-                                      });
+                                  // showModalBottomSheet(
+                                  //     context: context,
+                                  //     isScrollControlled: true,
+                                  //     backgroundColor: Colors.transparent,
+                                  //     routeSettings: RouteSettings(),
+                                  //     builder: (context) {
+                                  //       return Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.end,
+                                  //         mainAxisAlignment:
+                                  //             MainAxisAlignment.end,
+                                  //         children: [
+                                  //           Padding(
+                                  //             padding: const EdgeInsets.only(
+                                  //                 right: 15.0, bottom: 15.0),
+                                  //             child: SizedBox(
+                                  //               child: FloatingActionButton(
+                                  //                   onPressed: () {
+                                  //                     Navigator.of(context)
+                                  //                         .pop
+                                  //                         .call();
+                                  //                   },
+                                  //                   child: Icon(Icons.close,
+                                  //                       size: 16),
+                                  //                   backgroundColor:
+                                  //                       Colors.white),
+                                  //               width: 24,
+                                  //               height: 24,
+                                  //             ),
+                                  //           ),
+                                  //           Container(
+                                  //             decoration: BoxDecoration(
+                                  //               color: Colors.white,
+                                  //               borderRadius: BorderRadius.only(
+                                  //                   topRight:
+                                  //                       Radius.circular(10.0),
+                                  //                   topLeft:
+                                  //                       Radius.circular(10.0)),
+                                  //             ),
+                                  //             child: ProductDescription(
+                                  //                 productDataList
+                                  //                     .elementAt(index)
+                                  //                     .productDetails
+                                  //                     .elementAt(i)),
+                                  //           ),
+                                  //         ],
+                                  //       );
+                                  //     });
+
+                                  context.go(helper(PageCollection.product +
+                                      '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
                                 },
                                 child: isGrid
                                     ? ProductComponentGrid(

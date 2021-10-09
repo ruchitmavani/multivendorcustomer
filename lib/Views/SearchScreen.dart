@@ -10,6 +10,8 @@ import 'package:shimmer/shimmer.dart';
 import 'ProductDetail.dart';
 
 class Search extends StatefulWidget {
+
+  const Search({Key? key}) : super(key: key);
   @override
   _SearchState createState() => _SearchState();
 }
@@ -166,8 +168,8 @@ class _SearchState extends State<Search> {
                                               topRight: Radius.circular(10.0),
                                               topLeft: Radius.circular(10.0)),
                                         ),
-                                        child: ProductDescription(
-                                            productList.elementAt(index)),
+                                        // child: ProductDescription(
+                                        //     productList.elementAt(index)),
                                       ),
                                     ],
                                   );
@@ -185,3 +187,4 @@ class _SearchState extends State<Search> {
     );
   }
 }
+

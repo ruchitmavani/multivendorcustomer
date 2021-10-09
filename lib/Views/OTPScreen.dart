@@ -11,6 +11,7 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Register.dart';
 
@@ -45,8 +46,7 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
         sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
-        // Navigator.pushNamed(context, PageCollection.home);
-        GoRouter.of(context).go('/'+PageCollection.home);
+        GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
 
       } else {
         setState(() {

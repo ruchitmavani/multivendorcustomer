@@ -8,6 +8,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:shimmer/shimmer.dart';
@@ -104,8 +105,7 @@ class _MyAccountState extends State<MyAccount> {
         setState(() {
           isLoading = false;
         });
-        // Navigator.pushNamed(context, PageCollection.home);
-        GoRouter.of(context).go('/'+PageCollection.home);
+        GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
 
         Fluttertoast.showToast(msg: "Account Update Success");
       } else {

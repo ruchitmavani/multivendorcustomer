@@ -1,12 +1,14 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:provider/provider.dart';
@@ -39,11 +41,11 @@ class _TopSellingProductComponentState
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child:widget.productData.productImageUrl.length!=0? Image.network(
+              child: widget.productData.productImageUrl.length!=0?Image.network(
                 "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
                 width: 60,
                 alignment: Alignment.center,
-              ):Container(),
+              ):Image.asset("images/placeholder.png"),
             ),
             Space(
               width: 4,
@@ -72,41 +74,43 @@ class _TopSellingProductComponentState
                 width: 35,
                 child: InkWell(
                   onTap: (){
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 15.0, bottom: 15.0),
-                                child: SizedBox(
-                                  child: FloatingActionButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Icon(Icons.close, size: 16),
-                                      backgroundColor: Colors.white),
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0)),
-                                ),
-                                child: ProductDescription(widget.productData),
-                              ),
-                            ],
-                          );
-                        });
+                    // showModalBottomSheet(
+                    //     context: context,
+                    //     isScrollControlled: true,
+                    //     backgroundColor: Colors.transparent,
+                    //     builder: (context) {
+                    //       return Column(
+                    //         crossAxisAlignment: CrossAxisAlignment.end,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(
+                    //                 right: 15.0, bottom: 15.0),
+                    //             child: SizedBox(
+                    //               child: FloatingActionButton(
+                    //                   onPressed: () {
+                    //                     Navigator.of(context).pop();
+                    //                   },
+                    //                   child: Icon(Icons.close, size: 16),
+                    //                   backgroundColor: Colors.white),
+                    //               width: 24,
+                    //               height: 24,
+                    //             ),
+                    //           ),
+                    //           Container(
+                    //             decoration: BoxDecoration(
+                    //               color: Colors.white,
+                    //               borderRadius: BorderRadius.only(
+                    //                   topRight: Radius.circular(10.0),
+                    //                   topLeft: Radius.circular(10.0)),
+                    //             ),
+                    //             // child: ProductDescription(widget.productData),
+                    //           ),
+                    //         ],
+                    //       );
+                    //     });
+                    context.go(helper(PageCollection.product +
+                        '/${widget.productData.productId}'));
                   },
                   child: Card(
                     color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,

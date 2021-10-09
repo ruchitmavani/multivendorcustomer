@@ -88,6 +88,7 @@ flutter:
   assets:
      - images/
      - payment.html
+     - web/payment.html
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

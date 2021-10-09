@@ -232,7 +232,8 @@ class _CartScreenState extends State<CartScreen> {
                                 ? Text(
                                     "Apply Coupon Success 😊!",
                                     style: TextStyle(
-                                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                                        color: Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor),
                                   )
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -291,7 +292,8 @@ class _CartScreenState extends State<CartScreen> {
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 11,
-                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
                         fontWeight: FontWeight.w600),
                   )
                 ],
@@ -318,60 +320,61 @@ class _CartScreenState extends State<CartScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (sharedPrefs.customer_id.isNotEmpty) Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10, left: 12, right: 12),
-                  child: isLoadingCustomer
-                      ? Center(
-                          child: Shimmer.fromColors(
-                          baseColor: Colors.white,
-                          highlightColor: Colors.grey[300]!,
-                          period: Duration(seconds: 2),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width - 20,
-                            height: 60,
-                            decoration: ShapeDecoration(
-                              color: Colors.grey[300]!,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
+              if (sharedPrefs.customer_id.isNotEmpty)
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10, left: 12, right: 12),
+                    child: isLoadingCustomer
+                        ? Center(
+                            child: Shimmer.fromColors(
+                            baseColor: Colors.white,
+                            highlightColor: Colors.grey[300]!,
+                            period: Duration(seconds: 2),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 20,
+                              height: 60,
+                              decoration: ShapeDecoration(
+                                color: Colors.grey[300]!,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
                             ),
+                          ))
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Delivery address",
+                                  style: FontsTheme.descriptionText(
+                                      size: 13, color: Colors.black54)),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 1.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${customerData.customerAddress.elementAt(addressIndex).type}",
+                                      style: FontsTheme.boldTextStyle(size: 13),
+                                    ),
+                                    changeAddress(),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 1.0),
+                                child: Text(
+                                  "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
+                                  style: FontsTheme.descriptionText(
+                                      size: 13, color: Colors.black87),
+                                ),
+                              ),
+                            ],
                           ),
-                        ))
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Delivery address",
-                                style: FontsTheme.descriptionText(
-                                    size: 13, color: Colors.black54)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "${customerData.customerAddress.elementAt(addressIndex).type}",
-                                    style: FontsTheme.boldTextStyle(size: 13),
-                                  ),
-                                  changeAddress(),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Text(
-                                "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
-                                style: FontsTheme.descriptionText(
-                                    size: 13, color: Colors.black87),
-                              ),
-                            ),
-                          ],
-                        ),
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey.shade200,
                 ),
-                width: MediaQuery.of(context).size.width,
-                color: Colors.grey.shade200,
-              ),
               if (isLoading)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -493,12 +496,18 @@ class _CartScreenState extends State<CartScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Image.network(
-                                          StringConstants.API_URL +
-                                              "${cartProvider.elementAt(index).productImageUrl.first}",
-                                          width: 55,
-                                          height: 55,
-                                        ),
+                                        cartProvider
+                                                    .elementAt(index)
+                                                    .productImageUrl
+                                                    .length ==
+                                                0
+                                            ? Container()
+                                            : Image.network(
+                                                StringConstants.API_URL +
+                                                    "${cartProvider.elementAt(index).productImageUrl.first}",
+                                                width: 55,
+                                                height: 55,
+                                              ),
                                         Expanded(
                                           child: Padding(
                                             padding: const EdgeInsets.only(
@@ -581,7 +590,11 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                         //TODO: unimplemented so implement it :)
                                                         RoundedAddRemove(
-                                                          productId: cartProvider.elementAt(index).productId,
+                                                          productId:
+                                                              cartProvider
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .productId,
                                                         ),
                                                       ],
                                                     ),
@@ -730,8 +743,7 @@ class _CartScreenState extends State<CartScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  if(sharedPrefs.customer_id.isEmpty){
-                    // Navigator.pushNamed(context, PageCollection.login);
+                  if (sharedPrefs.customer_id.isEmpty) {
                     GoRouter.of(context).go(PageCollection.login);
                     return;
                   }
@@ -750,7 +762,8 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: Container(
                   height: 48,
-                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                  color:
+                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 3.0),
                     child: Center(

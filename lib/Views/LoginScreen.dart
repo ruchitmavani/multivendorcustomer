@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,9 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  // Navigator.pushReplacementNamed(
-                  //     context, PageCollection.home);
-                  GoRouter.of(context).go('/'+PageCollection.home);
+                  GoRouter.of(context).go('/'+"${window.localStorage["storeId"]}/"+PageCollection.home);
                 },
                 child: Text("skip",
                     style: TextStyle(

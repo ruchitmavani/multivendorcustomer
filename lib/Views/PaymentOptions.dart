@@ -9,6 +9,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -107,8 +108,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
           Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
-          // Navigator.pushReplacementNamed(context, PageCollection.home);
-          GoRouter.of(context).go(PageCollection.home);
+          GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
           print("signature ${window.localStorage["signature"]}");
           _verifyPayment();

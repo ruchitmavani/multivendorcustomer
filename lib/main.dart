@@ -7,24 +7,28 @@ import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Routes/RouteConfigure.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/AboutUs.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
+import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/LoadScreen.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
+import 'package:multi_vendor_customer/Views/MyAccount.dart';
+import 'package:multi_vendor_customer/Views/MyOrder.dart';
+import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'Utils/SharedPrefs.dart';
+import 'Views/ProductDetail.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
+  // GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
   await sharedPrefs.init();
   await Hive.initFlutter();
   Hive.registerAdapter(DemoHiveAdapter());
@@ -39,7 +43,25 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  static void changeState(BuildContext context){
+    var state=context.findAncestorStateOfType<_MyAppState>();
+    state!.reload();
+  }
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  reload(){
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -95,28 +117,67 @@ class MyApp extends StatelessWidget {
   }
 
   final _router = GoRouter(
+    urlPathStrategy: UrlPathStrategy.path,
     routes: [
       GoRoute(
-          path: window.localStorage["storeId"]==null?"/loading":'/'+window.localStorage["storeId"]!,
+          // path: '/' + window.localStorage["storeId"]!,
+          path: '/' + sharedPrefs.storeLink,
+          // path: '/',
+          // name:'veer0207',
           pageBuilder: (context, state) => MaterialPage<void>(
                 key: state.pageKey,
                 child: Loading(),
               ),
-        routes: [
-          // GoRoute(
-          //   path: PageCollection.home,
-          //   pageBuilder: (context, state) => MaterialPage<void>(
-          //     key: state.pageKey,
-          //     child: HomeScreen(),
-          //   ),
-          // ),
-        ]
-          ),
+          routes: [
+            GoRoute(
+                path: PageCollection.home,
+                name: "home",
+                pageBuilder: (context, state) => MaterialPage<void>(
+                      key: state.pageKey,
+                      child: HomeScreen(),
+                    ),
+                routes: [
+                  GoRoute(
+                      path: PageCollection.categories + '/:Cid',
+                      pageBuilder: (context, state) {
+                        final categoryId = state.params["Cid"];
+                        return MaterialPage<void>(
+                          key: state.pageKey,
+                          child: CategorySubScreen(
+                            categoryId: categoryId!,
+                          ),
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          path: PageCollection.product + '/:Pid',
+                          pageBuilder: (context, state) {
+                            final productId = state.params["Pid"];
+                            return MaterialPage<void>(
+                              key: state.pageKey,
+                              child: ProductDescription(productId: productId!),
+                            );
+                          },
+                        ),
+                      ]),
+                  GoRoute(
+                    path: PageCollection.product + '/:Pid',
+                    pageBuilder: (context, state) {
+                      final productId = state.params["Pid"];
+                      return MaterialPage<void>(
+                        key: state.pageKey,
+                        child: ProductDescription(productId: productId!),
+                      );
+                    },
+                  ),
+                ]),
+          ]),
       GoRoute(
-        path: '/'+PageCollection.home,
+        path: PageCollection.search,
+        name: "search",
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
-          child: HomeScreen(),
+          child: Search(),
         ),
       ),
       GoRoute(
@@ -138,6 +199,20 @@ class MyApp extends StatelessWidget {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           child: LoginScreen(),
+        ),
+      ),
+      GoRoute(
+        path: PageCollection.myOrders,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: MyOrder(),
+        ),
+      ),
+      GoRoute(
+        path: PageCollection.myAccount,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: MyAccount(),
         ),
       ),
     ],

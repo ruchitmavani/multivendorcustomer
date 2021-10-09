@@ -8,6 +8,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
 
@@ -76,8 +77,7 @@ class _RegisterState extends State<Register> {
           dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
           isLoading = false;
         });
-        // Navigator.pushNamed(context, PageCollection.home);
-        GoRouter.of(context).go('/'+PageCollection.home);
+        GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
       } else {
         Fluttertoast.showToast(msg: value.message);
         setState(() {
