@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
@@ -18,10 +17,10 @@ import 'package:multi_vendor_customer/Views/CheckOut.dart';
 import 'package:provider/provider.dart';
 
 class PaymentOptions extends StatefulWidget {
-  CustomerAddress Address;
+  final CustomerAddress address;
 
   PaymentOptions({
-    required this.Address,
+    required this.address,
   });
 
   @override
@@ -38,24 +37,29 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   @override
   void initState() {
     super.initState();
-    _generateOrderId();
+      _generateOrderId();
   }
 
-  _generateOrderId()async{
+  _generateOrderId() async {
     setState(() {
       isLoadingCate = true;
     });
-    await PaymentController.generateOrderId(Provider.of<CartDataWrapper>(context, listen: false)
-        .totalAmount
-        .toInt())
+    await PaymentController.generateOrderId(
+            Provider.of<CartDataWrapper>(context, listen: false)
+                    .totalAmount
+                    .toInt() +
+                Provider.of<VendorModelWrapper>(context,listen: false)
+                    .vendorModel!
+                    .deliveryCharges
+                    .toInt())
         .then((value) {
       if (value.success) {
         print(value.data);
         setState(() {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "${value.data!.orderId}");
-          orderId=value.data!.orderId;
-          window.localStorage["orderId"]=orderId;
+          orderId = value.data!.orderId;
+          window.localStorage["orderId"] = orderId;
         });
       } else {
         setState(() {
@@ -70,30 +74,45 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     });
   }
 
-  _addOrder() async {
+  _addOrder(String type) async {
     setState(() {
       isLoadingCate = true;
     });
     await OrderController.addOrder(
             type: "${_selection.toString().split(".").last}",
-            address: widget.Address,
-            couponAmount: Provider.of<CartDataWrapper>(context, listen: false)
-                        .isCouponApplied ==
-                    true
-                ? Provider.of<CartDataWrapper>(context, listen: false)
-                    .discount
-                    .toInt()
-                : 0,
+            address: widget.address,
+            couponAmount:
+                Provider.of<CartDataWrapper>(context, listen: false).isCouponApplied == true
+                    ? Provider.of<CartDataWrapper>(context, listen: false)
+                        .discount
+                        .toInt()
+                    : 0,
             orders:
                 Provider.of<CartDataWrapper>(context, listen: false).cartData,
             couponId: "",
-            deliveryCharge: 0,
-            finalPaid: Provider.of<CartDataWrapper>(context, listen: false)
+            deliveryCharge: type == 'TAKEAWAY'?0:Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.deliveryCharges,
+            finalPaid: type == 'TAKEAWAY'
+                ? Provider.of<CartDataWrapper>(context, listen: false)
+                    .totalAmount
+                    .toInt()
+                : Provider.of<CartDataWrapper>(context, listen: false)
+                        .totalAmount
+                        .toInt() +
+                    Provider.of<VendorModelWrapper>(context,listen: false)
+                        .vendorModel!
+                        .deliveryCharges
+                        .toInt(),
+            paidAmount: type == 'TAKEAWAY'
+                ? Provider.of<CartDataWrapper>(context, listen: false)
                 .totalAmount
-                .toInt(),
-            paidAmount: Provider.of<CartDataWrapper>(context, listen: false)
+                .toInt()
+                : Provider.of<CartDataWrapper>(context, listen: false)
                 .totalAmount
-                .toInt(),
+                .toInt() +
+                Provider.of<VendorModelWrapper>(context,listen: false)
+                    .vendorModel!
+                    .deliveryCharges
+                    .toInt(),
             refundAmount: 0,
             taxAmount: Provider.of<CartDataWrapper>(context, listen: false)
                 .tax
@@ -108,9 +127,11 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
           Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
-          GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
+          GoRouter.of(context).go('/' + storeConcate(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
+          print("order id  ${window.localStorage["order_Id"]}");
           print("signature ${window.localStorage["signature"]}");
+
           _verifyPayment();
         });
       } else {
@@ -126,25 +147,20 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     });
   }
 
-  _verifyPayment()async{
-    await PaymentController.paymentVerify()
-        .then((value) {
+  _verifyPayment() async {
+    await PaymentController.paymentVerify().then((value) {
       if (value.success) {
         print(value.data);
 
-          isLoadingCate = false;
-          Fluttertoast.showToast(msg: "${value.data!.orderId}");
-          orderId=value.data!.orderId;
-          window.localStorage["orderId"]=orderId;
-
-      } else {
-      }
+        isLoadingCate = false;
+        Fluttertoast.showToast(msg: "${value.data!.orderId}");
+        orderId = value.data!.orderId;
+        window.localStorage["orderId"] = orderId;
+      } else {}
     }, onError: (e) {
       print(e);
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -242,10 +258,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     )
                   : InkWell(
                       onTap: () {
-                        if (_selection.toString().split(".").last == "COD" ||
-                            _selection.toString().split(".").last ==
-                                "TAKEAWAY") {
-                          _addOrder();
+                        if (_selection.toString().split(".").last ==
+                            "TAKEAWAY") {
+                          _addOrder("TAKEAWAY");
+                        }
+                        if (_selection.toString().split(".").last == "COD") {
+                          _addOrder("COD");
                         }
                         if (_selection.toString().split(".").last ==
                             "PAY_ONLINE") {
@@ -258,10 +276,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                                         .toInt() *
                                     100,
                                 name: sharedPrefs.customer_name,
-                                image: "${StringConstants.API_URL}${sharedPrefs.logo}",
+                                image:
+                                    "${StringConstants.API_URL}${sharedPrefs.logo}",
                                 addOrder: _addOrder,
-                                orderId:orderId,
-
+                                orderId: orderId,
                               );
                             },
                           ));

@@ -595,6 +595,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .elementAt(
                                                                       index)
                                                                   .productId,
+                                                          isBulk: cartProvider.elementAt(index).isBulk,
                                                         ),
                                                       ],
                                                     ),
@@ -753,7 +754,7 @@ class _CartScreenState extends State<CartScreen> {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return PaymentOptions(
-                          Address: customerData.customerAddress
+                          address: customerData.customerAddress
                               .elementAt(addressIndex),
                         );
                       },

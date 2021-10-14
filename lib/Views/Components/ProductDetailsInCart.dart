@@ -7,6 +7,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -56,7 +57,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
           if (productData.productVariationColors!.length != 0) {
             colorList = productData.productVariationColors!;
           }
-          ;
+
           if (productData.productVariationSizes!.length != 0) {
             sizeList = productData.productVariationSizes!;
           }
@@ -108,6 +109,53 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     // }, onError: (e) {
     //   print(e);
     // });
+    int index = Provider.of<CartDataWrapper>(context,listen: false)
+        .cartData
+        .indexWhere((element) => element.productId == productData.productId);
+    print("cart index $index");
+    Provider.of<CartDataWrapper>(context,listen: false).cartData[index] = NewCartModel(
+        taxDetails: productData.taxDetails,
+        taxId: productData.taxId,
+        productId: productData.productId,
+        productColor: ProductColor(
+          colorCode: productData.productVariationColors!.length != 0
+              ? productData.productVariationColors!
+                  .elementAt(currentIndex)
+                  .colorCode
+              : "",
+          isActive: productData.productVariationColors!.length != 0
+              ? productData.productVariationColors!
+                  .elementAt(currentIndex)
+                  .isActive
+              : false,
+        ),
+        productImageUrl: productData.productImageUrl,
+        productQuantity: 1,
+        productMrp: productData.productMrp,
+        productName: "${productData.productName}",
+        productSellingPrice: productData.productVariationSizes!.length != 0
+            ? productData.productVariationSizes!
+                .elementAt(currentSizeIndex)
+                .sellingPrice
+            : productData.productSellingPrice,
+        productSize: ProductSize(
+            size: productData.productVariationSizes!.length != 0
+                ? productData.productVariationSizes!
+                    .elementAt(currentSizeIndex)
+                    .size
+                : "",
+            mrp: productData.productMrp,
+            sellingPrice: productData.productVariationSizes!.length != 0
+                ? productData.productVariationSizes!
+                    .elementAt(currentSizeIndex)
+                    .sellingPrice
+                : productData.productSellingPrice,
+            isActive: productData.productVariationSizes!.length != 0
+                ? productData.productVariationSizes!
+                    .elementAt(currentSizeIndex)
+                    .isActive
+                : false),isBulk: false);
+    Fluttertoast.showToast(msg: "Update success");
   }
 
   @override

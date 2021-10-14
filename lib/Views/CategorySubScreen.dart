@@ -11,6 +11,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
@@ -20,6 +21,7 @@ import 'package:shimmer/shimmer.dart';
 
 class CategorySubScreen extends StatefulWidget {
   String categoryId;
+
   // String categoryName;
 
   CategorySubScreen({required this.categoryId});
@@ -49,7 +51,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
 
   _getProduct(String sortKey) async {
     await Provider.of<VendorModelWrapper>(context, listen: false)
-        .loadVendorData(window.localStorage["storeId"]!);
+        .loadVendorData(sharedPrefs.storeLink);
     setState(() {
       isLoading = true;
     });
@@ -128,10 +130,15 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var _provider = Provider.of<CategoryName>(context).categoryName;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text(isLoading?"":"change it now!!"),
+        title: Text(_provider.indexWhere(
+                    (element) => element.categoryId == widget.categoryId) ==
+                -1
+            ? ""
+            : "${_provider.elementAt(_provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}"),
       ),
       body: Column(
         children: [
@@ -291,8 +298,8 @@ class ProductImage extends StatelessWidget {
     return Center(
       child: SizedBox(
         height: 110,
-        width: gridView ? null : MediaQuery.of(context).size.width * 0.2,
-        child: Image.network("${StringConstants.API_URL}" + banners.first),
+        width: MediaQuery.of(context).size.width * 0.2,
+        child: Image.network(banners.first),
       ),
     );
   }

@@ -27,7 +27,7 @@ class Webpayment extends StatelessWidget {
           Navigator.pop(context);
         } else if (value.data == 'SUCCESS') {
           Fluttertoast.showToast(msg: 'Payment Success ${(price! * 0.01)}');
-          addOrder();
+          addOrder("PAY_ONLINE");
         }
       });
 

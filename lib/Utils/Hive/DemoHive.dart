@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'DemoModel.dart';
 
 part 'DemoHive.g.dart';
 

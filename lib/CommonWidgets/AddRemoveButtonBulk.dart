@@ -1,6 +1,7 @@
 // ignore_for_file: must_call_super, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -10,23 +11,24 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
-class AddRemoveButton extends StatefulWidget {
+class AddRemoveButtonBulk extends StatefulWidget {
   ProductData productData;
   bool isRounded = true;
-  int colorIndex = 0;
-  int sizeIndex = 0;
+  int qty = 0;
+  double price = 0;
 
-  AddRemoveButton(
-      {required this.productData,
-      required this.isRounded,
-      required this.colorIndex,
-      required this.sizeIndex});
+  AddRemoveButtonBulk({
+    required this.productData,
+    required this.isRounded,
+    required this.qty,
+    required this.price,
+  });
 
   @override
-  _AddRemoveButtonState createState() => _AddRemoveButtonState();
+  _AddRemoveButtonBulkState createState() => _AddRemoveButtonBulkState();
 }
 
-class _AddRemoveButtonState extends State<AddRemoveButton> {
+class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   int q = 0;
   String? cartId;
 
@@ -51,47 +53,19 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               taxId: widget.productData.taxId,
               productId: widget.productData.productId,
               productColor: ProductColor(
-                colorCode:
-                    widget.productData.productVariationColors!.length != 0
-                        ? widget.productData.productVariationColors!
-                            .elementAt(widget.colorIndex)
-                            .colorCode
-                        : "",
-                isActive: widget.productData.productVariationColors!.length != 0
-                    ? widget.productData.productVariationColors!
-                        .elementAt(widget.colorIndex)
-                        .isActive
-                    : false,
+                colorCode: "",
+                isActive: false,
               ),
               productImageUrl: widget.productData.productImageUrl,
-              productQuantity: 1,
+              productQuantity: widget.qty,
               productMrp: widget.productData.productMrp,
               productName: "${widget.productData.productName}",
-              productSellingPrice:
-                  widget.productData.productVariationSizes!.length != 0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .sellingPrice
-                      : widget.productData.productSellingPrice,
+              productSellingPrice: widget.price.toInt(),
               productSize: ProductSize(
-                  size: widget.productData.productVariationSizes!.length != 0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .size
-                      : "",
+                  size: "",
                   mrp: widget.productData.productMrp,
-                  sellingPrice:
-                      widget.productData.productVariationSizes!.length != 0
-                          ? widget.productData.productVariationSizes!
-                              .elementAt(widget.sizeIndex)
-                              .sellingPrice
-                          : widget.productData.productSellingPrice,
-                  isActive: widget.productData.productVariationSizes!.length !=
-                          0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .isActive
-                      : false),isBulk: false),
+                  sellingPrice: widget.productData.productSellingPrice,
+                  isActive: false),isBulk: true),
         );
     Provider.of<CartDataWrapper>(context, listen: false)
         .cartData
@@ -230,7 +204,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Widget build(BuildContext context) {
     //todo pending isrequest provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
-                productId: widget.productData.productId) == 0
+                productId: widget.productData.productId) ==
+            0
         ? widget.isRounded
             ? SizedBox(
                 width: 35,
@@ -259,7 +234,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               )
             : ElevatedButton(
                 onPressed: () {
-                  addToCart();
+                  if (widget.qty > 0) addToCart();
+                  if (widget.qty == 0)
+                    Fluttertoast.showToast(
+                        msg: "quantity should be greater than 0");
                 },
                 child: Text("Add to Cart",
                     style: FontsTheme.boldTextStyle(color: Colors.white)),
@@ -283,37 +261,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () {
-                          if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId: widget.productData.productId) >
-                              1) {
-                            updateCart((Provider.of<CartDataWrapper>(context,
-                                        listen: false)
-                                    .getIndividualQuantity(
-                                        productId:
-                                            widget.productData.productId) -
-                                1));
-                          } else if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId:
-                                          widget.productData.productId) ==
-                              1) {
-                            deleteCart();
-                          }
-                        },
-                        child: Icon(
-                          Icons.remove,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
                     Consumer<CartDataWrapper>(
                       builder: (context, CartDataWrapper value, child) {
                         return Padding(
@@ -333,14 +280,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () {
-                          updateCart(Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId: widget.productData.productId) +
-                              1);
+                          deleteCart();
                         },
                         child: Icon(
-                          Icons.add,
+                          Icons.delete,
                           size: 18,
                           color: Colors.white,
                         ),

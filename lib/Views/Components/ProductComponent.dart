@@ -10,8 +10,6 @@ import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:provider/provider.dart';
 
-
-
 class ProductComponentGrid extends StatefulWidget {
   ProductData productData;
 
@@ -42,7 +40,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 8.0,bottom: 8),
+            padding: const EdgeInsets.only(left: 10.0, right: 8.0, bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,12 +50,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     child: SizedBox(
                         height: 120,
                         width: 100,
-                        child: ProductImage(
-                          banners: widget.productData.productImageUrl.length > 0
-                              ? widget.productData.productImageUrl
-                              : ["https://i.stack.imgur.com/y9DpT.jpg"],
-                          gridView: false,
-                        ))),
+                        child: widget.productData.productImageUrl.length > 0
+                            ? Image.network(widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
+                      )),
                 Space(height: 8),
                 Text(
                   "${widget.productData.productName}",
@@ -83,7 +78,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 3,
-                              decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                              decorationColor: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor,
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               color: Colors.grey.shade700,
@@ -110,12 +106,15 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                         ),
                       ],
                     ),
-                    if (!widget.productData.isRequestPrice) AddRemoveButton(
-                      productData: widget.productData,
-                      isRounded: true,
-                      sizeIndex: 0,
-                      colorIndex: 0,
-                    ),
+                    if (!widget.productData.isRequestPrice)
+                      widget.productData.bulkPriceList!.length == 0
+                          ? AddRemoveButton(
+                        productData: widget.productData,
+                        isRounded: true,
+                        colorIndex: 0,
+                        sizeIndex: 0,
+                      )
+                          : Container(),
                   ],
                 )
               ],
@@ -158,32 +157,35 @@ class _ProductComponentListState extends State<ProductComponentList> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ProductImage(
-              banners: widget.productData.productImageUrl.length > 0
-                  ? widget.productData.productImageUrl
-                  : ["https://i.stack.imgur.com/y9DpT.jpg"],
-              gridView: false,
+            SizedBox(
+              height: 110,
+              width: MediaQuery.of(context).size.width * 0.2,
+              child: widget.productData.productImageUrl.length > 0
+                  ? Image.network(widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
             ),
             Space(width: 8),
             Expanded(
               flex: 1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "${widget.productData.productName}",
-                        style:  TextStyle(
+                        style: TextStyle(
                             fontSize: 13,
-                            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                            color: Provider.of<CustomColor>(context)
+                                .appPrimaryMaterialColor,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Poppins'),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right:4.0),
-                        child: ProductRating(widget.productData.productRatingAverage),
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: ProductRating(
+                            widget.productData.productRatingAverage),
                       )
                     ],
                   ),
@@ -208,7 +210,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 decorationThickness: 3,
-                                decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                decorationColor:
+                                    Provider.of<CustomColor>(context)
+                                        .appPrimaryMaterialColor,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey.shade700,
@@ -224,12 +228,15 @@ class _ProductComponentListState extends State<ProductComponentList> {
                           ),
                         ],
                       ),
-                      if (!widget.productData.isRequestPrice)AddRemoveButton(
-                        productData: widget.productData,
-                        isRounded: true,
-                        colorIndex: 0,
-                        sizeIndex: 0,
-                      ),
+                      if (!widget.productData.isRequestPrice)
+                        widget.productData.bulkPriceList!.length == 0
+                            ? AddRemoveButton(
+                                productData: widget.productData,
+                                isRounded: true,
+                                colorIndex: 0,
+                                sizeIndex: 0,
+                              )
+                            : Container(),
                     ],
                   )
                 ],

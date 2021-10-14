@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -42,7 +41,7 @@ class CartDataWrapper extends ChangeNotifier {
     for (int i = 0; i < cartData.length; i++) {
       totalAmount = totalAmount +
           (cartData.elementAt(i).productQuantity *
-              (cartData.elementAt(i).productSize == null
+              (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
                   ? cartData.elementAt(i).productSellingPrice
                   : cartData.elementAt(i).productSize!.sellingPrice));
     }
@@ -53,7 +52,7 @@ class CartDataWrapper extends ChangeNotifier {
         tax = tax +
             (cartData.elementAt(i).taxDetails.elementAt(j).taxPercentage *
                 cartData.elementAt(i).productQuantity *
-                (cartData.elementAt(i).productSize == null
+                (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
                     ? cartData.elementAt(i).productSellingPrice
                     : cartData.elementAt(i).productSize!.sellingPrice) /
                 100);
@@ -131,8 +130,10 @@ class CartDataWrapper extends ChangeNotifier {
   }
 
   deleteFromCart({required String productId}) {
+    if(cartData.indexWhere((element) => element.productId==productId)!=-1)
     cartData.removeAt(
         cartData.indexWhere((element) => element.productId == productId));
     notifyListeners();
   }
+
 }

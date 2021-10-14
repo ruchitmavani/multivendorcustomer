@@ -5,7 +5,12 @@ class SharedPrefs {
   static SharedPreferences? _sharedPrefs;
 
   Future<bool> logout() async {
-    _sharedPrefs!.clear();
+    _sharedPrefs!.getKeys();
+    for(String key in _sharedPrefs!.getKeys()){
+      if(key != StringConstants.vendor_uniq_id && key != StringConstants.storeLink){
+        _sharedPrefs!.remove(key);
+      }
+    }
     return true;
   }
 

@@ -1,7 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
@@ -9,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/AboutUs.dart';
@@ -21,14 +19,13 @@ import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:provider/provider.dart';
-import 'package:url_strategy/url_strategy.dart';
+
 
 import 'Utils/SharedPrefs.dart';
 import 'Views/ProductDetail.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
   await sharedPrefs.init();
   await Hive.initFlutter();
   Hive.registerAdapter(DemoHiveAdapter());
@@ -37,7 +34,8 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
       ChangeNotifierProvider(create: (_) => CartDataWrapper()),
-      ChangeNotifierProvider(create: (_) => CustomColor())
+      ChangeNotifierProvider(create: (_) => CustomColor()),
+      ChangeNotifierProvider(create: (_) => CategoryName()),
     ],
     child: MyApp(),
   ));
@@ -122,7 +120,7 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
           // path: '/' + window.localStorage["storeId"]!,
           path: '/' + sharedPrefs.storeLink,
-          // path: '/',
+          // path: '/veer0961',
           // name:'veer0207',
           pageBuilder: (context, state) => MaterialPage<void>(
                 key: state.pageKey,

@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 class TitleViewAll extends StatelessWidget {
   final String? title;
   final VoidCallback? onPressed;
-  TitleViewAll({this.title, this.onPressed});
+  final bool isViewAll;
+  TitleViewAll({this.title, this.onPressed,required this.isViewAll});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,7 +16,7 @@ class TitleViewAll extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("${title ?? ""}", style: FontsTheme.boldTextStyle(size: 15)),
-          TextButton(
+          if (isViewAll) TextButton(
               onPressed: onPressed,
               child: Text(
                 "View all >",
@@ -23,8 +24,7 @@ class TitleViewAll extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
-              ))
-        ],
+              ))],
       ),
     );
   }

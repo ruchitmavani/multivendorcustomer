@@ -7,8 +7,6 @@ import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'ProductDetail.dart';
-
 class Search extends StatefulWidget {
 
   const Search({Key? key}) : super(key: key);

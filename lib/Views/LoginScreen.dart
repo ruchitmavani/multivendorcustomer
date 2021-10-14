@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +8,7 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Views/OTPScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  GoRouter.of(context).go('/'+"${window.localStorage["storeId"]}/"+PageCollection.home);
+                  GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
                 },
                 child: Text("skip",
                     style: TextStyle(

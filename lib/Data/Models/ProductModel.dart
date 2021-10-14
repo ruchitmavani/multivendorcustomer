@@ -53,7 +53,7 @@ class ProductData {
   bool productIsActive;
   bool categoryIsActive;
   CartDetails? cartDetails;
-  List<dynamic>? bulkPriceList;
+  List<BulkPriceList>? bulkPriceList;
   bool isRequestPrice;
   List<TaxDetail> taxDetails;
 
@@ -92,9 +92,7 @@ class ProductData {
         cartDetails: json["cart_details"] == null || json["cart_details"] == {}
             ? null
             : CartDetails.fromJson(json["cart_details"]),
-        bulkPriceList: json["bulk_price_list"] == null
-            ? null
-            : List<dynamic>.from(json["bulk_price_list"].map((x) => x)),
+        bulkPriceList: List<BulkPriceList>.from(json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
         isRequestPrice:
             json["is_request_price"] == null ? null : json["is_request_price"],
         taxDetails:
@@ -131,7 +129,7 @@ class ProductData {
         "cart_details": cartDetails == null ? null : cartDetails!.toJson(),
         "bulk_price_list": bulkPriceList == null
             ? null
-            : List<dynamic>.from(bulkPriceList!.map((x) => x)),
+            : List<dynamic>.from(bulkPriceList!.map((x) => x.toJson())),
         "is_request_price": isRequestPrice == null ? null : isRequestPrice,
         "tax_details":
             List<Map<String, dynamic>>.from(taxDetails.map((x) => x.toJson())),
@@ -318,4 +316,28 @@ class TaxDetail {
         "tax_name": taxName,
         "tax_percentage": taxPercentage,
       };
+}
+
+class BulkPriceList {
+  BulkPriceList({
+    required this.fromQty,
+    required this.toQty,
+    required this.pricePerUnit,
+  });
+
+  int fromQty;
+  int toQty;
+  int pricePerUnit;
+
+  factory BulkPriceList.fromJson(Map<String, dynamic> json) => BulkPriceList(
+    fromQty: json["fromQty"],
+    toQty: json["toQty"],
+    pricePerUnit: json["price_per_unit"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "fromQty": fromQty,
+    "toQty": toQty,
+    "price_per_unit": pricePerUnit,
+  };
 }

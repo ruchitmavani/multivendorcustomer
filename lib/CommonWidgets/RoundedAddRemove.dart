@@ -9,10 +9,9 @@ import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
   String productId;
+  bool isBulk;
 
-  RoundedAddRemove({
-    required this.productId,
-  });
+  RoundedAddRemove({required this.productId, required this.isBulk});
 
   @override
   _RoundedAddRemoveState createState() => _RoundedAddRemoveState();
@@ -70,8 +69,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
 
-    provider.incrementQuantity(
-        quantity: quantity, productId: widget.productId);
+    provider.incrementQuantity(quantity: quantity, productId: widget.productId);
     provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
   }
 
@@ -86,76 +84,138 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 74,
-      height: 32,
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: new BorderSide(color: Colors.grey.shade400, width: 0.8),
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {
-                    if (Provider.of<CartDataWrapper>(context,listen: false)
-                        .getIndividualQuantity(
-                        productId: widget.productId) > 1) {
-                      updateCart(Provider.of<CartDataWrapper>(context,listen: false)
-                          .getIndividualQuantity(
-                          productId: widget.productId) - 1);
-                    } else if (Provider.of<CartDataWrapper>(context,listen: false)
-                        .getIndividualQuantity(
-                        productId: widget.productId) == 1) {
-                      deleteCart();
-                    }
-                  },
-                  child: Icon(
-                    Icons.remove,
-                    size: 15,
-                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                  ),
+    return widget.isBulk
+        ? SizedBox(
+            width: 74,
+            height: 32,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: new BorderSide(color: Colors.grey.shade400, width: 0.8),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Consumer<CartDataWrapper>(
+                      builder: (context, CartDataWrapper value, child) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            "${value.getIndividualQuantity(productId: widget.productId)}",
+                            style: TextStyle(
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10,
+                                fontFamily: "Poppins"),
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: InkWell(
+                        onTap: () {
+                          deleteCart();
+                        },
+                        child: Icon(
+                          Icons.delete,
+                          size: 15,
+                          color: Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Consumer<CartDataWrapper>(builder: (context,CartDataWrapper value, child) {
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    "${value.getIndividualQuantity(productId: widget.productId)}",
-                    style: TextStyle(
-                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 10,
-                        fontFamily: "Poppins"),
-                  ),
-                );
-              },)
-              ,
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {
-                    updateCart((Provider.of<CartDataWrapper>(context,listen: false)
-                        .getIndividualQuantity(
-                        productId: widget.productId)) + 1);
-                  },
-                  child: Icon(
-                    Icons.add,
-                    size: 15,
-                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                  ),
+            ),
+          )
+        : SizedBox(
+            width: 74,
+            height: 32,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: new BorderSide(color: Colors.grey.shade400, width: 0.8),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: InkWell(
+                        onTap: () {
+                          if (Provider.of<CartDataWrapper>(context,
+                                      listen: false)
+                                  .getIndividualQuantity(
+                                      productId: widget.productId) >
+                              1) {
+                            updateCart(Provider.of<CartDataWrapper>(context,
+                                        listen: false)
+                                    .getIndividualQuantity(
+                                        productId: widget.productId) -
+                                1);
+                          } else if (Provider.of<CartDataWrapper>(context,
+                                      listen: false)
+                                  .getIndividualQuantity(
+                                      productId: widget.productId) ==
+                              1) {
+                            deleteCart();
+                          }
+                        },
+                        child: Icon(
+                          Icons.remove,
+                          size: 15,
+                          color: Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                        ),
+                      ),
+                    ),
+                    Consumer<CartDataWrapper>(
+                      builder: (context, CartDataWrapper value, child) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            "${value.getIndividualQuantity(productId: widget.productId)}",
+                            style: TextStyle(
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10,
+                                fontFamily: "Poppins"),
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: InkWell(
+                        onTap: () {
+                          updateCart((Provider.of<CartDataWrapper>(context,
+                                      listen: false)
+                                  .getIndividualQuantity(
+                                      productId: widget.productId)) +
+                              1);
+                        },
+                        child: Icon(
+                          Icons.add,
+                          size: 15,
+                          color: Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

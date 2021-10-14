@@ -46,7 +46,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                   child: SizedBox(
                     height: 120,
                     width: 100,
-                    child: Image.network(
+                    child:widget.productData.productImageUrl.length==0? Image.asset("images/placeholder.png"):Image.network(
                         "${StringConstants.API_URL}${widget.productData.productImageUrl.first}"),
                   ),
                 ),

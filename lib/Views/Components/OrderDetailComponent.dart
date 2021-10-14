@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/CommonWidgets/updatedLabel.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/RatingController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
@@ -16,17 +18,21 @@ class OrderDetailComponent extends StatefulWidget {
   final ProductDetails productDetail;
   final int quantity;
   final String orderId;
+  final OrderItem orderItem;
 
-  OrderDetailComponent({required this.productDetail, required this.quantity,required this.orderId});
+  OrderDetailComponent(
+      {required this.productDetail,
+      required this.quantity,
+      required this.orderId,
+      required this.orderItem});
 
   @override
   _OrderDetailComponentState createState() => _OrderDetailComponentState();
 }
 
 class _OrderDetailComponentState extends State<OrderDetailComponent> {
-
-  double rating=0;
-  bool isLoading=false;
+  double rating = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -40,39 +46,39 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
         .then((value) {
       if (value.success) {
         print(value.success);
-        rating=value.data!.productRatingCount as double;
+        rating = value.data!.productRatingCount as double;
         print(rating);
-      } else {
-      }
+      } else {}
     }, onError: (e) {});
   }
-
 
   _updateRating() async {
     print("hi");
     setState(() {
-      isLoading=true;
+      isLoading = true;
     });
-    await RatingController.rateProduct(customerName: "${sharedPrefs.customer_name}",orderId: "${widget.orderId}",rating: rating.toInt(),
-        productId: "${widget.productDetail.productId}")
+    await RatingController.rateProduct(
+            customerName: "${sharedPrefs.customer_name}",
+            orderId: "${widget.orderId}",
+            rating: rating.toInt(),
+            productId: "${widget.productDetail.productId}")
         .then((value) {
       if (value.success) {
         print(value.success);
-        rating=value.data!.productRatingCount as double;
+        rating = value.data!.productRatingCount as double;
         setState(() {
-          isLoading=false;
+          isLoading = false;
         });
         Fluttertoast.showToast(msg: value.message);
-        if(Navigator.canPop(context))
-          Navigator.pop(context);
+        if (Navigator.canPop(context)) Navigator.pop(context);
       } else {
         setState(() {
-          isLoading=false;
+          isLoading = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoading=false;
+        isLoading = false;
       });
     });
   }
@@ -136,7 +142,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                     ratingWidget: RatingWidget(
                       full: Icon(
                         Icons.star,
-                        color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                        color: Provider.of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
                       ),
                       half: Icon(
                         Icons.star,
@@ -148,7 +155,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                       ),
                     ),
                     onRatingUpdate: (value) {
-                      rating=value;
+                      rating = value;
                     },
                   ),
                 ),
@@ -158,16 +165,20 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   child: SizedBox(
                     height: 44,
                     width: MediaQuery.of(context).size.width,
-                    child: isLoading?Center(child: CircularProgressIndicator(),):ElevatedButton(
-                      child: Text(
-                        "Save",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      onPressed: () {
-                        _updateRating();
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ElevatedButton(
+                            child: Text(
+                              "Save",
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            onPressed: () {
+                              _updateRating();
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
                   ),
                 ),
               ],
@@ -184,10 +195,15 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            "${StringConstants.API_URL}${widget.productDetail.productImageUrl.first}",
-            width: 55,
-          ),
+          widget.productDetail.productImageUrl.length == 0
+              ? Image.asset(
+                  "images/placeholder.png",
+                  width: 55,
+                )
+              : Image.network(
+                  "${StringConstants.API_URL}${widget.productDetail.productImageUrl.first}",
+                  width: 55,
+                ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0),
@@ -211,7 +227,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           children: [
                             Icon(
                               Icons.star,
-                              color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                              color: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor,
                               size: 11,
                             ),
                             Space(
@@ -221,7 +238,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                               "Rate",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -236,15 +254,33 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Qty : ${widget.quantity}",
-                          style: FontsTheme.descriptionText(
-                              fontWeight: FontWeight.w500)),
+                      widget.orderItem.updatedQuantity != null
+                          ? Row(
+                            children: [
+                              Text("Qty : ",
+                                  style: FontsTheme.descriptionText(
+                                      fontWeight: FontWeight.w500)),
+                              Text("${widget.quantity}",
+                                  style: FontsTheme.descriptionText(
+                                      fontWeight: FontWeight.w500).copyWith(decoration: TextDecoration.lineThrough,decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,decorationThickness: 3)),
+                              Text(" ${widget.orderItem.updatedQuantity}  ",
+                                  style: FontsTheme.descriptionText(
+                                      fontWeight: FontWeight.w500)),
+                              UpdatedLabel(),
+                            ],
+                          )
+                          : Text("Qty : ${widget.quantity}",
+                              style: FontsTheme.descriptionText(
+                                  fontWeight: FontWeight.w500)),
                       Row(
                         children: [
                           Text("\u{20B9}",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
-                          Text(" ${widget.productDetail.productSellingPrice}",
+                          Text(
+                              widget.productDetail.bulkPriceList.length != 0
+                                  ? " ${getPrice(widget.quantity, widget.productDetail.bulkPriceList)}"
+                                  : " ${widget.productDetail.productSellingPrice}",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
                         ],

@@ -35,7 +35,7 @@ class OrderDataModel {
   String customerUniqId;
   String vendorUniqId;
   List<OrderItem> orderItems;
-  String orderStatus;
+  List<String> orderStatus;
   String rejectReason;
   String paymentType;
   String refNo;
@@ -58,7 +58,7 @@ class OrderDataModel {
     customerUniqId: json["customer_uniq_id"],
     vendorUniqId: json["vendor_uniq_id"],
     orderItems: List<OrderItem>.from(json["order_items"].map((x) => OrderItem.fromJson(x))),
-    orderStatus: json["order_status"],
+    orderStatus: List<String>.from(json["order_status"].map((x) => x)),
     rejectReason: json["reject_reason"],
     paymentType: json["payment_type"],
     refNo: json["ref_no"],
@@ -82,7 +82,7 @@ class OrderDataModel {
     "customer_uniq_id": customerUniqId,
     "vendor_uniq_id": vendorUniqId,
     "order_items": List<dynamic>.from(orderItems.map((x) => x.toJson())),
-    "order_status": orderStatus,
+    "order_status": List<dynamic>.from(orderStatus.map((x) => x)),
     "reject_reason": rejectReason,
     "payment_type": paymentType,
     "ref_no": refNo,
@@ -141,28 +141,36 @@ class OrderItem {
     required this.productColor,
     required this.productQuantity,
     required this.productDetails,
+    required this.isReject,
+    required this.updatedQuantity,
   });
 
   String productId;
-  ProductSize productSize;
-  ProductColor productColor;
+  ProductSize? productSize;
+  ProductColor? productColor;
   int productQuantity;
   ProductDetails productDetails;
+  bool? isReject;
+  int? updatedQuantity;
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
     productId: json["product_id"],
-    productSize: ProductSize.fromJson(json["product_size"]),
-    productColor: ProductColor.fromJson(json["product_color"]),
+    productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
+    productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
     productQuantity: json["product_quantity"],
     productDetails: ProductDetails.fromJson(json["product_details"]),
+    isReject: json["is_reject"] == null ? null : json["is_reject"],
+    updatedQuantity: json["updated_quantity"] == null ? null : json["updated_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
     "product_id": productId,
-    "product_size": productSize.toJson(),
-    "product_color": productColor.toJson(),
+    "product_size": productSize == null ? null : productSize!.toJson(),
+    "product_color": productColor == null ? null : productColor!.toJson(),
     "product_quantity": productQuantity,
     "product_details": productDetails.toJson(),
+    "is_reject": isReject == null ? null : isReject,
+    "updated_quantity": updatedQuantity == null ? null : updatedQuantity,
   };
 }
 
@@ -206,7 +214,7 @@ class ProductDetails {
   String productName;
   int productMrp;
   double productSellingPrice;
-  List<dynamic> bulkPriceList;
+  List<BulkPriceList> bulkPriceList;
   bool isRequestPrice;
   List<TaxId> taxId;
   int stockLeft;
@@ -234,7 +242,7 @@ class ProductDetails {
     productName: json["product_name"],
     productMrp: json["product_mrp"],
     productSellingPrice: json["product_selling_price"],
-    bulkPriceList: List<dynamic>.from(json["bulk_price_list"].map((x) => x)),
+    bulkPriceList: List<BulkPriceList>.from(json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
     isRequestPrice: json["is_request_price"],
     taxId: List<TaxId>.from(json["tax_id"].map((x) => x == null ? null : TaxId.fromJson(x))),
     stockLeft: json["stock_left"],
@@ -263,8 +271,8 @@ class ProductDetails {
     "product_name": productName,
     "product_mrp": productMrp,
     "product_selling_price": productSellingPrice,
-    "bulk_price_list": List<dynamic>.from(bulkPriceList.map((x) => x)),
-    "is_request_price": isRequestPrice,
+    "bulk_price_list":  List<dynamic>.from(bulkPriceList.map((x) => x.toJson())),
+      "is_request_price": isRequestPrice,
     "tax_id": List<dynamic>.from(taxId.map((x) => x == null ? null : x.toJson())),
     "stock_left": stockLeft,
     "unit_type": unitType,
@@ -413,8 +421,8 @@ class VendorDetails {
     "logo": logo,
     "latitude": latitude,
     "longitude": longitude,
-    "cover_image_url": coverImageUrl == null ? null : coverImageUrl,
-    "aword_image_url": awordImageUrl == null ? null : List<dynamic>.from(awordImageUrl.map((x) => x)),
+    "cover_image_url": coverImageUrl == null ? {} : coverImageUrl,
+    "aword_image_url": awordImageUrl == null ? {} : List<dynamic>.from(awordImageUrl.map((x) => x)),
     "address": address,
     "about_business": aboutBusiness,
     "business_hours": List<dynamic>.from(businessHours.map((x) => x.toJson())),
@@ -464,6 +472,9 @@ class BusinessHour {
 
 
 
+
+
+
 // add Order Model
 
 List<AddOrder> addOrderFromJson(String str) => List<AddOrder>.from(json.decode(str).map((x) => AddOrder.fromJson(x)));
@@ -473,8 +484,8 @@ String addOrderToJson(List<AddOrder> data) => json.encode(List<dynamic>.from(dat
 class AddOrder {
   AddOrder({
     required this.productId,
-    required this.productSize,
-    required this.productColor,
+    this.productSize,
+    this.productColor,
     required this.productQuantity,
   });
 
@@ -485,15 +496,15 @@ class AddOrder {
 
   factory AddOrder.fromJson(Map<String, dynamic> json) => AddOrder(
     productId: json["product_id"],
-    productSize: ProductSize.fromJson(json["product_size"]),
-    productColor: ProductColor.fromJson(json["product_color"]),
+    productSize:json["product_size"] == null ? null: ProductSize.fromJson(json["product_size"]),
+    productColor:  json["product_color"] == null ? null :ProductColor.fromJson(json["product_color"]),
     productQuantity: json["product_quantity"],
   );
 
   Map<String, dynamic> toJson() => {
     "product_id": productId,
-    "product_size": productSize!.toJson(),
-    "product_color": productColor!.toJson(),
+    "product_size": productSize == null ? {} :productSize!.toJson(),
+    "product_color": productColor == null ? {}:productColor!.toJson(),
     "product_quantity": productQuantity,
   };
 }

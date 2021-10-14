@@ -20,6 +20,7 @@ class PaymentController{
       "vendor_uniq_id" : sharedPrefs.vendor_uniq_id,
       "amount" : amount,
     };
+    print(data);
 
     ResponseClass<OrderId> responseClass =
     ResponseClass(success: false, message: "Something went wrong");

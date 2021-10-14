@@ -19,7 +19,7 @@ class OrderComponent extends StatefulWidget {
 class _OrderComponentState extends State<OrderComponent> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.push(
           context,
@@ -46,27 +46,29 @@ class _OrderComponentState extends State<OrderComponent> {
                 Row(
                   children: [
                     Container(
-                      constraints:
-                          BoxConstraints(maxHeight: 49, maxWidth: 49),
+                      constraints: BoxConstraints(maxHeight: 49, maxWidth: 49),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: widget.orderData.orderItems.length >= 4
                             ? 4
                             : widget.orderData.orderItems.length,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 3,
                           mainAxisSpacing: 3,
                           childAspectRatio: 1,
                         ),
                         itemBuilder: (context, index) {
-                          return Image.network(
-                            "${StringConstants.API_URL}${widget.orderData.orderItems.first.productDetails.productImageUrl.elementAt(index)}",
+                          return widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.length==0?Image.asset(
+                            "images/placeholder.png",
                             width: 23,
                             height: 23,
-                          );
+                          ):Image.network(
+                                  "${StringConstants.API_URL}${widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.first}",
+                                  width: 23,
+                                  height: 23,
+                                );
                         },
                       ),
                     ),
@@ -83,8 +85,9 @@ class _OrderComponentState extends State<OrderComponent> {
                                   fontWeight: FontWeight.w800),
                             ),
                             Text(
-                                widget.orderData.orderItems.length-1==0?"1 item":
-                                "and ${widget.orderData.orderItems.length-1} other items...",
+                                widget.orderData.orderItems.length - 1 == 0
+                                    ? "1 item"
+                                    : "and ${widget.orderData.orderItems.length - 1} other items...",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[400],
@@ -104,8 +107,8 @@ class _OrderComponentState extends State<OrderComponent> {
                                   Row(
                                     children: [
                                       Text("\u{20B9}",
-                                          style: FontsTheme.digitStyle(
-                                              size: 13)),
+                                          style:
+                                              FontsTheme.digitStyle(size: 13)),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 2.0),
@@ -162,9 +165,10 @@ class _OrderComponentState extends State<OrderComponent> {
                         height: 28,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor.shade100,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(17.0)),
+                          color: Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor
+                              .shade100,
+                          borderRadius: BorderRadius.all(Radius.circular(17.0)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
@@ -172,7 +176,9 @@ class _OrderComponentState extends State<OrderComponent> {
                             child: Text(
                               "Track order",
                               style: FontsTheme.boldTextStyle(
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor, size: 11),
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
+                                  size: 11),
                             ),
                           ),
                         ),

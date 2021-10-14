@@ -19,10 +19,12 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -61,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getInitialData() async {
     await Provider.of<VendorModelWrapper>(context, listen: false)
-        .loadVendorData(window.localStorage["storeId"]!);
+        .loadVendorData(sharedPrefs.storeLink);
+    print("vendor id in home provider ${Provider.of<VendorModelWrapper>(context, listen: false)
+        .vendorModel!
+        .vendorUniqId}");
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
@@ -70,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
             .vendorUniqId);
+    Provider.of<CategoryName>(context, listen: false).loadCategoryName();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // executes after build
       Provider.of<CustomColor>(context, listen: false).updateColor();
@@ -159,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           isLoadingRece = false;
           recentlyBought = value.data!;
+          print("recentlyBought $recentlyBought");
         });
       } else {
         setState(() {
@@ -223,6 +230,79 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                isDismissible: true,
+                enableDrag: true,
+
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsets.only(right: 15.0, bottom: 15.0),
+                      //   child: SizedBox(
+                      //     child: FloatingActionButton(
+                      //         onPressed: () {
+                      //           Navigator.of(context).pop();
+                      //         },
+                      //         child: Icon(Icons.close, size: 16),
+                      //         backgroundColor: Colors.white),
+                      //     width: 24,
+                      //     height: 24,
+                      //   ),
+                      // ),
+                      Card(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: ListView.builder(
+                          itemCount: productDataList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: (){
+                                Navigator.pop(context);
+                                context.go(helper(PageCollection.categories +
+                                    '/${productDataList.elementAt(index).categoryId}'));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        "${productDataList.elementAt(index).categoryName}"),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            "${productDataList.elementAt(index).productDetails.length}"),
+                                        Icon(Icons.chevron_right,color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Space(height: 40,),
+                    ],
+                  );
+                });
+          },
+          child: Icon(
+            Icons.category_outlined,
+            color: Colors.white,
+          ),
+          backgroundColor:
+              Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        ),
         body: vendorProvider != null
             ? CustomScrollView(
                 slivers: [
@@ -235,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Row(
                                 children: [
-                                  GestureDetector(
+                                  InkWell(
                                     onTap: () {
                                       // Navigator.of(context)
                                       //     .pushNamed(PageCollection.about_us);
@@ -472,19 +552,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  SliverAppBar(
-                    pinned: true,
-                    snap: false,
-                    floating: true,
-                    flexibleSpace: TopButtons(
-                      onChanged: (value) {
-                        setState(() {
-                          isGrid = value;
-                        });
-                      },
-                    ),
-                    automaticallyImplyLeading: false,
-                  ),
+                  // SliverAppBar(
+                  //   pinned: true,
+                  //   snap: false,
+                  //   floating: true,
+                  //   flexibleSpace: TopButtons(
+                  //     onChanged: (value) {
+                  //       setState(() {
+                  //         isGrid = value;
+                  //       });
+                  //     },
+                  //   ),
+                  //   automaticallyImplyLeading: false,
+                  // ),
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
@@ -501,6 +581,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         TitleViewAll(
                                           title: "Recently bought",
                                           onPressed: () {},
+                                          isViewAll: false,
                                         ),
                                         SizedBox(
                                           height: 245,
@@ -595,17 +676,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         title:
                             "${productDataList.elementAt(index).categoryName}",
                         onPressed: () {
-                          String path = Uri(
-                              path: PageCollection.categories,
-                              queryParameters: {
-                                "categoryName":
-                                    "${productDataList.elementAt(index).categoryName}",
-                                "categoryId":
-                                    "${productDataList.elementAt(index).categoryId}"
-                              }).toString();
                           context.go(helper(PageCollection.categories +
                               '/${productDataList.elementAt(index).categoryId}'));
-                        }),
+
+                        },isViewAll: true,),
                     SizedBox(
                       height: isGrid ? 251 : null,
                       child: Padding(
@@ -632,7 +706,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     "id":
                                         "${productDataList.elementAt(index).productDetails.elementAt(i).productId}"
                                   }).toString();
-                              return GestureDetector(
+                              return InkWell(
                                 onTap: () {
                                   // showModalBottomSheet(
                                   //     context: context,

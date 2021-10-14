@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'dart:html';
-
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
@@ -66,7 +64,22 @@ class OrderController {
     List<AddOrder> productList = [];
     for (int i = 0; i < orders.length; i++) {
       print(i);
-      productList.add(AddOrder(
+      productList.add(orders.elementAt(i).productSize!.size == "" &&
+          orders.elementAt(i).productColor!.colorCode == ""
+          ? AddOrder(
+          productId: orders.elementAt(i).productId,
+          productQuantity: orders.elementAt(i).productQuantity)
+          : orders.elementAt(i).productSize!.size == ""
+          ? AddOrder(
+          productId: orders.elementAt(i).productId,
+          productColor: orders.elementAt(i).productColor,
+          productQuantity: orders.elementAt(i).productQuantity)
+          : orders.elementAt(i).productColor!.colorCode == ""
+          ? AddOrder(
+          productId: orders.elementAt(i).productId,
+          productSize: orders.elementAt(i).productSize,
+          productQuantity: orders.elementAt(i).productQuantity)
+          : AddOrder(
           productId: orders.elementAt(i).productId,
           productSize: orders.elementAt(i).productSize,
           productColor: orders.elementAt(i).productColor,
@@ -127,6 +140,38 @@ class OrderController {
       return responseClass;
     } catch (e) {
       log("addOrder error->>>" + e.toString());
+      return responseClass;
+    }
+  }
+
+  /*-----------Accept Order -----------*/
+  static Future<ResponseClass> acceptOrder(
+      String orderId) async {
+    String url = StringConstants.API_URL + StringConstants.accept_order;
+
+    //body Data
+    var data = {
+      "order_id" : "$orderId"
+    };
+
+    ResponseClass responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("Accept order response -> ${response.data}");
+      if (response.statusCode == 200) {
+        log("Accept order ${response.data}");
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        responseClass.data = response.data["data"];
+      }
+      return responseClass;
+    } catch (e) {
+      log("Accept order error->>>" + e.toString());
       return responseClass;
     }
   }

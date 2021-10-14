@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/CommonWidgets/TimeLine.dart';
+import 'package:multi_vendor_customer/CommonWidgets/updatedLabel.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -23,6 +28,53 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   LineStyle lineStyle = LineStyle(color: Colors.grey.shade300, thickness: 2);
+  bool isLoading = false;
+  bool isChanged = false;
+  List<String> status = ["Pending", "Dispatched", "Delivered"];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.orderData.updatedDeliveryCharges != 0) {
+      setState(() {
+        isChanged = true;
+      });
+    }
+    print("1-> $isChanged");
+    for (int i = 0; i < widget.orderData.orderItems.length; i++) {
+      if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
+          widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
+        setState(() {
+          isChanged = true;
+        });
+      }
+    }
+    print("2-> $isChanged");
+  }
+
+  _acceptOrder() async {
+    setState(() {
+      isLoading = true;
+    });
+    await OrderController.acceptOrder(widget.orderData.orderId).then((value) {
+      if (value.success) {
+        print(value.data);
+        setState(() {
+          GoRouter.of(context).push(PageCollection.myOrders);
+          Fluttertoast.showToast(msg: "Order Accepted");
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,154 +164,105 @@ class _OrderDetailsState extends State<OrderDetails> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.all(0),
-                        scrollDirection: Axis.vertical,
-                        itemCount: widget.orderData.orderItems.length,
-                        itemBuilder: (context, index) {
-                          return OrderDetailComponent(
-                            orderId: widget.orderData.orderId,
-                            productDetail: widget.orderData.orderItems
-                                .elementAt(index)
-                                .productDetails,
-                            quantity: widget.orderData.orderItems
-                                .elementAt(index)
-                                .productQuantity,
-                          );
-                        },
-                        separatorBuilder: (context, index) => Divider(
-                          color: Colors.grey[300],
-                          thickness: 0.6,
-                        ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.all(0),
+                      scrollDirection: Axis.vertical,
+                      itemCount: widget.orderData.orderItems.length,
+                      itemBuilder: (context, index) {
+                        return OrderDetailComponent(
+                          orderId: widget.orderData.orderId,
+                          productDetail: widget.orderData.orderItems
+                              .elementAt(index)
+                              .productDetails,
+                          quantity: widget.orderData.orderItems
+                              .elementAt(index)
+                              .productQuantity,
+                          orderItem:
+                              widget.orderData.orderItems.elementAt(index),
+                        );
+                      },
+                      separatorBuilder: (context, index) => Divider(
+                        color: Colors.grey[300],
+                        thickness: 0.6,
                       ),
                     ),
-                    Container(
-                      constraints: BoxConstraints(
-                          maxHeight: 55,
-                          maxWidth: MediaQuery.of(context).size.width),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            color: Colors.grey.shade300,
-                            height: 3,
-                            margin: EdgeInsets.symmetric(horizontal: 40),
+                    // ListView.builder(
+                    //   shrinkWrap: true,
+                    //   physics: NeverScrollableScrollPhysics(),
+                    //   itemCount: widget.orderData.orderStatus.length,
+                    //   itemBuilder: (context, index) {
+                    //     return TimelineTile(
+                    //       alignment: TimelineAlign.manual,
+                    //       lineXY: 0.05,
+                    //       axis: TimelineAxis.vertical,
+                    //       isFirst: index == 0 ? true : false,
+                    //       isLast:
+                    //           widget.orderData.orderStatus.length - 1 == index
+                    //               ? true
+                    //               : false,
+                    //       beforeLineStyle: lineStyle,
+                    //       afterLineStyle: lineStyle,
+                    //       indicatorStyle: IndicatorStyle(
+                    //           color: Provider.of<CustomColor>(context)
+                    //               .appPrimaryMaterialColor,
+                    //           iconStyle: IconStyle(
+                    //               iconData: Icons.adjust,
+                    //               color: Colors.white,
+                    //               fontSize: 16),
+                    //           height: 22,
+                    //           width: 22),
+                    //       endChild: Text(
+                    //         " ${widget.orderData.orderStatus.elementAt(index)}",
+                    //         style: TextStyle(color: Colors.black, fontSize: 12),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    Divider(),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 12.0,
+                        top: 6
+                      ),
+                      child: Text(
+                        " Order Status ",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Timeline(
+                      children: List.generate(
+                        status.length,
+                        (index) => Container(
+                          alignment: Alignment.centerLeft,
+                          height: 40,
+                          child: Text(
+                            status.elementAt(index),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: widget.orderData.orderStatus.last ==
+                                      status.elementAt(index)
+                                  ? Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor
+                                  : Colors.grey,
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              if (widget.orderData.orderStatus == "pending")
-                                TimelineTile(
-                                  alignment: TimelineAlign.center,
-                                  axis: TimelineAxis.horizontal,
-                                  isFirst: true,
-                                  beforeLineStyle: lineStyle,
-                                  afterLineStyle: lineStyle,
-                                  indicatorStyle: IndicatorStyle(
-                                      color: Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                                      iconStyle: IconStyle(
-                                          iconData: Icons.watch,
-                                          color: Colors.white,
-                                          fontSize: 16),
-                                      height: 22,
-                                      width: 22),
-                                  endChild: Text(
-                                    "Pending",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              if (widget.orderData.orderStatus == "pending" ||
-                                  widget.orderData.orderStatus == "delivered")
-                                TimelineTile(
-                                  alignment: TimelineAlign.center,
-                                  axis: TimelineAxis.horizontal,
-                                  isFirst: true,
-                                  beforeLineStyle: lineStyle,
-                                  afterLineStyle: lineStyle,
-                                  indicatorStyle: IndicatorStyle(
-                                      color: Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                                      iconStyle: IconStyle(
-                                          iconData: Icons.done,
-                                          color: Colors.white,
-                                          fontSize: 16),
-                                      height: 22,
-                                      width: 22),
-                                  endChild: Text(
-                                    "Accepted",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              if (widget.orderData.orderStatus == "delivered" ||
-                                  widget.orderData.orderStatus == "pending")
-                                TimelineTile(
-                                  alignment: TimelineAlign.center,
-                                  axis: TimelineAxis.horizontal,
-                                  beforeLineStyle: lineStyle,
-                                  afterLineStyle: lineStyle,
-                                  isFirst: true,
-                                  indicatorStyle: IndicatorStyle(
-                                      color: Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                                      iconStyle: IconStyle(
-                                          iconData: Icons.access_time,
-                                          color: Colors.white,
-                                          fontSize: 16),
-                                      height: 22,
-                                      width: 22),
-                                  endChild: Text(
-                                    "Dispatched",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              if (widget.orderData.orderStatus != "delivered")
-                                TimelineTile(
-                                  alignment: TimelineAlign.center,
-                                  axis: TimelineAxis.horizontal,
-                                  isLast: true,
-                                  beforeLineStyle: lineStyle,
-                                  afterLineStyle: lineStyle,
-                                  endChild: Text(
-                                    "",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                              if (widget.orderData.orderStatus == "delivered")
-                                TimelineTile(
-                                  alignment: TimelineAlign.center,
-                                  axis: TimelineAxis.horizontal,
-                                  isLast: true,
-                                  beforeLineStyle: lineStyle,
-                                  afterLineStyle: lineStyle,
-                                  indicatorStyle: IndicatorStyle(
-                                      color: Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                                      iconStyle: IconStyle(
-                                          iconData: Icons.airport_shuttle,
-                                          color: Colors.white,
-                                          fontSize: 16),
-                                      height: 22,
-                                      width: 22),
-                                  endChild: Text(
-                                    "Delivered",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
+                        ),
+                      ),
+                      indicators: List.generate(
+                        status.length,
+                        (index) => Icon(
+                          Icons.adjust,
+                          size: 22,
+                          color: widget.orderData.orderStatus.last ==
+                              status.elementAt(index)
+                              ? Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor
+                              : Colors.grey,
+                        ),
                       ),
                     ),
                     Padding(
@@ -308,13 +311,56 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text("Shipping Fee",
-                                    style: FontsTheme.valueStyle(size: 14)),
-                                trailing: Text(
-                                    "\u{20B9}" +
-                                        "${widget.orderData.deliveryCharges}",
+                                title: Row(
+                                  children: [
+                                    Text("Delivery charges  ",
+                                        style: FontsTheme.valueStyle(size: 14)),
+                                    if (widget
+                                            .orderData.updatedDeliveryCharges !=
+                                        0)
+                                      UpdatedLabel(),
+                                  ],
+                                ),
+                                trailing: RichText(
+                                  text: TextSpan(
+                                    text: "\u{20B9}",
                                     style: FontsTheme.valueStyle(
-                                        size: 14, fontWeight: FontWeight.w500)),
+                                        size: 14, fontWeight: FontWeight.w500),
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            "${widget.orderData.deliveryCharges}",
+                                        style: widget
+                                                    .orderData.updatedDeliveryCharges !=
+                                                0
+                                            ? FontsTheme.valueStyle(
+                                                    size: 14,
+                                                    fontWeight: FontWeight.w500)
+                                                .copyWith(
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                    decorationThickness: 3,
+                                                    decorationColor: Provider
+                                                            .of<CustomColor>(
+                                                                context)
+                                                        .appPrimaryMaterialColor)
+                                            : FontsTheme.valueStyle(
+                                                size: 14,
+                                                fontWeight: FontWeight.w500),
+                                      ),
+                                      if (widget.orderData
+                                              .updatedDeliveryCharges !=
+                                          0)
+                                        TextSpan(
+                                          text:
+                                              " ${widget.orderData.updatedDeliveryCharges}",
+                                          style: FontsTheme.valueStyle(
+                                              size: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -349,33 +395,60 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(right: 25.0, bottom: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              height: 44,
-              child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Download invoice",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 14,
+        child: (isChanged)
+            ? isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text("Accept Order?"),
                       ),
-                    )
-                  ],
-                ),
-                onPressed: () {},
+                      OutlinedButton(
+                        child: Text("No"),
+                        onPressed: () {},
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: ElevatedButton(
+                          child: Text("Yes"),
+                          onPressed: () {
+                            _acceptOrder();
+                          },
+                        ),
+                      )
+                    ],
+                  )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 44,
+                    child: ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "Download invoice",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 14,
+                            ),
+                          )
+                        ],
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

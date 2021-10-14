@@ -14,6 +14,7 @@ class StringConstants{
   static String vendor_view="vendor_view";
   static String vendor_all_banner = "vendor_all_banner";
   static String top_selling_product = "top_selling_product";
+  static String vendor_all_category_name = "vendor_all_category_name";
 
 
   //customer
@@ -36,6 +37,7 @@ class StringConstants{
   static String add_order="add_order";
   static String create_payment_orderId="create_payment_orderId";
   static String payment_verify="payment_verify";
+  static String accept_order="accept_order";
 
   /*---------------- SharedPreference Keys ------------------*/
 
