@@ -91,7 +91,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 Provider.of<CartDataWrapper>(context, listen: false).cartData,
             couponId: "",
             deliveryCharge: type == 'TAKEAWAY'?0:Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.deliveryCharges,
-            finalPaid: type == 'TAKEAWAY'
+            orderAmount: type == 'TAKEAWAY'
                 ? Provider.of<CartDataWrapper>(context, listen: false)
                     .totalAmount
                     .toInt()
@@ -102,17 +102,14 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                         .vendorModel!
                         .deliveryCharges
                         .toInt(),
-            paidAmount: type == 'TAKEAWAY'
+            paidAmount: type == 'PAY_ONLINE'
                 ? Provider.of<CartDataWrapper>(context, listen: false)
                 .totalAmount
+                .toInt()+Provider.of<VendorModelWrapper>(context,listen: false)
+                .vendorModel!
+                .deliveryCharges
                 .toInt()
-                : Provider.of<CartDataWrapper>(context, listen: false)
-                .totalAmount
-                .toInt() +
-                Provider.of<VendorModelWrapper>(context,listen: false)
-                    .vendorModel!
-                    .deliveryCharges
-                    .toInt(),
+                : 0,
             refundAmount: 0,
             taxAmount: Provider.of<CartDataWrapper>(context, listen: false)
                 .tax

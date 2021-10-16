@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
@@ -98,7 +99,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           Color(0xFFB14040).withAlpha(30))),
                   onPressed: () {
                     sharedPrefs.logout();
-                    GoRouter.of(context).go(PageCollection.login);
+                    GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
                   },
                   label: Text(
                     "LOGOUT",

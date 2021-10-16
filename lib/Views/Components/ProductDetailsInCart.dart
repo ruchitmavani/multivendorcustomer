@@ -64,7 +64,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
             finalColor =
-                int.parse(productData.productVariationColors!.first.colorCode);
+                productData.productVariationColors!.first.colorCode;
           }
           if (productData.productVariationColors!.length != 0) {
             currentIndex = productData.productVariationColors!.indexWhere(
@@ -114,15 +114,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
         .indexWhere((element) => element.productId == productData.productId);
     print("cart index $index");
     Provider.of<CartDataWrapper>(context,listen: false).cartData[index] = NewCartModel(
-        taxDetails: productData.taxDetails,
-        taxId: productData.taxId,
         productId: productData.productId,
         productColor: ProductColor(
           colorCode: productData.productVariationColors!.length != 0
               ? productData.productVariationColors!
                   .elementAt(currentIndex)
                   .colorCode
-              : "",
+              : 0,
           isActive: productData.productVariationColors!.length != 0
               ? productData.productVariationColors!
                   .elementAt(currentIndex)
@@ -301,8 +299,8 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                         BorderRadius.circular(
                                                             50.0),
                                                     child: Container(
-                                                        color: Color(int.parse(
-                                                            e.colorCode)),
+                                                        color: Color(
+                                                            e.colorCode),
                                                         height: 25,
                                                         width: 25)),
                                               ),

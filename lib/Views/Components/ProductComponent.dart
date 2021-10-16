@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -51,7 +52,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                         height: 120,
                         width: 100,
                         child: widget.productData.productImageUrl.length > 0
-                            ? Image.network(widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
+                            ? Image.network(StringConstants.API_URL+widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
                       )),
                 Space(height: 8),
                 Text(
@@ -161,7 +162,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
               height: 110,
               width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
-                  ? Image.network(widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
+                  ? Image.network(StringConstants.API_URL+widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
             ),
             Space(width: 8),
             Expanded(

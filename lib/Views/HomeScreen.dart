@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,7 +18,6 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
-import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
@@ -76,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
             .vendorModel!
             .vendorUniqId);
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
+    Provider.of<CustomColor>(context, listen: false).updateColor();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // executes after build
-      Provider.of<CustomColor>(context, listen: false).updateColor();
     });
   }
 
@@ -552,19 +550,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  // SliverAppBar(
-                  //   pinned: true,
-                  //   snap: false,
-                  //   floating: true,
-                  //   flexibleSpace: TopButtons(
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         isGrid = value;
-                  //       });
-                  //     },
-                  //   ),
-                  //   automaticallyImplyLeading: false,
-                  // ),
+                  SliverAppBar(
+                    pinned: true,
+                    snap: false,
+                    floating: true,
+                    flexibleSpace: TopButtons(
+                      onChanged: (value) {
+                        setState(() {
+                          isGrid = value;
+                        });
+                      },
+                    ),
+                    automaticallyImplyLeading: false,
+                  ),
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
@@ -781,8 +779,4 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
   }
-}
-
-class Boxes {
-  static Box<DemoHive> getDemo() => Hive.box<DemoHive>('demo');
 }

@@ -49,7 +49,7 @@ class OrderController {
       {required String type,
       required int paidAmount,
       required int refundAmount,
-      required int finalPaid,
+      required int orderAmount,
       required int totalAmount,
       required int deliveryCharge,
       required List<NewCartModel> orders,
@@ -94,7 +94,7 @@ class OrderController {
             "payment_type": "$type",
             "paid_amount": paidAmount,
             "refund_amount": refundAmount,
-            "final_paid_amount": finalPaid,
+            "order_amount": orderAmount,
             "item_total_amount": totalAmount,
             "delivery_charges": deliveryCharge,
             "tax_amount": taxAmount,
@@ -108,7 +108,7 @@ class OrderController {
             "payment_type": "$type",
             "paid_amount": paidAmount,
             "refund_amount": refundAmount,
-            "final_paid_amount": finalPaid,
+            "order_amount": orderAmount,
             "item_total_amount": totalAmount,
             "delivery_charges": deliveryCharge,
             "tax_amount": taxAmount,
@@ -117,7 +117,7 @@ class OrderController {
             "delivery_address": address.toJson(),
           };
 
-    print(data);
+    print("addOrder $data");
 
     ResponseClass<List<OrderDataModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");

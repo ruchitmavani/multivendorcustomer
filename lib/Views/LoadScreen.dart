@@ -26,9 +26,9 @@ class _LoadingState extends State<Loading> {
   loadData() async {
     Uri url = Uri.parse(window.location.href);
     String id = url.path.substring(1).split('/').first;
+    print("path $id");
     id='veer0961';
-    print("--- then $id");
-    window.localStorage["storeId"] = id;
+
     await Provider.of<VendorModelWrapper>(context, listen: false)
         .loadVendorData(id)
         .then((value) {

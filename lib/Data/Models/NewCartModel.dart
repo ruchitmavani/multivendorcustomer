@@ -22,8 +22,6 @@ class NewCartModel {
     required this.productName,
     required this.productMrp,
     required this.productSellingPrice,
-    required this.taxId,
-    required this.taxDetails,
     required this.isBulk
   });
 
@@ -35,8 +33,6 @@ class NewCartModel {
   String productName;
   int productMrp;
   int productSellingPrice;
-  List<String> taxId;
-  List<TaxDetail> taxDetails;
   bool isBulk;
 
   factory NewCartModel.fromJson(Map<String, dynamic> json) => NewCartModel(
@@ -48,8 +44,6 @@ class NewCartModel {
     productName: json["product_name"],
     productMrp: json["product_mrp"],
     productSellingPrice: json["product_selling_price"],
-    taxId: List<String>.from(json["tax_id"].map((x) => x)),
-    taxDetails: List<TaxDetail>.from(json["tax_details"].map((x) => TaxDetail.fromJson(x))),
     isBulk: json["isBulk"],
   );
 
@@ -62,8 +56,6 @@ class NewCartModel {
     "product_name": productName,
     "product_mrp": productMrp,
     "product_selling_price": productSellingPrice,
-    "tax_id": List<dynamic>.from(taxId.map((x) => x)),
-    "tax_details": List<dynamic>.from(taxDetails.map((x) => x.toJson())),
     "isBulk": isBulk,
   };
 }

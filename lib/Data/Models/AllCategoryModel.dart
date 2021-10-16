@@ -1,6 +1,11 @@
+// To parse this JSON data, do
+//
+//     final allCategoryModel = allCategoryModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-import 'ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 
 List<AllCategoryModel> allCategoryModelFromJson(String str) => List<AllCategoryModel>.from(json.decode(str).map((x) => AllCategoryModel.fromJson(x)));
 
@@ -61,5 +66,3 @@ class AllCategoryModel {
     "product_details": List<dynamic>.from(productDetails.map((x) => x.toJson())),
   };
 }
-
-

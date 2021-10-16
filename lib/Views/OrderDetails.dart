@@ -40,7 +40,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         isChanged = true;
       });
     }
-    print("1-> $isChanged");
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
           widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
@@ -49,7 +48,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         });
       }
     }
-    print("2-> $isChanged");
   }
 
   _acceptOrder() async {
@@ -190,81 +188,48 @@ class _OrderDetailsState extends State<OrderDetails> {
                         thickness: 0.6,
                       ),
                     ),
-                    // ListView.builder(
-                    //   shrinkWrap: true,
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //   itemCount: widget.orderData.orderStatus.length,
-                    //   itemBuilder: (context, index) {
-                    //     return TimelineTile(
-                    //       alignment: TimelineAlign.manual,
-                    //       lineXY: 0.05,
-                    //       axis: TimelineAxis.vertical,
-                    //       isFirst: index == 0 ? true : false,
-                    //       isLast:
-                    //           widget.orderData.orderStatus.length - 1 == index
-                    //               ? true
-                    //               : false,
-                    //       beforeLineStyle: lineStyle,
-                    //       afterLineStyle: lineStyle,
-                    //       indicatorStyle: IndicatorStyle(
-                    //           color: Provider.of<CustomColor>(context)
-                    //               .appPrimaryMaterialColor,
-                    //           iconStyle: IconStyle(
-                    //               iconData: Icons.adjust,
-                    //               color: Colors.white,
-                    //               fontSize: 16),
-                    //           height: 22,
-                    //           width: 22),
-                    //       endChild: Text(
-                    //         " ${widget.orderData.orderStatus.elementAt(index)}",
-                    //         style: TextStyle(color: Colors.black, fontSize: 12),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                     Divider(),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12.0,
-                        top: 6
-                      ),
+                      padding: const EdgeInsets.only(left: 12.0, top: 6),
                       child: Text(
                         " Order Status ",
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
-                    Timeline(
-                      children: List.generate(
-                        status.length,
-                        (index) => Container(
-                          alignment: Alignment.centerLeft,
-                          height: 40,
-                          child: Text(
-                            status.elementAt(index),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: widget.orderData.orderStatus.last ==
-                                      status.elementAt(index)
-                                  ? Provider.of<CustomColor>(context)
-                                      .appPrimaryMaterialColor
-                                  : Colors.grey,
+                     if (widget.orderData.orderStatus.last == "Pending" ||
+                        widget.orderData.orderStatus.last == "Dispatched" ||
+                        widget.orderData.orderStatus.last == "Delivered") Timeline(
+                        children: List.generate(
+                          status.length,
+                          (index) => Container(
+                            alignment: Alignment.centerLeft,
+                            height: 40,
+                            child: Text(
+                              status.elementAt(index),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: widget.orderData.orderStatus.last ==
+                                        status.elementAt(index)
+                                    ? Provider.of<CustomColor>(context)
+                                        .appPrimaryMaterialColor
+                                    : Colors.grey,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      indicators: List.generate(
-                        status.length,
-                        (index) => Icon(
-                          Icons.adjust,
-                          size: 22,
-                          color: widget.orderData.orderStatus.last ==
-                              status.elementAt(index)
-                              ? Provider.of<CustomColor>(context)
-                              .appPrimaryMaterialColor
-                              : Colors.grey,
+                        indicators: List.generate(
+                          status.length,
+                          (index) => Icon(
+                            Icons.adjust,
+                            size: 22,
+                            color: widget.orderData.orderStatus.last ==
+                                    status.elementAt(index)
+                                ? Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor
+                                : Colors.grey,
+                          ),
                         ),
-                      ),
-                    ),
+                      ) else Container(child: Text("${widget.orderData.orderStatus.last}"),),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15, bottom: 30),
@@ -371,13 +336,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 dense: true,
-                                title: Text("Total",
-                                    style: FontsTheme.valueStyle(
-                                        size: 16, fontWeight: FontWeight.w700)),
+                                title: Row(
+                                  children: [
+                                    Text("Total ",
+                                        style: FontsTheme.valueStyle(
+                                            size: 16,
+                                            fontWeight: FontWeight.w700)),
+                                    isChanged ? UpdatedLabel() : Container(),
+                                  ],
+                                ),
                                 trailing: Text(
                                     "\u{20B9}" +
                                         " " +
-                                        "${widget.orderData.finalPaidAmount}",
+                                        "${widget.orderData.orderAmount}",
                                     style: FontsTheme.valueStyle(
                                         size: 16, fontWeight: FontWeight.w700)),
                               ),

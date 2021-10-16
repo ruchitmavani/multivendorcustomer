@@ -32,7 +32,7 @@ class Webpayment extends StatelessWidget {
       });
 
       element.src =
-          'web/payment.html?name=${sharedPrefs.businessCategory}&price=$price&image=$image&email=${sharedPrefs.customer_email}&customerPhone=${sharedPrefs.customer_mobileNo}&shopname=${sharedPrefs.businessName}&color=${int.parse(sharedPrefs.colorTheme).toRadixString(16).substring(2)}&orderid=${orderId}';
+          'web/payment.html?name=${sharedPrefs.businessCategory}&price=$price&image=$image&email=${sharedPrefs.customer_email}&customerPhone=${sharedPrefs.customer_mobileNo}&shopname=${sharedPrefs.businessName}&color=${int.parse(sharedPrefs.colorTheme).toRadixString(16).substring(2)}&orderid=$orderId';
       element.style.border = 'none';
 
       return element;

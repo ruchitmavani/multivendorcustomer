@@ -49,11 +49,9 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   Future addToCart() async {
     Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
           NewCartModel(
-              taxDetails: widget.productData.taxDetails,
-              taxId: widget.productData.taxId,
               productId: widget.productData.productId,
               productColor: ProductColor(
-                colorCode: "",
+                colorCode: 0,
                 isActive: false,
               ),
               productImageUrl: widget.productData.productImageUrl,

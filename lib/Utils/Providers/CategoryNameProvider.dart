@@ -18,28 +18,17 @@ class CategoryName extends ChangeNotifier {
   Future loadCategoryName() async {
     _isLoading = true;
 
-    await CategoryController
-    .getCategoryName()
-        .then((value) {
-    if (value.success) {
-    print(value.data);
-
-    categoryName = value.data;
-    _isLoading = false;
-
-    } else {
-
-    _isLoading = false;
-
-    }
+    await CategoryController.getCategoryName().then((value) {
+      if (value.success) {
+        print(value.data);
+        categoryName = value.data;
+        _isLoading = false;
+      } else {
+        _isLoading = false;
+      }
     }, onError: (e) {
-
-    _isLoading = false;
-
+      _isLoading = false;
     });
-    notifyListeners
-    (
-    );
-
+    notifyListeners();
   }
 }

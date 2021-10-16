@@ -46,18 +46,18 @@ class CartDataWrapper extends ChangeNotifier {
                   : cartData.elementAt(i).productSize!.sellingPrice));
     }
     tax = 0;
-    for (int i = 0; i < cartData.length; i++) {
-      print(i);
-      for (int j = 0; j < cartData.elementAt(i).taxDetails.length; j++) {
-        tax = tax +
-            (cartData.elementAt(i).taxDetails.elementAt(j).taxPercentage *
-                cartData.elementAt(i).productQuantity *
-                (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
-                    ? cartData.elementAt(i).productSellingPrice
-                    : cartData.elementAt(i).productSize!.sellingPrice) /
-                100);
-      }
-    }
+    // for (int i = 0; i < cartData.length; i++) {
+    //   print(i);
+    //   for (int j = 0; j < cartData.elementAt(i).taxDetails.length; j++) {
+    //     tax = tax +
+    //         (cartData.elementAt(i).taxDetails.elementAt(j).taxPercentage *
+    //             cartData.elementAt(i).productQuantity *
+    //             (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
+    //                 ? cartData.elementAt(i).productSellingPrice
+    //                 : cartData.elementAt(i).productSize!.sellingPrice) /
+    //             100);
+    //   }
+    // }
     totalAmount = totalAmount + tax;
     isLoading = false;
     isCouponApplied = false;

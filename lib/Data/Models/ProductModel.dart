@@ -11,7 +11,6 @@ class ProductData {
     required this.productName,
     required this.productMrp,
     required this.productSellingPrice,
-    required this.taxId,
     required this.stockLeft,
     required this.unitType,
     required this.productLiveTiming,
@@ -23,10 +22,8 @@ class ProductData {
     required this.productRatingAverage,
     required this.productIsActive,
     required this.categoryIsActive,
-    required this.cartDetails,
     required this.bulkPriceList,
     required this.isRequestPrice,
-    required this.taxDetails,
   });
 
   String id;
@@ -40,7 +37,6 @@ class ProductData {
   String productName;
   int productMrp;
   int productSellingPrice;
-  List<String> taxId;
   int stockLeft;
   String unitType;
   List<String> productLiveTiming;
@@ -52,10 +48,8 @@ class ProductData {
   double productRatingAverage;
   bool productIsActive;
   bool categoryIsActive;
-  CartDetails? cartDetails;
   List<BulkPriceList>? bulkPriceList;
   bool isRequestPrice;
-  List<TaxDetail> taxDetails;
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         id: json["_id"],
@@ -70,7 +64,6 @@ class ProductData {
         productName: json["product_name"],
         productMrp: json["product_mrp"],
         productSellingPrice: json["product_selling_price"],
-        taxId: List<String>.from(json["tax_id"].map((x) => x)),
         stockLeft: json["stock_left"],
         unitType: json["unit_type"],
         productLiveTiming:
@@ -89,14 +82,9 @@ class ProductData {
         productRatingAverage: json["product_rating_average"].toDouble(),
         productIsActive: json["product_is_active"],
         categoryIsActive: json["category_is_active"],
-        cartDetails: json["cart_details"] == null || json["cart_details"] == {}
-            ? null
-            : CartDetails.fromJson(json["cart_details"]),
         bulkPriceList: List<BulkPriceList>.from(json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
         isRequestPrice:
             json["is_request_price"] == null ? null : json["is_request_price"],
-        taxDetails:
-            json["tax_details"].map<TaxDetail>((x) => TaxDetail.fromJson(x)).toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -111,7 +99,6 @@ class ProductData {
         "product_name": productName,
         "product_mrp": productMrp,
         "product_selling_price": productSellingPrice,
-        "tax_id": List<dynamic>.from(taxId.map((x) => x)),
         "stock_left": stockLeft,
         "unit_type": unitType,
         "product_live_timing":
@@ -126,13 +113,10 @@ class ProductData {
         "product_rating_average": productRatingAverage,
         "product_is_active": productIsActive,
         "category_is_active": categoryIsActive,
-        "cart_details": cartDetails == null ? null : cartDetails!.toJson(),
         "bulk_price_list": bulkPriceList == null
             ? null
             : List<dynamic>.from(bulkPriceList!.map((x) => x.toJson())),
         "is_request_price": isRequestPrice == null ? null : isRequestPrice,
-        "tax_details":
-            List<Map<String, dynamic>>.from(taxDetails.map((x) => x.toJson())),
       };
 }
 
@@ -190,7 +174,7 @@ class ProductColor {
     required this.isActive,
   });
 
-  String colorCode;
+  int colorCode;
   bool isActive;
 
   factory ProductColor.fromJson(Map<String, dynamic> json) => ProductColor(

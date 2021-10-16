@@ -47,8 +47,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Future addToCart() async {
     Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
           NewCartModel(
-              taxDetails: widget.productData.taxDetails,
-              taxId: widget.productData.taxId,
+
               productId: widget.productData.productId,
               productColor: ProductColor(
                 colorCode:
@@ -56,7 +55,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                         ? widget.productData.productVariationColors!
                             .elementAt(widget.colorIndex)
                             .colorCode
-                        : "",
+                        : 0,
                 isActive: widget.productData.productVariationColors!.length != 0
                     ? widget.productData.productVariationColors!
                         .elementAt(widget.colorIndex)

@@ -19,7 +19,7 @@ class OrderDataModel {
     required this.deliveryApproxTime,
     required this.paidAmount,
     required this.refundAmount,
-    required this.finalPaidAmount,
+    required this.orderAmount,
     required this.itemTotalAmount,
     required this.deliveryCharges,
     required this.taxAmount,
@@ -42,7 +42,7 @@ class OrderDataModel {
   String deliveryApproxTime;
   int paidAmount;
   int refundAmount;
-  int finalPaidAmount;
+  int orderAmount;
   int itemTotalAmount;
   int deliveryCharges;
   int taxAmount;
@@ -65,7 +65,7 @@ class OrderDataModel {
     deliveryApproxTime: json["delivery_approx_time"],
     paidAmount: json["paid_amount"],
     refundAmount: json["refund_amount"],
-    finalPaidAmount: json["final_paid_amount"],
+    orderAmount: json["order_amount"],
     itemTotalAmount: json["item_total_amount"],
     deliveryCharges: json["delivery_charges"],
     taxAmount: json["tax_amount"],
@@ -89,7 +89,7 @@ class OrderDataModel {
     "delivery_approx_time": deliveryApproxTime,
     "paid_amount": paidAmount,
     "refund_amount": refundAmount,
-    "final_paid_amount": finalPaidAmount,
+    "final_paid_amount": orderAmount,
     "item_total_amount": itemTotalAmount,
     "delivery_charges": deliveryCharges,
     "tax_amount": taxAmount,
@@ -188,7 +188,6 @@ class ProductDetails {
     required this.productSellingPrice,
     required this.bulkPriceList,
     required this.isRequestPrice,
-    required this.taxId,
     required this.stockLeft,
     required this.unitType,
     required this.productLiveTiming,
@@ -216,7 +215,6 @@ class ProductDetails {
   double productSellingPrice;
   List<BulkPriceList> bulkPriceList;
   bool isRequestPrice;
-  List<TaxId> taxId;
   int stockLeft;
   String unitType;
   List<String> productLiveTiming;
@@ -244,7 +242,6 @@ class ProductDetails {
     productSellingPrice: json["product_selling_price"],
     bulkPriceList: List<BulkPriceList>.from(json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
     isRequestPrice: json["is_request_price"],
-    taxId: List<TaxId>.from(json["tax_id"].map((x) => x == null ? null : TaxId.fromJson(x))),
     stockLeft: json["stock_left"],
     unitType: json["unit_type"],
     productLiveTiming: List<String>.from(json["product_live_timing"].map((x) => x)),
@@ -273,7 +270,6 @@ class ProductDetails {
     "product_selling_price": productSellingPrice,
     "bulk_price_list":  List<dynamic>.from(bulkPriceList.map((x) => x.toJson())),
       "is_request_price": isRequestPrice,
-    "tax_id": List<dynamic>.from(taxId.map((x) => x == null ? null : x.toJson())),
     "stock_left": stockLeft,
     "unit_type": unitType,
     "product_live_timing": List<dynamic>.from(productLiveTiming.map((x) => x)),
@@ -354,6 +350,7 @@ class VendorDetails {
     required this.isStorePickupEnable,
     required this.isWhatsappChatSupport,
     required this.colorTheme,
+    required this.taxDetails
   });
 
   String vendorUniqId;
@@ -381,6 +378,7 @@ class VendorDetails {
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;
   String colorTheme;
+  List<TaxDetail> taxDetails;
 
   factory VendorDetails.fromJson(Map<String, dynamic> json) => VendorDetails(
     vendorUniqId: json["vendor_uniq_id"],
@@ -408,6 +406,7 @@ class VendorDetails {
     isStorePickupEnable: json["is_store_pickup_enable"],
     isWhatsappChatSupport: json["is_whatsapp_chat_support"],
     colorTheme: json["color_theme"],
+    taxDetails: List<TaxDetail>.from(json["tax_details"].map((x) => TaxDetail.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -436,6 +435,7 @@ class VendorDetails {
     "is_store_pickup_enable": isStorePickupEnable,
     "is_whatsapp_chat_support": isWhatsappChatSupport,
     "color_theme": colorTheme,
+    "tax_details": List<dynamic>.from(taxDetails.map((x) => x.toJson())),
   };
 }
 
@@ -467,9 +467,6 @@ class BusinessHour {
     "isOpen": isOpen,
   };
 }
-
-
-
 
 
 

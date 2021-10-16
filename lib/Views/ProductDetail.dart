@@ -61,7 +61,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
             finalColor =
-                int.parse(productData.productVariationColors!.first.colorCode);
+                productData.productVariationColors!.first.colorCode;
           }
         });
       } else {
@@ -249,8 +249,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                 .circular(50.0),
                                                         child: Container(
                                                             color: Color(
-                                                                int.parse(e
-                                                                    .colorCode)),
+                                                                e
+                                                                    .colorCode),
                                                             height: 25,
                                                             width: 25)),
                                                   ),

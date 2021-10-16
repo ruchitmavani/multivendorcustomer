@@ -6,9 +6,17 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [ {
-      "source": "**",
-      "destination": "/index.html"
-    } ]
+    "rewrites": [
+      {
+        "source": "/web",
+        "destination": "/payment.html",
+        "dynamicLinks": true
+      },
+      {
+        "source": "**",
+        "destination": "/index.html",
+        "dynamicLinks": true
+      }
+    ]
   }
 }
