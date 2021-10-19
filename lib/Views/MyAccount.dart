@@ -37,6 +37,12 @@ class _MyAccountState extends State<MyAccount> {
   TextEditingController dob = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomerData();
+  }
+
   _loadCustomerData() async {
     setState(() {
       isLoadingCustomer = true;
@@ -120,12 +126,6 @@ class _MyAccountState extends State<MyAccount> {
         isLoading = false;
       });
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCustomerData();
   }
 
   Future<Null> _selectDate(BuildContext context) async {

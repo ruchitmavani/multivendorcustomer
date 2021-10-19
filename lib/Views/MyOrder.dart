@@ -91,6 +91,7 @@ class _MyOrderState extends State<MyOrder> {
                 : ListView.builder(
                     itemCount: orderData.length,
                     itemBuilder: (BuildContext context, int index) {
+                      index=orderData.length-1-index;
                       return OrderComponent(
                           orderData: orderData.elementAt(index));
                     },

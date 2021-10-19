@@ -58,7 +58,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         setState(() {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "${value.data!.orderId}");
-          orderId = value.data!.orderId;
+          orderId = value.data!.orderId.id;
           window.localStorage["orderId"] = orderId;
         });
       } else {

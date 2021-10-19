@@ -46,6 +46,8 @@ class CartDataWrapper extends ChangeNotifier {
                   : cartData.elementAt(i).productSize!.sellingPrice));
     }
     tax = 0;
+
+    //todo: tax pending implement now :) !!
     // for (int i = 0; i < cartData.length; i++) {
     //   print(i);
     //   for (int j = 0; j < cartData.elementAt(i).taxDetails.length; j++) {

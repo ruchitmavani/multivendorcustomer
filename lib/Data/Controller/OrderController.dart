@@ -65,25 +65,25 @@ class OrderController {
     for (int i = 0; i < orders.length; i++) {
       print(i);
       productList.add(orders.elementAt(i).productSize!.size == "" &&
-          orders.elementAt(i).productColor!.colorCode == ""
+              orders.elementAt(i).productColor!.colorCode == ""
           ? AddOrder(
-          productId: orders.elementAt(i).productId,
-          productQuantity: orders.elementAt(i).productQuantity)
+              productId: orders.elementAt(i).productId,
+              productQuantity: orders.elementAt(i).productQuantity)
           : orders.elementAt(i).productSize!.size == ""
-          ? AddOrder(
-          productId: orders.elementAt(i).productId,
-          productColor: orders.elementAt(i).productColor,
-          productQuantity: orders.elementAt(i).productQuantity)
-          : orders.elementAt(i).productColor!.colorCode == ""
-          ? AddOrder(
-          productId: orders.elementAt(i).productId,
-          productSize: orders.elementAt(i).productSize,
-          productQuantity: orders.elementAt(i).productQuantity)
-          : AddOrder(
-          productId: orders.elementAt(i).productId,
-          productSize: orders.elementAt(i).productSize,
-          productColor: orders.elementAt(i).productColor,
-          productQuantity: orders.elementAt(i).productQuantity));
+              ? AddOrder(
+                  productId: orders.elementAt(i).productId,
+                  productColor: orders.elementAt(i).productColor,
+                  productQuantity: orders.elementAt(i).productQuantity)
+              : orders.elementAt(i).productColor!.colorCode == ""
+                  ? AddOrder(
+                      productId: orders.elementAt(i).productId,
+                      productSize: orders.elementAt(i).productSize,
+                      productQuantity: orders.elementAt(i).productQuantity)
+                  : AddOrder(
+                      productId: orders.elementAt(i).productId,
+                      productSize: orders.elementAt(i).productSize,
+                      productColor: orders.elementAt(i).productColor,
+                      productQuantity: orders.elementAt(i).productQuantity));
     }
 
     var data = couponAmount == 0
@@ -145,17 +145,14 @@ class OrderController {
   }
 
   /*-----------Accept Order -----------*/
-  static Future<ResponseClass> acceptOrder(
-      String orderId) async {
+  static Future<ResponseClass> acceptOrder(String orderId) async {
     String url = StringConstants.API_URL + StringConstants.accept_order;
 
     //body Data
-    var data = {
-      "order_id" : "$orderId"
-    };
+    var data = {"order_id": "$orderId"};
 
     ResponseClass responseClass =
-    ResponseClass(success: false, message: "Something went wrong");
+        ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -172,6 +169,41 @@ class OrderController {
       return responseClass;
     } catch (e) {
       log("Accept order error->>>" + e.toString());
+      return responseClass;
+    }
+  }
+
+  /*-----------Reject Order -----------*/
+  static Future<ResponseClass> rejectOrder({required String orderId,required String reason}) async {
+    String url = StringConstants.API_URL + StringConstants.reject_order;
+
+    //body Data
+    var data = {
+      "order_id": "$orderId",
+      "is_rejected_by_customer": true,
+      "order_status": "Rejected",
+      "reject_reason": "$reason",
+      "razorpay_payment_id": "pay_IAeuocTTDp9zFC"
+    };
+
+    ResponseClass responseClass =
+        ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("reject order response -> ${response.data}");
+      if (response.statusCode == 200) {
+        log("reject order ${response.data}");
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        responseClass.data = response.data["data"];
+      }
+      return responseClass;
+    } catch (e) {
+      log("reject order error->>>" + e.toString());
       return responseClass;
     }
   }

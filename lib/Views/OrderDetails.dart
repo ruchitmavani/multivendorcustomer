@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor_customer/CommonWidgets/RejectOrder.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TimeLine.dart';
 import 'package:multi_vendor_customer/CommonWidgets/updatedLabel.dart';
@@ -196,9 +197,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
-                     if (widget.orderData.orderStatus.last == "Pending" ||
+                    if (widget.orderData.orderStatus.last == "Pending" ||
                         widget.orderData.orderStatus.last == "Dispatched" ||
-                        widget.orderData.orderStatus.last == "Delivered") Timeline(
+                        widget.orderData.orderStatus.last == "Delivered")
+                      Timeline(
                         children: List.generate(
                           status.length,
                           (index) => Container(
@@ -229,7 +231,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 : Colors.grey,
                           ),
                         ),
-                      ) else Container(child: Text("${widget.orderData.orderStatus.last}"),),
+                      )
+                    else
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15,vertical: 4)
+                        ,
+                        child: Row(
+                          children: [
+                            Icon(Icons.report_problem),
+                            SizedBox(width: 10,),
+                            Text("${widget.orderData.orderStatus.last}",style: TextStyle(color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),),
+                          ],
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15, bottom: 30),
@@ -380,7 +394,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                       OutlinedButton(
                         child: Text("No"),
-                        onPressed: () {},
+                        onPressed: () {
+                         showModalBottomSheet(context: context, builder: (context) => RejectOrder(oderIdData: widget.orderData.orderId,));
+                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
