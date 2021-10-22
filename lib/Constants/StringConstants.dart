@@ -65,6 +65,7 @@ class StringConstants{
   static String longitude="longitude";
   static String isWhatsappSupport="isWhatsappSupport";
   static String color_theme="color_theme";
+  static String tax="tax";
 
 
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'ProductModel.dart';
+
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));
 
 String vendorDataModelToJson(VendorDataModel data) => json.encode(data.toJson());
@@ -30,6 +32,7 @@ class VendorDataModel {
     required this.isStorePickupEnable,
     required this.isWhatsappChatSupport,
     required this.colorTheme,
+    required this.taxDetails
   });
 
   String vendorUniqId;
@@ -56,6 +59,7 @@ class VendorDataModel {
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;
   String colorTheme;
+  List<TaxDetail> taxDetails;
 
   factory VendorDataModel.fromJson(Map<String, dynamic> json) => VendorDataModel(
     vendorUniqId: json["vendor_uniq_id"],
@@ -82,6 +86,7 @@ class VendorDataModel {
     isStorePickupEnable: json["is_store_pickup_enable"],
     isWhatsappChatSupport: json["is_whatsapp_chat_support"],
     colorTheme: json["color_theme"],
+    taxDetails: List<TaxDetail>.from(json["tax_details"].map((x) => TaxDetail.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +114,7 @@ class VendorDataModel {
     "is_store_pickup_enable": isStorePickupEnable,
     "is_whatsapp_chat_support": isWhatsappChatSupport,
     "color_theme": colorTheme,
+    "tax_details": List<dynamic>.from(taxDetails.map((x) => x.toJson())),
   };
 }
 

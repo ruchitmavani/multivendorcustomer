@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
+import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:provider/provider.dart';
 
 class CartDataWrapper extends ChangeNotifier {
   List<NewCartModel> cartData = [];
+  List<TaxDetail> taxData=[];
   bool _isLoading = true;
   bool isCouponApplied = false;
 
@@ -20,22 +23,8 @@ class CartDataWrapper extends ChangeNotifier {
   late int shipping;
 
   Future loadCartData({required String vendorId}) async {
-    // if (sharedPrefs.customer_id.isEmpty) {
-    //   totalItems = cartData.length;
-    //   isLoading = false;
-    //   isCouponApplied = false;
-    //   tax = 0;
-    //   totalAmount = 1100;
-    //   notifyListeners();
-    //   return;
-    // }
+
     print("vendor $vendorId");
-    // await CartController.getCartData(
-    //         customerId: "${sharedPrefs.customer_id}", vendorId: vendorId)
-    //     .then((value) {
-    //   if (value.success) {
-    //     print(value.data);
-    // cartData = value.data!;
     totalItems = cartData.length;
     totalAmount = 0;
     for (int i = 0; i < cartData.length; i++) {
@@ -60,6 +49,11 @@ class CartDataWrapper extends ChangeNotifier {
     //             100);
     //   }
     // }
+
+    for(int i=0;i<sharedPrefs.tax.length;i++){
+      tax=tax+(totalAmount*double.parse(sharedPrefs.tax.elementAt(i))/100);
+    }
+
     totalAmount = totalAmount + tax;
     isLoading = false;
     isCouponApplied = false;

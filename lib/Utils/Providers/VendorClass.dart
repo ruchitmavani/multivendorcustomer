@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Controller/VendorController.dart';
 import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -27,9 +28,26 @@ class VendorModelWrapper with ChangeNotifier {
         sharedPrefs.businessCategory=vendorModel!.businessCategory;
         sharedPrefs.storeLink=vendorModel!.storeLink;
         sharedPrefs.colorTheme=vendorModel!.colorTheme;
+        sharedPrefs.tax=vendorModel!.taxDetails.map((e) => e.taxPercentage.toString()).toList();
       }
     }, onError: (e) {
       print(e);
     });
+
+   IpInfoApi.getIPAddress();
+
+  }
+}
+
+
+class IpInfoApi {
+  static Future<String?> getIPAddress() async {
+    try {
+      final response = await dio.get('https://api.ipify.org');
+      print(response.data);
+      return response.statusCode == 200 ? response.data : null;
+    } catch (e) {
+      return null;
+    }
   }
 }

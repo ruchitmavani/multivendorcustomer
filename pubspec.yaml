@@ -58,6 +58,7 @@ dependencies:
   #general
   intl: ^0.17.0
   equatable: ^2.0.3
+  device_info_plus: ^3.1.0
 
   #routing
   go_router: ^1.1.3

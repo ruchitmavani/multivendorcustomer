@@ -20,7 +20,6 @@ import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:provider/provider.dart';
 
-
 import 'Utils/SharedPrefs.dart';
 import 'Views/ProductDetail.dart';
 
@@ -42,9 +41,8 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
-  static void changeState(BuildContext context){
-    var state=context.findAncestorStateOfType<_MyAppState>();
+  static void changeState(BuildContext context) {
+    var state = context.findAncestorStateOfType<_MyAppState>();
     state!.reload();
   }
 
@@ -53,11 +51,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  reload(){
-    setState(() {
-
-    });
+  reload() {
+    setState(() {});
   }
 
   @override

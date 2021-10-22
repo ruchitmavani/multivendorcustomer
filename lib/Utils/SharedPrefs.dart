@@ -69,6 +69,9 @@ class SharedPrefs {
   String get colorTheme =>
       _sharedPrefs!.getString(StringConstants.color_theme) ?? "";
 
+  List<String> get tax =>
+      _sharedPrefs!.getStringList(StringConstants.tax) ?? [];
+
   // Setter
 
   set customer_mobileNo(String value) {
@@ -141,6 +144,10 @@ class SharedPrefs {
 
   set colorTheme(String value){
     _sharedPrefs!.setString(StringConstants.color_theme, value);
+  }
+
+  set tax(List<String> value){
+    _sharedPrefs!.setStringList(StringConstants.tax, value);
   }
 
   /*--------------- Check Is Login or Not --------------------*/

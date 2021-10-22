@@ -12,7 +12,7 @@ class VendorController {
     String url = StringConstants.API_URL + StringConstants.vendor_view;
 
     //body Data
-    var data = {"store_link": "$vendorId"};
+    var data = {"store_link": "$vendorId",   "customer_ip" : "a1b4"};
 
     print(data);
     ResponseClass<VendorDataModel> responseClass =
