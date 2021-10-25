@@ -31,7 +31,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   LineStyle lineStyle = LineStyle(color: Colors.grey.shade300, thickness: 2);
   bool isLoading = false;
   bool isChanged = false;
-  List<String> status = ["Pending", "Dispatched", "Delivered"];
+  List<String> status = [];
 
   @override
   void initState() {
@@ -41,6 +41,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         isChanged = true;
       });
     }
+    status=widget.orderData.paymentType.toUpperCase()=="TAKEAWAY"?["Pending","Ready","Delivered"]:["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
           widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
@@ -199,7 +200,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                     if (widget.orderData.orderStatus.last == "Pending" ||
                         widget.orderData.orderStatus.last == "Dispatched" ||
-                        widget.orderData.orderStatus.last == "Delivered")
+                        widget.orderData.orderStatus.last == "Delivered" ||widget.orderData.orderStatus.last == "Ready" )
                       Timeline(
                         children: List.generate(
                           status.length,

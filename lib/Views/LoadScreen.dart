@@ -32,13 +32,12 @@ class _LoadingState extends State<Loading> {
     // id = 'veer0961';
     window.localStorage["storeId"] = id;
 
-
     if (id != "")
       await Provider.of<VendorModelWrapper>(context, listen: false)
           .loadVendorData(id)
           .then((value)async {
         // if (!mounted) return;
-       MyApp.changeState(context);
+
         print("load path ------- ${window.location.pathname}");
         String path = window.location.pathname!;
         if (!path.contains("home"))

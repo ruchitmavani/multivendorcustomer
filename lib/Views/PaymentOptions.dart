@@ -124,6 +124,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
           Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
+          Provider.of<CartDataWrapper>(context, listen: false).loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
           GoRouter.of(context).go('/' + storeConcate(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
