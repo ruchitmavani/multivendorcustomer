@@ -15,6 +15,8 @@ import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class ProductDescription extends StatefulWidget {
   String productId;
@@ -36,6 +38,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   int finalPrice = 0;
   int finalColor = 0;
   bool isLoading = false;
+  bool isVideo = false;
   int finalQuantity = 0;
 
   _loadData() async {
@@ -60,8 +63,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
           }
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
-            finalColor =
-                productData.productVariationColors!.first.colorCode;
+            finalColor = productData.productVariationColors!.first.colorCode;
           }
         });
       } else {
@@ -115,7 +117,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             Space(
                               height: 20,
                             ),
-                            productData.productImageUrl.length == 0
+                            productData.productImageUrl.length == 0 &&
+                                    productData.productVideoUrl.isEmpty && productData.productYoutubeUrl.isEmpty
                                 ? SizedBox(
                                     height: 230,
                                     child:
@@ -123,15 +126,38 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   )
                                 : SizedBox(
                                     height: 230,
-                                    child: Image.network(
-                                        "${StringConstants.API_URL + productData.productImageUrl.elementAt(displayImage)}")),
+                                    child: displayImage ==
+                                            productData.productImageUrl.length
+                                        ? productData.isYoutubeUrl
+                                            ? YoutubePlayerIFrame(
+                                                controller:
+                                                    YoutubePlayerController(
+                                                  initialVideoId: "${productData.productYoutubeUrl}",
+                                                  params: YoutubePlayerParams(
+                                                    showControls: false,
+                                                    mute: true,
+                                                    showFullscreenButton: false,
+                                                  ),
+                                                ),
+                                                aspectRatio: 16 / 9,
+                                              )
+                                            : VideoPlayer(
+                                                VideoPlayerController.network(
+                                                    "${StringConstants.API_URL + productData.productVideoUrl}")
+                                                  ..initialize()
+                                                  ..play()
+                                                  ..setVolume(0))
+                                        : Image.network(
+                                            "${StringConstants.API_URL + productData.productImageUrl.elementAt(displayImage)}")),
                             Space(height: 20),
                             Container(
                               height: 50,
                               alignment: Alignment.center,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: productData.productImageUrl.length,
+                                itemCount: productData.productVideoUrl.isEmpty && productData.productYoutubeUrl.isEmpty
+                                    ? productData.productImageUrl.length
+                                    : productData.productImageUrl.length + 1,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   return Container(
@@ -146,14 +172,35 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                       height: 50,
                                       child: Padding(
                                         padding: const EdgeInsets.all(6.0),
-                                        child: GestureDetector(
+                                        child: InkWell(
                                           onTap: () {
                                             setState(() {
                                               displayImage = index;
+                                              if ((productData.productVideoUrl
+                                                      .isNotEmpty || productData.productYoutubeUrl.isNotEmpty) &&
+                                                  index ==
+                                                      productData
+                                                          .productImageUrl
+                                                          .length) {
+                                                isVideo = true;
+                                              } else {
+                                                isVideo = false;
+                                              }
                                             });
                                           },
-                                          child: Image.network(
-                                              "${StringConstants.API_URL + productData.productImageUrl.elementAt(index)}"),
+                                          child: (productData.productVideoUrl
+                                                      .isNotEmpty||productData.productYoutubeUrl.isNotEmpty) &&
+                                                  index ==
+                                                      productData
+                                                          .productImageUrl
+                                                          .length
+                                              ? Icon(
+                                                  Icons.play_circle_outline,
+                                                  color: Colors.grey,
+                                                  size: 32,
+                                                )
+                                              : Image.network(
+                                                  "${StringConstants.API_URL + productData.productImageUrl.elementAt(index)}"),
                                         ),
                                       ));
                                 },
@@ -198,9 +245,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
                                         // Color Option
                                         if (productData.productVariationColors!
-                                            .length !=
+                                                .length !=
                                             0)
-                                        Space(height: 20),
+                                          Space(height: 20),
                                         if (productData.productVariationColors!
                                                 .length !=
                                             0)
@@ -249,8 +296,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                 .circular(50.0),
                                                         child: Container(
                                                             color: Color(
-                                                                e
-                                                                    .colorCode),
+                                                                e.colorCode),
                                                             height: 25,
                                                             width: 25)),
                                                   ),
@@ -491,37 +537,50 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                           }).toList(),
                                         ),
                                         if (productData.bulkPriceList!.length !=
-                                            0)Column(children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                                            child: SizedBox(
-                                              height: 25,
-                                              child: ListTile(
-                                                contentPadding: EdgeInsets.zero,
-                                                dense: true,
-                                                title: Text(
-                                                     "Price"),
-                                                trailing: Text(finalQuantity!=0?"\u{20B9} ${finalPrice/finalQuantity}":"0"),
+                                            0)
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 4),
+                                                child: SizedBox(
+                                                  height: 25,
+                                                  child: ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                    dense: true,
+                                                    title: Text("Price"),
+                                                    trailing: Text(finalQuantity !=
+                                                            0
+                                                        ? "\u{20B9} ${finalPrice / finalQuantity}"
+                                                        : "0"),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                                            child: SizedBox(
-                                              height: 25,
-                                              child: ListTile(
-                                                contentPadding: EdgeInsets.zero,
-                                                dense: true,
-                                                title: Text("Qty"),
-                                                trailing: Text("$finalQuantity"),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 4),
+                                                child: SizedBox(
+                                                  height: 25,
+                                                  child: ListTile(
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                    dense: true,
+                                                    title: Text("Qty"),
+                                                    trailing:
+                                                        Text("$finalQuantity"),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Space(height: 10,),
-                                        ],
-                                        )
+                                              Space(
+                                                height: 10,
+                                              ),
+                                            ],
+                                          )
                                       ],
                                     ),
                                   ),
@@ -590,7 +649,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ? AddRemoveButtonBulk(
                                   productData: productData,
                                   isRounded: false,
-                                  price: finalPrice/finalQuantity,
+                                  price: finalPrice / finalQuantity,
                                   qty: finalQuantity,
                                 )
                               : AddRemoveButton(

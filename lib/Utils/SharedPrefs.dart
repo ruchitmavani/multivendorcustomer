@@ -4,13 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPrefs {
   static SharedPreferences? _sharedPrefs;
 
-  Future<bool> logout() async {
+   logout() async {
     for(String key in _sharedPrefs!.getKeys()){
       if(key != StringConstants.vendor_uniq_id && key != StringConstants.storeLink){
-        _sharedPrefs!.remove(key);
+        await _sharedPrefs!.remove(key);
       }
     }
-    return true;
   }
 
   init() async {

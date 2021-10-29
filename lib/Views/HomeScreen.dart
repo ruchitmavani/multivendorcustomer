@@ -1,5 +1,5 @@
-
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
   getInitialData() async {
     await Provider.of<VendorModelWrapper>(context, listen: false)
         .loadVendorData(sharedPrefs.storeLink);
-    print("vendor id in home provider ${Provider.of<VendorModelWrapper>(context, listen: false)
-        .vendorModel!
-        .vendorUniqId}");
+    print(
+        "vendor id in home provider ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}");
     _getCategoryWiseProduct();
     _getBannerData();
     _getTrendingData();
@@ -199,11 +198,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Provider.of<CustomColor>(context)
                       .appPrimaryMaterialColor),
               onPressed: () {
-                // Navigator.of(context)
-                //     .pushNamed(PageCollection.search)
-                //     .then((value) {
-                //   initState();
-                // });
                 GoRouter.of(context).push(PageCollection.search);
               },
             ),
@@ -235,27 +229,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 isScrollControlled: true,
                 isDismissible: true,
                 enableDrag: true,
-
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // Padding(
-                      //   padding:
-                      //       const EdgeInsets.only(right: 15.0, bottom: 15.0),
-                      //   child: SizedBox(
-                      //     child: FloatingActionButton(
-                      //         onPressed: () {
-                      //           Navigator.of(context).pop();
-                      //         },
-                      //         child: Icon(Icons.close, size: 16),
-                      //         backgroundColor: Colors.white),
-                      //     width: 24,
-                      //     height: 24,
-                      //   ),
-                      // ),
                       Card(
                         margin: EdgeInsets.symmetric(horizontal: 20),
                         child: ListView.builder(
@@ -263,15 +242,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pop(context);
                                 context.go(helper(PageCollection.categories +
                                     '/${productDataList.elementAt(index).categoryId}'));
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 15),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                         "${productDataList.elementAt(index).categoryName}"),
@@ -279,7 +260,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         Text(
                                             "${productDataList.elementAt(index).productDetails.length}"),
-                                        Icon(Icons.chevron_right,color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,),
+                                        Icon(
+                                          Icons.chevron_right,
+                                          color:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor,
+                                        ),
                                       ],
                                     )
                                   ],
@@ -289,7 +275,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       ),
-                      Space(height: 40,),
+                      Space(
+                        height: 40,
+                      ),
                     ],
                   );
                 });
@@ -315,8 +303,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      // Navigator.of(context)
-                                      //     .pushNamed(PageCollection.about_us);
                                       GoRouter.of(context)
                                           .go(PageCollection.about_us);
                                     },
@@ -329,10 +315,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Image.network(
-                                              "${StringConstants.API_URL}${vendorProvider.logo}",
-                                              width: 60,
-                                              height: 60),
+                                          CachedNetworkImage(
+                                            height: 60,
+                                            width: 60,
+                                            imageUrl:
+                                                "${StringConstants.API_URL}${vendorProvider.logo}",
+                                            placeholder: (context, url) =>
+                                                SizedBox(
+                                                  width: 12,
+                                                  height: 12,
+                                                  child: CircularProgressIndicator(
+                                                  ),
+                                                ),
+                                            errorWidget: (context, url, error) =>
+                                                Icon(Icons.map),
+                                          ),
                                           Space(width: 8.0),
                                           Text("${vendorProvider.businessName}",
                                               style: FontsTheme.boldTextStyle(
@@ -671,13 +668,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleViewAll(
-                        title:
-                            "${productDataList.elementAt(index).categoryName}",
-                        onPressed: () {
-                          context.go(helper(PageCollection.categories +
-                              '/${productDataList.elementAt(index).categoryId}'));
-
-                        },isViewAll: true,),
+                      title: "${productDataList.elementAt(index).categoryName}",
+                      onPressed: () {
+                        context.go(helper(PageCollection.categories +
+                            '/${productDataList.elementAt(index).categoryId}'));
+                      },
+                      isViewAll: true,
+                    ),
                     SizedBox(
                       height: isGrid ? 251 : null,
                       child: Padding(

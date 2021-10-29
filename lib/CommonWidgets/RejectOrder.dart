@@ -9,7 +9,9 @@ import 'MyTextFormField.dart';
 class RejectOrder extends StatefulWidget {
   final String oderIdData;
 
-  RejectOrder({required this.oderIdData,});
+  RejectOrder({
+    required this.oderIdData,
+  });
 
   @override
   _RejectOrderState createState() => _RejectOrderState();
@@ -23,7 +25,9 @@ class _RejectOrderState extends State<RejectOrder> {
     setState(() {
       isLoading = true;
     });
-    await OrderController.rejectOrder(orderId: widget.oderIdData,reason: txtReason.text).then((value) {
+    await OrderController.rejectOrder(
+            orderId: widget.oderIdData, reason: txtReason.text)
+        .then((value) {
       if (value.success) {
         print(value.data);
         setState(() {
@@ -66,13 +70,14 @@ class _RejectOrderState extends State<RejectOrder> {
           SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(top: 15.0),
-            child: Text("Enter reason for rejection(if any)",
-                ),
+            child: Text(
+              "Enter reason for rejection(if any)",
+            ),
           ),
           MyTextFormField(
             controller: txtReason,
             contentPadding:
-            EdgeInsets.only(left: 15, right: 8, top: 15, bottom: 4),
+                EdgeInsets.only(left: 15, right: 8, top: 15, bottom: 4),
             hintText: "Enter reason for rejection",
             maxLines: 7,
           ),
@@ -82,22 +87,22 @@ class _RejectOrderState extends State<RejectOrder> {
           isLoading == true
               ? Center(child: CircularProgressIndicator())
               : SizedBox(
-            height: 43,
-            width: MediaQuery.of(context).size.width,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                MaterialStateProperty.all(Colors.red.shade800),
-              ),
-              child: Text("Reject Order"),
-              onPressed: () {
-                if(txtReason.text.length>1){
-                _rejectOrder();}
-                else
-                  Fluttertoast.showToast(msg: "Enter reason");
-              },
-            ),
-          ),
+                  height: 43,
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.red.shade800),
+                    ),
+                    child: Text("Reject Order"),
+                    onPressed: () {
+                      if (txtReason.text.length > 1) {
+                        _rejectOrder();
+                      } else
+                        Fluttertoast.showToast(msg: "Enter reason");
+                    },
+                  ),
+                ),
           SizedBox(
             height: 10,
           ),

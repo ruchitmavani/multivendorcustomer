@@ -4,7 +4,8 @@ class StringConstants{
 
   /*API & IMAGEURLS */
   // static String API_URL="http://192.168.1.11:8080/";
-  static String API_URL="http://18.221.208.96:8080/";
+  // static String API_URL="http://18.221.208.96:8080/";
+  static String API_URL="http://13.126.236.213:8080/";
 
   /*API NAMES*/
   //vendor

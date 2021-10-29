@@ -10,7 +10,7 @@ String helper(String screen){
 
 String storeConcate(String screen){
   print("helper pathname:  ${sharedPrefs.storeLink}/$screen");
-  return "${sharedPrefs.storeLink==""?window.localStorage["storeId"]!:sharedPrefs.storeLink}/$screen";
+  return "${sharedPrefs.storeLink.isEmpty?window.localStorage["storeId"]!:sharedPrefs.storeLink}/$screen";
 }
 
 String getPrice(int qty,List<BulkPriceList> items){

@@ -34,20 +34,19 @@ class VendorModelWrapper with ChangeNotifier {
       print(e);
     });
 
-   IpInfoApi.getIPAddress();
 
   }
 }
 
 
 class IpInfoApi {
-  static Future<String?> getIPAddress() async {
+  static Future<String> getIPAddress() async {
     try {
       final response = await dio.get('https://api.ipify.org');
       print(response.data);
-      return response.statusCode == 200 ? response.data : null;
+      return response.statusCode == 200 ? response.data : "";
     } catch (e) {
-      return null;
+      return "";
     }
   }
 }

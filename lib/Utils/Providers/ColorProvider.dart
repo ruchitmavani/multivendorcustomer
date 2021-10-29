@@ -16,4 +16,6 @@ class CustomColor extends ChangeNotifier{
         appPrimaryColor);
     notifyListeners();
   }
+
+  bool thatThingHappened = false;
 }

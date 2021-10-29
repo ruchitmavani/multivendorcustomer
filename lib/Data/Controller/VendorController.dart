@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 
 import 'ProductController.dart';
 
@@ -10,9 +11,10 @@ class VendorController {
   /*-----------Get Product Data-----------*/
   static Future<ResponseClass> getVendorData({required String vendorId}) async {
     String url = StringConstants.API_URL + StringConstants.vendor_view;
-
+    String  ip="";
+    ip=await IpInfoApi.getIPAddress();
     //body Data
-    var data = {"store_link": "$vendorId",   "customer_ip" : "a1b4"};
+    var data = {"store_link": "$vendorId",   "customer_ip" : "$ip"};
 
     print(data);
     ResponseClass<VendorDataModel> responseClass =

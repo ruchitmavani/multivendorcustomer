@@ -16,150 +16,166 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-
-  bool isLoggedin=false;
+  bool isLoggedin = false;
 
   @override
   void initState() {
     super.initState();
     sharedPrefs.isLogin().then((value) {
       setState(() {
-        isLoggedin=value;
+        isLoggedin = value;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoggedin?Drawer(
-      child: Column(
-        children: [
-          Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 15)),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Space(width: 15),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(70.0),
-                child: ClipOval(
-                  child: Container(
-                      width: 50,
-                      height: 50,
-                      color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                      alignment: Alignment.center,
-                      child: Text("${sharedPrefs.customer_name}".substring(0,1),style: TextStyle(fontSize: 28,color: Colors.white,fontFamily: 'popins'),),),
-                ),
-              ),
-              Space(width: 20),
-              Expanded(
-                child: Text(
-                  "${sharedPrefs.customer_name}",
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-              )
-            ],
-          ),
-          Space(
-            height: 8,
-          ),
-          Divider(),
-          Expanded(
+    return isLoggedin
+        ? Drawer(
             child: Column(
               children: [
-                ListTile(
-                    title: Text("Home"),
-                    leading: Icon(Icons.home),
-                    onTap: () {}),
-                ListTile(
-                    title: Text("My Orders"),
-                    leading: Icon(
-                      Icons.list_sharp,
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 15),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Space(width: 15),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(70.0),
+                      child: ClipOval(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          color: Provider.of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                          alignment: Alignment.center,
+                          child: Text(
+    isLoggedin?
+                            "${sharedPrefs.customer_name}".substring(0, 1):"",
+                            style: TextStyle(
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontFamily: 'popins'),
+                          ),
+                        ),
+                      ),
                     ),
-                    onTap: () {
-                      GoRouter.of(context).push(PageCollection.myOrders);
-                    }),
-                ListTile(
-                    title: Text("My Account"),
-                    leading: Icon(Icons.account_circle),
-                    enabled: true,
-                    onTap: () {
-                      GoRouter.of(context).push(PageCollection.myAccount);
-                    }),
-              ],
-            ),
-          ),
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 45,
-              child: TextButton.icon(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFFB14040).withAlpha(30))),
-                  onPressed: () {
-                    sharedPrefs.logout();
-                    GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
-                  },
-                  label: Text(
-                    "LOGOUT",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFFB14040),
-                        fontFamily: "Poppins"),
+                    Space(width: 20),
+                    Expanded(
+                      child: Text(
+                        "${sharedPrefs.customer_name}",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  ],
+                ),
+                Space(
+                  height: 8,
+                ),
+                Divider(),
+                Expanded(
+                  child: Column(
+                    children: [
+                      ListTile(
+                          title: Text("Home"),
+                          leading: Icon(Icons.home),
+                          onTap: () {}),
+                      ListTile(
+                          title: Text("My Orders"),
+                          leading: Icon(
+                            Icons.list_sharp,
+                          ),
+                          onTap: () {
+                            GoRouter.of(context).push(PageCollection.myOrders);
+                          }),
+                      ListTile(
+                          title: Text("My Account"),
+                          leading: Icon(Icons.account_circle),
+                          enabled: true,
+                          onTap: () {
+                            GoRouter.of(context).push(PageCollection.myAccount);
+                          }),
+                    ],
                   ),
-                  icon: Icon(
-                    Icons.logout,
-                    color: Color(0xFFB14040),
-                  )))
-        ],
-      ),
-    ):Drawer(
-      child: Column(
-        children: [
-          Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 15)),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Space(width: 15),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(70.0),
-                child: ClipOval(
-                  child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Image.asset("images/profile.png")),
                 ),
-              ),
-              Space(width: 20),
-            ],
-          ),
-          Space(
-            height: 8,
-          ),
-          Divider(),
-          Expanded(
-            child: Column(
-              children: [
-                ListTile(
-                    title: Text("Home"),
-                    leading: Icon(Icons.home),
-                    onTap: () {}),
-                ListTile(
-                    title: Text("Log in"),
-                    leading: Icon(
-                      Icons.lock,
-                    ),
-                    onTap: () {
-                      GoRouter.of(context).go(PageCollection.login);
-                    }),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 45,
+                    child: TextButton.icon(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xFFB14040).withAlpha(30))),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          sharedPrefs.logout();
+                          setState(() {
+                            isLoggedin=false;
+                          });
+                          GoRouter.of(context)
+                              .push('/' + storeConcate(PageCollection.home));
+                        },
+                        label: Text(
+                          "LOGOUT",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFB14040),
+                              fontFamily: "Poppins"),
+                        ),
+                        icon: Icon(
+                          Icons.logout,
+                          color: Color(0xFFB14040),
+                        )))
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          )
+        : Drawer(
+            child: Column(
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 15)),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Space(width: 15),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(70.0),
+                      child: ClipOval(
+                        child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: Image.asset("images/profile.png")),
+                      ),
+                    ),
+                    Space(width: 20),
+                  ],
+                ),
+                Space(
+                  height: 8,
+                ),
+                Divider(),
+                Expanded(
+                  child: Column(
+                    children: [
+                      ListTile(
+                          title: Text("Home"),
+                          leading: Icon(Icons.home),
+                          onTap: () {}),
+                      ListTile(
+                          title: Text("Log in"),
+                          leading: Icon(
+                            Icons.lock,
+                          ),
+                          onTap: () {
+                            GoRouter.of(context).go(PageCollection.login);
+                          }),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }
