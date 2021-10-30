@@ -41,7 +41,9 @@ class _OrderDetailsState extends State<OrderDetails> {
         isChanged = true;
       });
     }
-    status=widget.orderData.paymentType.toUpperCase()=="TAKEAWAY"?["Pending","Ready","Delivered"]:["Pending", "Dispatched", "Delivered"];
+    status = widget.orderData.paymentType.toUpperCase() == "TAKEAWAY"
+        ? ["Pending", "Ready", "Delivered"]
+        : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
           widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
@@ -178,9 +180,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                           productDetail: widget.orderData.orderItems
                               .elementAt(index)
                               .productDetails,
-                          quantity: widget.orderData.orderItems
-                              .elementAt(index)
-                              .productQuantity,
                           orderItem:
                               widget.orderData.orderItems.elementAt(index),
                         );
@@ -200,7 +199,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                     if (widget.orderData.orderStatus.last == "Pending" ||
                         widget.orderData.orderStatus.last == "Dispatched" ||
-                        widget.orderData.orderStatus.last == "Delivered" ||widget.orderData.orderStatus.last == "Ready" )
+                        widget.orderData.orderStatus.last == "Delivered" ||
+                        widget.orderData.orderStatus.last == "Ready")
                       Timeline(
                         children: List.generate(
                           status.length,
@@ -235,13 +235,20 @@ class _OrderDetailsState extends State<OrderDetails> {
                       )
                     else
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15,vertical: 4)
-                        ,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                         child: Row(
                           children: [
                             Icon(Icons.report_problem),
-                            SizedBox(width: 10,),
-                            Text("${widget.orderData.orderStatus.last}",style: TextStyle(color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "${widget.orderData.orderStatus.last}",
+                              style: TextStyle(
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor),
+                            ),
                           ],
                         ),
                       ),
@@ -260,8 +267,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 title: Text("Discount Applied",
                                     style: FontsTheme.valueStyle(size: 14)),
                                 trailing: Text(
-                                    "- \u{20B9}" +
-                                        "${widget.orderData.couponAmount}",
+                                    widget.orderData.couponAmount != 0
+                                        ? "- \u{20B9}" +
+                                            "${widget.orderData.couponAmount}"
+                                        : "\u{20B9}0",
                                     style: FontsTheme.valueStyle(
                                         size: 14, fontWeight: FontWeight.w500)),
                               ),
@@ -396,7 +405,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                       OutlinedButton(
                         child: Text("No"),
                         onPressed: () {
-                         showModalBottomSheet(context: context, builder: (context) => RejectOrder(oderIdData: widget.orderData.orderId,));
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => RejectOrder(
+                                    oderIdData: widget.orderData.orderId,
+                                  ));
                         },
                       ),
                       Padding(

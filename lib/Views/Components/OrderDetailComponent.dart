@@ -16,13 +16,11 @@ import 'package:provider/provider.dart';
 
 class OrderDetailComponent extends StatefulWidget {
   final ProductDetails productDetail;
-  final int quantity;
   final String orderId;
   final OrderItem orderItem;
 
   OrderDetailComponent(
       {required this.productDetail,
-      required this.quantity,
       required this.orderId,
       required this.orderItem});
 
@@ -33,10 +31,39 @@ class OrderDetailComponent extends StatefulWidget {
 class _OrderDetailComponentState extends State<OrderDetailComponent> {
   double rating = 0;
   bool isLoading = false;
+  int qty = 0;
+  int price = 0;
+  int totalPrice = 0;
 
   @override
   void initState() {
-    super.initState();
+    int productPrice = 0;
+    int qty = 0;
+
+    if (widget.orderItem.updatedQuantity != null) {
+      qty = widget.orderItem.updatedQuantity!;
+    } else
+      qty = widget.orderItem.productQuantity;
+
+    if (widget.orderItem.isReject == true) {
+    } else if (widget.orderItem.productSize != null) {
+      productPrice = widget.orderItem.productSize!.mrp;
+    } else if (widget.productDetail.bulkPriceList.length != 0) {
+      productPrice = getPrice(qty, widget.productDetail.bulkPriceList);
+    } else {
+      productPrice = int.parse("${widget.productDetail.productSellingPrice}");
+    }
+
+    setState(() {
+      if (widget.orderItem.isReject == true) {
+      } else if (widget.orderItem.updatedQuantity != null) {
+        totalPrice = qty * productPrice;
+      } else {
+        totalPrice = qty * productPrice;
+      }
+      price = productPrice;
+      this.qty = qty;
+    });
     _loadRating();
   }
 
@@ -45,9 +72,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
             productId: "${widget.productDetail.productId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         rating = value.data!.productRatingCount as double;
-        print(rating);
       } else {}
     }, onError: (e) {});
   }
@@ -83,7 +108,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
     });
   }
 
-  void ratingBottomSheet(BuildContext context, double price) {
+  void ratingBottomSheet(BuildContext context, int price) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -219,8 +244,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                               size: 13, fontWeight: FontWeight.w600)),
                       GestureDetector(
                         onTap: () {
-                          ratingBottomSheet(context,
-                              widget.productDetail.productSellingPrice);
+                          ratingBottomSheet(context, price);
                           FocusScope.of(context).unfocus();
                         },
                         child: Row(
@@ -256,20 +280,28 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                     children: [
                       widget.orderItem.updatedQuantity != null
                           ? Row(
-                            children: [
-                              Text("Qty : ",
-                                  style: FontsTheme.descriptionText(
-                                      fontWeight: FontWeight.w500)),
-                              Text("${widget.quantity}",
-                                  style: FontsTheme.descriptionText(
-                                      fontWeight: FontWeight.w500).copyWith(decoration: TextDecoration.lineThrough,decorationColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,decorationThickness: 3)),
-                              Text(" ${widget.orderItem.updatedQuantity}  ",
-                                  style: FontsTheme.descriptionText(
-                                      fontWeight: FontWeight.w500)),
-                              UpdatedLabel(),
-                            ],
-                          )
-                          : Text("Qty : ${widget.quantity}",
+                              children: [
+                                Text("Qty : ",
+                                    style: FontsTheme.descriptionText(
+                                        fontWeight: FontWeight.w500)),
+                                Text("${widget.orderItem.productQuantity}",
+                                    style: FontsTheme.descriptionText(
+                                            fontWeight: FontWeight.w500)
+                                        .copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            decorationColor:
+                                                Provider.of<CustomColor>(
+                                                        context)
+                                                    .appPrimaryMaterialColor,
+                                            decorationThickness: 3)),
+                                Text(" ${widget.orderItem.updatedQuantity}  ",
+                                    style: FontsTheme.descriptionText(
+                                        fontWeight: FontWeight.w500)),
+                                UpdatedLabel(),
+                              ],
+                            )
+                          : Text("Qty : ${qty}",
                               style: FontsTheme.descriptionText(
                                   fontWeight: FontWeight.w500)),
                       Row(
@@ -277,10 +309,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           Text("\u{20B9}",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
-                          Text(
-                              widget.productDetail.bulkPriceList.length != 0
-                                  ? " ${getPrice(widget.quantity, widget.productDetail.bulkPriceList)}"
-                                  : " ${widget.productDetail.productSellingPrice}",
+                          Text("${totalPrice}",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
                         ],
