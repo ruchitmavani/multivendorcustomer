@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -47,12 +49,14 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
 
     if (widget.orderItem.isReject == true) {
     } else if (widget.orderItem.productSize != null) {
-      productPrice = widget.orderItem.productSize!.mrp;
+      productPrice = widget.orderItem.productSize!.sellingPrice;
     } else if (widget.productDetail.bulkPriceList.length != 0) {
       productPrice = getPrice(qty, widget.productDetail.bulkPriceList);
     } else {
       productPrice = int.parse("${widget.productDetail.productSellingPrice}");
     }
+
+    log("->>>> $productPrice");
 
     setState(() {
       if (widget.orderItem.isReject == true) {
