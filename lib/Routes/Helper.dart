@@ -13,8 +13,8 @@ String storeConcate(String screen) {
   return "${sharedPrefs.storeLink.isEmpty ? window.localStorage["storeId"]! : sharedPrefs.storeLink}/$screen";
 }
 
-int getPrice(int qty, List<BulkPriceList> items) {
-  int price = 0;
+double getPrice(int qty, List<BulkPriceList> items) {
+  double price = 0;
   items.forEach((element) {
     if (element.fromQty <= qty && element.toQty >= qty) {
       price = element.pricePerUnit;

@@ -31,8 +31,8 @@ class NewCartModel {
   ProductColor? productColor;
   List<String> productImageUrl;
   String productName;
-  int productMrp;
-  int productSellingPrice;
+  double productMrp;
+  double productSellingPrice;
   bool isBulk;
 
   factory NewCartModel.fromJson(Map<String, dynamic> json) => NewCartModel(

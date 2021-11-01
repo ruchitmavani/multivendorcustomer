@@ -35,8 +35,8 @@ class ProductData {
   String productYoutubeUrl;
   bool isYoutubeUrl;
   String productName;
-  int productMrp;
-  int productSellingPrice;
+  double productMrp;
+  double productSellingPrice;
   int stockLeft;
   String unitType;
   List<String> productLiveTiming;
@@ -197,8 +197,8 @@ class ProductSize {
   });
 
   String size;
-  int mrp;
-  int sellingPrice;
+  double mrp;
+  double sellingPrice;
   bool isActive;
 
   factory ProductSize.fromJson(Map<String, dynamic> json) => ProductSize(
@@ -311,7 +311,7 @@ class BulkPriceList {
 
   int fromQty;
   int toQty;
-  int pricePerUnit;
+  double pricePerUnit;
 
   factory BulkPriceList.fromJson(Map<String, dynamic> json) => BulkPriceList(
     fromQty: json["fromQty"],

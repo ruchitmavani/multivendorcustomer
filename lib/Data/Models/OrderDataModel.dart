@@ -26,6 +26,7 @@ class OrderDataModel {
     required this.itemTotalAmount,
     required this.deliveryCharges,
     required this.taxAmount,
+    required this.taxPercentage,
     required this.couponAmount,
     required this.couponId,
     required this.updatedDeliveryCharges,
@@ -43,13 +44,14 @@ class OrderDataModel {
   String paymentType;
   String refNo;
   String deliveryApproxTime;
-  int paidAmount;
-  int refundAmount;
-  int orderAmount;
-  int itemTotalAmount;
-  int deliveryCharges;
-  int taxAmount;
-  int couponAmount;
+  double paidAmount;
+  double refundAmount;
+  double orderAmount;
+  double itemTotalAmount;
+  double deliveryCharges;
+  double taxAmount;
+  double taxPercentage;
+  double couponAmount;
   String couponId;
   int updatedDeliveryCharges;
   String orderId;
@@ -73,6 +75,7 @@ class OrderDataModel {
         itemTotalAmount: json["item_total_amount"],
         deliveryCharges: json["delivery_charges"],
         taxAmount: json["tax_amount"],
+        taxPercentage: json["tax_percentage"],
         couponAmount: json["coupon_amount"],
         couponId: json["coupon_id"],
         updatedDeliveryCharges: json["updated_delivery_charges"],
@@ -97,6 +100,7 @@ class OrderDataModel {
         "item_total_amount": itemTotalAmount,
         "delivery_charges": deliveryCharges,
         "tax_amount": taxAmount,
+        "tax_percentage": taxPercentage,
         "coupon_amount": couponAmount,
         "coupon_id": couponId,
         "updated_delivery_charges": updatedDeliveryCharges,
@@ -220,7 +224,7 @@ class ProductDetails {
   String productYoutubeUrl;
   bool isYoutubeUrl;
   String productName;
-  int productMrp;
+  double productMrp;
   double productSellingPrice;
   List<BulkPriceList> bulkPriceList;
   bool isRequestPrice;
@@ -232,7 +236,7 @@ class ProductDetails {
   List<ProductColor> productVariationColors;
   int productTotalRating;
   int productRatingCountRecord;
-  int productRatingAverage;
+  double productRatingAverage;
   bool categoryIsActive;
   bool productIsActive;
   int orderedQuantity;
@@ -390,8 +394,8 @@ class VendorDetails {
   DateTime createdDateTime;
   bool isOnline;
   bool isDeliveryCharges;
-  int deliveryCharges;
-  int freeDeliveryAboveAmount;
+  double deliveryCharges;
+  double freeDeliveryAboveAmount;
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;
   String colorTheme;

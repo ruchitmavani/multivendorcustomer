@@ -29,6 +29,10 @@ class _MyOrderState extends State<MyOrder> {
           orderData = value.data!;
           isLoading = false;
         });
+      }else{
+        setState(() {
+          isLoading = false;
+        });
       }
     }, onError: (e) {
       setState(() {

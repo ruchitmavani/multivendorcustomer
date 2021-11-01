@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'ProductModel.dart';
 
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));
@@ -13,7 +12,7 @@ class VendorDataModel {
     required this.businessCategory,
     required this.mobileNumber,
     required this.emailAddress,
-    required this.gstNumber,
+   required this.gstNumber,
     required this.storeLink,
     required this.logo,
     required this.latitude,
@@ -54,7 +53,7 @@ class VendorDataModel {
   List<String> profilePercentageCount;
   bool isOnline;
   bool isDeliveryCharges;
-  int deliveryCharges;
+  double deliveryCharges;
   int freeDeliveryAboveAmount;
   bool isStorePickupEnable;
   bool isWhatsappChatSupport;

@@ -5,12 +5,12 @@ class StringConstants{
   /*API & IMAGEURLS */
   // static String API_URL="http://192.168.1.11:8080/";
   // static String API_URL="http://18.221.208.96:8080/";
-  static String API_URL="http://13.126.236.213:8080/";
+  // static String API_URL="http://13.126.236.213:8080/";
+  static String API_URL="https://backend.wesell.co.in/";
 
   /*API NAMES*/
   //vendor
   static String vendor_all_product="vendor_all_product/";
-  // static String category_wise_all_product_find="category_wise_all_product_find/";
   static String vendor_send_sms="vendor_send_sms";
   static String vendor_view="vendor_view";
   static String vendor_all_banner = "vendor_all_banner";

@@ -35,7 +35,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage = 0;
-  int finalPrice = 0;
+  double finalPrice = 0;
   int finalColor = 0;
   bool isLoading = false;
   bool isVideo = false;
@@ -84,7 +84,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
     _loadData();
   }
 
-  setPrice(int price, int qty) {
+  setPrice(double price, int qty) {
     setState(() {
       finalPrice = price;
       finalQuantity = qty;
@@ -686,7 +686,7 @@ getDropDownMenuItem(int value) {
 
 class QuantitySelect extends StatefulWidget {
   List<int> numbers;
-  int price;
+  double price;
   Function setPrice;
   String productId;
 

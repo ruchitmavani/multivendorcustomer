@@ -4,66 +4,49 @@ import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:provider/provider.dart';
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 
 class CartDataWrapper extends ChangeNotifier {
   List<NewCartModel> cartData = [];
-  List<TaxDetail> taxData=[];
+  List<TaxDetail> taxData = [];
   bool _isLoading = true;
   bool isCouponApplied = false;
-
   bool get isLoading => _isLoading;
-
   set isLoading(bool isLoading) => _isLoading = isLoading;
-
   int totalItems = 0;
   late double totalAmount;
   late double tax;
+  late double taxPercentage;
   late double discount;
   late int shipping;
 
   Future loadCartData({required String vendorId}) async {
-
     print("vendor $vendorId");
     totalItems = cartData.length;
     totalAmount = 0;
     for (int i = 0; i < cartData.length; i++) {
       totalAmount = totalAmount +
           (cartData.elementAt(i).productQuantity *
-              (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
+              (cartData.elementAt(i).isBulk
                   ? cartData.elementAt(i).productSellingPrice
-                  : cartData.elementAt(i).productSize!.sellingPrice));
+                  : cartData.elementAt(i).productSize == null
+                      ? cartData.elementAt(i).productSellingPrice
+                      : cartData.elementAt(i).productSize!.sellingPrice));
     }
     tax = 0;
-
-    //todo: tax pending implement now :) !!
-    // for (int i = 0; i < cartData.length; i++) {
-    //   print(i);
-    //   for (int j = 0; j < cartData.elementAt(i).taxDetails.length; j++) {
-    //     tax = tax +
-    //         (cartData.elementAt(i).taxDetails.elementAt(j).taxPercentage *
-    //             cartData.elementAt(i).productQuantity *
-    //             (cartData.elementAt(i).isBulk?cartData.elementAt(i).productSellingPrice:cartData.elementAt(i).productSize == null
-    //                 ? cartData.elementAt(i).productSellingPrice
-    //                 : cartData.elementAt(i).productSize!.sellingPrice) /
-    //             100);
-    //   }
-    // }
-
-    for(int i=0;i<sharedPrefs.tax.length;i++){
-      tax=tax+(totalAmount*double.parse(sharedPrefs.tax.elementAt(i))/100);
+    taxPercentage = 0;
+    for (int i = 0; i < sharedPrefs.tax.length; i++) {
+      tax = tax +
+          (totalAmount * double.parse(sharedPrefs.tax.elementAt(i)) / 100);
+      taxPercentage =
+          taxPercentage + double.parse(sharedPrefs.tax.elementAt(i));
     }
+
 
     totalAmount = totalAmount + tax;
     isLoading = false;
     isCouponApplied = false;
     notifyListeners();
-    //   } else {
-    //     notifyListeners();
-    //   }
-    // }, onError: (e) {
-    //   print(e);
-    // });
   }
 
   Future addToCart() async {}
@@ -126,10 +109,9 @@ class CartDataWrapper extends ChangeNotifier {
   }
 
   deleteFromCart({required String productId}) {
-    if(cartData.indexWhere((element) => element.productId==productId)!=-1)
-    cartData.removeAt(
-        cartData.indexWhere((element) => element.productId == productId));
+    if (cartData.indexWhere((element) => element.productId == productId) != -1)
+      cartData.removeAt(
+          cartData.indexWhere((element) => element.productId == productId));
     notifyListeners();
   }
-
 }

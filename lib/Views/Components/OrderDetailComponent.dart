@@ -34,12 +34,13 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
   double rating = 0;
   bool isLoading = false;
   int qty = 0;
-  int price = 0;
-  int totalPrice = 0;
+  double price = 0;
+  double totalPrice = 0;
 
   @override
   void initState() {
-    int productPrice = 0;
+    super.initState();
+    double productPrice = 0;
     int qty = 0;
 
     if (widget.orderItem.updatedQuantity != null) {
@@ -53,7 +54,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
     } else if (widget.productDetail.bulkPriceList.length != 0) {
       productPrice = getPrice(qty, widget.productDetail.bulkPriceList);
     } else {
-      productPrice = int.parse("${widget.productDetail.productSellingPrice}");
+      productPrice = double.parse("${widget.productDetail.productSellingPrice}");
     }
 
     log("->>>> $productPrice");
@@ -112,7 +113,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
     });
   }
 
-  void ratingBottomSheet(BuildContext context, int price) {
+  void ratingBottomSheet(BuildContext context, double price) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

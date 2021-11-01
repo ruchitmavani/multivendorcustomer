@@ -1,5 +1,5 @@
 import 'dart:html';
-
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +37,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   @override
   void initState() {
     super.initState();
-      _generateOrderId();
+    _generateOrderId();
   }
 
   _generateOrderId() async {
@@ -45,13 +45,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       isLoadingCate = true;
     });
     await PaymentController.generateOrderId(
-            Provider.of<CartDataWrapper>(context, listen: false)
-                    .totalAmount
-                    .toInt() +
-                Provider.of<VendorModelWrapper>(context,listen: false)
-                    .vendorModel!
-                    .deliveryCharges
-                    .toInt())
+        Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .totalAmount
+            .toInt() +
+            Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .deliveryCharges
+                .toInt())
         .then((value) {
       if (value.success) {
         print(value.data);
@@ -79,52 +81,84 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       isLoadingCate = true;
     });
     await OrderController.addOrder(
-            type: "${_selection.toString().split(".").last}",
-            address: widget.address,
-            couponAmount:
-                Provider.of<CartDataWrapper>(context, listen: false).isCouponApplied == true
-                    ? Provider.of<CartDataWrapper>(context, listen: false)
-                        .discount
-                        .toInt()
-                    : 0,
-            orders:
-                Provider.of<CartDataWrapper>(context, listen: false).cartData,
-            couponId: "",
-            deliveryCharge: type == 'TAKEAWAY'?0:Provider.of<VendorModelWrapper>(context,listen: false).vendorModel!.deliveryCharges,
-            orderAmount: type == 'TAKEAWAY'
-                ? Provider.of<CartDataWrapper>(context, listen: false)
-                    .totalAmount
-                    .toInt()
-                : Provider.of<CartDataWrapper>(context, listen: false)
-                        .totalAmount
-                        .toInt() +
-                    Provider.of<VendorModelWrapper>(context,listen: false)
-                        .vendorModel!
-                        .deliveryCharges
-                        .toInt(),
-            paidAmount: type == 'PAY_ONLINE'
-                ? Provider.of<CartDataWrapper>(context, listen: false)
-                .totalAmount
-                .toInt()+Provider.of<VendorModelWrapper>(context,listen: false)
+        type: "${_selection
+            .toString()
+            .split(".")
+            .last}",
+        address: widget.address,
+        couponAmount:
+        Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .isCouponApplied == true
+            ? Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .discount
+            : 0,
+        orders:
+        Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .cartData,
+        couponId: "",
+        deliveryCharge: type == 'TAKEAWAY' || Provider
+            .of<CartDataWrapper>(context)
+            .totalAmount > Provider
+            .of<VendorModelWrapper>(context)
+            .vendorModel!
+            .freeDeliveryAboveAmount ? 0.0 : Provider
+            .of<VendorModelWrapper>(context, listen: false)
+            .vendorModel!
+            .deliveryCharges,
+        orderAmount: type == 'TAKEAWAY'
+            ? Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .totalAmount
+            .roundOff()
+            : Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .totalAmount
+            .roundOff()
+            +
+            Provider
+                .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .toInt()
-                : 0,
-            refundAmount: 0,
-            taxAmount: Provider.of<CartDataWrapper>(context, listen: false)
-                .tax
-                .toInt(),
-            totalAmount: Provider.of<CartDataWrapper>(context, listen: false)
-                .totalAmount
-                .toInt())
+                .roundOff(),
+        paidAmount: type == 'PAY_ONLINE'
+            ? Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .totalAmount
+            .roundOff()
+            + Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .deliveryCharges
+                .roundOff()
+
+            : 0,
+        refundAmount: 0,
+        taxAmount: Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .tax
+        ,
+        taxPercentage: Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .taxPercentage,
+        totalAmount: Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .totalAmount
+    )
         .then((value) {
       if (value.success) {
         print(value.data);
         setState(() {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
-          Provider.of<CartDataWrapper>(context, listen: false).cartData.clear();
-          Provider.of<CartDataWrapper>(context, listen: false).loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
+          Provider
+              .of<CartDataWrapper>(context, listen: false)
+              .cartData
+              .clear();
+          Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
+              vendorId: "${sharedPrefs.vendor_uniq_id}");
           GoRouter.of(context).go('/' + storeConcate(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
@@ -182,7 +216,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 ListTile(
                   title: const Text('Cash on Delivery'),
                   leading: Radio<paymentMethods>(
-                    activeColor: Provider.of<CustomColor>(context)
+                    activeColor: Provider
+                        .of<CustomColor>(context)
                         .appPrimaryMaterialColor,
                     value: paymentMethods.COD,
                     groupValue: _selection,
@@ -202,7 +237,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Pay Online'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.PAY_ONLINE,
-                    activeColor: Provider.of<CustomColor>(context)
+                    activeColor: Provider
+                        .of<CustomColor>(context)
                         .appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
@@ -221,7 +257,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   title: const Text('Take Away'),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.TAKEAWAY,
-                    activeColor: Provider.of<CustomColor>(context)
+                    activeColor: Provider
+                        .of<CustomColor>(context)
                         .appPrimaryMaterialColor,
                     groupValue: _selection,
                     onChanged: (paymentMethods? value) {
@@ -252,56 +289,67 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             Flexible(
               child: isLoadingCate
                   ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                child: CircularProgressIndicator(),
+              )
                   : InkWell(
-                      onTap: () {
-                        if (_selection.toString().split(".").last ==
-                            "TAKEAWAY") {
-                          _addOrder("TAKEAWAY");
-                        }
-                        if (_selection.toString().split(".").last == "COD") {
-                          _addOrder("COD");
-                        }
-                        if (_selection.toString().split(".").last ==
-                            "PAY_ONLINE") {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return Webpayment(
-                                price: Provider.of<CartDataWrapper>(context,
-                                            listen: false)
-                                        .totalAmount
-                                        .toInt() *
-                                    100,
-                                name: sharedPrefs.customer_name,
-                                image:
-                                    "${StringConstants.API_URL}${sharedPrefs.logo}",
-                                addOrder: _addOrder,
-                                orderId: orderId,
-                              );
-                            },
-                          ));
-                        }
+                onTap: () {
+                  if (_selection
+                      .toString()
+                      .split(".")
+                      .last ==
+                      "TAKEAWAY") {
+                    _addOrder("TAKEAWAY");
+                  }
+                  if (_selection
+                      .toString()
+                      .split(".")
+                      .last == "COD") {
+                    _addOrder("COD");
+                  }
+                  if (_selection
+                      .toString()
+                      .split(".")
+                      .last ==
+                      "PAY_ONLINE") {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return WebPayment(
+                          price: Provider
+                              .of<CartDataWrapper>(context,
+                              listen: false)
+                              .totalAmount
+                              .toInt() *
+                              100,
+                          name: sharedPrefs.customer_name,
+                          image:
+                          "${StringConstants.API_URL}${sharedPrefs.logo}",
+                          addOrder: _addOrder,
+                          orderId: orderId,
+                        );
                       },
-                      child: Container(
-                        height: 48,
-                        color: Provider.of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 3.0),
-                          child: Center(
-                            child: Text(
-                              "Order",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 15),
-                            ),
-                          ),
-                        ),
+                    ));
+                  }
+                },
+                child: Container(
+                  height: 48,
+                  color: Provider
+                      .of<CustomColor>(context)
+                      .appPrimaryMaterialColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Center(
+                      child: Text(
+                        "Order",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontSize: 15),
                       ),
                     ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

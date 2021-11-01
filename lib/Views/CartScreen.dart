@@ -16,6 +16,7 @@ import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart
 import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -30,7 +31,6 @@ class _CartScreenState extends State<CartScreen> {
   bool isLoadingCustomer = false;
   bool isLoadingCoupon = false;
   int addressIndex = 0;
-  int totalAmount = 9999;
   List<CartDataModel> cartData = [];
   CustomerDataModel customerData = CustomerDataModel(
       customerName: "",
@@ -45,8 +45,6 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<CartDataWrapper>(context, listen: false)
-    //     .loadCartData(vendorId: sharedPrefs.vendor_uniq_id);
     if (sharedPrefs.customer_id.isNotEmpty) {
       _loadCustomerData();
     }
@@ -687,7 +685,7 @@ class _CartScreenState extends State<CartScreen> {
                     trailing: Text(
                       Provider.of<CartDataWrapper>(context).isLoading
                           ? "0"
-                          : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
+                          : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges.roundOff()}",
                       style: FontsTheme.boldTextStyle(
                         size: 14,
                       ),
@@ -729,7 +727,7 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text(
                         Provider.of<CartDataWrapper>(context).isLoading
                             ? "0"
-                            : "${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
+                            : "${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges.roundOff()}",
                         style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w500,

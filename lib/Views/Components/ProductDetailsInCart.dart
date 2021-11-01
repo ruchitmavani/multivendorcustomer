@@ -34,7 +34,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage = 0;
-  int finalPrice = 0;
+  double finalPrice = 0;
   int finalColor = 0;
   late ProductData productData;
 

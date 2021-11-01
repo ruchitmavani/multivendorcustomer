@@ -47,14 +47,15 @@ class OrderController {
   /*-----------add Order-----------*/
   static Future<ResponseClass<List<OrderDataModel>>> addOrder(
       {required String type,
-      required int paidAmount,
-      required int refundAmount,
-      required int orderAmount,
-      required int totalAmount,
-      required int deliveryCharge,
+      required double paidAmount,
+      required double refundAmount,
+      required double orderAmount,
+      required double totalAmount,
+      required double deliveryCharge,
       required List<NewCartModel> orders,
-      required int couponAmount,
-      required int taxAmount,
+      required double couponAmount,
+      required double taxAmount,
+        required double taxPercentage,
       required String couponId,
       required CustomerAddress address}) async {
     String url = StringConstants.API_URL + StringConstants.add_order;
@@ -65,7 +66,7 @@ class OrderController {
     for (int i = 0; i < orders.length; i++) {
       print(i);
       productList.add(orders.elementAt(i).productSize!.size == "" &&
-              orders.elementAt(i).productColor!.colorCode == ""
+              orders.elementAt(i).productColor!.colorCode == 0
           ? AddOrder(
               productId: orders.elementAt(i).productId,
               productQuantity: orders.elementAt(i).productQuantity)
@@ -74,7 +75,7 @@ class OrderController {
                   productId: orders.elementAt(i).productId,
                   productColor: orders.elementAt(i).productColor,
                   productQuantity: orders.elementAt(i).productQuantity)
-              : orders.elementAt(i).productColor!.colorCode == ""
+              : orders.elementAt(i).productColor!.colorCode == 0
                   ? AddOrder(
                       productId: orders.elementAt(i).productId,
                       productSize: orders.elementAt(i).productSize,
@@ -98,6 +99,7 @@ class OrderController {
             "item_total_amount": totalAmount,
             "delivery_charges": deliveryCharge,
             "tax_amount": taxAmount,
+      "tax_percentage" : taxPercentage,
             "coupon_amount": couponAmount,
             "delivery_address": address.toJson(),
           }
@@ -112,6 +114,7 @@ class OrderController {
             "item_total_amount": totalAmount,
             "delivery_charges": deliveryCharge,
             "tax_amount": taxAmount,
+            "tax_percentage": taxPercentage,
             "coupon_amount": couponAmount,
             "coupon_id": "$couponId",
             "delivery_address": address.toJson(),

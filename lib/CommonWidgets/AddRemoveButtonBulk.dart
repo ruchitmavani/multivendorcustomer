@@ -58,7 +58,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
               productQuantity: widget.qty,
               productMrp: widget.productData.productMrp,
               productName: "${widget.productData.productName}",
-              productSellingPrice: widget.price.toInt(),
+              productSellingPrice: widget.price,
               productSize: ProductSize(
                   size: "",
                   mrp: widget.productData.productMrp,
