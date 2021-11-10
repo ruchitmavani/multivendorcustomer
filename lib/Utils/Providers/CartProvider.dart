@@ -4,7 +4,6 @@ import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 
 class CartDataWrapper extends ChangeNotifier {
   List<NewCartModel> cartData = [];
@@ -48,8 +47,6 @@ class CartDataWrapper extends ChangeNotifier {
     isCouponApplied = false;
     notifyListeners();
   }
-
-  Future addToCart() async {}
 
   verifyCoupon(String coupon) async {
     await CouponController.validateCoupon(

@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
+                  GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
                 },
                 child: Text("skip",
                     style: TextStyle(

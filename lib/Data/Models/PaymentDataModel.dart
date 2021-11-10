@@ -2,7 +2,6 @@
 //
 //     final orderId = orderIdFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 OrderId orderIdFromJson(String str) => OrderId.fromJson(json.decode(str));

@@ -1,4 +1,7 @@
+// ignore_for_file: must_be_immutable, avoid_web_libraries_in_flutter
+
 import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

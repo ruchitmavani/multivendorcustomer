@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'ProductModel.dart';
 
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));

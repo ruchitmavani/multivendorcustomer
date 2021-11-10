@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/PaginationModel.dart';
@@ -16,7 +17,7 @@ class ProductController {
       required int limit,
       required int page,
       required String sortKey}) async {
-    String url = StringConstants.API_URL + StringConstants.vendor_all_product;
+    String url = StringConstants.api_url + StringConstants.vendor_all_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
@@ -66,7 +67,7 @@ class ProductController {
   /*-----------Get Trending Product Data-----------*/
   static Future<ResponseClass> getTrendingProduct(
       {required String vendorId}) async {
-    String url = StringConstants.API_URL + StringConstants.top_selling_product;
+    String url = StringConstants.api_url + StringConstants.top_selling_product;
 
     //body Data
     var data = {"vendor_uniq_id": "$vendorId"};
@@ -99,7 +100,7 @@ class ProductController {
   /*-----------Search Product Data-----------*/
   static Future<ResponseClass> searchProduct(
       {required String vendorId, required String searchString}) async {
-    String url = StringConstants.API_URL + StringConstants.search_product;
+    String url = StringConstants.api_url + StringConstants.search_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
@@ -138,7 +139,7 @@ class ProductController {
   /*-----------Find Product Data-----------*/
   static Future<ResponseClass<ProductData>> findProduct(
       {required String productId}) async {
-    String url = StringConstants.API_URL + StringConstants.find_a_product;
+    String url = StringConstants.api_url + StringConstants.find_a_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
@@ -175,7 +176,7 @@ class ProductController {
   static Future<ResponseClass<List<ProductData>>> recentlyBought(
       {required String customerId}) async {
     String url =
-        StringConstants.API_URL + StringConstants.recently_bought_product;
+        StringConstants.api_url + StringConstants.recently_bought_product;
 
     //body Data
     var data = {"customer_uniq_id": "$customerId"};

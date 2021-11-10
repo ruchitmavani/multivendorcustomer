@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/updatedLabel.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/RatingController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
@@ -231,7 +230,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   width: 55,
                 )
               : Image.network(
-                  "${StringConstants.API_URL}${widget.productDetail.productImageUrl.first}",
+                  "${StringConstants.api_url}${widget.productDetail.productImageUrl.first}",
                   width: 55,
                 ),
           Expanded(
@@ -306,7 +305,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                 UpdatedLabel(),
                               ],
                             )
-                          : Text("Qty : ${qty}",
+                          : Text("Qty : $qty",
                               style: FontsTheme.descriptionText(
                                   fontWeight: FontWeight.w500)),
                       Row(
@@ -314,7 +313,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           Text("\u{20B9}",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
-                          Text("${totalPrice}",
+                          Text("$totalPrice",
                               style: FontsTheme.digitStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
                         ],

@@ -8,6 +8,7 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -16,7 +17,6 @@ import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart
 import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
-import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -236,6 +236,15 @@ class _CartScreenState extends State<CartScreen> {
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          couponText.clear();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Clear"),
+                                        ),
+                                      ),
                                       ElevatedButton(
                                         onPressed: () {
                                           Provider.of<CartDataWrapper>(context,
@@ -245,15 +254,6 @@ class _CartScreenState extends State<CartScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text("Apply"),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          couponText.clear();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Clear"),
                                         ),
                                       ),
                                     ],
@@ -501,7 +501,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 0
                                             ? Container()
                                             : Image.network(
-                                                StringConstants.API_URL +
+                                                StringConstants.api_url +
                                                     "${cartProvider.elementAt(index).productImageUrl.first}",
                                                 width: 55,
                                                 height: 55,

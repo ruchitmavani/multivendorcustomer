@@ -2,7 +2,6 @@
 //
 //     final allCategoryModel = allCategoryModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';

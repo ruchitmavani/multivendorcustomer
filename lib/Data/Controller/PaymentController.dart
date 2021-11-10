@@ -13,7 +13,7 @@ class PaymentController{
   /*-----------Generate Order id Data-----------*/
   static Future<ResponseClass<OrderId>> generateOrderId(
       int amount) async {
-    String url = StringConstants.API_URL + StringConstants.create_payment_orderId;
+    String url = StringConstants.api_url + StringConstants.create_payment_orderId;
 
     //body Data
     var data = {
@@ -46,7 +46,7 @@ class PaymentController{
 
   /*-----------Payment Verify Data-----------*/
   static Future<ResponseClass> paymentVerify() async {
-    String url = StringConstants.API_URL + StringConstants.payment_verify;
+    String url = StringConstants.api_url + StringConstants.payment_verify;
 
     //body Data
     var data = {

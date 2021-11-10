@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
@@ -10,7 +11,7 @@ import 'ProductController.dart';
 class AuthController {
   /*-----------Get Auth Data-----------*/
   static Future<ResponseClass> sendOtp(String mobileNumber) async {
-    String url = StringConstants.API_URL + StringConstants.vendor_send_sms;
+    String url = StringConstants.api_url + StringConstants.vendor_send_sms;
 
     //body Data
     var data = {"mobile_number": "$mobileNumber"};
@@ -45,7 +46,7 @@ class AuthController {
       required String email,
       required String dob}) async {
     String url =
-        StringConstants.API_URL + StringConstants.customer_registration;
+        StringConstants.api_url + StringConstants.customer_registration;
 
     //body Data
     var data = {
@@ -82,7 +83,7 @@ class AuthController {
   /*-----------Get Login Data-----------*/
   static Future<ResponseClass<CustomerDataModel>> login(
       String mobileNumber) async {
-    String url = StringConstants.API_URL + StringConstants.customer_login;
+    String url = StringConstants.api_url + StringConstants.customer_login;
 
     //body Data
     var data = {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:video_player/video_player.dart';
 
+// ignore: must_be_immutable
 class ImageVideo extends StatefulWidget {
   String url;
   bool isVideo;
@@ -20,7 +21,7 @@ class _ImageVideoState extends State<ImageVideo> {
         height: 230,
         child: widget.isVideo
             ? VideoPlayer(VideoPlayerController.network(
-                "${StringConstants.API_URL + widget.url}")..initialize()..play())
-            : Image.network("${StringConstants.API_URL+widget.url}"));
+                "${StringConstants.api_url + widget.url}")..initialize()..play())
+            : Image.network("${StringConstants.api_url+widget.url}"));
   }
 }

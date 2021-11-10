@@ -114,7 +114,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             isLoggedin=false;
                           });
                           GoRouter.of(context)
-                              .push('/' + storeConcate(PageCollection.home));
+                              .push('/' + storeConcat(PageCollection.home));
                         },
                         label: Text(
                           "LOGOUT",

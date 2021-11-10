@@ -100,66 +100,99 @@ class _TopButtonsState extends State<TopButtons> {
                                   ),
                                   child: Column(
                                     children: [
-                                      ListTile(
-                                        title: const Text('New to Old'),
-                                        leading: Radio<SortKeys>(
-                                          value: SortKeys.NtoO,
-                                          groupValue: _selection,
-                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-
-                                          onChanged: (SortKeys? value) {
-                                            setState(() {
-                                              _selection = value!;
-                                              Navigator.pop(context);
-                                            });
-                                            widget.onClick!(value.toString());
-                                          },
+                                      InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _selection = SortKeys.NtoO;
+                                            Navigator.pop(context);
+                                          });
+                                          widget.onClick!(SortKeys.NtoO.toString());
+                                        },
+                                        child: ListTile(
+                                          title: const Text('New to Old'),
+                                          leading: Radio<SortKeys>(
+                                            value: SortKeys.NtoO,
+                                            groupValue: _selection,
+                                            activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                            onChanged: (SortKeys? value) {
+                                              setState(() {
+                                                _selection = value!;
+                                                Navigator.pop(context);
+                                              });
+                                              widget.onClick!(value.toString());
+                                            },
+                                          ),
                                         ),
                                       ),
-                                      ListTile(
-                                        title: const Text('Old to New'),
-                                        leading: Radio<SortKeys>(
-                                          value: SortKeys.OtoN,
-                                          groupValue: _selection,
-                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-
-                                          onChanged: (SortKeys? value) {
-                                            setState(() {
-                                              _selection = value!;
-                                              Navigator.pop(context);
-                                            });
-                                            widget.onClick!(value.toString());
-                                          },
+                                      InkWell(onTap: (){
+                                        setState(() {
+                                          _selection = SortKeys.OtoN;
+                                          Navigator.pop(context);
+                                        });
+                                        widget.onClick!(SortKeys.OtoN.toString());
+                                      },
+                                        child: ListTile(
+                                          title: const Text('Old to New'),
+                                          leading: Radio<SortKeys>(
+                                            value: SortKeys.OtoN,
+                                            groupValue: _selection,
+                                            activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                            onChanged: (SortKeys? value) {
+                                              setState(() {
+                                                _selection = value!;
+                                                Navigator.pop(context);
+                                              });
+                                              widget.onClick!(value.toString());
+                                            },
+                                          ),
                                         ),
                                       ),
-                                      ListTile(
-                                        title: const Text('Price: High to Low'),
-                                        leading: Radio<SortKeys>(
-                                          value: SortKeys.spHtoL,
-                                          groupValue: _selection,
-                                          activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-
-                                          onChanged: (SortKeys? value) {
-                                            setState(() {
-                                              _selection = value!;
-                                              Navigator.pop(context);
-                                            });
-                                            widget.onClick!(value.toString());
-                                          },
+                                      InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _selection = SortKeys.spHtoL;
+                                            Navigator.pop(context);
+                                          });
+                                          widget.onClick!(SortKeys.spHtoL.toString());
+                                        },
+                                        child: ListTile(
+                                          title: const Text('Price: High to Low'),
+                                          leading: Radio<SortKeys>(
+                                            value: SortKeys.spHtoL,
+                                            groupValue: _selection,
+                                            activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                            onChanged: (SortKeys? value) {
+                                              setState(() {
+                                                _selection = value!;
+                                                Navigator.pop(context);
+                                              });
+                                              widget.onClick!(value.toString());
+                                            },
+                                          ),
                                         ),
                                       ),
-                                      ListTile(
-                                        title: const Text('Price: Low to High'),
-                                        leading: Radio<SortKeys>(
-                                          value: SortKeys.spLtoH,
-                                          groupValue: _selection,
-                                          onChanged: (SortKeys? value) {
-                                            setState(() {
-                                              _selection = value!;
-                                              Navigator.pop(context);
-                                            });
-                                            widget.onClick!(value.toString());
-                                          },
+                                      InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _selection = SortKeys.spLtoH;
+                                            Navigator.pop(context);
+                                          });
+                                          widget.onClick!(SortKeys.spLtoH.toString());
+                                        },
+                                        child: ListTile(
+                                          title: const Text('Price: Low to High'),
+                                          leading: Radio<SortKeys>(
+                                            value: SortKeys.spLtoH,
+                                            groupValue: _selection,
+                                            activeColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                            onChanged: (SortKeys? value) {
+                                              setState(() {
+                                                _selection = value!;
+                                                Navigator.pop(context);
+                                              });
+                                              widget.onClick!(value.toString());
+                                            },
+                                          ),
                                         ),
                                       ),
                                     ],

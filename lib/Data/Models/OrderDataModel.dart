@@ -384,7 +384,7 @@ class VendorDetails {
   String logo;
   double latitude;
   double longitude;
-  String coverImageUrl;
+  String? coverImageUrl;
   List awordImageUrl;
   String address;
   String aboutBusiness;

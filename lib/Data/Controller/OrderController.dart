@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:html';
+
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
@@ -14,7 +15,7 @@ class OrderController {
   /*-----------Get Order Data-----------*/
   static Future<ResponseClass<List<OrderDataModel>>> getOrder(
       String customerId) async {
-    String url = StringConstants.API_URL + StringConstants.my_order;
+    String url = StringConstants.api_url + StringConstants.my_order;
 
     //body Data
     var data = {"customer_uniq_id": "$customerId"};
@@ -58,7 +59,7 @@ class OrderController {
         required double taxPercentage,
       required String couponId,
       required CustomerAddress address}) async {
-    String url = StringConstants.API_URL + StringConstants.add_order;
+    String url = StringConstants.api_url + StringConstants.add_order;
 
     print(window.localStorage);
     //body Data
@@ -149,7 +150,7 @@ class OrderController {
 
   /*-----------Accept Order -----------*/
   static Future<ResponseClass> acceptOrder(String orderId) async {
-    String url = StringConstants.API_URL + StringConstants.accept_order;
+    String url = StringConstants.api_url + StringConstants.accept_order;
 
     //body Data
     var data = {"order_id": "$orderId"};
@@ -178,7 +179,7 @@ class OrderController {
 
   /*-----------Reject Order -----------*/
   static Future<ResponseClass> rejectOrder({required String orderId,required String reason}) async {
-    String url = StringConstants.API_URL + StringConstants.reject_order;
+    String url = StringConstants.api_url + StringConstants.reject_order;
 
     //body Data
     var data = {

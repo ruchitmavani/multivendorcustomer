@@ -1,12 +1,17 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:html';
+
+import 'package:badges/badges.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButtonBulk.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -98,6 +103,36 @@ class _ProductDescriptionState extends State<ProductDescription> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(isLoading ? "" : "${productData.productName}"),
+          actions: [
+            IconButton(
+              icon: Icon(CupertinoIcons.search,
+                  size: 20,
+                  color: Provider.of<CustomColor>(context)
+                      .appPrimaryMaterialColor),
+              onPressed: () {
+                GoRouter.of(context).push(PageCollection.search);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Badge(
+                elevation: 0,
+                position: BadgePosition.topEnd(top: 5, end: 0),
+                badgeContent: Text(
+                    '${Provider.of<CartDataWrapper>(context).totalItems}',
+                    style: TextStyle(fontSize: 10, color: Colors.white)),
+                child: IconButton(
+                  icon: Icon(AppIcons.shopping_cart,
+                      size: 20,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor),
+                  onPressed: () {
+                    GoRouter.of(context).push(PageCollection.cart);
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
         body: isLoading
             ? Center(
@@ -143,12 +178,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               )
                                             : VideoPlayer(
                                                 VideoPlayerController.network(
-                                                    "${StringConstants.API_URL + productData.productVideoUrl}")
+                                                    "${StringConstants.api_url + productData.productVideoUrl}")
                                                   ..initialize()
                                                   ..play()
                                                   ..setVolume(0))
                                         : Image.network(
-                                            "${StringConstants.API_URL + productData.productImageUrl.elementAt(displayImage)}")),
+                                            "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
                             Space(height: 20),
                             Container(
                               height: 50,
@@ -200,7 +235,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                   size: 32,
                                                 )
                                               : Image.network(
-                                                  "${StringConstants.API_URL + productData.productImageUrl.elementAt(index)}"),
+                                                  "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
                                         ),
                                       ));
                                 },

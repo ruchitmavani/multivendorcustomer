@@ -2,10 +2,8 @@
 //
 //     final newCartModel = newCartModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-import 'CartDataModel.dart';
 import 'ProductModel.dart';
 
 List<NewCartModel> newCartModelFromJson(String str) => List<NewCartModel>.from(json.decode(str).map((x) => NewCartModel.fromJson(x)));

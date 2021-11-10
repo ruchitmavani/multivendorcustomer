@@ -8,7 +8,7 @@ String helper(String screen) {
   return "${window.location.pathname}/$screen";
 }
 
-String storeConcate(String screen) {
+String storeConcat(String screen) {
   print("helper pathname:  ${sharedPrefs.storeLink}/$screen");
   return "${sharedPrefs.storeLink.isEmpty ? window.localStorage["storeId"]! : sharedPrefs.storeLink}/$screen";
 }

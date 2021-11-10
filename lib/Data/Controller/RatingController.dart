@@ -15,7 +15,7 @@ class RatingController {
       required int rating,
       required String orderId,
       required String customerName}) async {
-    String url = StringConstants.API_URL + StringConstants.customer_add_rating;
+    String url = StringConstants.api_url + StringConstants.customer_add_rating;
 
     //body Data
     var data = {
@@ -52,7 +52,7 @@ class RatingController {
   /*-----------View Rating-----------*/
   static Future<ResponseClass<RatingDataModel>> viewRating(
       {required String productId}) async {
-    String url = StringConstants.API_URL + StringConstants.view_rating;
+    String url = StringConstants.api_url + StringConstants.view_rating;
 
     //body Data
     var data = {

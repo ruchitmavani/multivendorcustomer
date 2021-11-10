@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
-import 'package:multi_vendor_customer/Data/Controller/CartController.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
-import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class ProductDescriptionInCart extends StatefulWidget {
   String productId;
   ProductSize? size;
@@ -183,7 +180,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                             : SizedBox(
                                 height: 230,
                                 child: Image.network(
-                                    "${StringConstants.API_URL + productData.productImageUrl.elementAt(displayImage)}")),
+                                    "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
                         Space(height: 20),
                         Container(
                           height: 50,
@@ -211,7 +208,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                         });
                                       },
                                       child: Image.network(
-                                          "${StringConstants.API_URL + productData.productImageUrl.elementAt(index)}"),
+                                          "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
                                     ),
                                   ));
                             },

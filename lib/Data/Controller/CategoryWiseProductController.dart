@@ -11,16 +11,17 @@ import 'ProductController.dart';
 
 class CategoryController {
   /*-----------Get Product Data-----------*/
-  static Future<ResponseClass> getCategoryWiseProduct(String vendorId) async {
-    String url = StringConstants.API_URL +
+  static Future<ResponseClass> getCategoryWiseProduct(String vendorId,String sortKey) async {
+    String url = StringConstants.api_url +
         StringConstants.customer_category_wise_all_product_find;
 
     //body Data
     var data = (sharedPrefs.customer_id.isEmpty)
-        ? {"vendor_uniq_id": "$vendorId"}
+        ? {"vendor_uniq_id": "$vendorId",  "sort" : "$sortKey"}
         : {
             "vendor_uniq_id": "$vendorId",
-            "customer_uniq_id": "${sharedPrefs.customer_id}"
+            "customer_uniq_id": "${sharedPrefs.customer_id}",
+      "sort" : "$sortKey"
           };
 
     print("all product $data");
@@ -52,7 +53,7 @@ class CategoryController {
 
   /*-----------Get Category Name Data-----------*/
   static Future<ResponseClass> getCategoryName() async {
-    String url = StringConstants.API_URL +
+    String url = StringConstants.api_url +
         StringConstants.vendor_all_category_name;
 
     //body Data

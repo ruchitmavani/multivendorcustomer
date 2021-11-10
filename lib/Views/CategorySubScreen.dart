@@ -1,21 +1,23 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:html';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
-import 'package:multi_vendor_customer/Views/ProductDetail.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -139,6 +141,36 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                 -1
             ? ""
             : "${_provider.elementAt(_provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}"),
+        actions: [
+          IconButton(
+            icon: Icon(CupertinoIcons.search,
+                size: 20,
+                color: Provider.of<CustomColor>(context)
+                    .appPrimaryMaterialColor),
+            onPressed: () {
+              GoRouter.of(context).push(PageCollection.search);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Badge(
+              elevation: 0,
+              position: BadgePosition.topEnd(top: 5, end: 0),
+              badgeContent: Text(
+                  '${Provider.of<CartDataWrapper>(context).totalItems}',
+                  style: TextStyle(fontSize: 10, color: Colors.white)),
+              child: IconButton(
+                icon: Icon(AppIcons.shopping_cart,
+                    size: 20,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor),
+                onPressed: () {
+                  GoRouter.of(context).push(PageCollection.cart);
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [

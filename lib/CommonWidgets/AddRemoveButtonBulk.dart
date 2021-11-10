@@ -194,13 +194,12 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   updateQuantity() {
     q = Provider.of<CartDataWrapper>(context, listen: false)
         .getIndividualQuantity(productId: widget.productData.productId);
-    print("q uapdted to $q");
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    //todo pending isrequest provide link
+    //todo pending is_request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
                 productId: widget.productData.productId) ==
             0

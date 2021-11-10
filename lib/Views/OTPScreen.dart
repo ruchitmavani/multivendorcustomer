@@ -46,7 +46,7 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
         sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
-        GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
+        GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
 
       } else {
         setState(() {

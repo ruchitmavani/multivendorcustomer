@@ -1,13 +1,10 @@
 import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
-import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/main.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +19,11 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
+    loadData();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      loadData();
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   loadData();
+    // });
   }
 
   loadData() async {
@@ -45,7 +43,7 @@ class _LoadingState extends State<Loading> {
         print("load path ------- ${window.location.pathname}");
         String path = window.location.pathname!;
         if (!path.contains("home"))
-          GoRouter.of(context).push('/' + storeConcate(PageCollection.home));
+          GoRouter.of(context).push('/' + storeConcat(PageCollection.home));
         if (window.localStorage["init"] == null) {
           window.location.reload();
           window.localStorage["init"] = "okay";

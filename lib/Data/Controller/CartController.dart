@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/AddToCartResponseModel.dart';
@@ -11,7 +12,7 @@ class CartController {
   /*-----------Get Cart Data-----------*/
   static Future<ResponseClass<List<NewCartModel>>> getCartData(
       {required String vendorId, required String customerId}) async {
-    String url = StringConstants.API_URL + StringConstants.cart_view;
+    String url = StringConstants.api_url + StringConstants.cart_view;
 
     //body Data
     print("$customerId");
@@ -60,7 +61,7 @@ class CartController {
     required bool isColorActive,
     required bool isVarientAvailable,
   }) async {
-    String url = StringConstants.API_URL + StringConstants.product_add_to_cart;
+    String url = StringConstants.api_url + StringConstants.product_add_to_cart;
 
     //body Data
     var data = isVarientAvailable
@@ -114,7 +115,7 @@ class CartController {
   static Future<ResponseClass> update({
     required Map<String, dynamic> jsonMap,
   }) async {
-    String url = StringConstants.API_URL + StringConstants.cart_details_update;
+    String url = StringConstants.api_url + StringConstants.cart_details_update;
 
     print(jsonMap);
     //body Data
@@ -146,7 +147,7 @@ class CartController {
   static Future<ResponseClass> deleteCart({
     required String cartId,
   }) async {
-    String url = StringConstants.API_URL + StringConstants.delete_cart;
+    String url = StringConstants.api_url + StringConstants.delete_cart;
 
     //body Data
     var data = {

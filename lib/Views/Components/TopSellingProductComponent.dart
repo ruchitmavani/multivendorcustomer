@@ -5,15 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:provider/provider.dart';
-
-import '../ProductDetail.dart';
 
 class TopSellingProductComponent extends StatefulWidget {
   ProductData productData;
@@ -42,7 +39,7 @@ class _TopSellingProductComponentState
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: widget.productData.productImageUrl.length!=0?Image.network(
-                "${StringConstants.API_URL}${widget.productData.productImageUrl.first}",
+                "${StringConstants.api_url}${widget.productData.productImageUrl.first}",
                 width: 60,
                 alignment: Alignment.center,
               ):Image.asset("images/placeholder.png"),

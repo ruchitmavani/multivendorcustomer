@@ -99,7 +99,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.network("${StringConstants.API_URL}${sharedPrefs.logo}",
+                  Image.network("${StringConstants.api_url}${sharedPrefs.logo}",
                       width: 60, height: 60),
                   Expanded(
                     child: Padding(

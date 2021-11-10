@@ -1,11 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CategoryWiseProductController.dart';
-import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
 import 'package:multi_vendor_customer/Data/Models/CategoryNameModel.dart';
-import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
 class CategoryName extends ChangeNotifier {
   List<CategoryNameModel> categoryName = [];

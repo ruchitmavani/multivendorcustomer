@@ -1,15 +1,17 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/CouponDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
+
 import 'ProductController.dart';
 
 class CouponController{
 
   /*-----------Validate Coupon Data-----------*/
   static Future<ResponseClass<CouponDataModel>> validateCoupon({required String vendorId,required String couponName,required String customerId}) async {
-    String url = StringConstants.API_URL + StringConstants.vendor_coupon_validate;
+    String url = StringConstants.api_url + StringConstants.vendor_coupon_validate;
 
     //body Data
     var data ={

@@ -1,6 +1,7 @@
 // ignore_for_file: must_call_super, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -28,19 +29,10 @@ class AddRemoveButton extends StatefulWidget {
 
 class _AddRemoveButtonState extends State<AddRemoveButton> {
   int q = 0;
-  String? cartId;
 
   @override
   void initState() {
     super.initState();
-
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   setState(() {
-    //     q = widget.productData.cartDetails == null
-    //         ? 0
-    //         : widget.productData.cartDetails!.productQuantity;
-    //   });
-    // });
     updateQuantity();
   }
 
@@ -101,6 +93,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
             .vendorUniqId);
+    Fluttertoast.showToast(msg: "Added to Cart");
 
     // await CartController.addToCart(
     //         customerId: "${sharedPrefs.customer_id}",
@@ -221,7 +214,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   updateQuantity() {
     q = Provider.of<CartDataWrapper>(context, listen: false)
         .getIndividualQuantity(productId: widget.productData.productId);
-    print("q uapdted to $q");
     setState(() {});
   }
 

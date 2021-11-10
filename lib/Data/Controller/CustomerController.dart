@@ -10,7 +10,7 @@ import 'ProductController.dart';
 class CustomerController {
   /*-----------Get Customer Data-----------*/
   static Future<ResponseClass> getCustomerData(String customerId) async {
-    String url = StringConstants.API_URL + StringConstants.customer_view;
+    String url = StringConstants.api_url + StringConstants.customer_view;
 
     //body Data
     var data = {"customer_uniq_id": "$customerId"};
@@ -43,7 +43,7 @@ class CustomerController {
     required List<Map<String,dynamic>> address,
     required String email,
     required String dob}) async {
-    String url = StringConstants.API_URL + StringConstants.customer_update;
+    String url = StringConstants.api_url + StringConstants.customer_update;
 
     //body Data
     var data = {

@@ -77,7 +77,7 @@ class _RegisterState extends State<Register> {
           dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
           isLoading = false;
         });
-        GoRouter.of(context).go('/'+storeConcate(PageCollection.home));
+        GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
       } else {
         Fluttertoast.showToast(msg: value.message);
         setState(() {

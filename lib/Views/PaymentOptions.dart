@@ -1,19 +1,19 @@
 import 'dart:html';
-import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
-import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/CheckOut.dart';
+import 'package:multi_vendor_customer/Views/OrderSuccess.dart';
 import 'package:provider/provider.dart';
 
 class PaymentOptions extends StatefulWidget {
@@ -100,9 +100,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .cartData,
         couponId: "",
         deliveryCharge: type == 'TAKEAWAY' || Provider
-            .of<CartDataWrapper>(context)
+            .of<CartDataWrapper>(context,listen: false)
             .totalAmount > Provider
-            .of<VendorModelWrapper>(context)
+            .of<VendorModelWrapper>(context,listen: false)
             .vendorModel!
             .freeDeliveryAboveAmount ? 0.0 : Provider
             .of<VendorModelWrapper>(context, listen: false)
@@ -159,12 +159,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               .clear();
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
               vendorId: "${sharedPrefs.vendor_uniq_id}");
-          GoRouter.of(context).go('/' + storeConcate(PageCollection.home));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => OrderSuccess()));
+          // GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
           print("signature ${window.localStorage["signature"]}");
-
           _verifyPayment();
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (_) => OrderSuccess()));
         });
       } else {
         setState(() {
@@ -322,7 +325,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                               100,
                           name: sharedPrefs.customer_name,
                           image:
-                          "${StringConstants.API_URL}${sharedPrefs.logo}",
+                          "${StringConstants.api_url}${sharedPrefs.logo}",
                           addOrder: _addOrder,
                           orderId: orderId,
                         );

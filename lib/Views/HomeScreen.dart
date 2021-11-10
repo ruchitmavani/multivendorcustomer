@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
@@ -20,7 +18,6 @@ import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
-import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -49,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<AllCategoryModel> productDataList = [];
   List<ProductData> trendingProducts = [];
   List<ProductData> recentlyBought = [];
+  List<String> sortKeyList = ["NtoO", "OtoN", "spHtoL", "spLtoH"];
   DateTime now = DateTime.now();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -64,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .loadVendorData(sharedPrefs.storeLink);
     print(
         "vendor id in home provider ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}");
-    _getCategoryWiseProduct();
+    _getCategoryWiseProduct(sortKeyList.first);
     _getBannerData();
     _getTrendingData();
     _recentlyBought();
@@ -79,12 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  _getCategoryWiseProduct() async {
+
+  _getCategoryWiseProduct(String sortKey) async {
     setState(() {
       isLoadingCate = true;
     });
     await CategoryController.getCategoryWiseProduct(
-            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
+            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}",sortKey.split(".").last)
         .then((value) {
       if (value.success) {
         print(value.data);
@@ -319,16 +318,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 60,
                                             width: 60,
                                             imageUrl:
-                                                "${StringConstants.API_URL}${vendorProvider.logo}",
+                                                "${StringConstants.api_url}${vendorProvider.logo}",
                                             placeholder: (context, url) =>
                                                 SizedBox(
-                                                  width: 12,
-                                                  height: 12,
-                                                  child: CircularProgressIndicator(
-                                                  ),
-                                                ),
-                                            errorWidget: (context, url, error) =>
-                                                Icon(Icons.map),
+                                              width: 12,
+                                              height: 12,
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.map),
                                           ),
                                           Space(width: 8.0),
                                           Text("${vendorProvider.businessName}",
@@ -374,7 +374,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: Provider.of<CustomColor>(
                                                         context)
                                                     .appPrimaryMaterialColor,
-                                              ))
+                                              ),
+                                            )
                                           : Container(),
                                       Space(width: 10)
                                     ],
@@ -408,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(6.0),
                                               child: Image.network(
-                                                "${StringConstants.API_URL}${bannerData.bannerUrl}",
+                                                "${StringConstants.api_url}${bannerData.bannerUrl}",
                                                 fit: BoxFit.cover,
                                               ),
                                             )),
@@ -557,6 +558,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           isGrid = value;
                         });
                       },
+                        onClick: (value) {
+                          _getCategoryWiseProduct(value);
+                        }
                     ),
                     automaticallyImplyLeading: false,
                   ),
@@ -584,6 +588,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 4.0),
                                             child: ListView.builder(
+                                                shrinkWrap: true,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 itemCount:
@@ -658,8 +663,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           )
         : Container(
+      margin: EdgeInsets.only(bottom: 80),
             color: Colors.white,
             child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: productDataList.length,
               scrollDirection: Axis.vertical,
@@ -692,66 +699,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .productDetails
                                 .length,
                             itemBuilder: (context, i) {
-                              String path = Uri(
-                                  path: PageCollection.home +
-                                      PageCollection.product,
-                                  queryParameters: {
-                                    "productName":
-                                        "${productDataList.elementAt(index).productDetails.elementAt(i).productName}",
-                                    "id":
-                                        "${productDataList.elementAt(index).productDetails.elementAt(i).productId}"
-                                  }).toString();
                               return InkWell(
                                 onTap: () {
-                                  // showModalBottomSheet(
-                                  //     context: context,
-                                  //     isScrollControlled: true,
-                                  //     backgroundColor: Colors.transparent,
-                                  //     routeSettings: RouteSettings(),
-                                  //     builder: (context) {
-                                  //       return Column(
-                                  //         crossAxisAlignment:
-                                  //             CrossAxisAlignment.end,
-                                  //         mainAxisAlignment:
-                                  //             MainAxisAlignment.end,
-                                  //         children: [
-                                  //           Padding(
-                                  //             padding: const EdgeInsets.only(
-                                  //                 right: 15.0, bottom: 15.0),
-                                  //             child: SizedBox(
-                                  //               child: FloatingActionButton(
-                                  //                   onPressed: () {
-                                  //                     Navigator.of(context)
-                                  //                         .pop
-                                  //                         .call();
-                                  //                   },
-                                  //                   child: Icon(Icons.close,
-                                  //                       size: 16),
-                                  //                   backgroundColor:
-                                  //                       Colors.white),
-                                  //               width: 24,
-                                  //               height: 24,
-                                  //             ),
-                                  //           ),
-                                  //           Container(
-                                  //             decoration: BoxDecoration(
-                                  //               color: Colors.white,
-                                  //               borderRadius: BorderRadius.only(
-                                  //                   topRight:
-                                  //                       Radius.circular(10.0),
-                                  //                   topLeft:
-                                  //                       Radius.circular(10.0)),
-                                  //             ),
-                                  //             child: ProductDescription(
-                                  //                 productDataList
-                                  //                     .elementAt(index)
-                                  //                     .productDetails
-                                  //                     .elementAt(i)),
-                                  //           ),
-                                  //         ],
-                                  //       );
-                                  //     });
-
                                   context.go(helper(PageCollection.product +
                                       '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
                                 },

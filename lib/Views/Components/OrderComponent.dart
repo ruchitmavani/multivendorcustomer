@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/colors.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -67,7 +66,7 @@ class _OrderComponentState extends State<OrderComponent> {
                               width: 23,
                               height: 23,
                             ):Image.network(
-                                    "${StringConstants.API_URL}${widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.first}",
+                                    "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.first}",
                                     width: 23,
                                     height: 23,
                                   );

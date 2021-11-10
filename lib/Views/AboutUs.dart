@@ -49,7 +49,7 @@ class _AboutUsState extends State<AboutUs> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.network(
-                              "${StringConstants.API_URL}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
                               width: 60,
                               height: 60),
                           Space(width: 8.0),
@@ -89,7 +89,7 @@ class _AboutUsState extends State<AboutUs> {
               height: 20,
             ),
             Image.network(
-              "${StringConstants.API_URL}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
+              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
               fit: BoxFit.fill,
               width: MediaQuery.of(context).size.width,
               height: 160,
@@ -179,7 +179,7 @@ class _AboutUsState extends State<AboutUs> {
                                 .awordImageUrl
                                 .map<Widget>((e) {
                               return Image.network(
-                                "${StringConstants.API_URL}$e",
+                                "${StringConstants.api_url}$e",
                                 fit: BoxFit.fill,
                                 width: MediaQuery.of(context).size.width,
                               );

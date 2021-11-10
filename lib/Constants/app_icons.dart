@@ -41,8 +41,6 @@ class AppIcons {
       IconData(0xf22c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData error =
       IconData(0xe001, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData whatsapp =
-      IconData(0xea9c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData category =
       IconData(0xe574, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
