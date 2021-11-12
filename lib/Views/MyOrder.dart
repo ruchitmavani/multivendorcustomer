@@ -82,7 +82,7 @@ class _MyOrderState extends State<MyOrder> {
                   '${Provider.of<CartDataWrapper>(context).totalItems}',
                   style: TextStyle(fontSize: 10, color: Colors.white)),
               child: IconButton(
-                icon: Icon(AppIcons.shopping_cart,
+                icon: Icon(CupertinoIcons.shopping_cart,
                     size: 20,
                     color: Provider.of<CustomColor>(context)
                         .appPrimaryMaterialColor),

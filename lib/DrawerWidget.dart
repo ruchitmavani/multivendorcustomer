@@ -57,7 +57,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             style: TextStyle(
                                 fontSize: 28,
                                 color: Colors.white,
-                                fontFamily: 'popins'),
+                                fontFamily: 'Poppins'),
                           ),
                         ),
                       ),

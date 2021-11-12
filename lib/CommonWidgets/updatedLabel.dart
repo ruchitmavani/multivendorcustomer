@@ -18,7 +18,7 @@ class UpdatedLabel extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 2),
         child: Text(
           "UPDATED",
-          style: TextStyle(color: Colors.white, fontSize: 10,fontFamily: 'Popins',fontWeight: FontWeight.w400),
+          style: TextStyle(color: Colors.white, fontSize: 10,fontFamily: 'Poppins',fontWeight: FontWeight.w400),
         ),
       ),
     );

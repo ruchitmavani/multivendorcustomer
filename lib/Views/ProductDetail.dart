@@ -119,13 +119,19 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 elevation: 0,
                 position: BadgePosition.topEnd(top: 5, end: 0),
                 badgeContent: Text(
-                    '${Provider.of<CartDataWrapper>(context).totalItems}',
-                    style: TextStyle(fontSize: 10, color: Colors.white)),
+                  '${Provider.of<CartDataWrapper>(context).totalItems}',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                  ),
+                ),
                 child: IconButton(
-                  icon: Icon(AppIcons.shopping_cart,
-                      size: 20,
-                      color: Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor),
+                  icon: Icon(
+                    CupertinoIcons.shopping_cart,
+                    size: 20,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
+                  ),
                   onPressed: () {
                     GoRouter.of(context).push(PageCollection.cart);
                   },
@@ -153,7 +159,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               height: 20,
                             ),
                             productData.productImageUrl.length == 0 &&
-                                    productData.productVideoUrl.isEmpty && productData.productYoutubeUrl.isEmpty
+                                    productData.productVideoUrl.isEmpty &&
+                                    productData.productYoutubeUrl.isEmpty
                                 ? SizedBox(
                                     height: 230,
                                     child:
@@ -167,7 +174,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             ? YoutubePlayerIFrame(
                                                 controller:
                                                     YoutubePlayerController(
-                                                  initialVideoId: "${productData.productYoutubeUrl}",
+                                                  initialVideoId:
+                                                      "${productData.productYoutubeUrl}",
                                                   params: YoutubePlayerParams(
                                                     showControls: false,
                                                     mute: true,
@@ -190,7 +198,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               alignment: Alignment.center,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: productData.productVideoUrl.isEmpty && productData.productYoutubeUrl.isEmpty
+                                itemCount: productData
+                                            .productVideoUrl.isEmpty &&
+                                        productData.productYoutubeUrl.isEmpty
                                     ? productData.productImageUrl.length
                                     : productData.productImageUrl.length + 1,
                                 scrollDirection: Axis.horizontal,
@@ -212,7 +222,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             setState(() {
                                               displayImage = index;
                                               if ((productData.productVideoUrl
-                                                      .isNotEmpty || productData.productYoutubeUrl.isNotEmpty) &&
+                                                          .isNotEmpty ||
+                                                      productData
+                                                          .productYoutubeUrl
+                                                          .isNotEmpty) &&
                                                   index ==
                                                       productData
                                                           .productImageUrl
@@ -224,7 +237,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             });
                                           },
                                           child: (productData.productVideoUrl
-                                                      .isNotEmpty||productData.productYoutubeUrl.isNotEmpty) &&
+                                                          .isNotEmpty ||
+                                                      productData
+                                                          .productYoutubeUrl
+                                                          .isNotEmpty) &&
                                                   index ==
                                                       productData
                                                           .productImageUrl
@@ -681,18 +697,34 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                             )
                           : productData.bulkPriceList!.length != 0
-                              ? AddRemoveButtonBulk(
-                                  productData: productData,
-                                  isRounded: false,
-                                  price: finalPrice / finalQuantity,
-                                  qty: finalQuantity,
-                                )
-                              : AddRemoveButton(
-                                  productData: productData,
-                                  isRounded: false,
-                                  colorIndex: currentIndex,
-                                  sizeIndex: currentSizeIndex,
-                                )
+                              ? productData.stockLeft <= 0
+                                  ? Text(
+                                      "Out of Stock",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    )
+                                  : AddRemoveButtonBulk(
+                                      productData: productData,
+                                      isRounded: false,
+                                      price: finalPrice / finalQuantity,
+                                      qty: finalQuantity,
+                                    )
+                              : productData.stockLeft <= 0
+                                  ? Text(
+                                      "Out of Stock",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    )
+                                  : AddRemoveButton(
+                                      productData: productData,
+                                      isRounded: false,
+                                      colorIndex: currentIndex,
+                                      sizeIndex: currentSizeIndex,
+                                    )
                     ],
                   ),
                 ),

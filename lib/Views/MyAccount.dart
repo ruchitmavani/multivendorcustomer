@@ -240,7 +240,7 @@ class _MyAccountState extends State<MyAccount> {
                         child: Text(
                           "${addressList.elementAt(index).type}",
                           style: TextStyle(
-                              fontFamily: 'popins',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                         ),
@@ -256,7 +256,7 @@ class _MyAccountState extends State<MyAccount> {
                         child: Text(
                           "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
                           style: TextStyle(
-                            fontFamily: 'popins',
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       ),

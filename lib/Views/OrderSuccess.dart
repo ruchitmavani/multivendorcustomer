@@ -23,7 +23,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
             Lottie.asset("images/success.json", height: 200, repeat: false,),
             Text(
               "Your order has been Placed \nSuccessfully",
-              style: TextStyle(fontFamily: 'popins', fontSize: 22),
+              style: TextStyle(fontFamily: 'Poppins', fontSize: 22),
               textAlign: TextAlign.center,
             ),
             ElevatedButton(

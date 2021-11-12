@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
                               "Select Address Below",
                               style: TextStyle(
                                   fontSize: 20,
-                                  fontFamily: 'popins',
+                                  fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -195,48 +195,52 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10.0),
                           topLeft: Radius.circular(10.0)),
                     ),
-                    child: SizedBox(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 16.0, bottom: 0),
-                            child: Text(
-                              "Enter Offer Coupon",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'popins',
-                                  fontWeight: FontWeight.w700),
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 16.0, bottom: 0,left: 12),
+                          child: Text(
+                            "Apply Coupon",
+                            style:TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Poppins",
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600)
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: MyTextFormField(
-                              controller: couponText,
-                              maxLines: 1,
-                              hintText: "Enter Coupon",
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: MyTextFormField(
+                            controller: couponText,
+                            lable: "Enter Coupon",
+                            maxLines: 1,
+                            hintText: "Enter Coupon Code",
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Provider.of<CartDataWrapper>(context)
-                                    .isCouponApplied
-                                ? Text(
-                                    "Apply Coupon Success 😊!",
-                                    style: TextStyle(
-                                        color: Provider.of<CustomColor>(context)
-                                            .appPrimaryMaterialColor),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20,right: 8,left: 8,top: 8),
+                          child: Provider.of<CartDataWrapper>(context)
+                                  .isCouponApplied
+                              ? Text(
+                                  "Apply Coupon Success 😊!",
+                                  style: TextStyle(
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
                                         onPressed: () {
                                           couponText.clear();
                                         },
@@ -245,7 +249,10 @@ class _CartScreenState extends State<CartScreen> {
                                           child: Text("Clear"),
                                         ),
                                       ),
-                                      ElevatedButton(
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Expanded(
+                                      child: ElevatedButton(
                                         onPressed: () {
                                           Provider.of<CartDataWrapper>(context,
                                                   listen: false)
@@ -256,11 +263,11 @@ class _CartScreenState extends State<CartScreen> {
                                           child: Text("Apply"),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                          )
-                        ],
-                      ),
+                                    ),
+                                  ],
+                                ),
+                        )
+                      ],
                     ),
                   ),
                 ],

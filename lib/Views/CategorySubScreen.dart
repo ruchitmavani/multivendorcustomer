@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +22,6 @@ import 'package:shimmer/shimmer.dart';
 
 class CategorySubScreen extends StatefulWidget {
   String categoryId;
-
-  // String categoryName;
 
   CategorySubScreen({required this.categoryId});
 
@@ -74,9 +71,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
             productDataList.add(element);
           });
           isLoading = false;
-          // for (int i = 0; i < productDataList.length; i++) {
-          //   print(productDataList.elementAt(i).cartDetails);
-          // }
         });
       }
     }, onError: (e) {
@@ -106,9 +100,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
             productDataList.add(element);
           });
           isLoadingBottom = false;
-          // for (int i = 0; i < productDataList.length; i++) {
-          //   print(productDataList.elementAt(i).cartDetails);
-          // }
         });
       }
     }, onError: (e) {
@@ -160,7 +151,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                   '${Provider.of<CartDataWrapper>(context).totalItems}',
                   style: TextStyle(fontSize: 10, color: Colors.white)),
               child: IconButton(
-                icon: Icon(AppIcons.shopping_cart,
+                icon: Icon(CupertinoIcons.shopping_cart,
                     size: 20,
                     color: Provider.of<CustomColor>(context)
                         .appPrimaryMaterialColor),

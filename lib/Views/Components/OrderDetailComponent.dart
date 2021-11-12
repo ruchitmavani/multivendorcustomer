@@ -76,13 +76,15 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
             productId: "${widget.productDetail.productId}")
         .then((value) {
       if (value.success) {
-        rating = value.data!.productRatingCount as double;
+        setState(() {
+          rating = value.data!.productRatingCount as double;
+
+        });
       } else {}
     }, onError: (e) {});
   }
 
   _updateRating() async {
-    print("hi");
     setState(() {
       isLoading = true;
     });
@@ -263,7 +265,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                               width: 2,
                             ),
                             Text(
-                              "Rate",
+                              "Rate $rating",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   color: Provider.of<CustomColor>(context)

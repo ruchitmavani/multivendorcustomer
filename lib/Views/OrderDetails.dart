@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +16,10 @@ import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
+import 'package:multi_vendor_customer/Views/InvoiceGenerate.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,6 +38,14 @@ class _OrderDetailsState extends State<OrderDetails> {
   bool isLoading = false;
   bool isChanged = false;
   List<String> status = [];
+
+  // Invoice orderData = Invoice(
+  //     products: List.generate(widget.orderData.orderItems.length, (index) => Product(productName, price, quantity)),
+  //     customerName: "${sharedPrefs.customer_name}",
+  //     invoiceNumber: "",
+  //     tax: 0.15,
+  //     baseColor: PdfColors.teal,
+  //     accentColor: PdfColors.blueGrey900);
 
   @override
   void initState() {
@@ -391,7 +405,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(right: 25.0, bottom: 20),
         child: (isChanged)
-            ? isLoading
+            ? (isLoading)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
@@ -426,31 +440,72 @@ class _OrderDetailsState extends State<OrderDetails> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if(widget.orderData.orderStatus.last=="Delivered")
                   SizedBox(
                     height: 44,
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Download invoice",
-                            style: TextStyle(fontSize: 13),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 14,
-                            ),
-                          )
-                        ],
+                      child: Text(
+                        "Download invoice",
+                        style: TextStyle(fontSize: 13),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Printing.layoutPdf(
+                          onLayout: (PdfPageFormat format) {
+                            return generateInvoice(
+                                format,
+                                Invoice(
+                                    products: List.generate(
+                                        widget.orderData.orderItems.length,
+                                        (index) => Product(
+                                            widget.orderData.orderItems
+                                                .elementAt(index)
+                                                .productDetails
+                                                .productName,
+                                            widget.orderData.orderItems
+                                                .elementAt(index)
+                                                .productDetails
+                                                .productSellingPrice,
+                                            widget.orderData.orderItems
+                                                .elementAt(index)
+                                                .productQuantity)),
+                                    customerName:
+                                        "${sharedPrefs.customer_name}",
+                                    invoiceNumber: "${widget.orderData.orderId}",
+                                    tax:widget.orderData.taxPercentage==0? 0:widget.orderData.taxPercentage/100,
+                                    baseColor: PdfColors.teal,
+                                    accentColor: PdfColors.blueGrey900));
+                          },
+                        );
+                        // generateInvoice(PdfPageFormat.a4, qrcodeData);
+                      },
                     ),
                   ),
                 ],
               ),
       ),
     );
+  }
+
+  Future<Uint8List> buildPdf(PdfPageFormat format) async {
+    // Create the Pdf document
+    final pw.Document doc = pw.Document();
+
+    // Add one page with centered text "Hello World"
+    doc.addPage(
+      pw.Page(
+        pageFormat: format,
+        build: (pw.Context context) {
+          return pw.ConstrainedBox(
+            constraints: pw.BoxConstraints.expand(),
+            child: pw.FittedBox(
+              child: pw.Text('Hello World'),
+            ),
+          );
+        },
+      ),
+    );
+
+    // Build and return the final Pdf file data
+    return await doc.save();
   }
 }

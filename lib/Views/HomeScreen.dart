@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     '${Provider.of<CartDataWrapper>(context).totalItems}',
                     style: TextStyle(fontSize: 10, color: Colors.white)),
                 child: IconButton(
-                  icon: Icon(AppIcons.shopping_cart,
+                  icon: Icon(CupertinoIcons.shopping_cart,
                       size: 20,
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor),
@@ -225,59 +225,50 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             showModalBottomSheet(
                 context: context,
-                isScrollControlled: true,
+                // isScrollControlled: true,
                 isDismissible: true,
-                enableDrag: true,
+                // enableDrag: true,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Card(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        child: ListView.builder(
-                          itemCount: productDataList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                                context.go(helper(PageCollection.categories +
-                                    '/${productDataList.elementAt(index).categoryId}'));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 15),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                  return Card(
+                    margin: EdgeInsets.only(right: 20,left: 20,bottom: 30),
+                    child: ListView.builder(
+                      itemCount: productDataList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            context.go(helper(PageCollection.categories +
+                                '/${productDataList.elementAt(index).categoryId}'));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 15),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    "${productDataList.elementAt(index).categoryName}"),
+                                Row(
                                   children: [
                                     Text(
-                                        "${productDataList.elementAt(index).categoryName}"),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            "${productDataList.elementAt(index).productDetails.length}"),
-                                        Icon(
-                                          Icons.chevron_right,
-                                          color:
-                                              Provider.of<CustomColor>(context)
-                                                  .appPrimaryMaterialColor,
-                                        ),
-                                      ],
-                                    )
+                                        "${productDataList.elementAt(index).productDetails.length}"),
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color:
+                                          Provider.of<CustomColor>(context)
+                                              .appPrimaryMaterialColor,
+                                    ),
                                   ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Space(
-                        height: 40,
-                      ),
-                    ],
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 });
           },
@@ -683,7 +674,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       isViewAll: true,
                     ),
                     SizedBox(
-                      height: isGrid ? 251 : null,
+                      height: isGrid ? 254 : null,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4),

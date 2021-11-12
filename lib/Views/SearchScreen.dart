@@ -3,13 +3,14 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Search extends StatefulWidget {
-
   const Search({Key? key}) : super(key: key);
+
   @override
   _SearchState createState() => _SearchState();
 }
@@ -45,7 +46,8 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<VendorModelWrapper>(context, listen: false).loadVendorData();
+    // Provider.of<VendorModelWrapper>(context, listen: false)
+    //     .loadVendorData(sharedPrefs.vendor_uniq_id);
   }
 
   @override
@@ -57,6 +59,7 @@ class _SearchState extends State<Search> {
         slivers: [
           SliverToBoxAdapter(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IconButton(
                     onPressed: () {
@@ -64,14 +67,68 @@ class _SearchState extends State<Search> {
                     },
                     icon: Icon(Icons.arrow_back)),
                 Expanded(
-                  child: Card(
+                  child: Container(
+                    height: 50,
+                    padding: EdgeInsets.only(bottom: 6),
+                    margin: EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          offset: Offset(1,1
+                          ),
+                        ),
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          offset: Offset(-0.5,-0.5
+                          ),
+                        ),BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          offset: Offset(-0.5,1
+                          ),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
                     child: new ListTile(
-                      leading: new Icon(Icons.search,color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,),
+                      horizontalTitleGap: 0,
+                      leading: new Icon(
+                        Icons.search,
+                        color: Provider.of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                      ),
                       title: new TextField(
                         autofocus: true,
                         controller: search,
-                        decoration: new InputDecoration(
-                            hintText: 'Search', border: InputBorder.none),
+                        decoration: InputDecoration(
+                            fillColor: Colors.grey.shade200,
+                            focusColor: Colors.green,
+                            hintText: "Search",
+                            hintStyle: TextStyle(color: Colors.grey.shade400),
+                            floatingLabelBehavior:
+                                FloatingLabelBehavior.never,
+                            contentPadding:
+                                EdgeInsets.only(top: 4, bottom: 4),
+                            errorStyle: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              borderSide: BorderSide(
+                                width: 1.5,
+                                color: Colors.red,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
+                              ),
+                            )),
                         onChanged: (value) {
                           _search(search.text);
                           setState(() {});
@@ -83,7 +140,8 @@ class _SearchState extends State<Search> {
                               icon: new Icon(Icons.cancel),
                               onPressed: () {
                                 search.text = "";
-                                setState(() {});
+                                setState(() {
+                                });
                               },
                             ),
                     ),
@@ -96,29 +154,31 @@ class _SearchState extends State<Search> {
             child: isLoading
                 ? Padding(
                     padding: const EdgeInsets.all(8),
-                    child:GridView.builder(
+                    child: GridView.builder(
                       shrinkWrap: true,
                       itemCount: 14,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent:180,
+                          maxCrossAxisExtent: 180,
                           mainAxisExtent: 245,
                           mainAxisSpacing: 8,
-                          crossAxisSpacing: 8
-                      ),
+                          crossAxisSpacing: 8),
                       itemBuilder: (context, index) {
                         return Shimmer.fromColors(
                           baseColor: Colors.white,
                           highlightColor: Colors.grey[300]!,
                           period: Duration(seconds: 2),
                           child: Container(
-                            width:180,
+                            width: 180,
                             height: 100,
                             decoration: ShapeDecoration(
-                              color: Colors.grey[300]!, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              color: Colors.grey[300]!,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
                             ),
                           ),
                         );
-                      },),
+                      },
+                    ),
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(
@@ -185,4 +245,3 @@ class _SearchState extends State<Search> {
     );
   }
 }
-

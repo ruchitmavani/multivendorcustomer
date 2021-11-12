@@ -26,7 +26,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       padding: const EdgeInsets.all(4),
       child: SizedBox(
         width: 200,
-        height: 251,
+        height: 254,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -40,18 +40,21 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 8.0, bottom: 8,top: 8),
+            padding: const EdgeInsets.only(
+                left: 10.0, right: 8.0, bottom: 8, top: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ProductRating(widget.productData.productRatingAverage),
                 Center(
                     child: SizedBox(
-                        height: 119,
-                        width: 100,
-                        child: widget.productData.productImageUrl.length > 0
-                            ? Image.network(StringConstants.api_url+widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
-                      )),
+                  height: 119,
+                  width: 100,
+                  child: widget.productData.productImageUrl.length > 0
+                      ? Image.network(StringConstants.api_url +
+                          widget.productData.productImageUrl.first)
+                      : Image.asset("images/placeholder.png"),
+                )),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
@@ -80,8 +83,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 decorationThickness: 3,
-                                decorationColor: Provider.of<CustomColor>(context)
-                                    .appPrimaryMaterialColor,
+                                decorationColor:
+                                    Provider.of<CustomColor>(context)
+                                        .appPrimaryMaterialColor,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey.shade700,
@@ -110,12 +114,20 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                       ),
                       if (!widget.productData.isRequestPrice)
                         widget.productData.bulkPriceList!.length == 0
-                            ? AddRemoveButton(
-                          productData: widget.productData,
-                          isRounded: true,
-                          colorIndex: 0,
-                          sizeIndex: 0,
-                        )
+                            ? widget.productData.stockLeft <= 0
+                                ? Text(
+                                    "Out of Stock",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        color: Colors.red),
+                                  )
+                                : AddRemoveButton(
+                                    productData: widget.productData,
+                                    isRounded: true,
+                                    colorIndex: 0,
+                                    sizeIndex: 0,
+                                  )
                             : Container(),
                     ],
                   ),
@@ -164,7 +176,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
               height: 110,
               width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
-                  ? Image.network(StringConstants.api_url+widget.productData.productImageUrl.first):Image.asset("images/placeholder.png"),
+                  ? Image.network(StringConstants.api_url +
+                      widget.productData.productImageUrl.first)
+                  : Image.asset("images/placeholder.png"),
             ),
             Space(width: 8),
             Expanded(
@@ -233,12 +247,20 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       ),
                       if (!widget.productData.isRequestPrice)
                         widget.productData.bulkPriceList!.length == 0
-                            ? AddRemoveButton(
-                                productData: widget.productData,
-                                isRounded: true,
-                                colorIndex: 0,
-                                sizeIndex: 0,
-                              )
+                            ? widget.productData.stockLeft <= 0
+                                ? Text(
+                                    "Out of Stock",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 12,
+                                        color: Colors.red),
+                                  )
+                                : AddRemoveButton(
+                                    productData: widget.productData,
+                                    isRounded: true,
+                                    colorIndex: 0,
+                                    sizeIndex: 0,
+                                  )
                             : Container(),
                     ],
                   )

@@ -72,6 +72,11 @@ dependencies:
   #payment gateway
   razorpay_flutter: ^1.2.7
 
+  #pdf
+  pdf: ^3.6.2
+  printing: ^5.6.0
+  share: ^2.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

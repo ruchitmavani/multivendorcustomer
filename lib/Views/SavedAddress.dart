@@ -34,7 +34,7 @@ class _SavedAddressState extends State<SavedAddress> {
                           Text(
                             "${addressList.elementAt(index).type}",
                             style: TextStyle(
-                                fontFamily: 'popins',
+                                fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -58,7 +58,6 @@ class _SavedAddressState extends State<SavedAddress> {
                             onTap: () {
                               addressList.removeAt(index);
                               setState(() {
-
                               });
                             },
                             child: Icon(
@@ -79,7 +78,7 @@ class _SavedAddressState extends State<SavedAddress> {
                         child: Text(
                           "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
                           style: TextStyle(
-                            fontFamily: 'popins',
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       ),
