@@ -18,6 +18,7 @@ import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -687,8 +688,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, i) {
                               return InkWell(
                                 onTap: () {
-                                  context.go(helper(PageCollection.product +
-                                      '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
+                                  if (isProductAvailable(
+                                      liveTimings: productDataList
+                                          .elementAt(index)
+                                          .productDetails
+                                          .elementAt(i)
+                                          .productLiveTiming)) {
+                                    context.go(helper(PageCollection.product +
+                                        '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
+                                  }
                                 },
                                 child: isGrid
                                     ? ProductComponentGrid(
