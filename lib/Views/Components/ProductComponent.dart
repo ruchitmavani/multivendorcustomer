@@ -6,6 +6,7 @@ import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:provider/provider.dart';
@@ -112,23 +113,33 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                           ),
                         ],
                       ),
-                      if (!widget.productData.isRequestPrice)
-                        widget.productData.bulkPriceList!.length == 0
-                            ? widget.productData.stockLeft <= 0
-                                ? Text(
-                                    "Out of Stock",
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  )
-                                : AddRemoveButton(
-                                    productData: widget.productData,
-                                    isRounded: true,
-                                    colorIndex: 0,
-                                    sizeIndex: 0,
-                                  )
-                            : Container(),
+                      if (isProductAvailable(
+                          liveTimings: widget.productData.productLiveTiming))
+                        if (!widget.productData.isRequestPrice)
+                          widget.productData.bulkPriceList!.length == 0
+                              ? widget.productData.stockLeft <= 0
+                                  ? Text(
+                                      "Out of Stock",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    )
+                                  : AddRemoveButton(
+                                      productData: widget.productData,
+                                      isRounded: true,
+                                      colorIndex: 0,
+                                      sizeIndex: 0,
+                                    )
+                              : Container()
+                        else
+                          Text(
+                            "Not Available",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                color: Colors.red),
+                          )
                     ],
                   ),
                 )

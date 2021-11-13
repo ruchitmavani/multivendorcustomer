@@ -263,7 +263,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 30.0, right: 30),
+                                        left: 30.0, right: 30, bottom: 20),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -458,116 +458,94 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.5,
-                                                  child: Card(
+                                                Card(
+                                                  child: Container(
                                                     margin:
                                                         EdgeInsets.symmetric(
-                                                            vertical: 2,
-                                                            horizontal: 4),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2.0),
-                                                      child: Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 4),
-                                                        child: Row(
+                                                            horizontal: 5),
+                                                    padding: EdgeInsets.all(8),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .spaceEvenly,
+                                                                  .start,
                                                           children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text("From: ",
-                                                                      style: FontsTheme.subTitleStyle(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .shade400,
-                                                                          size:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.w400)),
-                                                                  Text(
-                                                                      "${e.fromQty}",
-                                                                      style: FontsTheme.subTitleStyle(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .shade600,
-                                                                          size:
-                                                                              14))
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text("To: ",
-                                                                      style: FontsTheme.subTitleStyle(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .shade400,
-                                                                          size:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.w400)),
-                                                                  Text(
-                                                                      "${e.toQty}",
-                                                                      style: FontsTheme.subTitleStyle(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .shade600,
-                                                                          size:
-                                                                              14))
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Row(
-                                                                  children: [
-                                                                    Text(
-                                                                        "Price: ",
-                                                                        style: FontsTheme.subTitleStyle(
-                                                                            color: Colors
-                                                                                .grey.shade400,
-                                                                            size:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.w400)),
-                                                                    Text(
-                                                                        "\u{20B9}${e.pricePerUnit}",
-                                                                        style: FontsTheme.subTitleStyle(
-                                                                            color:
-                                                                                Colors.grey.shade600,
-                                                                            size: 14)),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
+                                                            Text("From: ",
+                                                                style: FontsTheme.subTitleStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400,
+                                                                    size: 14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text("${e.fromQty}",
+                                                                style: FontsTheme
+                                                                    .subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        size:
+                                                                            14))
                                                           ],
                                                         ),
-                                                      ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text("To: ",
+                                                                style: FontsTheme.subTitleStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400,
+                                                                    size: 14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text("${e.toQty}",
+                                                                style: FontsTheme
+                                                                    .subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        size:
+                                                                            14))
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text("Price: ",
+                                                                style: FontsTheme.subTitleStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400,
+                                                                    size: 14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text(
+                                                                "\u{20B9}${e.pricePerUnit}",
+                                                                style: FontsTheme
+                                                                    .subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        size:
+                                                                            14)),
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
