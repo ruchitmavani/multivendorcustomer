@@ -256,23 +256,33 @@ class _ProductComponentListState extends State<ProductComponentList> {
                           ),
                         ],
                       ),
-                      if (!widget.productData.isRequestPrice)
-                        widget.productData.bulkPriceList!.length == 0
-                            ? widget.productData.stockLeft <= 0
-                                ? Text(
-                                    "Out of Stock",
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 12,
-                                        color: Colors.red),
-                                  )
-                                : AddRemoveButton(
-                                    productData: widget.productData,
-                                    isRounded: true,
-                                    colorIndex: 0,
-                                    sizeIndex: 0,
-                                  )
-                            : Container(),
+                      if (isProductAvailable(
+                          liveTimings: widget.productData.productLiveTiming))
+                        if (!widget.productData.isRequestPrice)
+                          widget.productData.bulkPriceList!.length == 0
+                              ? widget.productData.stockLeft <= 0
+                                  ? Text(
+                                      "Out of Stock",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 12,
+                                          color: Colors.red),
+                                    )
+                                  : AddRemoveButton(
+                                      productData: widget.productData,
+                                      isRounded: true,
+                                      colorIndex: 0,
+                                      sizeIndex: 0,
+                                    )
+                              : Container()
+                        else
+                          Text(
+                            "Not Available",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                color: Colors.red),
+                          )
                     ],
                   )
                 ],

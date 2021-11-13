@@ -77,13 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
   _getCategoryWiseProduct(String sortKey) async {
     setState(() {
       isLoadingCate = true;
     });
     await CategoryController.getCategoryWiseProduct(
-            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}",sortKey.split(".").last)
+            "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}",
+            sortKey.split(".").last)
         .then((value) {
       if (value.success) {
         print(value.data);
@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return Card(
-                    margin: EdgeInsets.only(right: 20,left: 20,bottom: 30),
+                    margin: EdgeInsets.only(right: 20, left: 20, bottom: 30),
                     child: ListView.builder(
                       itemCount: productDataList.length,
                       shrinkWrap: true,
@@ -246,8 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 15),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                     "${productDataList.elementAt(index).categoryName}"),
@@ -257,9 +256,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         "${productDataList.elementAt(index).productDetails.length}"),
                                     Icon(
                                       Icons.chevron_right,
-                                      color:
-                                          Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor,
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                     ),
                                   ],
                                 )
@@ -543,16 +541,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     pinned: true,
                     snap: false,
                     floating: true,
-                    flexibleSpace: TopButtons(
-                      onChanged: (value) {
-                        setState(() {
-                          isGrid = value;
-                        });
-                      },
-                        onClick: (value) {
-                          _getCategoryWiseProduct(value);
-                        }
-                    ),
+                    flexibleSpace: TopButtons(onChanged: (value) {
+                      setState(() {
+                        isGrid = value;
+                      });
+                    }, onClick: (value) {
+                      _getCategoryWiseProduct(value);
+                    }),
                     automaticallyImplyLeading: false,
                   ),
                   SliverToBoxAdapter(
@@ -654,7 +649,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           )
         : Container(
-      margin: EdgeInsets.only(bottom: 80),
+            margin: EdgeInsets.only(bottom: 80),
             color: Colors.white,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
