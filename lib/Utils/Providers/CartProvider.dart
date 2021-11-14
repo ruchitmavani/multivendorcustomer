@@ -20,7 +20,6 @@ class CartDataWrapper extends ChangeNotifier {
   late int shipping;
 
   Future loadCartData({required String vendorId}) async {
-    print("vendor $vendorId");
     totalItems = cartData.length;
     totalAmount = 0;
     for (int i = 0; i < cartData.length; i++) {
@@ -41,8 +40,6 @@ class CartDataWrapper extends ChangeNotifier {
           taxPercentage + double.parse(sharedPrefs.tax.elementAt(i));
     }
 
-
-    totalAmount = totalAmount + tax;
     isLoading = false;
     isCouponApplied = false;
     notifyListeners();

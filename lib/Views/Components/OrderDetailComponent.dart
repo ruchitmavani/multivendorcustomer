@@ -53,7 +53,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
     } else if (widget.productDetail.bulkPriceList.length != 0) {
       productPrice = getPrice(qty, widget.productDetail.bulkPriceList);
     } else {
-      productPrice = double.parse("${widget.productDetail.productSellingPrice}");
+      productPrice =
+          double.parse("${widget.productDetail.productSellingPrice}");
     }
 
     log("->>>> $productPrice");
@@ -78,7 +79,6 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
       if (value.success) {
         setState(() {
           rating = value.data!.productRatingCount as double;
-
         });
       } else {}
     }, onError: (e) {});
@@ -253,28 +253,51 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           ratingBottomSheet(context, price);
                           FocusScope.of(context).unfocus();
                         },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Provider.of<CustomColor>(context)
-                                  .appPrimaryMaterialColor,
-                              size: 11,
-                            ),
-                            Space(
-                              width: 2,
-                            ),
-                            Text(
-                              "Rate $rating",
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: Provider.of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
+                        child: rating != 0
+                            ? Row(
+                                children: [
+                                  Text(
+                                    "$rating",
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        color: Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Space(
+                                    width: 2,
+                                  ),
+                                  Icon(
+                                    Icons.star,
+                                    color: Provider.of<CustomColor>(context)
+                                        .appPrimaryMaterialColor,
+                                    size: 11,
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Provider.of<CustomColor>(context)
+                                        .appPrimaryMaterialColor,
+                                    size: 11,
+                                  ),
+                                  Space(
+                                    width: 2,
+                                  ),
+                                  Text(
+                                    rating != 0 ? "$rating" : "Rate",
+                                    style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        color: Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
@@ -313,10 +336,10 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                       Row(
                         children: [
                           Text("\u{20B9}",
-                              style: FontsTheme.digitStyle(
+                              style: FontsTheme.valueStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
                           Text("$totalPrice",
-                              style: FontsTheme.digitStyle(
+                              style: FontsTheme.valueStyle(
                                   size: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),

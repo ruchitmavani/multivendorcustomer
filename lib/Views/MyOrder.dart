@@ -31,12 +31,11 @@ class _MyOrderState extends State<MyOrder> {
     });
     await OrderController.getOrder("${sharedPrefs.customer_id}").then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           orderData = value.data!;
           isLoading = false;
         });
-      }else{
+      } else {
         setState(() {
           isLoading = false;
         });
@@ -67,8 +66,8 @@ class _MyOrderState extends State<MyOrder> {
           IconButton(
             icon: Icon(CupertinoIcons.search,
                 size: 20,
-                color: Provider.of<CustomColor>(context)
-                    .appPrimaryMaterialColor),
+                color:
+                    Provider.of<CustomColor>(context).appPrimaryMaterialColor),
             onPressed: () {
               GoRouter.of(context).push(PageCollection.search);
             },
@@ -102,8 +101,7 @@ class _MyOrderState extends State<MyOrder> {
                 child: GridView.builder(
                   itemCount: 8,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent:
-                          MediaQuery.of(context).size.width,
+                      maxCrossAxisExtent: MediaQuery.of(context).size.width,
                       mainAxisExtent: 150,
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12),
@@ -132,7 +130,7 @@ class _MyOrderState extends State<MyOrder> {
                 : ListView.builder(
                     itemCount: orderData.length,
                     itemBuilder: (BuildContext context, int index) {
-                      index=orderData.length-1-index;
+                      index = orderData.length - 1 - index;
                       return OrderComponent(
                           orderData: orderData.elementAt(index));
                     },

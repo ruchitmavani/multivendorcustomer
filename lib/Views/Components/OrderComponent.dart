@@ -117,8 +117,9 @@ class _OrderComponentState extends State<OrderComponent> {
                                     Row(
                                       children: [
                                         Text("\u{20B9}",
-                                            style: FontsTheme.digitStyle(
-                                                size: 13)),
+                                            style: FontsTheme.valueStyle(
+                                                size: 13,
+                                                fontWeight: FontWeight.w600)),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 2.0),

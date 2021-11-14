@@ -2,13 +2,6 @@ import 'dart:convert';
 
 import 'ProductModel.dart';
 
-List<OrderDataModel> orderDataModelFromJson(String str) =>
-    List<OrderDataModel>.from(
-        json.decode(str).map((x) => OrderDataModel.fromJson(x)));
-
-String orderDataModelToJson(List<OrderDataModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class OrderDataModel {
   OrderDataModel({
     required this.id,
@@ -33,6 +26,7 @@ class OrderDataModel {
     required this.orderId,
     required this.deliveryAddress,
     required this.vendorDetails,
+    required this.orderStatusWithTime,
   });
 
   String id;
@@ -40,6 +34,7 @@ class OrderDataModel {
   String vendorUniqId;
   List<OrderItem> orderItems;
   List<String> orderStatus;
+  List<OrderStatus> orderStatusWithTime;
   String rejectReason;
   String paymentType;
   String refNo;
@@ -59,55 +54,31 @@ class OrderDataModel {
   VendorDetails vendorDetails;
 
   factory OrderDataModel.fromJson(Map<String, dynamic> json) => OrderDataModel(
-        id: json["_id"],
-        customerUniqId: json["customer_uniq_id"],
-        vendorUniqId: json["vendor_uniq_id"],
-        orderItems: List<OrderItem>.from(
-            json["order_items"].map((x) => OrderItem.fromJson(x))),
-        orderStatus: List<String>.from(json["order_status"].map((x) => x)),
-        rejectReason: json["reject_reason"],
-        paymentType: json["payment_type"],
-        refNo: json["ref_no"],
-        deliveryApproxTime: json["delivery_approx_time"],
-        paidAmount: json["paid_amount"],
-        refundAmount: json["refund_amount"],
-        orderAmount: json["order_amount"],
-        itemTotalAmount: json["item_total_amount"],
-        deliveryCharges: json["delivery_charges"],
-        taxAmount: json["tax_amount"],
-        taxPercentage: json["tax_percentage"],
-        couponAmount: json["coupon_amount"],
-        couponId: json["coupon_id"],
-        updatedDeliveryCharges: json["updated_delivery_charges"],
-        orderId: json["order_id"],
-        deliveryAddress: DeliveryAddress.fromJson(json["delivery_address"]),
-        vendorDetails: VendorDetails.fromJson(json["vendor_details"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "customer_uniq_id": customerUniqId,
-        "vendor_uniq_id": vendorUniqId,
-        "order_items": List<dynamic>.from(orderItems.map((x) => x.toJson())),
-        "order_status": List<dynamic>.from(orderStatus.map((x) => x)),
-        "reject_reason": rejectReason,
-        "payment_type": paymentType,
-        "ref_no": refNo,
-        "delivery_approx_time": deliveryApproxTime,
-        "paid_amount": paidAmount,
-        "refund_amount": refundAmount,
-        "final_paid_amount": orderAmount,
-        "item_total_amount": itemTotalAmount,
-        "delivery_charges": deliveryCharges,
-        "tax_amount": taxAmount,
-        "tax_percentage": taxPercentage,
-        "coupon_amount": couponAmount,
-        "coupon_id": couponId,
-        "updated_delivery_charges": updatedDeliveryCharges,
-        "order_id": orderId,
-        "delivery_address": deliveryAddress.toJson(),
-        "vendor_details": vendorDetails.toJson(),
-      };
+      id: json["_id"],
+      customerUniqId: json["customer_uniq_id"],
+      vendorUniqId: json["vendor_uniq_id"],
+      orderItems: List<OrderItem>.from(
+          json["order_items"].map((x) => OrderItem.fromJson(x))),
+      orderStatus: List<String>.from(json["order_status"].map((x) => x)),
+      rejectReason: json["reject_reason"],
+      paymentType: json["payment_type"],
+      refNo: json["ref_no"],
+      deliveryApproxTime: json["delivery_approx_time"],
+      paidAmount: json["paid_amount"],
+      refundAmount: json["refund_amount"],
+      orderAmount: json["order_amount"],
+      itemTotalAmount: json["item_total_amount"],
+      deliveryCharges: json["delivery_charges"],
+      taxAmount: json["tax_amount"],
+      taxPercentage: json["tax_percentage"],
+      couponAmount: json["coupon_amount"],
+      couponId: json["coupon_id"],
+      updatedDeliveryCharges: json["updated_delivery_charges"],
+      orderId: json["order_id"],
+      deliveryAddress: DeliveryAddress.fromJson(json["delivery_address"]),
+      vendorDetails: VendorDetails.fromJson(json["vendor_details"]),
+      orderStatusWithTime: List<OrderStatus>.from(
+          json["order_status_with_time"].map((x) => OrderStatus.fromJson(x))));
 }
 
 class DeliveryAddress {
@@ -535,4 +506,16 @@ class AddOrder {
         "product_color": productColor == null ? {} : productColor!.toJson(),
         "product_quantity": productQuantity,
       };
+}
+
+class OrderStatus {
+  String status;
+  String time;
+
+  OrderStatus({required this.status, required this.time});
+
+  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
+        status: json['status'],
+        time: json['time'],
+      );
 }

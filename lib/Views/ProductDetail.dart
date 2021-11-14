@@ -15,6 +15,7 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -295,145 +296,181 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             textAlign: TextAlign.justify),
 
                                         // Color Option
-                                        if (productData.productVariationColors!
-                                                .length !=
-                                            0)
-                                          Space(height: 20),
-                                        if (productData.productVariationColors!
-                                                .length !=
-                                            0)
-                                          Text(
-                                            "Color option",
-                                            style: FontsTheme.subTitleStyle(
-                                                color: Colors.black54,
-                                                fontWeight: FontWeight.w600,
-                                                size: 13),
+                                        if (colorList.length > 0)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Space(height: 20),
+                                              Text(
+                                                "Color option",
+                                                style: FontsTheme.subTitleStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight: FontWeight.w600,
+                                                    size: 13),
+                                              ),
+                                              Space(height: 8),
+                                              Row(
+                                                children:
+                                                    colorList.map<Widget>((e) {
+                                                  int index =
+                                                      colorList.indexOf(e);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        currentIndex = index;
+                                                      });
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 8.0),
+                                                      child: Container(
+                                                        decoration: currentIndex ==
+                                                                index
+                                                            ? BoxDecoration(
+                                                                border: Border.all(
+                                                                    width: 2,
+                                                                    color: Provider.of<CustomColor>(
+                                                                            context)
+                                                                        .appPrimaryMaterialColor),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50.0))
+                                                            : null,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50.0),
+                                                              child: Container(
+                                                                  color: Color(e
+                                                                      .colorCode),
+                                                                  height: 25,
+                                                                  width: 25)),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ],
                                           ),
-                                        Space(height: 8),
-                                        Row(
-                                          children: colorList.map<Widget>((e) {
-                                            int index = colorList.indexOf(e);
-                                            return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  currentIndex = index;
-                                                });
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8.0),
-                                                child: Container(
-                                                  decoration: currentIndex ==
-                                                          index
-                                                      ? BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 2,
-                                                              color: Provider.of<
-                                                                          CustomColor>(
-                                                                      context)
-                                                                  .appPrimaryMaterialColor),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0))
-                                                      : null,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50.0),
-                                                        child: Container(
-                                                            color: Color(
-                                                                e.colorCode),
-                                                            height: 25,
-                                                            width: 25)),
-                                                  ),
-                                                ),
+                                        if (sizeList.length > 0)
+                                          Column(
+                                            children: [
+                                              Space(height: 18),
+                                              Text("Size Option",
+                                                  style:
+                                                      FontsTheme.subTitleStyle(
+                                                          color: Colors.black54,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          size: 13)),
+                                              Space(height: 8),
+                                              Row(
+                                                children:
+                                                    sizeList.map<Widget>((e) {
+                                                  int index =
+                                                      sizeList.indexOf(e);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        currentSizeIndex =
+                                                            index;
+                                                        finalPrice = sizeList
+                                                            .elementAt(index)
+                                                            .sellingPrice;
+                                                      });
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 8.0),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                width: 1,
+                                                                color: currentSizeIndex ==
+                                                                        index
+                                                                    ? Provider.of<CustomColor>(
+                                                                            context)
+                                                                        .appPrimaryMaterialColor
+                                                                    : Colors
+                                                                        .grey
+                                                                        .shade400),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0)),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(2.0),
+                                                          child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50.0),
+                                                              child: Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal: 4,
+                                                                ),
+                                                                child: Text(
+                                                                    "${e.size}  \u{20B9}${e.sellingPrice}",
+                                                                    style: FontsTheme.subTitleStyle(
+                                                                        color: currentSizeIndex ==
+                                                                                index
+                                                                            ? Provider.of<CustomColor>(context)
+                                                                                .appPrimaryMaterialColor
+                                                                            : Colors
+                                                                                .grey.shade400,
+                                                                        size:
+                                                                            12)),
+                                                                height: 20,
+                                                              )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
                                               ),
-                                            );
-                                          }).toList(),
+                                            ],
+                                          ),
+                                        Divider(
+                                          height: 30,
                                         ),
-                                        // Size Option
-                                        if (productData.productVariationSizes!
-                                                .length !=
-                                            0)
-                                          Space(height: 18),
-                                        if (productData.productVariationSizes!
-                                                .length !=
-                                            0)
-                                          Text("Size Option",
-                                              style: FontsTheme.subTitleStyle(
-                                                  color: Colors.black54,
-                                                  fontWeight: FontWeight.w600,
-                                                  size: 13)),
-                                        Space(height: 8),
-                                        Row(
-                                          children: sizeList.map<Widget>((e) {
-                                            int index = sizeList.indexOf(e);
-                                            return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  currentSizeIndex = index;
-                                                  finalPrice = sizeList
-                                                      .elementAt(index)
-                                                      .sellingPrice;
-                                                });
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 1,
-                                                          color: currentSizeIndex ==
-                                                                  index
-                                                              ? Provider.of<
-                                                                          CustomColor>(
-                                                                      context)
-                                                                  .appPrimaryMaterialColor
-                                                              : Colors.grey
-                                                                  .shade400),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0)),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            2.0),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50.0),
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                            horizontal: 4,
-                                                          ),
-                                                          child: Text(
-                                                              "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                              style: FontsTheme.subTitleStyle(
-                                                                  color: currentSizeIndex == index
-                                                                      ? Provider.of<CustomColor>(
-                                                                              context)
-                                                                          .appPrimaryMaterialColor
-                                                                      : Colors
-                                                                          .grey
-                                                                          .shade400,
-                                                                  size: 12)),
-                                                          height: 20,
-                                                        )),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
+                                        Text(
+                                          "Available Time",
+                                          style: FontsTheme.subTitleStyle(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.w600,
+                                              size: 13),
                                         ),
+                                        Space(height: 6),
+                                        for (int i = 0;
+                                            i <
+                                                productData
+                                                    .productLiveTiming.length;
+                                            i++) ...[
+                                          Text(
+                                            "${productData.productLiveTiming[i]}",
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.grey[800],
+                                            ),
+                                          ),
+                                        ],
                                         if (productData.bulkPriceList!.length !=
                                             0)
                                           Space(height: 18),
@@ -654,55 +691,56 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                             ]),
                       ),
-                      productData.isRequestPrice
-                          ? ElevatedButton(
-                              onPressed: () {
-                                launch(
-                                    "https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                              },
-                              child: Text("Request Price",
-                                  style: FontsTheme.boldTextStyle(
-                                      color: Colors.white)),
-                              style: ButtonStyle(
-                                elevation: MaterialStateProperty.all<double>(0),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Provider.of<CustomColor>(context)
-                                            .appPrimaryMaterialColor),
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                              ),
-                            )
-                          : productData.bulkPriceList!.length != 0
-                              ? productData.stockLeft <= 0
-                                  ? Text(
-                                      "Out of Stock",
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          color: Colors.red),
-                                    )
-                                  : AddRemoveButtonBulk(
-                                      productData: productData,
-                                      isRounded: false,
-                                      price: finalPrice / finalQuantity,
-                                      qty: finalQuantity,
-                                    )
-                              : productData.stockLeft <= 0
-                                  ? Text(
-                                      "Out of Stock",
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          color: Colors.red),
-                                    )
-                                  : AddRemoveButton(
-                                      productData: productData,
-                                      isRounded: false,
-                                      colorIndex: currentIndex,
-                                      sizeIndex: currentSizeIndex,
-                                    )
+                      if (isProductAvailable(
+                          liveTimings: productData.productLiveTiming))
+                        if (productData.isRequestPrice)
+                          ElevatedButton(
+                            onPressed: () {
+                              launch(
+                                  "https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                            },
+                            child: Text("Request Price",
+                                style: FontsTheme.boldTextStyle(
+                                    color: Colors.white)),
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all<double>(0),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
+                          )
+                        else if (productData.stockLeft <= 0)
+                          Text(
+                            "Out of Stock",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                color: Colors.red),
+                          )
+                        else if (productData.bulkPriceList!.length != 0)
+                          AddRemoveButtonBulk(
+                            productData: productData,
+                            isRounded: false,
+                            price: finalPrice / finalQuantity,
+                            qty: finalQuantity,
+                          )
+                        else
+                          AddRemoveButton(
+                            productData: productData,
+                            isRounded: false,
+                            colorIndex: currentIndex,
+                            sizeIndex: currentSizeIndex,
+                          )
+                      else
+                        Text(
+                          "Unavailable",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 13,
+                              color: Colors.red),
+                        ),
                     ],
                   ),
                 ),

@@ -688,15 +688,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, i) {
                               return InkWell(
                                 onTap: () {
-                                  if (isProductAvailable(
-                                      liveTimings: productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i)
-                                          .productLiveTiming)) {
-                                    context.go(helper(PageCollection.product +
-                                        '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
-                                  }
+                                  context.go(helper(PageCollection.product +
+                                      '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
                                 },
                                 child: isGrid
                                     ? ProductComponentGrid(

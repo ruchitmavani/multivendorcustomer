@@ -133,13 +133,15 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                     )
                               : Container()
                         else
-                          Text(
-                            "Not Available",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 12,
-                                color: Colors.red),
-                          )
+                          SizedBox()
+                      else
+                        Text(
+                          "Unavailable",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 10,
+                              color: Colors.red),
+                        )
                     ],
                   ),
                 )
@@ -276,13 +278,15 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                     )
                               : Container()
                         else
-                          Text(
-                            "Not Available",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 12,
-                                color: Colors.red),
-                          )
+                          SizedBox()
+                      else
+                        Text(
+                          "Unavailable",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 10,
+                              color: Colors.red),
+                        )
                     ],
                   )
                 ],

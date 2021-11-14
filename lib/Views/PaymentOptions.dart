@@ -53,7 +53,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .toInt())
+                .toInt() + Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .tax
+            .toInt())
         .then((value) {
       if (value.success) {
         print(value.data);
@@ -115,6 +118,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             ? Provider
             .of<CartDataWrapper>(context, listen: false)
             .totalAmount
+            .roundOff() + Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .tax
             .roundOff()
             : Provider
             .of<CartDataWrapper>(context, listen: false)
@@ -125,7 +131,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .roundOff(),
+                .roundOff() + Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .tax
+            .roundOff(),
         paidAmount: type == 'PAY_ONLINE'
             ? Provider
             .of<CartDataWrapper>(context, listen: false)
@@ -135,8 +144,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .roundOff()
-
+                .roundOff() + Provider
+            .of<CartDataWrapper>(context, listen: false)
+            .tax
+            .roundOff()
             : 0,
         refundAmount: 0,
         taxAmount: Provider
