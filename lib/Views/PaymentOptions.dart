@@ -84,10 +84,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       isLoadingCate = true;
     });
     await OrderController.addOrder(
-        type: "${_selection
-            .toString()
-            .split(".")
-            .last}",
+        type: "$type",
         address: widget.address,
         couponAmount:
         Provider
@@ -163,7 +160,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     )
         .then((value) {
       if (value.success) {
-        print(value.data);
         setState(() {
           isLoadingCate = false;
           Fluttertoast.showToast(msg: "Order Success");
@@ -175,7 +171,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               vendorId: "${sharedPrefs.vendor_uniq_id}");
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => OrderSuccess()));
-          // GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
           print("signature ${window.localStorage["signature"]}");
@@ -344,7 +339,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           orderId: orderId,
                         );
                       },
-                    ));
+                    ),
+                    );
                   }
                 },
                 child: Container(
