@@ -44,10 +44,6 @@ class _LoadingState extends State<Loading> {
         String path = window.location.pathname!;
         if (!path.contains("home"))
           GoRouter.of(context).push('/' + storeConcat(PageCollection.home));
-        if (window.localStorage["init"] == null) {
-          window.location.reload();
-          window.localStorage["init"] = "okay";
-        }
       });
     } else {
       setState(() {
@@ -65,10 +61,6 @@ class _LoadingState extends State<Loading> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("Store is Loading"),
                 ],
               )
             : Text("Store not found"),

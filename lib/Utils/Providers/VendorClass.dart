@@ -15,7 +15,6 @@ class VendorModelWrapper with ChangeNotifier {
         print(value.success);
         vendorModel = value.data;
         isLoaded = true;
-        print("loaded");
         sharedPrefs.vendor_uniq_id=vendorModel!.vendorUniqId;
         sharedPrefs.vendor_email_address=vendorModel!.emailAddress;
         sharedPrefs.businessName=vendorModel!.businessName;

@@ -1,4 +1,6 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
