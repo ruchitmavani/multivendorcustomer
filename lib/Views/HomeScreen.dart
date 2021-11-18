@@ -18,7 +18,6 @@ import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
-import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -304,21 +303,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          CachedNetworkImage(
-                                            height: 60,
-                                            width: 60,
-                                            imageUrl:
-                                                "${StringConstants.api_url}${vendorProvider.logo}",
-                                            placeholder: (context, url) =>
-                                                SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child:
-                                                  CircularProgressIndicator(),
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(6.0),
+                                            child: CachedNetworkImage(
+                                              height: 45,
+                                              width: 45,
+                                              imageUrl:
+                                                  "${StringConstants.api_url}${vendorProvider.logo}",
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.map),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.map),
                                           ),
                                           Space(width: 8.0),
                                           Text("${vendorProvider.businessName}",

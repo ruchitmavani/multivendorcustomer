@@ -48,12 +48,14 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
               children: [
                 ProductRating(widget.productData.productRatingAverage),
                 Center(
-                    child: SizedBox(
-                  height: 119,
-                  width: 100,
+                    child: Container(
+                  height: 110,
+                  width: 110,
                   child: widget.productData.productImageUrl.length > 0
-                      ? Image.network(StringConstants.api_url +
-                          widget.productData.productImageUrl.first)
+                      ? Image.network(
+                          StringConstants.api_url +
+                              widget.productData.productImageUrl.first,
+                          fit: BoxFit.contain)
                       : Image.asset("images/placeholder.png"),
                 )),
                 Padding(

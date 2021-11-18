@@ -11,7 +11,6 @@ import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButtonBulk.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
@@ -449,28 +448,41 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Divider(
                                           height: 30,
                                         ),
-                                        Text(
-                                          "Available Time",
-                                          style: FontsTheme.subTitleStyle(
-                                              color: Colors.black54,
-                                              fontWeight: FontWeight.w600,
-                                              size: 13),
-                                        ),
-                                        Space(height: 6),
-                                        for (int i = 0;
-                                            i <
-                                                productData
-                                                    .productLiveTiming.length;
-                                            i++) ...[
-                                          Text(
-                                            "${productData.productLiveTiming[i]}",
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.grey[800],
-                                            ),
-                                          ),
-                                        ],
+                                        productData.productLiveTiming.length > 1
+                                            ? Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Available Time",
+                                                    style: FontsTheme
+                                                        .subTitleStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            size: 13),
+                                                  ),
+                                                  Space(height: 6),
+                                                  for (int i = 0;
+                                                      i <
+                                                          productData
+                                                              .productLiveTiming
+                                                              .length;
+                                                      i++) ...[
+                                                    Text(
+                                                      "${productData.productLiveTiming[i]}",
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.grey[800],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ],
+                                              )
+                                            : SizedBox(),
                                         if (productData.bulkPriceList!.length !=
                                             0)
                                           Space(height: 18),
