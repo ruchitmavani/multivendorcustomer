@@ -115,35 +115,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                           ),
                         ],
                       ),
-                      if (isProductAvailable(
-                          liveTimings: widget.productData.productLiveTiming))
-                        if (!widget.productData.isRequestPrice)
-                          widget.productData.bulkPriceList!.length == 0
-                              ? widget.productData.stockLeft <= 0
-                                  ? Text(
-                                      "Out of Stock",
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          color: Colors.red),
-                                    )
-                                  : AddRemoveButton(
-                                      productData: widget.productData,
-                                      isRounded: true,
-                                      colorIndex: 0,
-                                      sizeIndex: 0,
-                                    )
-                              : Container()
-                        else
-                          SizedBox()
-                      else
-                        Text(
-                          "Unavailable",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 10,
-                              color: Colors.red),
-                        )
+                      cartButton(),
                     ],
                   ),
                 )
@@ -153,6 +125,43 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
         ),
       ),
     );
+  }
+
+  Widget cartButton() {
+    if (!isProductAvailable(
+        liveTimings: widget.productData.productLiveTiming)) {
+      return Text(
+        "Unavailable",
+        style:
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+      );
+    } else if (widget.productData.isRequestPrice) {
+      return SizedBox();
+    } else if (widget.productData.bulkPriceList!.length > 0) {
+      return SizedBox();
+    } else if (widget.productData.isStock) {
+      if (widget.productData.stockLeft <= 0) {
+        return Text(
+          "Out of Stock",
+          style:
+              TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+        );
+      } else {
+        return AddRemoveButton(
+          productData: widget.productData,
+          isRounded: true,
+          colorIndex: 0,
+          sizeIndex: 0,
+        );
+      }
+    } else {
+      return AddRemoveButton(
+        productData: widget.productData,
+        isRounded: true,
+        colorIndex: 0,
+        sizeIndex: 0,
+      );
+    }
   }
 }
 
@@ -260,35 +269,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                           ),
                         ],
                       ),
-                      if (isProductAvailable(
-                          liveTimings: widget.productData.productLiveTiming))
-                        if (!widget.productData.isRequestPrice)
-                          widget.productData.bulkPriceList!.length == 0
-                              ? widget.productData.stockLeft <= 0
-                                  ? Text(
-                                      "Out of Stock",
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          color: Colors.red),
-                                    )
-                                  : AddRemoveButton(
-                                      productData: widget.productData,
-                                      isRounded: true,
-                                      colorIndex: 0,
-                                      sizeIndex: 0,
-                                    )
-                              : Container()
-                        else
-                          SizedBox()
-                      else
-                        Text(
-                          "Unavailable",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 10,
-                              color: Colors.red),
-                        )
+                      cartButton(),
                     ],
                   )
                 ],
@@ -298,5 +279,42 @@ class _ProductComponentListState extends State<ProductComponentList> {
         ),
       ),
     );
+  }
+
+  Widget cartButton() {
+    if (!isProductAvailable(
+        liveTimings: widget.productData.productLiveTiming)) {
+      return Text(
+        "Unavailable",
+        style:
+        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+      );
+    } else if (widget.productData.isRequestPrice) {
+      return SizedBox();
+    } else if (widget.productData.bulkPriceList!.length > 0) {
+      return SizedBox();
+    } else if (widget.productData.isStock) {
+      if (widget.productData.stockLeft <= 0) {
+        return Text(
+          "Out of Stock",
+          style:
+          TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+        );
+      } else {
+        return AddRemoveButton(
+          productData: widget.productData,
+          isRounded: true,
+          colorIndex: 0,
+          sizeIndex: 0,
+        );
+      }
+    } else {
+      return AddRemoveButton(
+        productData: widget.productData,
+        isRounded: true,
+        colorIndex: 0,
+        sizeIndex: 0,
+      );
+    }
   }
 }

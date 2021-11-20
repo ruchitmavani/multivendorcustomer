@@ -24,6 +24,7 @@ class ProductData {
     required this.categoryIsActive,
     required this.bulkPriceList,
     required this.isRequestPrice,
+    required this.isStock,
   });
 
   String id;
@@ -50,6 +51,7 @@ class ProductData {
   bool categoryIsActive;
   List<BulkPriceList>? bulkPriceList;
   bool isRequestPrice;
+  bool isStock;
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         id: json["_id"],
@@ -82,7 +84,9 @@ class ProductData {
         productRatingAverage: json["product_rating_average"].toDouble(),
         productIsActive: json["product_is_active"],
         categoryIsActive: json["category_is_active"],
-        bulkPriceList: List<BulkPriceList>.from(json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
+        isStock: json["is_stock"] != null ? json["is_stock"] : false,
+        bulkPriceList: List<BulkPriceList>.from(
+            json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
         isRequestPrice:
             json["is_request_price"] == null ? null : json["is_request_price"],
       );
@@ -100,6 +104,7 @@ class ProductData {
         "product_mrp": productMrp,
         "product_selling_price": productSellingPrice,
         "stock_left": stockLeft,
+        "is_stock": isStock,
         "unit_type": unitType,
         "product_live_timing":
             List<dynamic>.from(productLiveTiming.map((x) => x)),
@@ -314,14 +319,14 @@ class BulkPriceList {
   double pricePerUnit;
 
   factory BulkPriceList.fromJson(Map<String, dynamic> json) => BulkPriceList(
-    fromQty: json["fromQty"],
-    toQty: json["toQty"],
-    pricePerUnit: json["price_per_unit"],
-  );
+        fromQty: json["fromQty"],
+        toQty: json["toQty"],
+        pricePerUnit: json["price_per_unit"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "fromQty": fromQty,
-    "toQty": toQty,
-    "price_per_unit": pricePerUnit,
-  };
+        "fromQty": fromQty,
+        "toQty": toQty,
+        "price_per_unit": pricePerUnit,
+      };
 }

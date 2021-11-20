@@ -702,7 +702,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   Colors.white),
                             ),
                           )
-                        else if (productData.stockLeft <= 0)
+                        else if (productData.isStock &&
+                            productData.stockLeft <= 0)
                           Text(
                             "Out of Stock",
                             style: TextStyle(
