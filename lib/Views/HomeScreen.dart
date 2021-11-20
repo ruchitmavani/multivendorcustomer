@@ -20,6 +20,7 @@ import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -160,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           isLoadingRece = false;
           recentlyBought = value.data!;
-          print("recentlyBought $recentlyBought");
         });
       } else {
         setState(() {
@@ -201,23 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Badge(
-                elevation: 0,
-                position: BadgePosition.topEnd(top: 5, end: -5),
-                badgeContent: Text(
-                    '${Provider.of<CartDataWrapper>(context).totalItems}',
-                    style: TextStyle(fontSize: 10, color: Colors.white)),
-                child: InkWell(
-                  onTap: () {
-                    GoRouter.of(context).push(PageCollection.cart);
-                  },
-                  child: Image.asset("images/cart_icon.png",
-                      width: 22,
-                      height: 22,
-                      color: Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor),
-                ),
-              ),
+              child: cartIconWidget(context),
             ),
           ],
         ),
@@ -225,9 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             showModalBottomSheet(
                 context: context,
-                // isScrollControlled: true,
                 isDismissible: true,
-                // enableDrag: true,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return Card(

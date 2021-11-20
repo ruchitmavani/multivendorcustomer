@@ -11,6 +11,7 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -144,23 +145,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: Badge(
-              elevation: 0,
-              position: BadgePosition.topEnd(top: 5, end: -5),
-              badgeContent: Text(
-                  '${Provider.of<CartDataWrapper>(context).totalItems}',
-                  style: TextStyle(fontSize: 10, color: Colors.white)),
-              child: InkWell(
-                onTap: () {
-                  GoRouter.of(context).push(PageCollection.cart);
-                },
-                child: Image.asset("images/cart_icon.png",
-                    width: 22,
-                    height: 22,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor),
-              ),
-            ),
+            child: cartIconWidget(context),
           ),
         ],
       ),

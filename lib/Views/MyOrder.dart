@@ -7,6 +7,7 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -74,23 +75,7 @@ class _MyOrderState extends State<MyOrder> {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: Badge(
-              elevation: 0,
-              position: BadgePosition.topEnd(top: 5, end: -5),
-              badgeContent: Text(
-                  '${Provider.of<CartDataWrapper>(context).totalItems}',
-                  style: TextStyle(fontSize: 10, color: Colors.white)),
-              child: InkWell(
-                onTap: () {
-                  GoRouter.of(context).push(PageCollection.cart);
-                },
-                child: Image.asset("images/cart_icon.png",
-                    width: 22,
-                    height: 22,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor),
-              ),
-            ),
+            child: cartIconWidget(context),
           ),
         ],
       ),

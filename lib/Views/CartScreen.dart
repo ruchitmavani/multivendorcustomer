@@ -277,14 +277,14 @@ class _CartScreenState extends State<CartScreen> {
       },
       child: Container(
           child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 20.0, bottom: 20, left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(AppIcons.offer),
-                  Expanded(
-                      child: Padding(
+            padding: const EdgeInsets.only(
+                top: 20.0, bottom: 20, left: 16, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(AppIcons.offer),
+                Expanded(
+                  child: Padding(
                     padding: const EdgeInsets.only(left: 13.0),
                     child: Text("Apply coupon",
                         style: TextStyle(
@@ -292,18 +292,20 @@ class _CartScreenState extends State<CartScreen> {
                             fontFamily: "Poppins",
                             color: Colors.black87,
                             fontWeight: FontWeight.w600)),
-                  )),
-                  Text(
-                    "View",
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 11,
-                        color: Provider.of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        fontWeight: FontWeight.w600),
-                  )
-                ],
-              )),
+                  ),
+                ),
+                Text(
+                  "View",
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 11,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      fontWeight: FontWeight.w600),
+                )
+              ],
+            ),
+          ),
           width: MediaQuery.of(context).size.width,
           color: Colors.grey.shade100),
     );
@@ -620,178 +622,188 @@ class _CartScreenState extends State<CartScreen> {
                               },
                             ),
                 ),
-              applyCoupon(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-                child: SizedBox(
-                  height: 25,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                    title: Text(
-                        Provider.of<CartDataWrapper>(context).isCouponApplied
-                            ? "Discount Applied(${couponText.text})"
-                            : "Discount Applied"),
-                    trailing: Text(Provider.of<CartDataWrapper>(context)
-                            .isCouponApplied
-                        ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
-                        : "\u{20B9} 0"),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-                child: SizedBox(
-                  height: 25,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                    title: Text("Tax"),
-                    trailing: Text(Provider.of<CartDataWrapper>(context)
-                            .isLoading
-                        ? "0"
-                        : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
-                  ),
-                ),
-              ),
-              Provider.of<VendorModelWrapper>(context).isLoaded
-                  ? Provider.of<VendorModelWrapper>(context)
-                              .vendorModel!
-                              .isDeliveryCharges ==
-                          true
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 16),
-                          child: SizedBox(
-                            height: 25,
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              title: Text(
-                                  "Shipping Fee(Not applicable in TakeAway)"),
-                              trailing: Text(
-                                  "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+              if (cartProvider.length > 0)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    applyCoupon(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 16),
+                      child: SizedBox(
+                        height: 25,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(Provider.of<CartDataWrapper>(context)
+                                  .isCouponApplied
+                              ? "Discount Applied(${couponText.text})"
+                              : "Discount Applied"),
+                          trailing: Text(Provider.of<CartDataWrapper>(context)
+                                  .isCouponApplied
+                              ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
+                              : "\u{20B9} 0"),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 16),
+                      child: SizedBox(
+                        height: 25,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text("Tax"),
+                          trailing: Text(Provider.of<CartDataWrapper>(context)
+                                  .isLoading
+                              ? "0"
+                              : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
+                        ),
+                      ),
+                    ),
+                    Provider.of<VendorModelWrapper>(context).isLoaded
+                        ? Provider.of<VendorModelWrapper>(context)
+                                    .vendorModel!
+                                    .isDeliveryCharges ==
+                                true
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 16),
+                                child: SizedBox(
+                                  height: 25,
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    dense: true,
+                                    title: Text(
+                                        "Shipping Fee(Not applicable in TakeAway)"),
+                                    trailing: Text(
+                                        "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+                                  ),
+                                ),
+                              )
+                            : Container()
+                        : Center(child: CircularProgressIndicator()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 16),
+                      child: SizedBox(
+                        height: 35,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            "Total",
+                            style: FontsTheme.boldTextStyle(
+                              size: 14,
                             ),
                           ),
-                        )
-                      : Container()
-                  : Center(child: CircularProgressIndicator()),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                child: SizedBox(
-                  height: 35,
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                    title: Text(
-                      "Total",
-                      style: FontsTheme.boldTextStyle(
-                        size: 14,
+                          trailing: Text(
+                            Provider.of<CartDataWrapper>(context).isLoading
+                                ? "0"
+                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
+                            style: FontsTheme.boldTextStyle(
+                              size: 14,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    trailing: Text(
-                      Provider.of<CartDataWrapper>(context).isLoading
-                          ? "0"
-                          : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                      style: FontsTheme.boldTextStyle(
-                        size: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                  ],
+                )
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: new BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 3,
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Flexible(
-              child: Container(
-                height: 48,
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "\u{20B9}",
-                      style: TextStyle(
-                          fontFamily: "", fontSize: 17, color: Colors.black87),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5.0),
-                      child: Text(
-                        Provider.of<CartDataWrapper>(context).isLoading
-                            ? "0"
-                            : "${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                            fontSize: 16),
-                      ),
-                    )
-                  ],
-                ),
+      bottomNavigationBar: cartProvider.length > 0
+          ? Container(
+              decoration: new BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                  ),
+                ],
               ),
-            ),
-            Flexible(
-              child: InkWell(
-                onTap: () {
-                  if (sharedPrefs.customer_id.isEmpty) {
-                    GoRouter.of(context).go(PageCollection.login);
-                    return;
-                  }
-                  if (Provider.of<CartDataWrapper>(context, listen: false)
-                          .totalItems >
-                      0) {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return PaymentOptions(
-                          address: customerData.customerAddress
-                              .elementAt(addressIndex),
-                        );
-                      },
-                    ));
-                  }
-                },
-                child: Container(
-                  height: 48,
-                  color:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
-                    child: Center(
-                      child: Text(
-                        "PAY",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 15),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Container(
+                      height: 48,
+                      color: Colors.white,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "\u{20B9}",
+                            style: TextStyle(
+                                fontFamily: "",
+                                fontSize: 17,
+                                color: Colors.black87),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Text(
+                              Provider.of<CartDataWrapper>(context).isLoading
+                                  ? "0"
+                                  : "${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                  fontSize: 16),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ),
+                  Flexible(
+                    child: InkWell(
+                      onTap: () {
+                        if (sharedPrefs.customer_id.isEmpty) {
+                          GoRouter.of(context).go(PageCollection.login);
+                          return;
+                        }
+                        if (Provider.of<CartDataWrapper>(context, listen: false)
+                                .totalItems >
+                            0) {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return PaymentOptions(
+                                address: customerData.customerAddress
+                                    .elementAt(addressIndex),
+                              );
+                            },
+                          ));
+                        }
+                      },
+                      child: Container(
+                        height: 48,
+                        color: Provider.of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 3.0),
+                          child: Center(
+                            child: Text(
+                              "PAY",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : null,
     );
   }
 }
