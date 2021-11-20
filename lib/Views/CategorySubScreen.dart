@@ -146,18 +146,19 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
             padding: const EdgeInsets.only(right: 16.0),
             child: Badge(
               elevation: 0,
-              position: BadgePosition.topEnd(top: 5, end: 0),
+              position: BadgePosition.topEnd(top: 5, end: -5),
               badgeContent: Text(
                   '${Provider.of<CartDataWrapper>(context).totalItems}',
                   style: TextStyle(fontSize: 10, color: Colors.white)),
-              child: IconButton(
-                icon: Icon(CupertinoIcons.shopping_cart,
-                    size: 20,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor),
-                onPressed: () {
+              child: InkWell(
+                onTap: () {
                   GoRouter.of(context).push(PageCollection.cart);
                 },
+                child: Image.asset("images/cart_icon.png",
+                    width: 22,
+                    height: 22,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor),
               ),
             ),
           ),

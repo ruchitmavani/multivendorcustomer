@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Controller/VendorController.dart';
@@ -8,35 +10,37 @@ class VendorModelWrapper with ChangeNotifier {
   VendorDataModel? vendorModel;
   bool isLoaded = false;
 
-  Future loadVendorData(String vendorId) async {
-    await VendorController.getVendorData(vendorId: vendorId)
-        .then((value) {
-      if (value.success) {
-        print(value.success);
+  Future<bool?> loadVendorData(String vendorId) async {
+    await VendorController.getVendorData(vendorId: vendorId).then((value) {
+      if (value.success && value.data != null) {
         vendorModel = value.data;
         isLoaded = true;
-        sharedPrefs.vendor_uniq_id=vendorModel!.vendorUniqId;
-        sharedPrefs.vendor_email_address=vendorModel!.emailAddress;
-        sharedPrefs.businessName=vendorModel!.businessName;
-        sharedPrefs.isWhatsappSupport=vendorModel!.isWhatsappChatSupport;
-        sharedPrefs.vendorMobileNumber=vendorModel!.mobileNumber;
-        sharedPrefs.logo=vendorModel!.logo;
-        sharedPrefs.gstNumber=vendorModel!.gstNumber;
-        sharedPrefs.longitude=vendorModel!.longitude;
-        sharedPrefs.latitude=vendorModel!.latitude;
-        sharedPrefs.businessCategory=vendorModel!.businessCategory;
-        sharedPrefs.storeLink=vendorModel!.storeLink;
-        sharedPrefs.colorTheme=vendorModel!.colorTheme;
-        sharedPrefs.tax=vendorModel!.taxDetails.map((e) => e.taxPercentage.toString()).toList();
+        sharedPrefs.vendor_uniq_id = vendorModel!.vendorUniqId;
+        sharedPrefs.vendor_email_address = vendorModel!.emailAddress;
+        sharedPrefs.businessName = vendorModel!.businessName;
+        sharedPrefs.isWhatsappSupport = vendorModel!.isWhatsappChatSupport;
+        sharedPrefs.vendorMobileNumber = vendorModel!.mobileNumber;
+        sharedPrefs.logo = vendorModel!.logo;
+        sharedPrefs.gstNumber = vendorModel!.gstNumber;
+        sharedPrefs.longitude = vendorModel!.longitude;
+        sharedPrefs.latitude = vendorModel!.latitude;
+        sharedPrefs.businessCategory = vendorModel!.businessCategory;
+        sharedPrefs.storeLink = vendorModel!.storeLink;
+        sharedPrefs.colorTheme = vendorModel!.colorTheme;
+        sharedPrefs.tax = vendorModel!.taxDetails
+            .map((e) => e.taxPercentage.toString())
+            .toList();
+        return true;
+      } else {
+        return false;
       }
     }, onError: (e) {
       print(e);
+      return false;
     });
-
-
+    return true;
   }
 }
-
 
 class IpInfoApi {
   static Future<String> getIPAddress() async {

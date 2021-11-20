@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:html';
 
 import 'package:flutter/material.dart';
@@ -20,30 +21,34 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
     loadData();
-
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   loadData();
-    // });
   }
 
   loadData() async {
     Uri url = Uri.parse(window.location.href);
     String id = url.path.substring(1).split('/').first;
     print("path $id");
-    // id = 'veer0961';
-    if(id=="login")
-      return;
+    if (id == "login") return;
     window.localStorage["storeId"] = id;
     if (id != "") {
       await Provider.of<VendorModelWrapper>(context, listen: false)
           .loadVendorData(id)
           .then((value) async {
         if (!mounted) return;
-        MyApp.changeState(context);
-        print("load path ------- ${window.location.pathname}");
-        String path = window.location.pathname!;
-        if (!path.contains("home"))
-          GoRouter.of(context).push('/' + storeConcat(PageCollection.home));
+        if (value == true) {
+          MyApp.changeState(context);
+          print("load path ------- ${window.location.pathname}");
+          String path = window.location.pathname!;
+          if (!path.contains("home")) {
+            log("---- home called ------");
+            GoRouter.of(context).push('/' + storeConcat(PageCollection.home));
+          } else {
+            log("---- home not called ------");
+          }
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+        }
       });
     } else {
       setState(() {

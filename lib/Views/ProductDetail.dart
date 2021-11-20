@@ -117,7 +117,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
               padding: const EdgeInsets.only(right: 16.0),
               child: Badge(
                 elevation: 0,
-                position: BadgePosition.topEnd(top: 5, end: 0),
+                position: BadgePosition.topEnd(top: 5, end: -5),
                 badgeContent: Text(
                   '${Provider.of<CartDataWrapper>(context).totalItems}',
                   style: TextStyle(
@@ -125,16 +125,15 @@ class _ProductDescriptionState extends State<ProductDescription> {
                     color: Colors.white,
                   ),
                 ),
-                child: IconButton(
-                  icon: Icon(
-                    CupertinoIcons.shopping_cart,
-                    size: 20,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                  ),
-                  onPressed: () {
+                child: InkWell(
+                  onTap: () {
                     GoRouter.of(context).push(PageCollection.cart);
                   },
+                  child: Image.asset("images/cart_icon.png",
+                      width: 22,
+                      height: 22,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor),
                 ),
               ),
             ),
@@ -448,7 +447,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Divider(
                                           height: 30,
                                         ),
-                                        productData.productLiveTiming.length > 1
+                                        productData.productLiveTiming.length > 0
                                             ? Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,

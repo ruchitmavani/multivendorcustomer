@@ -111,14 +111,18 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  final _router = GoRouter(
+  var _router = GoRouter(
     urlPathStrategy: UrlPathStrategy.path,
     routes: [
       GoRoute(
           // path: '/' + window.localStorage["storeId"]!,
-          path: '/' + sharedPrefs.storeLink,
-          // path: '/veer0961',
-          // name:'veer0207',
+          //path: '/' + sharedPrefs.storeLink,
+          path: "/" +
+              Uri.parse(window.location.href)
+                  .path
+                  .substring(1)
+                  .split('/')
+                  .first,
           pageBuilder: (context, state) => MaterialPage<void>(
                 key: state.pageKey,
                 child: Loading(),

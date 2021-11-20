@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -58,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getInitialData() async {
+    log("------ on home screen ------");
     await Provider.of<VendorModelWrapper>(context, listen: false)
         .loadVendorData(sharedPrefs.storeLink);
     print(
@@ -72,9 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
             .vendorUniqId);
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
     Provider.of<CustomColor>(context, listen: false).updateColor();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      // executes after build
-    });
   }
 
   _getCategoryWiseProduct(String sortKey) async {
@@ -111,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
             "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           banners = value.data!;
           isLoadingBan = false;
@@ -204,18 +203,19 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(right: 16.0),
               child: Badge(
                 elevation: 0,
-                position: BadgePosition.topEnd(top: 5, end: 0),
+                position: BadgePosition.topEnd(top: 5, end: -5),
                 badgeContent: Text(
                     '${Provider.of<CartDataWrapper>(context).totalItems}',
                     style: TextStyle(fontSize: 10, color: Colors.white)),
-                child: IconButton(
-                  icon: Icon(CupertinoIcons.shopping_cart,
-                      size: 20,
-                      color: Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor),
-                  onPressed: () {
+                child: InkWell(
+                  onTap: () {
                     GoRouter.of(context).push(PageCollection.cart);
                   },
+                  child: Image.asset("images/cart_icon.png",
+                      width: 22,
+                      height: 22,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor),
                 ),
               ),
             ),
@@ -325,9 +325,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           Space(width: 8.0),
-                                          Text("${vendorProvider.businessName}",
-                                              style: FontsTheme.boldTextStyle(
-                                                  size: 17))
+                                          Text(
+                                            "${vendorProvider.businessName}",
+                                            style: FontsTheme.boldTextStyle(
+                                                size: 17),
+                                          )
                                         ],
                                       ),
                                     ),

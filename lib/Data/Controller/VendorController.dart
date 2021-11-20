@@ -12,10 +12,10 @@ class VendorController {
   /*-----------Get Product Data-----------*/
   static Future<ResponseClass> getVendorData({required String vendorId}) async {
     String url = StringConstants.api_url + StringConstants.vendor_view;
-    String  ip="";
-    ip=await IpInfoApi.getIPAddress();
+    String ip = "";
+    ip = await IpInfoApi.getIPAddress();
     //body Data
-    var data = {"store_link": "$vendorId",   "customer_ip" : "$ip"};
+    var data = {"store_link": "$vendorId", "customer_ip": "$ip"};
 
     print(data);
     ResponseClass<VendorDataModel> responseClass =
@@ -31,7 +31,9 @@ class VendorController {
         log("getVendorData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = VendorDataModel.fromJson(response.data["data"]);
+        responseClass.data = response.data["data"] != null
+            ? VendorDataModel.fromJson(response.data["data"])
+            : null;
       }
       return responseClass;
     } catch (e) {
