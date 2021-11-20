@@ -6,14 +6,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-Future<Uint8List> generateInvoice(PdfPageFormat pageFormat,Invoice data) async {
-  final lorem = pw.LoremText();
-
-  final products = <Product>[
-    Product(lorem.sentence(4), 3.99, 2),
-    Product(lorem.sentence(6), 15, 2),
-  ];
-
+Future<Uint8List> generateInvoice(
+    PdfPageFormat pageFormat, Invoice data) async {
   final invoice = data;
 
   return await invoice.buildPdf(pageFormat);
@@ -107,7 +101,7 @@ class Invoice {
                       color: accentColor,
                     ),
                     padding: const pw.EdgeInsets.only(
-                        left: 20 , top: 10, bottom: 10, right: 20),
+                        left: 20, top: 10, bottom: 10, right: 20),
                     alignment: pw.Alignment.centerLeft,
                     height: 50,
                     child: pw.DefaultTextStyle(
@@ -142,20 +136,6 @@ class Invoice {
                 ],
               ),
             ),
-            // pw.Expanded(
-            //   child: pw.Column(
-            //     mainAxisSize: pw.MainAxisSize.min,
-            //     children: [
-            //       pw.Container(
-            //         alignment: pw.Alignment.topRight,
-            //         padding: const pw.EdgeInsets.only(bottom: 8, left: 30),
-            //         height: 72,
-            //         child:
-            //             _logo != null ? pw.SvgImage(svg: _logo!) : pw.PdfLogo(),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
         if (context.pageNumber > 1) pw.SizedBox(height: 20)
@@ -208,21 +188,6 @@ class Invoice {
     return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        // pw.Expanded(
-        //   child: pw.Container(
-        //     margin: const pw.EdgeInsets.symmetric(horizontal: 20),
-        //     height: 70,
-        //     child: pw.FittedBox(
-        //       child: pw.Text(
-        //         'Total: ${_formatCurrency(_grandTotal.round())}',
-        //         style: pw.TextStyle(
-        //           color: baseColor,
-        //           fontStyle: pw.FontStyle.italic,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         pw.Expanded(
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -263,24 +228,6 @@ class Invoice {
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
-              // pw.Container(
-              //   margin: const pw.EdgeInsets.only(top: 20, bottom: 8),
-              //   child: pw.Text(
-              //     'Payment Info:',
-              //     style: pw.TextStyle(
-              //       color: baseColor,
-              //       fontWeight: pw.FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
-              // pw.Text(
-              //   paymentInfo,
-              //   style: const pw.TextStyle(
-              //     fontSize: 8,
-              //     lineSpacing: 5,
-              //     color: _darkColor,
-              //   ),
-              // ),
             ],
           ),
         ),
