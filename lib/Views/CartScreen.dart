@@ -336,19 +336,20 @@ class _CartScreenState extends State<CartScreen> {
                     child: isLoadingCustomer
                         ? Center(
                             child: Shimmer.fromColors(
-                            baseColor: Colors.white,
-                            highlightColor: Colors.grey[300]!,
-                            period: Duration(seconds: 2),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 20,
-                              height: 60,
-                              decoration: ShapeDecoration(
-                                color: Colors.grey[300]!,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)),
+                              baseColor: Colors.white,
+                              highlightColor: Colors.grey[300]!,
+                              period: Duration(seconds: 2),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width - 20,
+                                height: 60,
+                                decoration: ShapeDecoration(
+                                  color: Colors.grey[300]!,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                ),
                               ),
                             ),
-                          ))
+                          )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
