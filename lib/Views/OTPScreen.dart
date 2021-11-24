@@ -12,8 +12,10 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Register.dart';
+import 'package:provider/provider.dart';
 
 class OTPScreen extends StatefulWidget {
   final String mobileNumber;
@@ -46,8 +48,8 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
         sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
+        Provider.of<CartDataWrapper>(context,listen: false).cartData.length>0?GoRouter.of(context).go(PageCollection.cart):
         GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
-
       } else {
         setState(() {
           isLoadingCustomer = false;

@@ -286,9 +286,12 @@ class ProductRating extends StatelessWidget {
     return Row(
       children: [
         Icon(Icons.star, color: Colors.amber, size: 15),
-        Text(
-          "$rating",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+        Padding(
+          padding: const EdgeInsets.only(left: 2.0),
+          child: Text(
+            "$rating",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
         ),
       ],
     );

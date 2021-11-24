@@ -37,16 +37,16 @@ bool isProductAvailable({required List<String> liveTimings}) {
 Widget cartIconWidget(BuildContext context) {
   return Badge(
     elevation: 0,
-    position: BadgePosition.topEnd(top: 5, end: -5),
+    position: BadgePosition.topEnd(top: 7, end: 5),
     showBadge:
         Provider.of<CartDataWrapper>(context).totalItems != 0 ? true : false,
     badgeContent: Text('${Provider.of<CartDataWrapper>(context).totalItems}',
         style: TextStyle(fontSize: 10, color: Colors.white)),
-    child: InkWell(
-      onTap: () {
+    child: IconButton(
+      onPressed: () {
         GoRouter.of(context).push(PageCollection.cart);
       },
-      child: Image.asset("images/cart_icon.png",
+      icon: Image.asset("images/cart_icon.png",
           width: 25,
           height: 25,
           color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),

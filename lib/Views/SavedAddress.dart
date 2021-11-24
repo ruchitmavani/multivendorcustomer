@@ -21,72 +21,92 @@ class _SavedAddressState extends State<SavedAddress> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListView.builder(
-              itemCount: addressList.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.all(12),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "${addressList.elementAt(index).type}",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return EditLocation(subAddress: addressList.elementAt(index).subAddress, area: addressList.elementAt(index).area, city: addressList.elementAt(index).city, pincode: addressList.elementAt(index).pinCode.toString(), index: index);
-                                },
-                              )).then((value) {
-                                setState(() {});
-                              });
-                            },
-                            child: Icon(
-                              Icons.edit,
-                              size: 18,
+            addressList.length > 0
+                ? ListView.builder(
+                    itemCount: addressList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.all(12),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "${addressList.elementAt(index).type}",
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return EditLocation(
+                                            subAddress: addressList
+                                                .elementAt(index)
+                                                .subAddress,
+                                            area: addressList
+                                                .elementAt(index)
+                                                .area,
+                                            city: addressList
+                                                .elementAt(index)
+                                                .city,
+                                            pincode: addressList
+                                                .elementAt(index)
+                                                .pinCode
+                                                .toString(),
+                                            index: index);
+                                      },
+                                    )).then((value) {
+                                      setState(() {});
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 18,
+                                  ),
+                                ),
+                                if(addressList.length>=2)
+                                InkWell(
+                                  onTap: () {
+                                    addressList.removeAt(index);
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    size: 18,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              addressList.removeAt(index);
-                              setState(() {
-                              });
-                            },
-                            child: Icon(
-                              Icons.delete,
-                              size: 18,
+                            Container(
+                              width: MediaQuery.of(context).size.height,
+                              margin: EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 16),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey.shade100),
+                              child: Text(
+                                "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.height,
-                        margin: EdgeInsets.only(top: 8),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey.shade100),
-                        child: Text(
-                          "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            )
+                      );
+                    },
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height - 60,
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    child: Text("No address Added"))
           ],
         ),
       ),

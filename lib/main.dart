@@ -61,50 +61,52 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
-          appBarTheme: AppBarTheme(
-              color: Colors.white,
-              elevation: 0,
-              iconTheme: IconThemeData(color: Colors.black87),
-              textTheme: TextTheme(
-                  headline6: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                      fontFamily: "Poppins")),
-              actionsIconTheme: IconThemeData(
-                  color: Provider.of<CustomColor>(context)
-                      .appPrimaryMaterialColor)),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: OutlinedButton.styleFrom(
-                primary: Colors.grey.shade600,
-                backgroundColor: Colors.white,
-                textStyle: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: "Poppins",
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600),
-                side: BorderSide(width: 1.2, color: Colors.grey.shade700)
-                //backgroundColor: Colors.green,
-                ),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              onPrimary: Colors.white,
-              primary:
-                  Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-              elevation: 0,
+        accentColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+            color: Colors.white,
+            elevation: 0,
+            iconTheme: IconThemeData(color: Colors.black87),
+            textTheme: TextTheme(
+                headline6: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                    fontFamily: "Poppins")),
+            actionsIconTheme: IconThemeData(
+                color:
+                    Provider.of<CustomColor>(context).appPrimaryMaterialColor)),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+              primary: Colors.grey.shade600,
+              backgroundColor: Colors.white,
               textStyle: TextStyle(
-                  fontWeight: FontWeight.w600,
+                  color: Colors.grey,
                   fontFamily: "Poppins",
-                  fontSize: 15),
-            ),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+              side: BorderSide(width: 1.2, color: Colors.grey.shade700)
+              //backgroundColor: Colors.green,
+              ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            onPrimary: Colors.white,
+            primary: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            elevation: 0,
+            textStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontFamily: "Poppins",
+                fontSize: 15),
           ),
-          fontFamily: 'Poppins',
-          primaryColor:
-              Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-          primarySwatch: Colors.grey,
-          textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(),
-          )),
+        ),
+        fontFamily: 'Poppins',
+        primaryColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        primarySwatch: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(),
+        ),
+      ),
+
       debugShowCheckedModeBanner: false,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,

@@ -15,12 +15,14 @@ class _OrderSuccessState extends State<OrderSuccess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Lottie.asset("images/success.json", height: 200, repeat: false,),
+            Image.asset("images/success.png",height: 200,),
+            // Lottie.asset("images/success.json", height: 200, repeat: false,),
             Text(
               "Your order has been Placed \nSuccessfully",
               style: TextStyle(fontFamily: 'Poppins', fontSize: 22),

@@ -612,22 +612,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget categoryWiseProducts() {
     return productDataList.length == 0
-        ? Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Space(
-                height: 40,
-              ),
-              SvgPicture.asset(
-                "images/error.svg",
-                color:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                width: 30,
-                height: 30,
-              ),
-              Text("No Products Available"),
-            ],
+        ? Container(
+            height: MediaQuery.of(context).size.height * 0.43,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "images/error.svg",
+                  color:
+                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                  width: 30,
+                  height: 30,
+                ),
+                Text("No Products Available"),
+              ],
+            ),
           )
         : Container(
             margin: EdgeInsets.only(bottom: 80),
@@ -655,35 +656,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4),
                         child: ListView.builder(
-                            shrinkWrap: isGrid ? false : true,
-                            physics: isGrid
-                                ? AlwaysScrollableScrollPhysics()
-                                : NeverScrollableScrollPhysics(),
-                            scrollDirection:
-                                isGrid ? Axis.horizontal : Axis.vertical,
-                            itemCount: productDataList
-                                .elementAt(index)
-                                .productDetails
-                                .length,
-                            itemBuilder: (context, i) {
-                              return InkWell(
-                                onTap: () {
-                                  context.go(helper(PageCollection.product +
-                                      '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
-                                },
-                                child: isGrid
-                                    ? ProductComponentGrid(
-                                        productData: productDataList
-                                            .elementAt(index)
-                                            .productDetails
-                                            .elementAt(i))
-                                    : ProductComponentList(
-                                        productData: productDataList
-                                            .elementAt(index)
-                                            .productDetails
-                                            .elementAt(i)),
-                              );
-                            }),
+                          shrinkWrap: isGrid ? false : true,
+                          physics: isGrid
+                              ? AlwaysScrollableScrollPhysics()
+                              : NeverScrollableScrollPhysics(),
+                          scrollDirection:
+                              isGrid ? Axis.horizontal : Axis.vertical,
+                          itemCount: productDataList
+                              .elementAt(index)
+                              .productDetails
+                              .length,
+                          itemBuilder: (context, i) {
+                            return InkWell(
+                              onTap: () {
+                                context.go(helper(PageCollection.product +
+                                    '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
+                              },
+                              child: isGrid
+                                  ? ProductComponentGrid(
+                                      productData: productDataList
+                                          .elementAt(index)
+                                          .productDetails
+                                          .elementAt(i),
+                                    )
+                                  : ProductComponentList(
+                                      productData: productDataList
+                                          .elementAt(index)
+                                          .productDetails
+                                          .elementAt(i),
+                                    ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],

@@ -6,6 +6,7 @@ import 'package:badges/badges.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButtonBulk.dart';
@@ -341,6 +342,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                           ),
                                         if (sizeList.length > 0)
                                           Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Space(height: 18),
                                               Text("Size Option",
@@ -352,45 +355,45 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                           size: 13)),
                                               Space(height: 8),
                                               Row(
-                                                children:
-                                                    sizeList.map<Widget>((e) {
-                                                  int index =
-                                                      sizeList.indexOf(e);
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        currentSizeIndex =
-                                                            index;
-                                                        finalPrice = sizeList
-                                                            .elementAt(index)
-                                                            .sellingPrice;
-                                                      });
-                                                    },
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 8.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                width: 1,
-                                                                color: currentSizeIndex ==
-                                                                        index
-                                                                    ? Provider.of<CustomColor>(
-                                                                            context)
-                                                                        .appPrimaryMaterialColor
-                                                                    : Colors
-                                                                        .grey
-                                                                        .shade400),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5.0)),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(2.0),
-                                                          child: ClipRRect(
+                                                children: sizeList.map<Widget>(
+                                                  (e) {
+                                                    int index =
+                                                        sizeList.indexOf(e);
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          currentSizeIndex =
+                                                              index;
+                                                          finalPrice = sizeList
+                                                              .elementAt(index)
+                                                              .sellingPrice;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 8.0),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  width: 1,
+                                                                  color: currentSizeIndex == index
+                                                                      ? Provider.of<CustomColor>(
+                                                                              context)
+                                                                          .appPrimaryMaterialColor
+                                                                      : Colors
+                                                                          .grey
+                                                                          .shade400),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0)),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(2.0),
+                                                            child: ClipRRect(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -404,23 +407,26 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                   horizontal: 4,
                                                                 ),
                                                                 child: Text(
-                                                                    "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                                    style: FontsTheme.subTitleStyle(
-                                                                        color: currentSizeIndex ==
-                                                                                index
-                                                                            ? Provider.of<CustomColor>(context)
-                                                                                .appPrimaryMaterialColor
-                                                                            : Colors
-                                                                                .grey.shade400,
-                                                                        size:
-                                                                            12)),
+                                                                  "${e.size}  \u{20B9}${e.sellingPrice}",
+                                                                  style: FontsTheme.subTitleStyle(
+                                                                      color: currentSizeIndex ==
+                                                                              index
+                                                                          ? Provider.of<CustomColor>(context)
+                                                                              .appPrimaryMaterialColor
+                                                                          : Colors
+                                                                              .grey
+                                                                              .shade400,
+                                                                      size: 12),
+                                                                ),
                                                                 height: 20,
-                                                              )),
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  );
-                                                }).toList(),
+                                                    );
+                                                  },
+                                                ).toList(),
                                               ),
                                             ],
                                           ),
@@ -482,112 +488,108 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               _numbers.add(i);
                                             }
                                             return Row(
+                                              mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Card(
-                                                  child: Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 5),
-                                                    padding: EdgeInsets.all(8),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text("From: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text("${e.fromQty}",
-                                                                style: FontsTheme
-                                                                    .subTitleStyle(
-                                                                        color: Colors
-                                                                            .grey
-                                                                            .shade600,
-                                                                        size:
-                                                                            14))
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 6,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text("To: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text("${e.toQty}",
-                                                                style: FontsTheme
-                                                                    .subTitleStyle(
-                                                                        color: Colors
-                                                                            .grey
-                                                                            .shade600,
-                                                                        size:
-                                                                            14))
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 6,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Text("Price: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text(
-                                                                "\u{20B9}${e.pricePerUnit}",
-                                                                style: FontsTheme
-                                                                    .subTitleStyle(
-                                                                        color: Colors
-                                                                            .grey
-                                                                            .shade600,
-                                                                        size:
-                                                                            14)),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
+                                                Container(
+                                                  padding: EdgeInsets.all(6),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text("From: ",
+                                                              style: FontsTheme.subTitleStyle(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade400,
+                                                                  size: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                          Text("${e.fromQty}",
+                                                              style: FontsTheme
+                                                                  .subTitleStyle(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade600,
+                                                                      size: 12))
+                                                        ],
+                                                      ),
+                                                      Space(
+                                                        width: 6,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text("To: ",
+                                                              style: FontsTheme.subTitleStyle(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade400,
+                                                                  size: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                          Text("${e.toQty}",
+                                                              style: FontsTheme
+                                                                  .subTitleStyle(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade600,
+                                                                      size: 12))
+                                                        ],
+                                                      ),
+                                                      Space(
+                                                        width: 6,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text("Price: ",
+                                                              style: FontsTheme.subTitleStyle(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade400,
+                                                                  size: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                          Text(
+                                                            "₹",
+                                                            style: TextStyle(fontFamily: "Poppins",
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade600),
+                                                          ),
+                                                          Text(
+                                                              "${e.pricePerUnit}",
+                                                              style: FontsTheme
+                                                                  .subTitleStyle(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade600,
+                                                                      size:
+                                                                          12)),
+                                                        ],
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text("Select Qty: "),
-                                                    QuantitySelect(
-                                                      price: e.pricePerUnit,
-                                                      numbers: _numbers,
-                                                      setPrice: setPrice,
-                                                      productId:
-                                                          widget.productId,
-                                                    ),
-                                                  ],
+                                                QuantitySelect(
+                                                  price: e.pricePerUnit,
+                                                  numbers: _numbers,
+                                                  setPrice: setPrice,
+                                                  productId: widget.productId,
                                                 ),
                                               ],
                                             );
@@ -667,7 +669,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -800,48 +802,68 @@ class _QuantitySelectState extends State<QuantitySelect> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(Icons.close, size: 16),
+                          child: Icon(
+                            Icons.close,
+                            size: 16,
+                            color: Colors.grey.shade600,
+                          ),
                           backgroundColor: Colors.white),
                       width: 24,
                       height: 24,
                     ),
                   ),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10.0),
-                            topLeft: Radius.circular(10.0)),
-                      ),
-                      child: ListView.builder(
-                        itemCount: widget.numbers.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _quantity = widget.numbers.elementAt(index);
-                                });
-                                Navigator.pop(context);
-                                print("${_quantity * widget.price}");
-                                widget.setPrice(
-                                    _quantity * widget.price, _quantity);
-                                Provider.of<CartDataWrapper>(context,
-                                        listen: false)
-                                    .deleteFromCart(
-                                        productId: widget.productId);
-                              },
-                              child:
-                                  getDropDownMenuItem(widget.numbers[index]));
-                        },
-                      )),
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10.0),
+                          topLeft: Radius.circular(10.0)),
+                    ),
+                    child: ListView.builder(
+                      itemCount: widget.numbers.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _quantity = widget.numbers.elementAt(index);
+                              });
+                              Navigator.pop(context);
+                              print("${_quantity * widget.price}");
+                              widget.setPrice(
+                                  _quantity * widget.price, _quantity);
+                              Provider.of<CartDataWrapper>(context,
+                                      listen: false)
+                                  .deleteFromCart(productId: widget.productId);
+                            },
+                            child: getDropDownMenuItem(widget.numbers[index]));
+                      },
+                    ),
+                  ),
                 ],
               );
             });
       },
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
         color: Colors.white,
-        child: Icon(Icons.arrow_drop_down),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 4, left: 6, top: 4, bottom: 4),
+          child: Row(
+            children: [
+              Text(
+                "Select Qty:",
+                style: TextStyle(fontSize: 12),
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

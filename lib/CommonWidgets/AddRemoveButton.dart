@@ -219,7 +219,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   @override
   Widget build(BuildContext context) {
-    //todo pending isrequest provide link
+    //todo pending is request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
                 productId: widget.productData.productId) == 0
         ? widget.isRounded

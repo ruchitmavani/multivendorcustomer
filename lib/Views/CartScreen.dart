@@ -421,12 +421,11 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         )
                       : cartProvider.length == 0
-                          ? Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("No items in Cart"),
-                              ),
-                            )
+                          ? Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height - 60,
+                              child: Text("No items in Cart"))
                           : ListView.separated(
                               shrinkWrap: true,
                               padding: EdgeInsets.all(0),
@@ -597,7 +596,6 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        //TODO: unimplemented so implement it :)
                                                         RoundedAddRemove(
                                                           productId:
                                                               cartProvider

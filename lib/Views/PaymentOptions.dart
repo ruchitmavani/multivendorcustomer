@@ -169,12 +169,13 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               .clear();
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
               vendorId: "${sharedPrefs.vendor_uniq_id}");
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => OrderSuccess()));
+
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
           print("signature ${window.localStorage["signature"]}");
           _verifyPayment();
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => OrderSuccess()));
           // Navigator.push(context,
           //     MaterialPageRoute(builder: (_) => OrderSuccess()));
         });
