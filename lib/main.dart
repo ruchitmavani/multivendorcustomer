@@ -43,19 +43,12 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  static void changeState(BuildContext context) {
-    var state = context.findAncestorStateOfType<_MyAppState>();
-    state!.reload();
-  }
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  reload() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {

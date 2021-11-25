@@ -11,6 +11,7 @@ class VendorModelWrapper with ChangeNotifier {
   bool isLoaded = false;
 
   Future<bool?> loadVendorData(String vendorId) async {
+    bool res = false;
     await VendorController.getVendorData(vendorId: vendorId).then((value) {
       if (value.success && value.data != null) {
         vendorModel = value.data;
@@ -30,15 +31,16 @@ class VendorModelWrapper with ChangeNotifier {
         sharedPrefs.tax = vendorModel!.taxDetails
             .map((e) => e.taxPercentage.toString())
             .toList();
-        return true;
+        res = true;
       } else {
-        return false;
+        res = false;
       }
     }, onError: (e) {
       print(e);
-      return false;
+      res = false;
     });
-    return true;
+
+    return res;
   }
 }
 

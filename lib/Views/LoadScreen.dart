@@ -34,16 +34,15 @@ class _LoadingState extends State<Loading> {
           .loadVendorData(id)
           .then((value) async {
         if (!mounted) return;
+        log("vendor exist : ${value} -------");
         if (value == true) {
-          MyApp.changeState(context);
+          String? path = window.location.pathname;
           print("load path ------- ${window.location.pathname}");
-          String path = window.location.pathname!;
-          if (!path.contains("home")) {
-            log("---- home called ------");
+          if (path!.contains("/home")) {
             GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
-          } else {
-            log("---- home not called ------");
           }
+          // else
+          //   GoRouter.of(context).go('/' + "${path}");
         } else {
           setState(() {
             isLoading = false;

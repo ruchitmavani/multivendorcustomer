@@ -31,7 +31,7 @@ class VendorController {
         log("getVendorData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
-        responseClass.data = response.data["data"] != null
+        responseClass.data = response.data["data"] != {}
             ? VendorDataModel.fromJson(response.data["data"])
             : null;
       }

@@ -61,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getInitialData() async {
-    log("------ on home screen ------");
     await Provider.of<VendorModelWrapper>(context, listen: false)
         .loadVendorData(sharedPrefs.storeLink);
     print(
