@@ -38,9 +38,14 @@ class _LoadingState extends State<Loading> {
         if (value == true) {
           String? path = window.location.pathname;
           print("load path ------- ${window.location.pathname}");
-          GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
-          // else
+          // if (path!.contains("/home")) {
           //   GoRouter.of(context).go('/' + "${path}");
+          // } else {
+          //   GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
+          // }
+          if (!path!.contains("/home")) {
+            GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
+          }
         } else {
           setState(() {
             isLoading = false;
