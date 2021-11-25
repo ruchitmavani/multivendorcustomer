@@ -40,7 +40,7 @@ class _LoadingState extends State<Loading> {
           String path = window.location.pathname!;
           if (!path.contains("home")) {
             log("---- home called ------");
-            GoRouter.of(context).push('/' + storeConcat(PageCollection.home));
+            GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
           } else {
             log("---- home not called ------");
           }
