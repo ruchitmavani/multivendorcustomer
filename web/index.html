@@ -31,7 +31,21 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
 <!--  <script src="main.dart.js?version=10" type="application/javascript"></script>-->
+
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js"></script>
   <script>
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBMrQvzTKgDpiHwyViRbzP6cSzlC3LfjEQ",
+        authDomain: "wesell-55830.firebaseapp.com",
+        projectId: "wesell-55830",
+        storageBucket: "wesell-55830.appspot.com",
+        messagingSenderId: "130392753577",
+        appId: "1:130392753577:web:b173279c62b14470efb0b8",
+        measurementId: "G-8BXJ8NJ6LP"
+    };
+      firebase.initializeApp(firebaseConfig);
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
@@ -48,6 +62,7 @@
     if ('serviceWorker' in navigator) {
       // Service workers are supported. Use them.
       window.addEventListener('load', function () {
+      navigator.serviceWorker.register("/firebase-messaging-sw.js");
         // Wait for registration to finish before dropping the <script> tag.
         // Otherwise, the browser will load the script multiple times,
         // potentially different versions.

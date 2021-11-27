@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:'
+    'flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,8 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 15,
               ),
               GestureDetector(
-                onTap: (){
-                  GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
+                onTap: () {
+                  GoRouter.of(context)
+                      .go('/' + storeConcat(PageCollection.home));
                 },
                 child: Text("skip",
                     style: TextStyle(
