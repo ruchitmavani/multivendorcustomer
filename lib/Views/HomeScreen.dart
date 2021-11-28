@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TitleViewAll.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
@@ -18,6 +19,7 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/AllCategoryModel.dart';
 import 'package:multi_vendor_customer/Data/Models/BannerDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
 import 'package:multi_vendor_customer/DrawerWidget.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
@@ -50,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ProductData> trendingProducts = [];
   List<ProductData> recentlyBought = [];
   List<String> sortKeyList = ["NtoO", "OtoN", "spHtoL", "spLtoH"];
-  DateTime now = DateTime.now();
+  int todayIndex = DateTime.now().weekday - 1;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -171,6 +173,30 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoadingRece = false;
       });
     });
+  }
+
+  String getShopTimingStatus(VendorDataModel vendorProvider) {
+    List<BusinessHour> list = vendorProvider.businessHours;
+    if (list[todayIndex].isOpen == false) {
+      return "Closed";
+    } else {
+      TimeOfDay startTime = TimeOfDay.fromDateTime(
+          DateFormat.jm().parse(list[todayIndex].openTime));
+      TimeOfDay endTime = TimeOfDay.fromDateTime(
+          DateFormat.jm().parse(list[todayIndex].closeTime));
+      TimeOfDay currentTime = TimeOfDay.now();
+      if (currentTime.hour > startTime.hour &&
+          currentTime.hour < endTime.hour) {
+        return "${list[todayIndex].openTime} - ${list[todayIndex].closeTime}";
+      } else if ((currentTime.hour == startTime.hour &&
+              currentTime.minute > startTime.minute) ||
+          (currentTime.hour == endTime.hour &&
+              currentTime.minute < endTime.minute)) {
+        return "${list[todayIndex].openTime} - ${list[todayIndex].closeTime}";
+      } else {
+        return "Closed";
+      }
+    }
   }
 
   @override
@@ -411,20 +437,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   fontWeight: FontWeight.w700),
                                             )
                                           : TextSpan(
-                                              text: Provider.of<
-                                                              VendorModelWrapper>(
-                                                          context)
-                                                      .vendorModel!
-                                                      .businessHours
-                                                      .elementAt(now.weekday)
-                                                      .isOpen
-                                                  ? "  ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime} - ${Provider.of<VendorModelWrapper>(context).vendorModel!.businessHours.elementAt(now.weekday).openTime}"
-                                                  : "  Closed",
+                                              text: getShopTimingStatus(
+                                                  vendorProvider),
                                               style: FontsTheme.valueStyle(
                                                   color: Colors.black54,
                                                   size: 11,
                                                   fontWeight: FontWeight.w700),
-                                            ),
+                                            )
                                     ],
                                   ),
                                 ),
