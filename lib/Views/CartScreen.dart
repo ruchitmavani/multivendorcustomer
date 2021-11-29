@@ -277,12 +277,15 @@ class _CartScreenState extends State<CartScreen> {
       },
       child: Container(
           child: Padding(
-            padding: const EdgeInsets.only(
-                top: 15, bottom: 15, left: 16, right: 16),
+            padding:
+                const EdgeInsets.only(top: 15, bottom: 15, left: 16, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(AppIcons.offer,size: 20,),
+                Icon(
+                  AppIcons.offer,
+                  size: 20,
+                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 13.0),
@@ -590,7 +593,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                     fontSize:
                                                                         13,
                                                                     fontWeight:
-                                                                        FontWeight.w600),
+                                                                        FontWeight
+                                                                            .w600),
                                                                 children: [
                                                                   TextSpan(
                                                                     text:
@@ -639,10 +643,15 @@ class _CartScreenState extends State<CartScreen> {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           dense: true,
-                          title: Text(Provider.of<CartDataWrapper>(context)
-                                  .isCouponApplied
-                              ? "Discount Applied(${couponText.text})"
-                              : "Discount Applied"),
+                          title: Text(
+                            Provider.of<CartDataWrapper>(context)
+                                    .isCouponApplied
+                                ? "Total Savings(${couponText.text})"
+                                : "Total Savings",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           trailing: Text(Provider.of<CartDataWrapper>(context)
                                   .isCouponApplied
                               ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
@@ -658,7 +667,7 @@ class _CartScreenState extends State<CartScreen> {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           dense: true,
-                          title: Text("Tax"),
+                          title: Text("Tax",style: TextStyle(fontSize: 14,),),
                           trailing: Text(Provider.of<CartDataWrapper>(context)
                                   .isLoading
                               ? "0"
@@ -755,7 +764,7 @@ class _CartScreenState extends State<CartScreen> {
                                   : "${Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   color: Colors.black87,
                                   fontSize: 16),
                             ),

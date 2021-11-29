@@ -24,15 +24,18 @@ class _OrderSuccessState extends State<OrderSuccess> {
             Image.asset("images/success.png",height: 200,),
             // Lottie.asset("images/success.json", height: 200, repeat: false,),
             Text(
-              "Your order has been Placed \nSuccessfully",
-              style: TextStyle(fontFamily: 'Poppins', fontSize: 22),
+              "Your order has been Placed Successfully",
+              style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
               textAlign: TextAlign.center,
             ),
             ElevatedButton(
               onPressed: () {
                 GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
               },
-              child: Text("Continue Shopping"),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text("Continue Shopping"),
+              ),
             ),
           ],
         ),

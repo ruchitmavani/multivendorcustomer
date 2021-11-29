@@ -251,27 +251,32 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Text("${productData.productName}",
                                             style: FontsTheme.boldTextStyle(
                                                 size: 16)),
-                                        if(productData.productRatingAverage!=0)
+                                        if (productData.productRatingAverage !=
+                                            0)
                                           Space(height: 8),
-                                        if(productData.productRatingAverage!=0)
-                                        Row(
-                                          children: [
-                                            Icon(Icons.star,
-                                                color: Colors.amber, size: 18),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 2.0),
-                                              child: Text(
-                                                  "${productData.productRatingAverage}",
-                                                  style: FontsTheme.valueStyle(
-                                                      size: 11,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            )
-                                          ],
-                                        ),
-                                        if(productData.productRatingAverage!=0)
-
+                                        if (productData.productRatingAverage !=
+                                            0)
+                                          Row(
+                                            children: [
+                                              Icon(Icons.star,
+                                                  color: Colors.amber,
+                                                  size: 18),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 2.0),
+                                                child: Text(
+                                                    "${productData.productRatingAverage}",
+                                                    style:
+                                                        FontsTheme.valueStyle(
+                                                            size: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                              )
+                                            ],
+                                          ),
+                                        if (productData.productRatingAverage !=
+                                            0)
                                           Space(height: 8),
                                         Text(
                                             "${productData.productDescription}",
@@ -438,39 +443,45 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                           height: 30,
                                         ),
                                         productData.productLiveTiming.length > 0
-                                            ? Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Available Time",
-                                                    style: FontsTheme
-                                                        .subTitleStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            size: 13),
-                                                  ),
-                                                  Space(height: 6),
-                                                  for (int i = 0;
-                                                      i <
-                                                          productData
-                                                              .productLiveTiming
-                                                              .length;
-                                                      i++) ...[
-                                                    Text(
-                                                      "${productData.productLiveTiming[i]}",
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors.grey[800],
+                                            ? productData.productLiveTiming
+                                                    .contains("All Time")
+                                                ? SizedBox()
+                                                : Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Available Time",
+                                                        style: FontsTheme
+                                                            .subTitleStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                size: 13),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ],
-                                              )
+                                                      Space(height: 6),
+                                                      for (int i = 0;
+                                                          i <
+                                                              productData
+                                                                  .productLiveTiming
+                                                                  .length;
+                                                          i++) ...[
+                                                        Text(
+                                                          "${productData.productLiveTiming[i]}",
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .grey[800],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ],
+                                                  )
                                             : SizedBox(),
                                         if (productData.bulkPriceList!.length !=
                                             0)
@@ -569,7 +580,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                           .w400)),
                                                           Text(
                                                             "₹",
-                                                            style: TextStyle(fontFamily: "Poppins",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Poppins",
                                                                 fontSize: 12,
                                                                 color: Colors
                                                                     .grey
@@ -683,8 +696,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             style: FontsTheme.digitStyle(size: 15),
                             children: [
                               TextSpan(
-                                text: " $finalPrice",
-                                style: FontsTheme.digitStyle(size: 15),
+                                text: productData.bulkPriceList!.length == 0 &&
+                                        Provider.of<CartDataWrapper>(context)
+                                                .getIndividualQuantity(
+                                                    productId:
+                                                        productData.productId) >
+                                            0
+                                    ? " ${Provider.of<CartDataWrapper>(context).getIndividualQuantity(productId: productData.productId) * finalPrice}"
+                                    : " $finalPrice",
+                                style: TextStyle(
+                                    fontFamily: 'Poppins', fontSize: 15),
                               ),
                             ]),
                       ),

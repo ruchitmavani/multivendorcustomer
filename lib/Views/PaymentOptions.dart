@@ -216,11 +216,11 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
         child: Card(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -261,26 +261,34 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
-                ),
-                ListTile(
-                  title: const Text('Take Away'),
-                  leading: Radio<paymentMethods>(
-                    value: paymentMethods.TAKEAWAY,
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      });
-                    },
+                if(Provider
+                    .of<VendorModelWrapper>(context)
+                    .vendorModel!
+                    .isStorePickupEnable)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Divider(),
                   ),
-                ),
+                if(Provider
+                    .of<VendorModelWrapper>(context)
+                    .vendorModel!
+                    .isStorePickupEnable)
+                  ListTile(
+                    title: const Text('Take Away'),
+                    leading: Radio<paymentMethods>(
+                      value: paymentMethods.TAKEAWAY,
+                      activeColor: Provider
+                          .of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      groupValue: _selection,
+                      onChanged: (paymentMethods? value) {
+                        setState(() {
+                          _selection = value!;
+                          print(value);
+                        });
+                      },
+                    ),
+                  ),
               ],
             ),
           ),
