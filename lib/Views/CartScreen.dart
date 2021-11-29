@@ -176,102 +176,107 @@ class _CartScreenState extends State<CartScreen> {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
+
             builder: (context) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15.0, bottom: 15.0),
-                    child: SizedBox(
-                      child: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(Icons.close, size: 16),
-                          backgroundColor: Colors.white),
-                      width: 24,
-                      height: 24,
+              return Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15.0, bottom: 15.0),
+                      child: SizedBox(
+                        child: FloatingActionButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(Icons.close, size: 16),
+                            backgroundColor: Colors.white),
+                        width: 24,
+                        height: 24,
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10.0),
-                          topLeft: Radius.circular(10.0)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, bottom: 0, left: 12),
-                          child: Text("Apply Coupon",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MyTextFormField(
-                            controller: couponText,
-                            lable: "Enter Coupon",
-                            maxLines: 1,
-                            hintText: "Enter Coupon Code",
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10.0),
+                            topLeft: Radius.circular(10.0)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 16.0, bottom: 0, left: 12),
+                            child: Text("Apply Coupon",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: "Poppins",
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w600)),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 20, right: 8, left: 8, top: 8),
-                          child: Provider.of<CartDataWrapper>(context)
-                                  .isCouponApplied
-                              ? Text(
-                                  "Apply Coupon Success 😊!",
-                                  style: TextStyle(
-                                      color: Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          couponText.clear();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Clear"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: MyTextFormField(
+                              controller: couponText,
+                              lable: "Enter Coupon",
+                              maxLines: 1,
+                              hintText: "Enter Coupon Code",
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 20, right: 8, left: 8, top: 8),
+                            child: Provider.of<CartDataWrapper>(context)
+                                    .isCouponApplied
+                                ? Text(
+                                    "Apply Coupon Success 😊!",
+                                    style: TextStyle(
+                                        color: Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: OutlinedButton(
+                                          onPressed: () {
+                                            couponText.clear();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Clear"),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Provider.of<CartDataWrapper>(context,
-                                                  listen: false)
-                                              .verifyCoupon(couponText.text);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Apply"),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Provider.of<CartDataWrapper>(context,
+                                                    listen: false)
+                                                .verifyCoupon(couponText.text);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Apply"),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                        )
-                      ],
+                                    ],
+                                  ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             });
       },

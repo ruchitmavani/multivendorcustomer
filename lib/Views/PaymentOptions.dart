@@ -226,7 +226,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ListTile(
-                  title: const Text('Cash on Delivery'),
+                  title: const Text(
+                    'Cash on Delivery', style: TextStyle(fontSize: 12),),
                   leading: Radio<paymentMethods>(
                     activeColor: Provider
                         .of<CustomColor>(context)
@@ -246,7 +247,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   child: Divider(),
                 ),
                 ListTile(
-                  title: const Text('Pay Online'),
+                  title: const Text(
+                    'Pay Online', style: TextStyle(fontSize: 12),),
                   leading: Radio<paymentMethods>(
                     value: paymentMethods.PAY_ONLINE,
                     activeColor: Provider
@@ -274,7 +276,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     .vendorModel!
                     .isStorePickupEnable)
                   ListTile(
-                    title: const Text('Take Away'),
+                    title: const Text(
+                      'Take Away', style: TextStyle(fontSize: 12),),
                     leading: Radio<paymentMethods>(
                       value: paymentMethods.TAKEAWAY,
                       activeColor: Provider
