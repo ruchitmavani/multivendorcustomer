@@ -278,17 +278,17 @@ class _CartScreenState extends State<CartScreen> {
       child: Container(
           child: Padding(
             padding: const EdgeInsets.only(
-                top: 20.0, bottom: 20, left: 16, right: 16),
+                top: 15, bottom: 15, left: 16, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(AppIcons.offer),
+                Icon(AppIcons.offer,size: 20,),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 13.0),
                     child: Text("Apply coupon",
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             fontFamily: "Poppins",
                             color: Colors.black87,
                             fontWeight: FontWeight.w600)),
@@ -298,7 +298,7 @@ class _CartScreenState extends State<CartScreen> {
                   "View",
                   style: TextStyle(
                       decoration: TextDecoration.underline,
-                      fontSize: 11,
+                      fontSize: 10,
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor,
                       fontWeight: FontWeight.w600),
@@ -527,10 +527,13 @@ class _CartScreenState extends State<CartScreen> {
                                                 Text(
                                                     "${cartProvider.elementAt(index).productName}",
                                                     style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black87,
+                                                        fontSize: 14,
+                                                        color: Colors.grey[700],
                                                         fontWeight:
                                                             FontWeight.w600)),
+                                                const SizedBox(
+                                                  height: 2,
+                                                ),
                                                 Column(
                                                   children: [
                                                     Row(
@@ -572,6 +575,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                 ],
                                                               ),
                                                             ),
+                                                            const SizedBox(
+                                                              height: 2,
+                                                            ),
                                                             RichText(
                                                               text: TextSpan(
                                                                 text:
@@ -582,10 +588,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                     color: Colors
                                                                         .black87,
                                                                     fontSize:
-                                                                        12,
+                                                                        13,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                        FontWeight.w600),
                                                                 children: [
                                                                   TextSpan(
                                                                     text:

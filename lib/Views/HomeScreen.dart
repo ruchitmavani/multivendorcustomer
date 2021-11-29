@@ -655,6 +655,7 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: productDataList.length,
+              padding: EdgeInsets.only(top: 10),
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 return Column(
@@ -667,6 +668,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             '/${productDataList.elementAt(index).categoryId}'));
                       },
                       isViewAll: true,
+                    ),
+                    SizedBox(
+                      height: 8,
                     ),
                     SizedBox(
                       height: isGrid ? 254 : null,
