@@ -251,7 +251,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Text("${productData.productName}",
                                             style: FontsTheme.boldTextStyle(
                                                 size: 16)),
-                                        Space(height: 8),
+                                        if(productData.productRatingAverage!=0)
+                                          Space(height: 8),
+                                        if(productData.productRatingAverage!=0)
                                         Row(
                                           children: [
                                             Icon(Icons.star,
@@ -268,7 +270,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             )
                                           ],
                                         ),
-                                        Space(height: 8),
+                                        if(productData.productRatingAverage!=0)
+
+                                          Space(height: 8),
                                         Text(
                                             "${productData.productDescription}",
                                             style: FontsTheme.descriptionText(),

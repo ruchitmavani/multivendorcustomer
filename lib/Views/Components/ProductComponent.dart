@@ -38,7 +38,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
               BoxShadow(
                 color: Colors.grey.shade200,
                 spreadRadius: 2,
-                blurRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0.5, 0.5),
               ),
             ],
           ),
@@ -49,7 +50,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProductRating(widget.productData.productRatingAverage),
+                if (widget.productData.productRatingAverage != 0)
+                  ProductRating(widget.productData.productRatingAverage),
                 Center(
                     child: Container(
                   height: 110,
@@ -126,7 +128,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -135,11 +138,11 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
                             ),
-
                           if (widget.productData.bulkPriceList!.length > 0)
                             Row(
                               children: [
@@ -257,7 +260,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
             BoxShadow(
               color: Colors.grey.shade200,
               spreadRadius: 2,
-              blurRadius: 2,
+              blurRadius: 3,
+              offset: Offset(0.5,0.5),
             ),
           ],
         ),
@@ -295,8 +299,10 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 4.0),
-                        child: ProductRating(
-                            widget.productData.productRatingAverage),
+                        child: widget.productData.productRatingAverage != 0
+                            ? ProductRating(
+                                widget.productData.productRatingAverage)
+                            : SizedBox(),
                       )
                     ],
                   ),
@@ -324,8 +330,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                  Provider.of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
+                                      Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Colors.grey.shade700,
@@ -357,7 +363,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -366,7 +373,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -410,7 +418,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
       return Text(
         "Unavailable",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     } else if (widget.productData.isRequestPrice) {
       return SizedBox(
@@ -444,7 +452,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
         return Text(
           "Out of Stock",
           style:
-          TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+              TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
         );
       } else {
         return AddRemoveButton(

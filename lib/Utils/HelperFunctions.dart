@@ -43,12 +43,13 @@ Widget cartIconWidget(BuildContext context) {
     badgeContent: Text('${Provider.of<CartDataWrapper>(context).totalItems}',
         style: TextStyle(fontSize: 10, color: Colors.white)),
     child: IconButton(
+      iconSize: 30,
       onPressed: () {
         GoRouter.of(context).push(PageCollection.cart);
       },
       icon: Image.asset("images/cart_icon.png",
-          width: 25,
-          height: 25,
+          width: 35,
+          height: 35,
           color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
     ),
   );

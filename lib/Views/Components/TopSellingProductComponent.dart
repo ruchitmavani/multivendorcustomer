@@ -66,6 +66,7 @@ class _TopSellingProductComponentState
                     "${widget.productData.productName}",
                     style: FontsTheme.boldTextStyle(),
                   ),
+                  if(widget.productData.productRatingAverage!=0)
                   ProductRating(widget.productData.productRatingAverage),
                   Padding(
                     padding: const EdgeInsets.only(top: 1.0),

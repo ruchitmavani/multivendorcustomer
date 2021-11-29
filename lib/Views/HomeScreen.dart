@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
-                size: 20,
+                size: 25,
                 color:
                     Provider.of<CustomColor>(context).appPrimaryMaterialColor),
             onPressed: () {
@@ -388,37 +388,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             Space(
                               height: 12,
                             ),
-                            CarouselSlider(
-                              options: CarouselOptions(
-                                  height: 170.0,
-                                  aspectRatio: 16 / 9,
-                                  viewportFraction: 0.9,
-                                  autoPlay: true),
-                              items: banners.map((bannerData) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Card(
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                            child: Image.network(
-                                              "${StringConstants.api_url}${bannerData.bannerUrl}",
-                                              fit: BoxFit.cover,
+                            if (banners.length > 0)
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                    height: 170.0,
+                                    aspectRatio: 16 / 9,
+                                    viewportFraction: 0.9,
+                                    autoPlay: true),
+                                items: banners.map((bannerData) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
                                             ),
-                                          )),
-                                    );
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                            Space(height: 20),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              child: Image.network(
+                                                "${StringConstants.api_url}${bannerData.bannerUrl}",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )),
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                            if (banners.length > 0) Space(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -426,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   text: TextSpan(
                                     text: "Shop Timing :",
                                     style: FontsTheme.descriptionText(
-                                        fontWeight: FontWeight.w600),
+                                        fontWeight: FontWeight.w500),
                                     children: [
                                       vendorProvider.businessHours.length == 0
                                           ? TextSpan(
@@ -454,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         text: TextSpan(
                                       text: "Location:",
                                       style: FontsTheme.descriptionText(
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     )),
                                     Icon(Icons.directions,
                                         size: 18,
@@ -654,66 +656,132 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: productDataList.length,
-              padding: EdgeInsets.only(top: 10),
+              itemCount: productDataList.length + 1,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                return Column(
+                return index == 0
+                    ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleViewAll(
-                      title: "${productDataList.elementAt(index).categoryName}",
-                      onPressed: () {
-                        context.go(helper(PageCollection.categories +
-                            '/${productDataList.elementAt(index).categoryId}'));
-                      },
-                      isViewAll: true,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    SizedBox(
-                      height: isGrid ? 254 : null,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4),
-                        child: ListView.builder(
-                          shrinkWrap: isGrid ? false : true,
-                          physics: isGrid
-                              ? AlwaysScrollableScrollPhysics()
-                              : NeverScrollableScrollPhysics(),
-                          scrollDirection:
-                              isGrid ? Axis.horizontal : Axis.vertical,
-                          itemCount: productDataList
-                              .elementAt(index)
-                              .productDetails
-                              .length,
-                          itemBuilder: (context, i) {
-                            return InkWell(
-                              onTap: () {
-                                context.go(helper(PageCollection.product +
-                                    '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
-                              },
-                              child: isGrid
-                                  ? ProductComponentGrid(
-                                      productData: productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i),
-                                    )
-                                  : ProductComponentList(
-                                      productData: productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text("Categories",style: FontsTheme.boldTextStyle(size: 15)),
+                          ),
+                          Container(
+                            height: 150,
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: productDataList.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, item) => Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CachedNetworkImage(
+                                    height: 150,
+                                    width: 150,
+                                    imageUrl:
+                                        "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => SizedBox(
+                                      width: 8,
+                                      height: 8,
+                                      child: CircularProgressIndicator(),
                                     ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                );
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(
+                                      'images/placeholdersquare.jpg',
+                                      height: 150,
+                                      width: 150,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    height: 150,
+                                    width: 150,
+                                    padding:
+                                        EdgeInsets.only(bottom: 10, left: 10),
+                                    margin: EdgeInsets.only(
+                                        bottom: 4, top: 4, right: 5, left: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black87
+                                        ],
+                                        stops:[0.4,1] ,
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        tileMode: TileMode.clamp
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "${productDataList.elementAt(item).categoryName}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TitleViewAll(
+                            title:
+                                "${productDataList.elementAt(index - 1).categoryName}",
+                            onPressed: () {
+                              context.go(helper(PageCollection.categories +
+                                  '/${productDataList.elementAt(index - 1).categoryId}'));
+                            },
+                            isViewAll: true,
+                          ),
+                          SizedBox(
+                            height: isGrid ? 254 : null,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4),
+                              child: ListView.builder(
+                                shrinkWrap: isGrid ? false : true,
+                                physics: isGrid
+                                    ? AlwaysScrollableScrollPhysics()
+                                    : NeverScrollableScrollPhysics(),
+                                scrollDirection:
+                                    isGrid ? Axis.horizontal : Axis.vertical,
+                                itemCount: productDataList
+                                    .elementAt(index - 1)
+                                    .productDetails
+                                    .length,
+                                itemBuilder: (context, i) {
+                                  return InkWell(
+                                    onTap: () {
+                                      context.go(helper(PageCollection.product +
+                                          '/${productDataList.elementAt(index - 1).productDetails.elementAt(i).productId}'));
+                                    },
+                                    child: isGrid
+                                        ? ProductComponentGrid(
+                                            productData: productDataList
+                                                .elementAt(index - 1)
+                                                .productDetails
+                                                .elementAt(i),
+                                          )
+                                        : ProductComponentList(
+                                            productData: productDataList
+                                                .elementAt(index - 1)
+                                                .productDetails
+                                                .elementAt(i),
+                                          ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
               },
             ),
           );

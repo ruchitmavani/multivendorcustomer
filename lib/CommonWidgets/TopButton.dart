@@ -29,9 +29,9 @@ class _TopButtonsState extends State<TopButtons> {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1,
+            spreadRadius: 0.5,
             blurRadius: 2,
-            offset: Offset(0, 1), // changes position of shadow
+            offset: Offset(0, 0.5), // changes position of shadow
           ),
         ],
       ),
