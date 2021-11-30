@@ -440,7 +440,19 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             ],
                                           ),
                                         Divider(
-                                          height: 30,
+                                          height: 15,
+                                        ),
+                                        Text(
+                                          "Stock left: ${productData.stockLeft}",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              color: productData.stockLeft < 10
+                                                  ? Colors.red
+                                                  : Provider.of<CustomColor>(
+                                                          context)
+                                                      .appPrimaryMaterialColor),
                                         ),
                                         productData.productLiveTiming.length > 0
                                             ? productData.productLiveTiming

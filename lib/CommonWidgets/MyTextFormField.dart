@@ -24,6 +24,7 @@ class MyTextFormField extends StatelessWidget {
   late int? maxLines;
   late int? minLines;
   late bool? filled=true;
+  late bool autofocus=false;
   late List<TextInputFormatter>? inputFormatters;
 
   MyTextFormField(
@@ -47,6 +48,7 @@ class MyTextFormField extends StatelessWidget {
       this.maxLines,
       this.minLines,
       this.contentPadding,
+        this.autofocus=false,
       this.isenable = true,this.inputFormatters});
 
   @override
@@ -71,7 +73,7 @@ class MyTextFormField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 2.0),
             child: TextFormField(
-              autofocus: false,
+              autofocus: autofocus,
               enabled: isenable,
               enableInteractiveSelection: isenableInteractiveSelection,
               readOnly: readOnly,

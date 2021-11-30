@@ -10,6 +10,7 @@ import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,16 +54,17 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                 if (widget.productData.productRatingAverage != 0)
                   ProductRating(widget.productData.productRatingAverage),
                 Center(
-                    child: Container(
-                  height: 110,
-                  width: 110,
-                  child: widget.productData.productImageUrl.length > 0
-                      ? Image.network(
-                          StringConstants.api_url +
-                              widget.productData.productImageUrl.first,
-                          fit: BoxFit.contain)
-                      : Image.asset("images/placeholder.png"),
-                )),
+                  child: Container(
+                    height: 110,
+                    width: 110,
+                    child: widget.productData.productImageUrl.length > 0
+                        ? Image.network(
+                            StringConstants.api_url +
+                                widget.productData.productImageUrl.first,
+                            fit: BoxFit.contain)
+                        : Image.asset("images/placeholder.png"),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
@@ -114,13 +116,19 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.productSellingPrice}",
+                                  "${widget.productData.productSellingPrice} ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
-                                )
+                                ),
+                                if (widget.productData.productMrp !=
+                                    widget.productData.productSellingPrice)
+                                  DiscountTag(
+                                      mrp: widget.productData.productMrp,
+                                      selling: widget
+                                          .productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -160,7 +168,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                       color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
-                                )
+                                ),
                               ],
                             ),
                         ],
@@ -261,7 +269,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
               color: Colors.grey.shade200,
               spreadRadius: 2,
               blurRadius: 3,
-              offset: Offset(0.5,0.5),
+              offset: Offset(0.5, 0.5),
             ),
           ],
         ),

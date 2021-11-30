@@ -222,6 +222,7 @@ class _CartScreenState extends State<CartScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: MyTextFormField(
+                              autofocus: true,
                               controller: couponText,
                               lable: "Enter Coupon",
                               maxLines: 1,

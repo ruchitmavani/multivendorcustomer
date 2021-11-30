@@ -238,7 +238,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       setState(() {
                         _selection = value!;
                         print(value);
-                      });
+                      },);
                     },
                   ),
                 ),
