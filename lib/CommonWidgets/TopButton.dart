@@ -86,7 +86,7 @@ class _TopButtonsState extends State<TopButtons> {
                                           Navigator.of(context).pop();
                                         },
                                         child: Icon(Icons.close, size: 16),
-                                        backgroundColor: Colors.white),
+                                        ),
                                     width: 24,
                                     height: 24,
                                   ),

@@ -207,54 +207,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            // String path = Uri(
-                            //     path: PageCollection.product,
-                            //     queryParameters: {
-                            //       "productName":
-                            //           "${productDataList.elementAt(index).productName}",
-                            //       "id":
-                            //           "${productDataList.elementAt(index).productId}"
-                            //     }).toString();
-                            // showModalBottomSheet(
-                            //     useRootNavigator: true,
-                            //     context: context,
-                            //     isScrollControlled: true,
-                            //     backgroundColor: Colors.transparent,
-                            //     routeSettings: RouteSettings(name: path),
-                            //     builder: (context) {
-                            //       return Column(
-                            //         crossAxisAlignment: CrossAxisAlignment.end,
-                            //         mainAxisAlignment: MainAxisAlignment.end,
-                            //         children: [
-                            //           Padding(
-                            //             padding: const EdgeInsets.only(
-                            //                 bottom: 15.0, right: 10),
-                            //             child: SizedBox(
-                            //               child: FloatingActionButton(
-                            //                   onPressed: () {
-                            //                     Navigator.of(context).pop();
-                            //                     setState(() {});
-                            //                   },
-                            //                   child:
-                            //                       Icon(Icons.close, size: 16),
-                            //                   backgroundColor: Colors.white),
-                            //               width: 24,
-                            //               height: 24,
-                            //             ),
-                            //           ),
-                            //           Container(
-                            //             decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.only(
-                            //                   topRight: Radius.circular(10.0),
-                            //                   topLeft: Radius.circular(10.0)),
-                            //             ),
-                            //             child: ProductDescription(productId:
-                            //                 productDataList.elementAt(index).productId),
-                            //           ),
-                            //         ],
-                            //       );
-                            //     });
                             context.go(helper(PageCollection.product +
                                 '/${productDataList.elementAt(index).productId}'));
                           },

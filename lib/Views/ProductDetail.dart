@@ -19,6 +19,7 @@ import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -257,6 +258,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         if (productData.productRatingAverage !=
                                             0)
                                           Row(
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Icon(Icons.star,
                                                   color: Colors.amber,
@@ -282,7 +284,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             "${productData.productDescription}",
                                             style: FontsTheme.descriptionText(),
                                             textAlign: TextAlign.justify),
-
+                                        SizedBox(width: 45,child: DiscountTag(mrp: productData.productMrp, selling: productData.productSellingPrice)),
                                         // Color Option
                                         if (colorList.length > 0)
                                           Column(
@@ -844,7 +846,7 @@ class _QuantitySelectState extends State<QuantitySelect> {
                             size: 16,
                             color: Colors.grey.shade600,
                           ),
-                          backgroundColor: Colors.white),
+                          ),
                       width: 24,
                       height: 24,
                     ),

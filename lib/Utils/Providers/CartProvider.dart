@@ -54,13 +54,16 @@ class CartDataWrapper extends ChangeNotifier {
       if (value.success) {
         print(value.success);
         Fluttertoast.showToast(msg: "${value.message}");
-        if (value.data!.couponType == "flat") {
+        if (value.data!.couponType.toLowerCase() == "flat") {
           if (totalAmount >= value.data!.minAmount) {
             totalAmount = totalAmount - value.data!.flatAmount;
             discount = value.data!.flatAmount as double;
+          }else{
+            discount=0;
+            Fluttertoast.showToast(msg: "your coupon do not meet minimum requirements");
           }
         }
-        if (value.data!.couponType == "percentage") {
+        if (value.data!.couponType.toLowerCase() == "percentage") {
           if (totalAmount >= value.data!.minAmount) {
             double temp =
                 totalAmount - (totalAmount * value.data!.offerPercentage / 100);
@@ -71,6 +74,9 @@ class CartDataWrapper extends ChangeNotifier {
               totalAmount = totalAmount - value.data!.offerUptoAmount;
               discount = value.data!.offerUptoAmount.toDouble();
             }
+          }else{
+            discount=0;
+            Fluttertoast.showToast(msg: "your coupon do not meet minimum requirements");
           }
         }
         isCouponApplied = true;

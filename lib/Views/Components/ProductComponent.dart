@@ -89,21 +89,23 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (!(widget.productData.isRequestPrice ||
-                              widget.productData.bulkPriceList!.length > 0))
-                            Text(
-                              "\u{20B9} ${widget.productData.productMrp}",
-                              style: TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationThickness: 3,
-                                  decorationColor:
-                                      Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey.shade700,
-                                  fontSize: 11),
-                            ),
+                          if (widget.productData.productSellingPrice !=
+                              widget.productData.productMrp)
+                            if (!(widget.productData.isRequestPrice ||
+                                widget.productData.bulkPriceList!.length > 0))
+                              Text(
+                                "\u{20B9} ${widget.productData.productMrp}",
+                                style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationThickness: 3,
+                                    decorationColor:
+                                        Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade700,
+                                    fontSize: 11),
+                              ),
                           if (!(widget.productData.isRequestPrice ||
                               widget.productData.bulkPriceList!.length > 0))
                             Row(
@@ -116,19 +118,17 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.productSellingPrice} ",
+                                  "${widget.productData.productSellingPrice}  ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                if (widget.productData.productMrp !=
-                                    widget.productData.productSellingPrice)
-                                  DiscountTag(
-                                      mrp: widget.productData.productMrp,
-                                      selling: widget
-                                          .productData.productSellingPrice)
+                                DiscountTag(
+                                    mrp: widget.productData.productMrp,
+                                    selling:
+                                        widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)

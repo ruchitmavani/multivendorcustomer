@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+
 import 'ProductModel.dart';
 
 VendorDataModel vendorDataModelFromJson(String str) => VendorDataModel.fromJson(json.decode(str));
@@ -115,33 +117,5 @@ class VendorDataModel {
     "is_whatsapp_chat_support": isWhatsappChatSupport,
     "color_theme": colorTheme,
     "tax_details": List<dynamic>.from(taxDetails.map((x) => x.toJson())),
-  };
-}
-
-class BusinessHour {
-  BusinessHour({
-    required this.day,
-    required this.openTime,
-    required this.closeTime,
-    required this.isOpen,
-  });
-
-  String day;
-  String openTime;
-  String closeTime;
-  bool isOpen;
-
-  factory BusinessHour.fromJson(Map<String, dynamic> json) => BusinessHour(
-    day: json["day"],
-    openTime: json["openTime"],
-    closeTime: json["closeTime"],
-    isOpen: json["isOpen"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "day": day,
-    "openTime": openTime,
-    "closeTime": closeTime,
-    "isOpen": isOpen,
   };
 }

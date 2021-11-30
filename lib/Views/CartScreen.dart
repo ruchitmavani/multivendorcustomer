@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -90,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                             Navigator.of(context).pop();
                           },
                           child: Icon(Icons.close, size: 16),
-                          backgroundColor: Colors.white),
+                      ),
                       width: 24,
                       height: 24,
                     ),
@@ -176,7 +177,6 @@ class _CartScreenState extends State<CartScreen> {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-
             builder: (context) {
               return Padding(
                 padding: MediaQuery.of(context).viewInsets,
@@ -193,7 +193,7 @@ class _CartScreenState extends State<CartScreen> {
                               Navigator.of(context).pop();
                             },
                             child: Icon(Icons.close, size: 16),
-                            backgroundColor: Colors.white),
+                            ),
                         width: 24,
                         height: 24,
                       ),
@@ -470,8 +470,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       },
                                                       child: Icon(Icons.close,
                                                           size: 16),
-                                                      backgroundColor:
-                                                          Colors.white),
+                                                      ),
                                                   width: 24,
                                                   height: 24,
                                                 ),
@@ -514,17 +513,35 @@ class _CartScreenState extends State<CartScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         cartProvider
-                                                    .elementAt(index)
-                                                    .productImageUrl
-                                                    .length ==
-                                                0
-                                            ? Container()
-                                            : Image.network(
-                                                StringConstants.api_url +
-                                                    "${cartProvider.elementAt(index).productImageUrl.first}",
-                                                width: 55,
+                                            .elementAt(index)
+                                            .productImageUrl
+                                            .length ==
+                                            0
+                                            ? Image.asset(
+                                          'images/placeholdersquare.jpg',
+                                          height: 55,
+                                          width: 55,
+                                          fit: BoxFit.fill,
+                                        ):
+                                        CachedNetworkImage(
+                                          height: 55,
+                                          width: 55,
+                                          imageUrl:
+                                          "${StringConstants.api_url}${cartProvider.elementAt(index).productImageUrl.first}",
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => SizedBox(
+                                            width: 8,
+                                            height: 8,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                                'images/placeholdersquare.jpg',
                                                 height: 55,
+                                                width: 55,
+                                                fit: BoxFit.fill,
                                               ),
+                                        ),
                                         Expanded(
                                           child: Padding(
                                             padding: const EdgeInsets.only(
