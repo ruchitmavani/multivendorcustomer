@@ -313,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       );
-                    });
+                    },);
               },
               child: Icon(
                 Icons.category_outlined,

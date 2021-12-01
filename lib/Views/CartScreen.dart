@@ -29,6 +29,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   bool isLoading = false;
+  bool isLoggedIn = false;
   bool isLoadingCustomer = false;
   bool isLoadingCoupon = false;
   int addressIndex = 0;
@@ -49,6 +50,11 @@ class _CartScreenState extends State<CartScreen> {
     if (sharedPrefs.customer_id.isNotEmpty) {
       _loadCustomerData();
     }
+    sharedPrefs.isLogin().then((value) {
+      setState(() {
+        isLoggedIn = value;
+      });
+    });
   }
 
   _loadCustomerData() async {
@@ -87,10 +93,10 @@ class _CartScreenState extends State<CartScreen> {
                     padding: const EdgeInsets.only(right: 15.0, bottom: 15.0),
                     child: SizedBox(
                       child: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(Icons.close, size: 16),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.close, size: 16),
                       ),
                       width: 24,
                       height: 24,
@@ -189,11 +195,11 @@ class _CartScreenState extends State<CartScreen> {
                       padding: const EdgeInsets.only(right: 15.0, bottom: 15.0),
                       child: SizedBox(
                         child: FloatingActionButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Icon(Icons.close, size: 16),
-                            ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(Icons.close, size: 16),
+                        ),
                         width: 24,
                         height: 24,
                       ),
@@ -260,7 +266,8 @@ class _CartScreenState extends State<CartScreen> {
                                       Expanded(
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            Provider.of<CartDataWrapper>(context,
+                                            Provider.of<CartDataWrapper>(
+                                                    context,
                                                     listen: false)
                                                 .verifyCoupon(couponText.text);
                                           },
@@ -318,6 +325,28 @@ class _CartScreenState extends State<CartScreen> {
           width: MediaQuery.of(context).size.width,
           color: Colors.grey.shade100),
     );
+  }
+
+  Widget transparentBox() {
+    return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 13.0),
+                child: Text("",
+                    style: TextStyle(
+                        fontSize: 6,
+                        fontFamily: "Poppins",
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
+        ),
+        width: MediaQuery.of(context).size.width,
+        color: Colors.grey.shade100);
   }
 
   @override
@@ -464,13 +493,13 @@ class _CartScreenState extends State<CartScreen> {
                                                     right: 15.0, bottom: 15.0),
                                                 child: SizedBox(
                                                   child: FloatingActionButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Icon(Icons.close,
-                                                          size: 16),
-                                                      ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Icon(Icons.close,
+                                                        size: 16),
+                                                  ),
                                                   width: 24,
                                                   height: 24,
                                                 ),
@@ -513,35 +542,38 @@ class _CartScreenState extends State<CartScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         cartProvider
-                                            .elementAt(index)
-                                            .productImageUrl
-                                            .length ==
-                                            0
+                                                    .elementAt(index)
+                                                    .productImageUrl
+                                                    .length ==
+                                                0
                                             ? Image.asset(
-                                          'images/placeholdersquare.jpg',
-                                          height: 55,
-                                          width: 55,
-                                          fit: BoxFit.fill,
-                                        ):
-                                        CachedNetworkImage(
-                                          height: 55,
-                                          width: 55,
-                                          imageUrl:
-                                          "${StringConstants.api_url}${cartProvider.elementAt(index).productImageUrl.first}",
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => SizedBox(
-                                            width: 8,
-                                            height: 8,
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image.asset(
                                                 'images/placeholdersquare.jpg',
                                                 height: 55,
                                                 width: 55,
                                                 fit: BoxFit.fill,
+                                              )
+                                            : CachedNetworkImage(
+                                                height: 55,
+                                                width: 55,
+                                                imageUrl:
+                                                    "${StringConstants.api_url}${cartProvider.elementAt(index).productImageUrl.first}",
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    SizedBox(
+                                                  width: 8,
+                                                  height: 8,
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Image.asset(
+                                                  'images/placeholdersquare.jpg',
+                                                  height: 55,
+                                                  width: 55,
+                                                  fit: BoxFit.fill,
+                                                ),
                                               ),
-                                        ),
                                         Expanded(
                                           child: Padding(
                                             padding: const EdgeInsets.only(
@@ -657,7 +689,7 @@ class _CartScreenState extends State<CartScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    applyCoupon(),
+                    if (isLoggedIn) applyCoupon() else transparentBox(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 2, horizontal: 16),
@@ -690,7 +722,12 @@ class _CartScreenState extends State<CartScreen> {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           dense: true,
-                          title: Text("Tax",style: TextStyle(fontSize: 14,),),
+                          title: Text(
+                            "Tax",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                           trailing: Text(Provider.of<CartDataWrapper>(context)
                                   .isLoading
                               ? "0"
