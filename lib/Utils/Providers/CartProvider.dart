@@ -68,7 +68,6 @@ class CartDataWrapper extends ChangeNotifier {
           if (totalAmount >= value.data!.minAmount) {
             double temp =
                 (totalAmount * value.data!.offerPercentage / 100);
-            print("temp ->> $temp");
             if (temp <= value.data!.offerUptoAmount) {
               totalAmount = totalAmount - temp;
               discount = temp;
