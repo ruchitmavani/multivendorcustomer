@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -48,10 +49,29 @@ class _AboutUsState extends State<AboutUs> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.network(
-                              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
-                              width: 60,
-                              height: 60),
+                          CachedNetworkImage(
+                            height: 60,
+                            width: 60,
+                            imageUrl:
+                            "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                SizedBox(
+                                  width: 12,
+                                  height: 12,
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets.all(
+                                        10.0),
+                                    child:
+                                    CircularProgressIndicator(),
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) =>
+                                Icon(Icons.map),
+                          ),
+
                           Space(width: 8.0),
                           // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
                           //     style: FontsTheme.boldTextStyle(size: 17))
@@ -88,6 +108,7 @@ class _AboutUsState extends State<AboutUs> {
             Space(
               height: 20,
             ),
+            if(Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl!="")
             Image.network(
               "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
               fit: BoxFit.fill,

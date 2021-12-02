@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -113,8 +114,22 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.network("${StringConstants.api_url}${sharedPrefs.logo}",
-                      width: 60, height: 60),
+                  CachedNetworkImage(
+                    height: 60,
+                    width: 60,
+                    imageUrl: "${StringConstants.api_url}${sharedPrefs.logo}",
+                    fit: BoxFit.fill,
+                    placeholder: (context, url) => SizedBox(
+                      width: 8,
+                      height: 8,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'images/placeholdersquare.jpg',
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 11.0),
@@ -440,46 +455,50 @@ class _OrderDetailsState extends State<OrderDetails> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if(widget.orderData.orderStatus.last=="Delivered")
-                  SizedBox(
-                    height: 44,
-                    child: ElevatedButton(
-                      child: Text(
-                        "Download invoice",
-                        style: TextStyle(fontSize: 13),
+                  if (widget.orderData.orderStatus.last == "Delivered")
+                    SizedBox(
+                      height: 44,
+                      child: ElevatedButton(
+                        child: Text(
+                          "Download invoice",
+                          style: TextStyle(fontSize: 13),
+                        ),
+                        onPressed: () {
+                          Printing.layoutPdf(
+                            onLayout: (PdfPageFormat format) {
+                              return generateInvoice(
+                                  format,
+                                  Invoice(
+                                      products: List.generate(
+                                          widget.orderData.orderItems.length,
+                                          (index) => Product(
+                                              widget.orderData.orderItems
+                                                  .elementAt(index)
+                                                  .productDetails
+                                                  .productName,
+                                              widget.orderData.orderItems
+                                                  .elementAt(index)
+                                                  .productDetails
+                                                  .productSellingPrice,
+                                              widget.orderData.orderItems
+                                                  .elementAt(index)
+                                                  .productQuantity)),
+                                      customerName:
+                                          "${sharedPrefs.customer_name}",
+                                      invoiceNumber:
+                                          "${widget.orderData.orderId}",
+                                      tax: widget.orderData.taxPercentage == 0
+                                          ? 0
+                                          : widget.orderData.taxPercentage /
+                                              100,
+                                      baseColor: PdfColors.teal,
+                                      accentColor: PdfColors.blueGrey900));
+                            },
+                          );
+                          // generateInvoice(PdfPageFormat.a4, qrcodeData);
+                        },
                       ),
-                      onPressed: () {
-                        Printing.layoutPdf(
-                          onLayout: (PdfPageFormat format) {
-                            return generateInvoice(
-                                format,
-                                Invoice(
-                                    products: List.generate(
-                                        widget.orderData.orderItems.length,
-                                        (index) => Product(
-                                            widget.orderData.orderItems
-                                                .elementAt(index)
-                                                .productDetails
-                                                .productName,
-                                            widget.orderData.orderItems
-                                                .elementAt(index)
-                                                .productDetails
-                                                .productSellingPrice,
-                                            widget.orderData.orderItems
-                                                .elementAt(index)
-                                                .productQuantity)),
-                                    customerName:
-                                        "${sharedPrefs.customer_name}",
-                                    invoiceNumber: "${widget.orderData.orderId}",
-                                    tax:widget.orderData.taxPercentage==0? 0:widget.orderData.taxPercentage/100,
-                                    baseColor: PdfColors.teal,
-                                    accentColor: PdfColors.blueGrey900));
-                          },
-                        );
-                        // generateInvoice(PdfPageFormat.a4, qrcodeData);
-                      },
                     ),
-                  ),
                 ],
               ),
       ),

@@ -177,8 +177,7 @@ class _OrderComponentState extends State<OrderComponent> {
                           width: 85,
                           decoration: BoxDecoration(
                             color: Provider.of<CustomColor>(context)
-                                .appPrimaryMaterialColor
-                                .shade100,
+                                .appPrimaryMaterialColor.withOpacity(0.1),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(17.0)),
                           ),

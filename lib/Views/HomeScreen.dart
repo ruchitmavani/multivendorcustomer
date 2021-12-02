@@ -268,52 +268,51 @@ class _HomeScreenState extends State<HomeScreen> {
           ? FloatingActionButton(
               onPressed: () {
                 showModalBottomSheet(
-                    context: context,
-                    isDismissible: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) {
-                      return Card(
-                        margin:
-                            EdgeInsets.only(right: 20, left: 20, bottom: 30),
-                        child: ListView.builder(
-                          itemCount: productDataList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                                context.go(helper(PageCollection.categories +
-                                    '/${productDataList.elementAt(index).categoryId}'));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 15),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        "${productDataList.elementAt(index).categoryName}"),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            "${productDataList.elementAt(index).productDetails.length}"),
-                                        Icon(
-                                          Icons.chevron_right,
-                                          color:
-                                              Provider.of<CustomColor>(context)
-                                                  .appPrimaryMaterialColor,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                  context: context,
+                  isDismissible: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return Card(
+                      margin: EdgeInsets.only(right: 20, left: 20, bottom: 30),
+                      child: ListView.builder(
+                        itemCount: productDataList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                              context.go(helper(PageCollection.categories +
+                                  '/${productDataList.elementAt(index).categoryId}'));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      "${productDataList.elementAt(index).categoryName}"),
+                                  Row(
+                                    children: [
+                                      Text(
+                                          "${productDataList.elementAt(index).productDetails.length}"),
+                                      Icon(
+                                        Icons.chevron_right,
+                                        color: Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
-                            );
-                          },
-                        ),
-                      );
-                    },);
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
               },
               child: Icon(
                 Icons.category_outlined,
@@ -964,7 +963,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                       ],
                     ),
-                  Expanded(
+                  vendorProvider!=null?Expanded(
                     child: Center(
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -972,7 +971,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text("Shop is Closed"),
                       ],
                     )),
-                  ),
+                  ):Expanded(child: Center(child: SizedBox(height: 20,width: 20 ,child: CircularProgressIndicator(),))),
                 ],
               ),
             ),
@@ -1020,8 +1019,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Container(
                             height: 150,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
+                            margin: EdgeInsets.only(
+                                left: 5, right: 5, top: 7, bottom: 9),
                             child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: productDataList.length,
@@ -1029,26 +1028,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (context, item) => Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  CachedNetworkImage(
-                                    height: 150,
-                                    width: 150,
-                                    imageUrl:
-                                        "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => SizedBox(
-                                      width: 8,
-                                      height: 8,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(40.0),
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset(
-                                      'images/placeholdersquare.jpg',
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: CachedNetworkImage(
                                       height: 150,
                                       width: 150,
+                                      imageUrl:
+                                          "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
                                       fit: BoxFit.fill,
+                                      placeholder: (context, url) => SizedBox(
+                                        width: 8,
+                                        height: 8,
+
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                        'images/placeholdersquare.jpg',
+                                        height: 150,
+                                        width: 150,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1058,7 +1057,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding:
                                         EdgeInsets.only(bottom: 10, left: 10),
                                     margin: EdgeInsets.only(
-                                        bottom: 4, top: 4, right: 5, left: 5),
+                                        top: 4, right: 5, left: 5),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(6),
                                       gradient: LinearGradient(
@@ -1068,7 +1067,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                           stops: [
                                             0.4,
-                                            1
+                                            0.8
                                           ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,

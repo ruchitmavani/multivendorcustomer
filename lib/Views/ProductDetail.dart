@@ -285,13 +285,70 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             style: FontsTheme.descriptionText(),
                                             textAlign: TextAlign.justify),
                                         SizedBox(width: 45,child: DiscountTag(mrp: productData.productMrp, selling: productData.productSellingPrice)),
+                                        Divider(
+                                          height: 15,
+                                        ),
+                                        Text(
+                                          "Stock left: ${productData.stockLeft}",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              color: productData.stockLeft < 10
+                                                  ? Colors.red
+                                                  : Provider.of<CustomColor>(
+                                                  context)
+                                                  .appPrimaryMaterialColor),
+                                        ),
+                                        productData.productLiveTiming.length > 0
+                                            ? productData.productLiveTiming
+                                            .contains("All Time")
+                                            ? SizedBox()
+                                            : Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .start,
+                                          children: [
+                                            Space(height: 6,),
+                                            Text(
+                                              "Available Time",
+                                              style: FontsTheme
+                                                  .subTitleStyle(
+                                                  color: Colors
+                                                      .black54,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600,
+                                                  size: 13),
+                                            ),
+                                            Space(height: 4),
+                                            for (int i = 0;
+                                            i <
+                                                productData
+                                                    .productLiveTiming
+                                                    .length;
+                                            i++) ...[
+                                              Text(
+                                                "${productData.productLiveTiming[i]}",
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight:
+                                                  FontWeight.w700,
+                                                  color: Colors
+                                                      .grey[800],
+                                                ),
+                                              ),
+                                            ],
+                                          ],
+                                        )
+                                            : SizedBox(),
                                         // Color Option
                                         if (colorList.length > 0)
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Space(height: 20),
+                                              Space(height: 15),
                                               Text(
                                                 "Color option",
                                                 style: FontsTheme.subTitleStyle(
@@ -441,62 +498,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               ),
                                             ],
                                           ),
-                                        Divider(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "Stock left: ${productData.stockLeft}",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              color: productData.stockLeft < 10
-                                                  ? Colors.red
-                                                  : Provider.of<CustomColor>(
-                                                          context)
-                                                      .appPrimaryMaterialColor),
-                                        ),
-                                        productData.productLiveTiming.length > 0
-                                            ? productData.productLiveTiming
-                                                    .contains("All Time")
-                                                ? SizedBox()
-                                                : Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Available Time",
-                                                        style: FontsTheme
-                                                            .subTitleStyle(
-                                                                color: Colors
-                                                                    .black54,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                size: 13),
-                                                      ),
-                                                      Space(height: 6),
-                                                      for (int i = 0;
-                                                          i <
-                                                              productData
-                                                                  .productLiveTiming
-                                                                  .length;
-                                                          i++) ...[
-                                                        Text(
-                                                          "${productData.productLiveTiming[i]}",
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: Colors
-                                                                .grey[800],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ],
-                                                  )
-                                            : SizedBox(),
+
+
                                         if (productData.bulkPriceList!.length !=
                                             0)
                                           Space(height: 18),

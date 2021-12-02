@@ -8,7 +8,12 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+import 'DiscountTag.dart';
 
 // ignore: must_be_immutable
 class ProductDescriptionInCart extends StatefulWidget {
@@ -31,6 +36,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
   int currentIndex = 0;
   int currentSizeIndex = 0;
   int displayImage = 0;
+  bool isVideo = false;
   double finalPrice = 0;
   int finalColor = 0;
   late ProductData productData;
@@ -60,8 +66,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
           }
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
-            finalColor =
-                productData.productVariationColors!.first.colorCode;
+            finalColor = productData.productVariationColors!.first.colorCode;
           }
           if (productData.productVariationColors!.length != 0) {
             currentIndex = productData.productVariationColors!.indexWhere(
@@ -106,50 +111,53 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     // }, onError: (e) {
     //   print(e);
     // });
-    int index = Provider.of<CartDataWrapper>(context,listen: false)
+    int index = Provider.of<CartDataWrapper>(context, listen: false)
         .cartData
         .indexWhere((element) => element.productId == productData.productId);
     print("cart index $index");
-    Provider.of<CartDataWrapper>(context,listen: false).cartData[index] = NewCartModel(
-        productId: productData.productId,
-        productColor: ProductColor(
-          colorCode: productData.productVariationColors!.length != 0
-              ? productData.productVariationColors!
-                  .elementAt(currentIndex)
-                  .colorCode
-              : 0,
-          isActive: productData.productVariationColors!.length != 0
-              ? productData.productVariationColors!
-                  .elementAt(currentIndex)
-                  .isActive
-              : false,
-        ),
-        productImageUrl: productData.productImageUrl,
-        productQuantity: 1,
-        productMrp: productData.productMrp,
-        productName: "${productData.productName}",
-        productSellingPrice: productData.productVariationSizes!.length != 0
-            ? productData.productVariationSizes!
-                .elementAt(currentSizeIndex)
-                .sellingPrice
-            : productData.productSellingPrice,
-        productSize: ProductSize(
-            size: productData.productVariationSizes!.length != 0
-                ? productData.productVariationSizes!
-                    .elementAt(currentSizeIndex)
-                    .size
-                : "",
-            mrp: productData.productMrp,
-            sellingPrice: productData.productVariationSizes!.length != 0
+    Provider.of<CartDataWrapper>(context, listen: false).cartData[index] =
+        NewCartModel(
+            productId: productData.productId,
+            productColor: ProductColor(
+              colorCode: productData.productVariationColors!.length != 0
+                  ? productData.productVariationColors!
+                      .elementAt(currentIndex)
+                      .colorCode
+                  : 0,
+              isActive: productData.productVariationColors!.length != 0
+                  ? productData.productVariationColors!
+                      .elementAt(currentIndex)
+                      .isActive
+                  : false,
+            ),
+            productImageUrl: productData.productImageUrl,
+            productQuantity: 1,
+            productMrp: productData.productMrp,
+            productName: "${productData.productName}",
+            productSellingPrice: productData.productVariationSizes!.length != 0
                 ? productData.productVariationSizes!
                     .elementAt(currentSizeIndex)
                     .sellingPrice
                 : productData.productSellingPrice,
-            isActive: productData.productVariationSizes!.length != 0
-                ? productData.productVariationSizes!
-                    .elementAt(currentSizeIndex)
-                    .isActive
-                : false),isBulk: false);
+            productSize: ProductSize(
+                size: productData.productVariationSizes!.length != 0
+                    ? productData.productVariationSizes!
+                        .elementAt(currentSizeIndex)
+                        .size
+                    : "",
+                mrp: productData.productMrp,
+                sellingPrice: productData.productVariationSizes!.length != 0
+                    ? productData.productVariationSizes!
+                        .elementAt(currentSizeIndex)
+                        .sellingPrice
+                    : productData.productSellingPrice,
+                isActive: productData.productVariationSizes!.length != 0
+                    ? productData.productVariationSizes!
+                        .elementAt(currentSizeIndex)
+                        .isActive
+                    : false),
+            isBulk: false);
+    Provider.of<CartDataWrapper>(context,listen: false).loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
     Fluttertoast.showToast(msg: "Update success");
   }
 
@@ -173,21 +181,51 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                         Space(
                           height: 20,
                         ),
-                        productData.productImageUrl.length == 0
+                        productData.productImageUrl.length == 0 &&
+                            productData.productVideoUrl.isEmpty &&
+                            productData.productYoutubeUrl.isEmpty
                             ? SizedBox(
-                                height: 230,
-                              )
+                          height: 230,
+                          child:
+                          Image.asset("images/placeholder.png"),
+                        )
                             : SizedBox(
-                                height: 230,
-                                child: Image.network(
-                                    "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
+                            height: 230,
+                            child: displayImage ==
+                                productData.productImageUrl.length
+                                ? productData.isYoutubeUrl
+                                ? YoutubePlayerIFrame(
+                              controller:
+                              YoutubePlayerController(
+                                initialVideoId:
+                                "${productData.productYoutubeUrl}",
+                                params: YoutubePlayerParams(
+                                  showControls: false,
+                                  mute: true,
+                                  showFullscreenButton: false,
+                                ),
+                              ),
+                              aspectRatio: 16 / 9,
+                            )
+                                : VideoPlayer(
+                                VideoPlayerController.network(
+                                    "${StringConstants.api_url + productData.productVideoUrl}")
+                                  ..initialize()
+                                  ..play()
+                                  ..setVolume(0))
+                                : Image.network(
+                                "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
                         Space(height: 20),
                         Container(
                           height: 50,
                           alignment: Alignment.center,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: productData.productImageUrl.length,
+                            itemCount: productData
+                                .productVideoUrl.isEmpty &&
+                                productData.productYoutubeUrl.isEmpty
+                                ? productData.productImageUrl.length
+                                : productData.productImageUrl.length + 1,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return Container(
@@ -196,18 +234,46 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                       border: Border.all(
                                           width: 1,
                                           color: Colors.grey.shade400),
-                                      borderRadius: BorderRadius.circular(4.0)),
+                                      borderRadius:
+                                      BorderRadius.circular(4.0)),
                                   width: 50,
                                   height: 50,
                                   child: Padding(
                                     padding: const EdgeInsets.all(6.0),
-                                    child: GestureDetector(
+                                    child: InkWell(
                                       onTap: () {
                                         setState(() {
                                           displayImage = index;
+                                          if ((productData.productVideoUrl
+                                              .isNotEmpty ||
+                                              productData
+                                                  .productYoutubeUrl
+                                                  .isNotEmpty) &&
+                                              index ==
+                                                  productData
+                                                      .productImageUrl
+                                                      .length) {
+                                            isVideo = true;
+                                          } else {
+                                            isVideo = false;
+                                          }
                                         });
                                       },
-                                      child: Image.network(
+                                      child: (productData.productVideoUrl
+                                          .isNotEmpty ||
+                                          productData
+                                              .productYoutubeUrl
+                                              .isNotEmpty) &&
+                                          index ==
+                                              productData
+                                                  .productImageUrl
+                                                  .length
+                                          ? Icon(
+                                        Icons.play_circle_outline,
+                                        color: Colors.grey,
+                                        size: 32,
+                                      )
+                                          : Image.network(
                                           "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
                                     ),
                                   ));
@@ -227,7 +293,11 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     Text("${productData.productName}",
                                         style:
                                             FontsTheme.boldTextStyle(size: 16)),
+                                    if (productData.productRatingAverage !=
+                                        0)
                                     Space(height: 8),
+                                    if (productData.productRatingAverage !=
+                                        0)
                                     Row(
                                       children: [
                                         Icon(Icons.star,
@@ -243,146 +313,228 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                         )
                                       ],
                                     ),
+                                    if (productData.productRatingAverage !=
+                                        0)
                                     Space(height: 8),
                                     Text("${productData.productDescription}",
                                         style: FontsTheme.descriptionText(),
                                         textAlign: TextAlign.justify),
+                                    SizedBox(width: 45,child: DiscountTag(mrp: productData.productMrp, selling: productData.productSellingPrice)),
 
+                                    Divider(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      "Stock left: ${productData.stockLeft}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                          color: productData.stockLeft < 10
+                                              ? Colors.red
+                                              : Provider.of<CustomColor>(
+                                              context)
+                                              .appPrimaryMaterialColor),
+                                    ),
+                                    productData.productLiveTiming.length > 0
+                                        ? productData.productLiveTiming
+                                        .contains("All Time")
+                                        ? SizedBox()
+                                        : Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Space(height: 6,),
+                                        Text(
+                                          "Available Time",
+                                          style: FontsTheme
+                                              .subTitleStyle(
+                                              color: Colors
+                                                  .black54,
+                                              fontWeight:
+                                              FontWeight
+                                                  .w600,
+                                              size: 13),
+                                        ),
+                                        Space(height: 4),
+                                        for (int i = 0;
+                                        i <
+                                            productData
+                                                .productLiveTiming
+                                                .length;
+                                        i++) ...[
+                                          Text(
+                                            "${productData.productLiveTiming[i]}",
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight:
+                                              FontWeight.w700,
+                                              color: Colors
+                                                  .grey[800],
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    )
+                                        : SizedBox(),
                                     // Color Option
-
-                                    Space(height: 20),
-                                    productData.productVariationColors!
-                                                .length !=
-                                            0
-                                        ? Text(
+                                    if (colorList.length > 0)
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Space(height: 18),
+                                          Text(
                                             "Color option",
                                             style: FontsTheme.subTitleStyle(
                                                 color: Colors.black54,
                                                 fontWeight: FontWeight.w600,
                                                 size: 13),
-                                          )
-                                        : Container(),
-                                    Space(height: 8),
-                                    Row(
-                                      children: colorList.map<Widget>((e) {
-                                        int index = colorList.indexOf(e);
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIndex = index;
-                                            });
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Container(
-                                              decoration: currentIndex == index
-                                                  ? BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 2,
-                                                          color: Provider.of<
-                                                                      CustomColor>(
-                                                                  context)
-                                                              .appPrimaryMaterialColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50.0))
-                                                  : null,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.0),
-                                                    child: Container(
-                                                        color: Color(
-                                                            e.colorCode),
-                                                        height: 25,
-                                                        width: 25)),
-                                              ),
-                                            ),
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-
-                                    // Size Option
-                                    Space(height: 18),
-                                    productData.productVariationSizes!.length !=
-                                            0
-                                        ? Text("Size Option",
-                                            style: FontsTheme.subTitleStyle(
-                                                color: Colors.black54,
-                                                fontWeight: FontWeight.w600,
-                                                size: 13))
-                                        : Container(),
-                                    Space(height: 8),
-                                    Row(
-                                      children: sizeList.map<Widget>((e) {
-                                        int index = sizeList.indexOf(e);
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentSizeIndex = index;
-                                              finalPrice = sizeList
-                                                  .elementAt(index)
-                                                  .sellingPrice;
-                                            });
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 1,
-                                                      color: currentSizeIndex ==
-                                                              index
-                                                          ? Provider.of<
-                                                                      CustomColor>(
-                                                                  context)
-                                                              .appPrimaryMaterialColor
-                                                          : Colors
-                                                              .grey.shade400),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.0),
+                                          Space(height: 8),
+                                          Row(
+                                            children:
+                                            colorList.map<Widget>((e) {
+                                              int index =
+                                              colorList.indexOf(e);
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    currentIndex = index;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.only(
+                                                      right: 8.0),
+                                                  child: Container(
+                                                    decoration: currentIndex ==
+                                                        index
+                                                        ? BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 2,
+                                                            color: Provider.of<CustomColor>(
+                                                                context)
+                                                                .appPrimaryMaterialColor),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            50.0))
+                                                        : null,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(4.0),
+                                                      child: ClipRRect(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              50.0),
+                                                          child: Container(
+                                                              color: Color(e
+                                                                  .colorCode),
+                                                              height: 25,
+                                                              width: 25)),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    if (sizeList.length > 0)
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Space(height: 18),
+                                          Text("Size Option",
+                                              style:
+                                              FontsTheme.subTitleStyle(
+                                                  color: Colors.black54,
+                                                  fontWeight:
+                                                  FontWeight.w600,
+                                                  size: 13)),
+                                          Space(height: 8),
+                                          Row(
+                                            children: sizeList.map<Widget>(
+                                                  (e) {
+                                                int index =
+                                                sizeList.indexOf(e);
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      currentSizeIndex =
+                                                          index;
+                                                      finalPrice = sizeList
+                                                          .elementAt(index)
+                                                          .sellingPrice;
+                                                    });
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .only(
+                                                        right: 8.0),
                                                     child: Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                        horizontal: 4,
-                                                      ),
-                                                      child: Text(
-                                                          "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                          style: FontsTheme.subTitleStyle(
-                                                              color: currentSizeIndex ==
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color: currentSizeIndex == index
+                                                                  ? Provider.of<CustomColor>(
+                                                                  context)
+                                                                  .appPrimaryMaterialColor
+                                                                  : Colors
+                                                                  .grey
+                                                                  .shade400),
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              5.0)),
+                                                      child: Padding(
+                                                        padding:
+                                                        const EdgeInsets
+                                                            .all(2.0),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              50.0),
+                                                          child: Container(
+                                                            alignment:
+                                                            Alignment
+                                                                .center,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal: 4,
+                                                            ),
+                                                            child: Text(
+                                                              "${e.size}  \u{20B9}${e.sellingPrice}",
+                                                              style: FontsTheme.subTitleStyle(
+                                                                  color: currentSizeIndex ==
                                                                       index
-                                                                  ? Provider.of<
-                                                                              CustomColor>(
-                                                                          context)
+                                                                      ? Provider.of<CustomColor>(context)
                                                                       .appPrimaryMaterialColor
-                                                                  : Colors.grey
+                                                                      : Colors
+                                                                      .grey
                                                                       .shade400,
-                                                              size: 12)),
-                                                      height: 20,
-                                                    )),
-                                              ),
-                                            ),
+                                                                  size: 12),
+                                                            ),
+                                                            height: 20,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ).toList(),
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    Space(height: 6)
+                                        ],
+                                      ),
+                                    Space(height: 20,),
                                   ],
                                 ),
                               ),
