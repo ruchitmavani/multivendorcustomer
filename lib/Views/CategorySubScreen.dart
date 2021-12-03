@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +10,6 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
-import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';

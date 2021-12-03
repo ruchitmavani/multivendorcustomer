@@ -2,11 +2,9 @@
 
 import 'dart:html';
 
-import 'package:badges/badges.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButtonBulk.dart';

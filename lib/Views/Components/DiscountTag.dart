@@ -3,8 +3,8 @@ import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:provider/provider.dart';
 
 class DiscountTag extends StatelessWidget {
-  double mrp;
-  double selling;
+  final double mrp;
+  final double selling;
 
   DiscountTag({Key? key, required this.mrp, required this.selling})
       : super(key: key);

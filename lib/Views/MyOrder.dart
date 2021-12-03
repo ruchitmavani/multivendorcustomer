@@ -1,21 +1,12 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/VendorModel.dart';
-import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
-import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderComponent.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MyOrder extends StatefulWidget {
