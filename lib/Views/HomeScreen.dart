@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -823,19 +820,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                           child: Card(
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              child: Image.network(
+                                                "${StringConstants.api_url}${bannerData.bannerUrl}",
+                                                fit: BoxFit.cover,
                                               ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
-                                                child: Image.network(
-                                                  "${StringConstants.api_url}${bannerData.bannerUrl}",
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              )),
+                                            ),
+                                          ),
                                         );
                                       },
                                     );
@@ -876,11 +874,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Row(
                                     children: [
                                       RichText(
-                                          text: TextSpan(
-                                        text: "Location:",
-                                        style: FontsTheme.descriptionText(
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                        text: TextSpan(
+                                          text: "Location:",
+                                          style: FontsTheme.descriptionText(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
                                       Icon(Icons.directions,
                                           size: 18,
                                           color:
@@ -891,13 +890,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           launch(
                                               "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
                                         },
-                                        child: Text(" Direction",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Provider.of<CustomColor>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
-                                                fontWeight: FontWeight.w600)),
+                                        child: Text(
+                                          " Direction",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Provider.of<CustomColor>(
+                                                      context)
+                                                  .appPrimaryMaterialColor,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -909,69 +910,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        isLoadingTop
-                            ? Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Shimmer.fromColors(
-                                    baseColor: Colors.white,
-                                    highlightColor: Colors.grey[300]!,
-                                    period: Duration(seconds: 2),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          20,
-                                      height: 100,
-                                      decoration: ShapeDecoration(
-                                        color: Colors.grey[300]!,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : trendingProducts.length != 0
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, top: 10),
-                                    child: Row(
-                                      children: [
-                                        Text("Top Selling Products",
-                                            style: FontsTheme.boldTextStyle(
-                                                size: 15)),
-                                      ],
-                                    ),
-                                  )
-                                : Container(),
-                        if (trendingProducts.length != 0)
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 4.0, bottom: 12, right: 4, left: 4),
-                            child: SizedBox(
-                              height: 90,
-                              child: ListView.builder(
-                                  itemCount: trendingProducts.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return TopSellingProductComponent(
-                                      productData:
-                                          trendingProducts.elementAt(index),
-                                    );
-                                  }),
-                            ),
-                          ),
                       ],
                     ),
-                  vendorProvider!=null?Expanded(
-                    child: Center(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Shop is Closed"),
-                      ],
-                    )),
-                  ):Expanded(child: Center(child: SizedBox(height: 20,width: 20 ,child: CircularProgressIndicator(),))),
+                  vendorProvider != null
+                      ? Expanded(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Shop is Closed"),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: Center(
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -1039,7 +999,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       placeholder: (context, url) => SizedBox(
                                         width: 8,
                                         height: 8,
-
                                       ),
                                       errorWidget: (context, url, error) =>
                                           Image.asset(

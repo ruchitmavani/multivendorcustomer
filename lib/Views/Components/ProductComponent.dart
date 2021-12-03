@@ -8,6 +8,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
@@ -186,47 +187,57 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    if (!isProductAvailable(
-        liveTimings: widget.productData.productLiveTiming)) {
-      return Text(
-        "Unavailable",
-        style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-      );
-    } else if (widget.productData.isRequestPrice) {
-      return SizedBox(
-        width: 35,
-        height: 35,
-        child: Card(
-          shape: CircleBorder(),
-          elevation: 0,
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: InkWell(
-                onTap: () {
-                  launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                },
-                child: Icon(
-                  Icons.link,
-                  size: 18,
-                  color: Colors.white,
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Closed") {
+      if (!isProductAvailable(
+          liveTimings: widget.productData.productLiveTiming)) {
+        return Text(
+          "Unavailable",
+          style:
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        );
+      } else if (widget.productData.isRequestPrice) {
+        return SizedBox(
+          width: 35,
+          height: 35,
+          child: Card(
+            shape: CircleBorder(),
+            elevation: 0,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                  },
+                  child: Icon(
+                    Icons.link,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    } else if (widget.productData.bulkPriceList!.length > 0) {
-      return SizedBox();
-    } else if (widget.productData.isStock) {
-      if (widget.productData.stockLeft <= 0) {
-        return Text(
-          "Out of Stock",
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
         );
+      } else if (widget.productData.bulkPriceList!.length > 0) {
+        return SizedBox();
+      } else if (widget.productData.isStock) {
+        if (widget.productData.stockLeft <= 0) {
+          return Text(
+            "Out of Stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+          );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
       } else {
         return AddRemoveButton(
           productData: widget.productData,
@@ -236,11 +247,10 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
         );
       }
     } else {
-      return AddRemoveButton(
-        productData: widget.productData,
-        isRounded: true,
-        colorIndex: 0,
-        sizeIndex: 0,
+      return Text(
+        "Closed",
+        style:
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
@@ -421,7 +431,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    if (!isProductAvailable(
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Closed"){
+      if (!isProductAvailable(
         liveTimings: widget.productData.productLiveTiming)) {
       return Text(
         "Unavailable",
@@ -478,5 +490,11 @@ class _ProductComponentListState extends State<ProductComponentList> {
         sizeIndex: 0,
       );
     }
-  }
+  }else {
+      return Text(
+        "Closed",
+        style:
+        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+      );
+    }}
 }

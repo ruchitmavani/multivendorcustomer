@@ -18,6 +18,7 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
@@ -284,63 +285,72 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             "${productData.productDescription}",
                                             style: FontsTheme.descriptionText(),
                                             textAlign: TextAlign.justify),
-                                        SizedBox(width: 45,child: DiscountTag(mrp: productData.productMrp, selling: productData.productSellingPrice)),
+                                        SizedBox(
+                                            width: 45,
+                                            child: DiscountTag(
+                                                mrp: productData.productMrp,
+                                                selling: productData
+                                                    .productSellingPrice)),
                                         Divider(
                                           height: 15,
                                         ),
-                                        Text(
-                                          "Stock left: ${productData.stockLeft}",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              color: productData.stockLeft < 10
-                                                  ? Colors.red
-                                                  : Provider.of<CustomColor>(
-                                                  context)
-                                                  .appPrimaryMaterialColor),
-                                        ),
+                                        if (productData.isStock)
+                                          Text(
+                                            "Stock left: ${productData.stockLeft}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                                color: productData.stockLeft <
+                                                        10
+                                                    ? Colors.red
+                                                    : Provider.of<CustomColor>(
+                                                            context)
+                                                        .appPrimaryMaterialColor),
+                                          ),
                                         productData.productLiveTiming.length > 0
                                             ? productData.productLiveTiming
-                                            .contains("All Time")
-                                            ? SizedBox()
-                                            : Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            Space(height: 6,),
-                                            Text(
-                                              "Available Time",
-                                              style: FontsTheme
-                                                  .subTitleStyle(
-                                                  color: Colors
-                                                      .black54,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w600,
-                                                  size: 13),
-                                            ),
-                                            Space(height: 4),
-                                            for (int i = 0;
-                                            i <
-                                                productData
-                                                    .productLiveTiming
-                                                    .length;
-                                            i++) ...[
-                                              Text(
-                                                "${productData.productLiveTiming[i]}",
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight:
-                                                  FontWeight.w700,
-                                                  color: Colors
-                                                      .grey[800],
-                                                ),
-                                              ),
-                                            ],
-                                          ],
-                                        )
+                                                    .contains("All Time")
+                                                ? SizedBox()
+                                                : Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Space(
+                                                        height: 6,
+                                                      ),
+                                                      Text(
+                                                        "Available Time",
+                                                        style: FontsTheme
+                                                            .subTitleStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                size: 13),
+                                                      ),
+                                                      Space(height: 4),
+                                                      for (int i = 0;
+                                                          i <
+                                                              productData
+                                                                  .productLiveTiming
+                                                                  .length;
+                                                          i++) ...[
+                                                        Text(
+                                                          "${productData.productLiveTiming[i]}",
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors
+                                                                .grey[800],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ],
+                                                  )
                                             : SizedBox(),
                                         // Color Option
                                         if (colorList.length > 0)
@@ -498,7 +508,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               ),
                                             ],
                                           ),
-
 
                                         if (productData.bulkPriceList!.length !=
                                             0)
@@ -726,57 +735,71 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               ),
                             ]),
                       ),
-                      if (isProductAvailable(
-                          liveTimings: productData.productLiveTiming))
-                        if (productData.isRequestPrice)
-                          ElevatedButton(
-                            onPressed: () {
-                              launch(
-                                  "https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                            },
-                            child: Text("Request Price",
-                                style: FontsTheme.boldTextStyle(
-                                    color: Colors.white)),
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all<double>(0),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Provider.of<CustomColor>(context)
-                                      .appPrimaryMaterialColor),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                            ),
-                          )
-                        else if (productData.isStock &&
-                            productData.stockLeft <= 0)
+                      if (Provider.of<VendorModelWrapper>(context).isShopOpen !=
+                              "" &&
+                          Provider.of<VendorModelWrapper>(context).isShopOpen !=
+                              "Closed")
+                        if (isProductAvailable(
+                            liveTimings: productData.productLiveTiming))
+                          if (productData.isRequestPrice)
+                            ElevatedButton(
+                              onPressed: () {
+                                launch(
+                                    "https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                              },
+                              child: Text("Request Price",
+                                  style: FontsTheme.boldTextStyle(
+                                      color: Colors.white)),
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all<double>(0),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor),
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                              ),
+                            )
+                          else if (productData.isStock &&
+                              productData.stockLeft <= 0)
+                            Text(
+                              "Out of Stock",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 12,
+                                  color: Colors.red),
+                            )
+                          else if (productData.bulkPriceList!.length != 0)
+                            AddRemoveButtonBulk(
+                              productData: productData,
+                              isRounded: false,
+                              price: finalPrice / finalQuantity,
+                              qty: finalQuantity,
+                            )
+                          else
+                            AddRemoveButton(
+                              productData: productData,
+                              isRounded: false,
+                              colorIndex: currentIndex,
+                              sizeIndex: currentSizeIndex,
+                            )
+                        else
                           Text(
-                            "Out of Stock",
+                            "Unavailable",
                             style: TextStyle(
                                 fontFamily: 'Poppins',
-                                fontSize: 12,
+                                fontSize: 13,
                                 color: Colors.red),
-                          )
-                        else if (productData.bulkPriceList!.length != 0)
-                          AddRemoveButtonBulk(
-                            productData: productData,
-                            isRounded: false,
-                            price: finalPrice / finalQuantity,
-                            qty: finalQuantity,
-                          )
-                        else
-                          AddRemoveButton(
-                            productData: productData,
-                            isRounded: false,
-                            colorIndex: currentIndex,
-                            sizeIndex: currentSizeIndex,
                           )
                       else
                         Text(
-                          "Unavailable",
+                          "Shop is Closed",
                           style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 13,
+                              fontSize: 12,
                               color: Colors.red),
-                        ),
+                        )
                     ],
                   ),
                 ),
@@ -841,15 +864,15 @@ class _QuantitySelectState extends State<QuantitySelect> {
                     padding: const EdgeInsets.only(right: 15.0, bottom: 15.0),
                     child: SizedBox(
                       child: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(
-                            Icons.close,
-                            size: 16,
-                            color: Colors.grey.shade600,
-                          ),
-                          ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
                       width: 24,
                       height: 24,
                     ),

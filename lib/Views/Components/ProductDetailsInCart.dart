@@ -324,6 +324,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     Divider(
                                       height: 15,
                                     ),
+                                    if(productData.isStock)
                                     Text(
                                       "Stock left: ${productData.stockLeft}",
                                       style: TextStyle(
@@ -363,7 +364,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                             productData
                                                 .productLiveTiming
                                                 .length;
-                                        i++) ...[
+                                        i++)...[
                                           Text(
                                             "${productData.productLiveTiming[i]}",
                                             style: TextStyle(
