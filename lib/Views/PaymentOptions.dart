@@ -225,42 +225,56 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ListTile(
-                  title: const Text(
-                    'Cash on Delivery', style: TextStyle(fontSize: 12),),
-                  leading: Radio<paymentMethods>(
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    value: paymentMethods.COD,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      },);
-                    },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.COD;
+                    });
+                  },
+                  child: ListTile(
+                    title: const Text(
+                      'Cash on Delivery', style: TextStyle(fontSize: 12),),
+                    leading: Radio<paymentMethods>(
+                      activeColor: Provider
+                          .of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      value: paymentMethods.COD,
+                      groupValue: _selection,
+                      onChanged: (paymentMethods? value) {
+                        setState(() {
+                          _selection = value!;
+                          print(value);
+                        },);
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Divider(),
                 ),
-                ListTile(
-                  title: const Text(
-                    'Pay Online', style: TextStyle(fontSize: 12),),
-                  leading: Radio<paymentMethods>(
-                    value: paymentMethods.PAY_ONLINE,
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      });
-                    },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.PAY_ONLINE;
+                    });
+                  },
+                  child: ListTile(
+                    title: const Text(
+                      'Pay Online', style: TextStyle(fontSize: 12),),
+                    leading: Radio<paymentMethods>(
+                      value: paymentMethods.PAY_ONLINE,
+                      activeColor: Provider
+                          .of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      groupValue: _selection,
+                      onChanged: (paymentMethods? value) {
+                        setState(() {
+                          _selection = value!;
+                          print(value);
+                        });
+                      },
+                    ),
                   ),
                 ),
                 if(Provider
@@ -275,21 +289,27 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     .of<VendorModelWrapper>(context)
                     .vendorModel!
                     .isStorePickupEnable)
-                  ListTile(
-                    title: const Text(
-                      'Take Away', style: TextStyle(fontSize: 12),),
-                    leading: Radio<paymentMethods>(
-                      value: paymentMethods.TAKEAWAY,
-                      activeColor: Provider
-                          .of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      groupValue: _selection,
-                      onChanged: (paymentMethods? value) {
-                        setState(() {
-                          _selection = value!;
-                          print(value);
-                        });
-                      },
+                  InkWell(onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.TAKEAWAY;
+                    });
+                  },
+                    child: ListTile(
+                      title: const Text(
+                        'Take Away', style: TextStyle(fontSize: 12),),
+                      leading: Radio<paymentMethods>(
+                        value: paymentMethods.TAKEAWAY,
+                        activeColor: Provider
+                            .of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        groupValue: _selection,
+                        onChanged: (paymentMethods? value) {
+                          setState(() {
+                            _selection = value!;
+                            print(value);
+                          });
+                        },
+                      ),
                     ),
                   ),
               ],

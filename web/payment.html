@@ -29,9 +29,6 @@
              window.parent.postMessage("SUCCESS","*");      //2
              window.localStorage.setItem("payment_id",response.razorpay_payment_id);
              window.localStorage.setItem("signature",response.razorpay_signature);
-             alert("Payment id: "+response.razorpay_payment_id)
-             alert("order id: "+ response.razorpay_order_id);
-              alert("signature "+ response.razorpay_signature);
           },
           "prefill": {
              "name": "",

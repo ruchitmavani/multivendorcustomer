@@ -326,7 +326,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     ),
                                     if(productData.isStock)
                                     Text(
-                                      "Stock left: ${productData.stockLeft}",
+                                      "${productData.stockLeft} left in Stock",
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: 'Poppins',
