@@ -55,28 +55,30 @@ class VendorModelWrapper with ChangeNotifier {
   String getShopTimingStatus() {
     List<BusinessHour> list = vendorModel!.businessHours;
     if (vendorModel!.isOnline) {
-      if (list[weekIndex(list)].isOpen == false) {
-        return "Closed";
-      } else {
-        TimeOfDay startTime = TimeOfDay.fromDateTime(
-            DateFormat.jm().parse(list[weekIndex(list)].openTime));
-        TimeOfDay endTime = TimeOfDay.fromDateTime(
-            DateFormat.jm().parse(list[weekIndex(list)].closeTime));
-        TimeOfDay currentTime = TimeOfDay.now();
-        if (currentTime.hour > startTime.hour &&
-            currentTime.hour < endTime.hour) {
-          return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
-        } else if ((currentTime.hour == startTime.hour &&
-                currentTime.minute > startTime.minute) ||
-            (currentTime.hour == endTime.hour &&
-                currentTime.minute < endTime.minute)) {
-          return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
-        } else {
-          return "Closed";
-        }
-      }
+      // if (list[weekIndex(list)].isOpen == false) {
+      //   return "Closed";
+      // } else {
+      //   TimeOfDay startTime = TimeOfDay.fromDateTime(
+      //       DateFormat.jm().parse(list[weekIndex(list)].openTime));
+      //   TimeOfDay endTime = TimeOfDay.fromDateTime(
+      //       DateFormat.jm().parse(list[weekIndex(list)].closeTime));
+      //   TimeOfDay currentTime = TimeOfDay.now();
+      //   if (currentTime.hour > startTime.hour &&
+      //       currentTime.hour < endTime.hour) {
+      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      //   } else if ((currentTime.hour == startTime.hour &&
+      //           currentTime.minute > startTime.minute) ||
+      //       (currentTime.hour == endTime.hour &&
+      //           currentTime.minute < endTime.minute)) {
+      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      //   } else {
+      //     return "Closed";
+      //   }
+      // }
+      return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+
     } else {
-      return "Closed";
+      return "Offline";
     }
   }
 }

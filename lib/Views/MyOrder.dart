@@ -50,31 +50,6 @@ class _MyOrderState extends State<MyOrder> {
 
   int todayIndex = DateTime.now().weekday - 1;
 
-
-  String getShopTimingStatus(VendorDataModel vendorProvider) {
-    List<BusinessHour> list = vendorProvider.businessHours;
-    if (list[todayIndex].isOpen == false) {
-      return "Closed";
-    } else {
-      TimeOfDay startTime = TimeOfDay.fromDateTime(
-          DateFormat.jm().parse(list[todayIndex].openTime));
-      TimeOfDay endTime = TimeOfDay.fromDateTime(
-          DateFormat.jm().parse(list[todayIndex].closeTime));
-      TimeOfDay currentTime = TimeOfDay.now();
-      if (currentTime.hour > startTime.hour &&
-          currentTime.hour < endTime.hour) {
-        return "${list[todayIndex].openTime} - ${list[todayIndex].closeTime}";
-      } else if ((currentTime.hour == startTime.hour &&
-          currentTime.minute > startTime.minute) ||
-          (currentTime.hour == endTime.hour &&
-              currentTime.minute < endTime.minute)) {
-        return "${list[todayIndex].openTime} - ${list[todayIndex].closeTime}";
-      } else {
-        return "Closed";
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

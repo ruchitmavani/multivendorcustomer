@@ -736,7 +736,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       if (Provider.of<VendorModelWrapper>(context).isShopOpen !=
                               "" &&
                           Provider.of<VendorModelWrapper>(context).isShopOpen !=
-                              "Closed")
+                              "Offline")
                         if (isProductAvailable(
                             liveTimings: productData.productLiveTiming))
                           if (productData.isRequestPrice)
@@ -792,7 +792,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           )
                       else
                         Text(
-                          "Shop is Closed",
+                          "Shop is Offline",
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,

@@ -188,7 +188,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
 
   Widget cartButton() {
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Closed") {
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Text(
@@ -248,7 +248,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       }
     } else {
       return Text(
-        "Closed",
+        "Offline",
         style:
             TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
@@ -432,7 +432,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
 
   Widget cartButton() {
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Closed"){
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline"){
       if (!isProductAvailable(
         liveTimings: widget.productData.productLiveTiming)) {
       return Text(
@@ -492,7 +492,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
     }
   }else {
       return Text(
-        "Closed",
+        "Offline",
         style:
         TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
