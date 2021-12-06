@@ -110,7 +110,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 13.0, right: 5, top: 11, bottom: 11),
+                  left: 15.0, right: 5, top: 11, bottom: 11),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -173,7 +173,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ? InkWell(
                               onTap: () async {
                                 await launch(
-                                    "https://wa.me/${widget.orderData.vendorDetails.mobileNumber}");
+                                    "https://wa.me/+91${widget.orderData.vendorDetails.mobileNumber}");
                               },
                               child: SvgPicture.asset(
                                 "images/whatsapp.svg",

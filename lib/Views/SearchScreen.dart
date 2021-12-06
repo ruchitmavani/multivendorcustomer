@@ -212,7 +212,7 @@ class _SearchState extends State<Search> {
                                                 setState(() {});
                                               },
                                               child:
-                                                  Icon(Icons.close, size: 16),
+                                                  Icon(Icons.close, size: 16,color: Colors.white,),
                                              ),
                                           width: 24,
                                           height: 24,

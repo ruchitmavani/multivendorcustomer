@@ -60,9 +60,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
                         ? Image.network(
-                            StringConstants.api_url +
-                                widget.productData.productImageUrl.first,
-                            fit: BoxFit.contain)
+                        StringConstants.api_url +
+                            widget.productData.productImageUrl.first,
+                        fit: BoxFit.contain)
                         : Image.asset("images/placeholder.png"),
                   ),
                 ),
@@ -100,8 +100,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                     decoration: TextDecoration.lineThrough,
                                     decorationThickness: 3,
                                     decorationColor:
-                                        Provider.of<CustomColor>(context)
-                                            .appPrimaryMaterialColor,
+                                    Provider
+                                        .of<CustomColor>(context)
+                                        .appPrimaryMaterialColor,
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey.shade700,
@@ -119,7 +120,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.productSellingPrice}  ",
+                                  "${widget.productData.productSellingPrice} ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
@@ -129,7 +130,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                 DiscountTag(
                                     mrp: widget.productData.productMrp,
                                     selling:
-                                        widget.productData.productSellingPrice)
+                                    widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -137,7 +138,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider
+                                      .of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
@@ -147,7 +149,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider
+                                      .of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
@@ -163,7 +166,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                  "${widget.productData.bulkPriceList!.first
+                                      .pricePerUnit}",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
@@ -187,14 +191,18 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+    if (Provider
+        .of<VendorModelWrapper>(context)
+        .isShopOpen != "" &&
+        Provider
+            .of<VendorModelWrapper>(context)
+            .isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Text(
           "Unavailable",
           style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+          TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(
@@ -203,13 +211,16 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            color: Provider
+                .of<CustomColor>(context)
+                .appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
-                    launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                    launch(
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
                   },
                   child: Icon(
                     Icons.link,
@@ -250,7 +261,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       return Text(
         "Offline",
         style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
@@ -290,10 +301,13 @@ class _ProductComponentListState extends State<ProductComponentList> {
           children: [
             SizedBox(
               height: 110,
-              width: MediaQuery.of(context).size.width * 0.2,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.2,
               child: widget.productData.productImageUrl.length > 0
                   ? Image.network(StringConstants.api_url +
-                      widget.productData.productImageUrl.first)
+                  widget.productData.productImageUrl.first)
                   : Image.asset("images/placeholder.png"),
             ),
             Space(width: 8),
@@ -310,7 +324,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                         "${widget.productData.productName}",
                         style: TextStyle(
                             fontSize: 13,
-                            color: Provider.of<CustomColor>(context)
+                            color: Provider
+                                .of<CustomColor>(context)
                                 .appPrimaryMaterialColor,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Poppins'),
@@ -319,7 +334,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                         padding: const EdgeInsets.only(right: 4.0),
                         child: widget.productData.productRatingAverage != 0
                             ? ProductRating(
-                                widget.productData.productRatingAverage)
+                            widget.productData.productRatingAverage)
                             : SizedBox(),
                       )
                     ],
@@ -348,8 +363,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                      Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
+                                  Provider
+                                      .of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Colors.grey.shade700,
@@ -367,13 +383,17 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.productSellingPrice}",
+                                  "${widget.productData.productSellingPrice} ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
-                                )
+                                ),
+                                DiscountTag(
+                                    mrp: widget.productData.productMrp,
+                                    selling:
+                                    widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -381,7 +401,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider
+                                      .of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
@@ -391,7 +412,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider
+                                      .of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
@@ -407,7 +429,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                  "${widget.productData.bulkPriceList!.first
+                                      .pricePerUnit}",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
@@ -431,14 +454,18 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+    if (Provider
+        .of<VendorModelWrapper>(context)
+        .isShopOpen != "" &&
+        Provider
+            .of<VendorModelWrapper>(context)
+            .isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Text(
           "Unavailable",
           style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+          TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(
@@ -447,13 +474,16 @@ class _ProductComponentListState extends State<ProductComponentList> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            color: Provider
+                .of<CustomColor>(context)
+                .appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
-                    launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                    launch(
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
                   },
                   child: Icon(
                     Icons.link,
@@ -494,7 +524,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
       return Text(
         "Offline",
         style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }

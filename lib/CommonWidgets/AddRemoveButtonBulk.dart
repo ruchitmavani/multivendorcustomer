@@ -8,7 +8,6 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButtonBulk extends StatefulWidget {
@@ -47,29 +46,52 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   }
 
   Future addToCart() async {
-    Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
-          NewCartModel(
-              productId: widget.productData.productId,
-              productColor: ProductColor(
-                colorCode: 0,
-                isActive: false,
-              ),
-              productImageUrl: widget.productData.productImageUrl,
-              productQuantity: widget.qty,
-              productMrp: widget.productData.productMrp,
-              productName: "${widget.productData.productName}",
-              productSellingPrice: widget.price,
-              productSize: ProductSize(
-                  size: "",
-                  mrp: widget.productData.productMrp,
-                  sellingPrice: widget.productData.productSellingPrice,
-                  isActive: false),isBulk: true),
-        );
-    Provider.of<CartDataWrapper>(context, listen: false)
-        .cartData
-        .forEach((element) {
-      print(element.toJson());
-    });
+    if (widget.productData.isStock) {
+      if (widget.qty <= widget.productData.stockLeft) {
+        Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
+              NewCartModel(
+                  productId: widget.productData.productId,
+                  productColor: ProductColor(
+                    colorCode: 0,
+                    isActive: false,
+                  ),
+                  productImageUrl: widget.productData.productImageUrl,
+                  productQuantity: widget.qty,
+                  productMrp: widget.productData.productMrp,
+                  productName: "${widget.productData.productName}",
+                  productSellingPrice: widget.price,
+                  productSize: ProductSize(
+                      size: "",
+                      mrp: widget.productData.productMrp,
+                      sellingPrice: widget.productData.productSellingPrice,
+                      isActive: false),
+                  isBulk: true),
+            );
+      } else {
+        Fluttertoast.showToast(msg: "No in Stock");
+      }
+    } else {
+      Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
+            NewCartModel(
+                productId: widget.productData.productId,
+                productColor: ProductColor(
+                  colorCode: 0,
+                  isActive: false,
+                ),
+                productImageUrl: widget.productData.productImageUrl,
+                productQuantity: widget.qty,
+                productMrp: widget.productData.productMrp,
+                productName: "${widget.productData.productName}",
+                productSellingPrice: widget.price,
+                productSize: ProductSize(
+                    size: "",
+                    mrp: widget.productData.productMrp,
+                    sellingPrice: widget.productData.productSellingPrice,
+                    isActive: false),
+                isBulk: true),
+          );
+    }
+
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
@@ -157,33 +179,6 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
             .vendorUniqId);
-  }
-
-  Future updateCart(int quantity) async {
-    // log("--cart id $cartId");
-    // await CartController.update(jsonMap: {
-    //   "cart_id":
-    //       cartId != null ? cartId : widget.productData.cartDetails!.cartId,
-    //   "product_quantity": quantity
-    // }).then((value) {
-    //   if (value.success) {
-    //     setState(() {
-    //       print(quantity);
-    //       q = quantity;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
-    var provider = Provider.of<CartDataWrapper>(context, listen: false);
-
-    provider.incrementQuantity(
-        quantity: quantity, productId: widget.productData.productId);
-    provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
   }
 
   @override

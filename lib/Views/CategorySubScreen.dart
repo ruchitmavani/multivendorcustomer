@@ -121,15 +121,15 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _provider = Provider.of<CategoryName>(context).categoryName;
+    var provider = Provider.of<CategoryName>(context).categoryName;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text(_provider.indexWhere(
+        title: Text(provider.indexWhere(
                     (element) => element.categoryId == widget.categoryId) ==
                 -1
             ? ""
-            : "${_provider.elementAt(_provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}"),
+            : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}",style: TextStyle(color: Colors.black,fontFamily: 'Poppins',fontWeight: FontWeight.w700,fontSize: 16),),
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
@@ -190,7 +190,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 6),
+                        horizontal: 8.0, vertical: 10),
                     child: GridView.builder(
                       controller: scrollController,
                       itemCount: productDataList.length,

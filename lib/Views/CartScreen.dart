@@ -96,7 +96,7 @@ class _CartScreenState extends State<CartScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(Icons.close, size: 16),
+                        child: Icon(Icons.close, size: 16,color: Colors.white,),
                       ),
                       width: 24,
                       height: 24,
@@ -198,7 +198,7 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(Icons.close, size: 16),
+                          child: Icon(Icons.close, size: 16,color: Colors.white,),
                         ),
                         width: 24,
                         height: 24,
@@ -498,7 +498,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           .pop();
                                                     },
                                                     child: Icon(Icons.close,
-                                                        size: 16),
+                                                        size: 16,color: Colors.white,),
                                                   ),
                                                   width: 24,
                                                   height: 24,

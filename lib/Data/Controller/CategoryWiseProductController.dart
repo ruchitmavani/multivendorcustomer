@@ -24,7 +24,7 @@ class CategoryController {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
             "sort": "$sortKey"
           };
-
+    print("customer --> $data");
     print("all product $data");
     ResponseClass<List<AllCategoryModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");

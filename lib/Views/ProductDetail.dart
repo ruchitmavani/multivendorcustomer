@@ -744,7 +744,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             ElevatedButton(
                               onPressed: () {
                                 launch(
-                                    "https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                                    "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
                               },
                               child: Text("Request Price",
                                   style: FontsTheme.boldTextStyle(
@@ -868,8 +868,8 @@ class _QuantitySelectState extends State<QuantitySelect> {
                         },
                         child: Icon(
                           Icons.close,
-                          size: 16,
-                          color: Colors.grey.shade600,
+                          size: 16
+                          ,color: Colors.white,
                         ),
                       ),
                       width: 24,

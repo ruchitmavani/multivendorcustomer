@@ -81,7 +81,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                       ? widget.productData.productVariationSizes!
                           .elementAt(widget.sizeIndex)
                           .isActive
-                      : false),isBulk: false),
+                      : false),
+              isBulk: false),
         );
     Provider.of<CartDataWrapper>(context, listen: false)
         .cartData
@@ -199,9 +200,18 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     //   print(e);
     // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
+    if (widget.productData.isStock) {
+      if (quantity  <= widget.productData.stockLeft) {
+        provider.incrementQuantity(
+            quantity: quantity, productId: widget.productData.productId);
+      } else {
+        Fluttertoast.showToast(msg: "No more left in Stock");
+      }
+    }else{
+      provider.incrementQuantity(
+          quantity: quantity, productId: widget.productData.productId);
+    }
 
-    provider.incrementQuantity(
-        quantity: quantity, productId: widget.productData.productId);
     provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
   }
 
@@ -220,7 +230,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Widget build(BuildContext context) {
     //todo pending is request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
-                productId: widget.productData.productId) == 0
+                productId: widget.productData.productId) ==
+            0
         ? widget.isRounded
             ? SizedBox(
                 width: 35,

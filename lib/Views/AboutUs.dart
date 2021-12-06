@@ -95,7 +95,7 @@ class _AboutUsState extends State<AboutUs> {
                       Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
                           onTap: () async {
                             await launch(
-                                "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                                "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                           },
                           child: SvgPicture.asset("images/whatsapp.svg",color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,)):Container(),
                       Space(width: 10)

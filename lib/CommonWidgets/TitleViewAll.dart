@@ -11,13 +11,13 @@ class TitleViewAll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0,right: 10),
+      padding: const EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("${title ?? ""}", style: FontsTheme.boldTextStyle(size: 15)),
-          if (isViewAll) TextButton(
-              onPressed: onPressed,
+          if (isViewAll) InkWell(
+              onTap: onPressed,
               child: Text(
                 "View all >",
                 style: TextStyle(
