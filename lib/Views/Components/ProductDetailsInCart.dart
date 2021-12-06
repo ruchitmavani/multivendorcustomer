@@ -157,7 +157,8 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                         .isActive
                     : false),
             isBulk: false);
-    Provider.of<CartDataWrapper>(context,listen: false).loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
+    Provider.of<CartDataWrapper>(context, listen: false)
+        .loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
     Fluttertoast.showToast(msg: "Update success");
   }
 
@@ -182,48 +183,44 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                           height: 20,
                         ),
                         productData.productImageUrl.length == 0 &&
-                            productData.productVideoUrl.isEmpty &&
-                            productData.productYoutubeUrl.isEmpty
+                                productData.productVideoUrl.isEmpty &&
+                                productData.productYoutubeUrl.isEmpty
                             ? SizedBox(
-                          height: 230,
-                          child:
-                          Image.asset("images/placeholder.png"),
-                        )
+                                height: 230,
+                                child: Image.asset("images/placeholder.png"),
+                              )
                             : SizedBox(
-                            height: 230,
-                            child: displayImage ==
-                                productData.productImageUrl.length
-                                ? productData.isYoutubeUrl
-                                ? YoutubePlayerIFrame(
-                              controller:
-                              YoutubePlayerController(
-                                initialVideoId:
-                                "${productData.productYoutubeUrl}",
-                                params: YoutubePlayerParams(
-                                  showControls: false,
-                                  mute: true,
-                                  showFullscreenButton: false,
-                                ),
-                              ),
-                              aspectRatio: 16 / 9,
-                            )
-                                : VideoPlayer(
-                                VideoPlayerController.network(
-                                    "${StringConstants.api_url + productData.productVideoUrl}")
-                                  ..initialize()
-                                  ..play()
-                                  ..setVolume(0))
-                                : Image.network(
-                                "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
+                                height: 230,
+                                child: displayImage ==
+                                        productData.productImageUrl.length
+                                    ? productData.isYoutubeUrl
+                                        ? YoutubePlayerIFrame(
+                                            controller: YoutubePlayerController(
+                                              initialVideoId:
+                                                  "${productData.productYoutubeUrl}",
+                                              params: YoutubePlayerParams(
+                                                showControls: false,
+                                                mute: true,
+                                                showFullscreenButton: false,
+                                              ),
+                                            ),
+                                            aspectRatio: 16 / 9,
+                                          )
+                                        : VideoPlayer(VideoPlayerController.network(
+                                            "${StringConstants.api_url + productData.productVideoUrl}")
+                                          ..initialize()
+                                          ..play()
+                                          ..setVolume(0))
+                                    : Image.network(
+                                        "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
                         Space(height: 20),
                         Container(
                           height: 50,
                           alignment: Alignment.center,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: productData
-                                .productVideoUrl.isEmpty &&
-                                productData.productYoutubeUrl.isEmpty
+                            itemCount: productData.productVideoUrl.isEmpty &&
+                                    productData.productYoutubeUrl.isEmpty
                                 ? productData.productImageUrl.length
                                 : productData.productImageUrl.length + 1,
                             scrollDirection: Axis.horizontal,
@@ -234,8 +231,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                       border: Border.all(
                                           width: 1,
                                           color: Colors.grey.shade400),
-                                      borderRadius:
-                                      BorderRadius.circular(4.0)),
+                                      borderRadius: BorderRadius.circular(4.0)),
                                   width: 50,
                                   height: 50,
                                   child: Padding(
@@ -245,14 +241,12 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                         setState(() {
                                           displayImage = index;
                                           if ((productData.productVideoUrl
-                                              .isNotEmpty ||
-                                              productData
-                                                  .productYoutubeUrl
-                                                  .isNotEmpty) &&
+                                                      .isNotEmpty ||
+                                                  productData.productYoutubeUrl
+                                                      .isNotEmpty) &&
                                               index ==
                                                   productData
-                                                      .productImageUrl
-                                                      .length) {
+                                                      .productImageUrl.length) {
                                             isVideo = true;
                                           } else {
                                             isVideo = false;
@@ -260,21 +254,19 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                         });
                                       },
                                       child: (productData.productVideoUrl
-                                          .isNotEmpty ||
-                                          productData
-                                              .productYoutubeUrl
-                                              .isNotEmpty) &&
-                                          index ==
-                                              productData
-                                                  .productImageUrl
-                                                  .length
+                                                      .isNotEmpty ||
+                                                  productData.productYoutubeUrl
+                                                      .isNotEmpty) &&
+                                              index ==
+                                                  productData
+                                                      .productImageUrl.length
                                           ? Icon(
-                                        Icons.play_circle_outline,
-                                        color: Colors.grey,
-                                        size: 32,
-                                      )
+                                              Icons.play_circle_outline,
+                                              color: Colors.grey,
+                                              size: 32,
+                                            )
                                           : Image.network(
-                                          "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
+                                              "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
                                     ),
                                   ));
                             },
@@ -293,97 +285,100 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     Text("${productData.productName}",
                                         style:
                                             FontsTheme.boldTextStyle(size: 16)),
-                                    if (productData.productRatingAverage !=
-                                        0)
-                                    Space(height: 8),
-                                    if (productData.productRatingAverage !=
-                                        0)
-                                    Row(
-                                      children: [
-                                        Icon(Icons.star,
-                                            color: Colors.amber, size: 18),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 2.0),
-                                          child: Text(
-                                              "${productData.productRatingAverage}",
-                                              style: FontsTheme.valueStyle(
-                                                  size: 11,
-                                                  fontWeight: FontWeight.w600)),
-                                        )
-                                      ],
-                                    ),
-                                    if (productData.productRatingAverage !=
-                                        0)
-                                    Space(height: 8),
+                                    if (productData.productRatingAverage != 0)
+                                      Space(height: 8),
+                                    if (productData.productRatingAverage != 0)
+                                      Row(
+                                        children: [
+                                          Icon(Icons.star,
+                                              color: Colors.amber, size: 18),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 2.0),
+                                            child: Text(
+                                                "${productData.productRatingAverage}",
+                                                style: FontsTheme.valueStyle(
+                                                    size: 11,
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          )
+                                        ],
+                                      ),
+                                    if (productData.productRatingAverage != 0)
+                                      Space(height: 8),
                                     Text("${productData.productDescription}",
                                         style: FontsTheme.descriptionText(),
                                         textAlign: TextAlign.justify),
-                                    SizedBox(width: 45,child: DiscountTag(mrp: productData.productMrp, selling: productData.productSellingPrice)),
+                                    SizedBox(
+                                        width: 45,
+                                        child: DiscountTag(
+                                            mrp: productData.productMrp,
+                                            selling: productData
+                                                .productSellingPrice)),
 
                                     Divider(
                                       height: 15,
                                     ),
-                                    if(productData.isStock)
-                                    Text(
-                                      "${productData.stockLeft} left in Stock",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w400,
-                                          color: productData.stockLeft < 10
-                                              ? Colors.red
-                                              : Provider.of<CustomColor>(
-                                              context)
-                                              .appPrimaryMaterialColor),
-                                    ),
+                                    if (productData.isStock)
+                                      if (productData.stockLeft <= 20)
+                                        Text(
+                                          "${productData.stockLeft} left in Stock",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              color: productData.stockLeft < 10
+                                                  ? Colors.red
+                                                  : Provider.of<CustomColor>(
+                                                          context)
+                                                      .appPrimaryMaterialColor),
+                                        ),
                                     productData.productLiveTiming.length > 0
                                         ? productData.productLiveTiming
-                                        .contains("All Time")
-                                        ? SizedBox()
-                                        : Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Space(height: 6,),
-                                        Text(
-                                          "Available Time",
-                                          style: FontsTheme
-                                              .subTitleStyle(
-                                              color: Colors
-                                                  .black54,
-                                              fontWeight:
-                                              FontWeight
-                                                  .w600,
-                                              size: 13),
-                                        ),
-                                        Space(height: 4),
-                                        for (int i = 0;
-                                        i <
-                                            productData
-                                                .productLiveTiming
-                                                .length;
-                                        i++)...[
-                                          Text(
-                                            "${productData.productLiveTiming[i]}",
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight:
-                                              FontWeight.w700,
-                                              color: Colors
-                                                  .grey[800],
-                                            ),
-                                          ),
-                                        ],
-                                      ],
-                                    )
+                                                .contains("All Time")
+                                            ? SizedBox()
+                                            : Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Space(
+                                                    height: 6,
+                                                  ),
+                                                  Text(
+                                                    "Available Time",
+                                                    style: FontsTheme
+                                                        .subTitleStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            size: 13),
+                                                  ),
+                                                  Space(height: 4),
+                                                  for (int i = 0;
+                                                      i <
+                                                          productData
+                                                              .productLiveTiming
+                                                              .length;
+                                                      i++) ...[
+                                                    Text(
+                                                      "${productData.productLiveTiming[i]}",
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.grey[800],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ],
+                                              )
                                         : SizedBox(),
                                     // Color Option
                                     if (colorList.length > 0)
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Space(height: 18),
                                           Text(
@@ -396,9 +391,8 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                           Space(height: 8),
                                           Row(
                                             children:
-                                            colorList.map<Widget>((e) {
-                                              int index =
-                                              colorList.indexOf(e);
+                                                colorList.map<Widget>((e) {
+                                              int index = colorList.indexOf(e);
                                               return GestureDetector(
                                                 onTap: () {
                                                   setState(() {
@@ -407,34 +401,35 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                 },
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      right: 8.0),
+                                                      const EdgeInsets.only(
+                                                          right: 8.0),
                                                   child: Container(
                                                     decoration: currentIndex ==
-                                                        index
+                                                            index
                                                         ? BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 2,
-                                                            color: Provider.of<CustomColor>(
-                                                                context)
-                                                                .appPrimaryMaterialColor),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            50.0))
+                                                            border: Border.all(
+                                                                width: 2,
+                                                                color: Provider.of<
+                                                                            CustomColor>(
+                                                                        context)
+                                                                    .appPrimaryMaterialColor),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50.0))
                                                         : null,
                                                     child: Padding(
                                                       padding:
-                                                      const EdgeInsets
-                                                          .all(4.0),
+                                                          const EdgeInsets.all(
+                                                              4.0),
                                                       child: ClipRRect(
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              50.0),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
                                                           child: Container(
-                                                              color: Color(e
-                                                                  .colorCode),
+                                                              color: Color(
+                                                                  e.colorCode),
                                                               height: 25,
                                                               width: 25)),
                                                     ),
@@ -448,27 +443,23 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                     if (sizeList.length > 0)
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Space(height: 18),
                                           Text("Size Option",
-                                              style:
-                                              FontsTheme.subTitleStyle(
+                                              style: FontsTheme.subTitleStyle(
                                                   color: Colors.black54,
-                                                  fontWeight:
-                                                  FontWeight.w600,
+                                                  fontWeight: FontWeight.w600,
                                                   size: 13)),
                                           Space(height: 8),
                                           Row(
                                             children: sizeList.map<Widget>(
-                                                  (e) {
-                                                int index =
-                                                sizeList.indexOf(e);
+                                              (e) {
+                                                int index = sizeList.indexOf(e);
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      currentSizeIndex =
-                                                          index;
+                                                      currentSizeIndex = index;
                                                       finalPrice = sizeList
                                                           .elementAt(index)
                                                           .sellingPrice;
@@ -476,36 +467,35 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                   },
                                                   child: Padding(
                                                     padding:
-                                                    const EdgeInsets
-                                                        .only(
-                                                        right: 8.0),
+                                                        const EdgeInsets.only(
+                                                            right: 8.0),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                           border: Border.all(
                                                               width: 1,
-                                                              color: currentSizeIndex == index
-                                                                  ? Provider.of<CustomColor>(
-                                                                  context)
-                                                                  .appPrimaryMaterialColor
-                                                                  : Colors
-                                                                  .grey
-                                                                  .shade400),
+                                                              color: currentSizeIndex ==
+                                                                      index
+                                                                  ? Provider.of<
+                                                                              CustomColor>(
+                                                                          context)
+                                                                      .appPrimaryMaterialColor
+                                                                  : Colors.grey
+                                                                      .shade400),
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              5.0)),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0)),
                                                       child: Padding(
                                                         padding:
-                                                        const EdgeInsets
-                                                            .all(2.0),
+                                                            const EdgeInsets
+                                                                .all(2.0),
                                                         child: ClipRRect(
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              50.0),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
                                                           child: Container(
-                                                            alignment:
-                                                            Alignment
+                                                            alignment: Alignment
                                                                 .center,
                                                             margin: EdgeInsets
                                                                 .symmetric(
@@ -514,13 +504,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                             child: Text(
                                                               "${e.size}  \u{20B9}${e.sellingPrice}",
                                                               style: FontsTheme.subTitleStyle(
-                                                                  color: currentSizeIndex ==
-                                                                      index
-                                                                      ? Provider.of<CustomColor>(context)
-                                                                      .appPrimaryMaterialColor
+                                                                  color: currentSizeIndex == index
+                                                                      ? Provider.of<CustomColor>(
+                                                                              context)
+                                                                          .appPrimaryMaterialColor
                                                                       : Colors
-                                                                      .grey
-                                                                      .shade400,
+                                                                          .grey
+                                                                          .shade400,
                                                                   size: 12),
                                                             ),
                                                             height: 20,
@@ -535,7 +525,9 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                           ),
                                         ],
                                       ),
-                                    Space(height: 20,),
+                                    Space(
+                                      height: 20,
+                                    ),
                                   ],
                                 ),
                               ),

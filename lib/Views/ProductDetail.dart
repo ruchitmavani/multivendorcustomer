@@ -293,6 +293,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                           height: 15,
                                         ),
                                         if (productData.isStock)
+                                          if(productData.stockLeft<=20)
                                           Text(
                                             "${productData.stockLeft}  left in Stock",
                                             style: TextStyle(

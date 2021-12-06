@@ -10,7 +10,9 @@ class CartDataWrapper extends ChangeNotifier {
   List<TaxDetail> taxData = [];
   bool _isLoading = true;
   bool isCouponApplied = false;
+
   bool get isLoading => _isLoading;
+
   set isLoading(bool isLoading) => _isLoading = isLoading;
   int totalItems = 0;
   late double totalAmount;
@@ -58,16 +60,15 @@ class CartDataWrapper extends ChangeNotifier {
             discount = value.data!.flatAmount as double;
             isCouponApplied = true;
             Fluttertoast.showToast(msg: "${value.message}");
-
-          }else{
-            discount=0;
-            Fluttertoast.showToast(msg: "your coupon do not meet minimum requirements");
+          } else {
+            discount = 0;
+            Fluttertoast.showToast(
+                msg: "your coupon do not meet minimum requirements");
           }
         }
         if (value.data!.couponType.toLowerCase() == "percentage") {
           if (totalAmount >= value.data!.minAmount) {
-            double temp =
-                (totalAmount * value.data!.offerPercentage / 100);
+            double temp = (totalAmount * value.data!.offerPercentage / 100);
             if (temp <= value.data!.offerUptoAmount) {
               totalAmount = totalAmount - temp;
               discount = temp;
@@ -77,10 +78,10 @@ class CartDataWrapper extends ChangeNotifier {
             }
             isCouponApplied = true;
             Fluttertoast.showToast(msg: "${value.message}");
-
-          }else{
-            discount=0;
-            Fluttertoast.showToast(msg: "your coupon do not meet minimum requirements");
+          } else {
+            discount = 0;
+            Fluttertoast.showToast(
+                msg: "your coupon do not meet minimum requirements");
           }
         }
         notifyListeners();

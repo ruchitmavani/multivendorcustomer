@@ -432,48 +432,56 @@ class _ProductComponentListState extends State<ProductComponentList> {
 
   Widget cartButton() {
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline"){
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
-        liveTimings: widget.productData.productLiveTiming)) {
-      return Text(
-        "Unavailable",
-        style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-      );
-    } else if (widget.productData.isRequestPrice) {
-      return SizedBox(
-        width: 35,
-        height: 35,
-        child: Card(
-          shape: CircleBorder(),
-          elevation: 0,
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: InkWell(
-                onTap: () {
-                  launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                },
-                child: Icon(
-                  Icons.link,
-                  size: 18,
-                  color: Colors.white,
+          liveTimings: widget.productData.productLiveTiming)) {
+        return Text(
+          "Unavailable",
+          style:
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        );
+      } else if (widget.productData.isRequestPrice) {
+        return SizedBox(
+          width: 35,
+          height: 35,
+          child: Card(
+            shape: CircleBorder(),
+            elevation: 0,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
+                  },
+                  child: Icon(
+                    Icons.link,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    } else if (widget.productData.bulkPriceList!.length > 0) {
-      return SizedBox();
-    } else if (widget.productData.isStock) {
-      if (widget.productData.stockLeft <= 0) {
-        return Text(
-          "Out of Stock",
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
         );
+      } else if (widget.productData.bulkPriceList!.length > 0) {
+        return SizedBox();
+      } else if (widget.productData.isStock) {
+        if (widget.productData.stockLeft <= 0) {
+          return Text(
+            "Out of Stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+          );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
       } else {
         return AddRemoveButton(
           productData: widget.productData,
@@ -483,18 +491,11 @@ class _ProductComponentListState extends State<ProductComponentList> {
         );
       }
     } else {
-      return AddRemoveButton(
-        productData: widget.productData,
-        isRounded: true,
-        colorIndex: 0,
-        sizeIndex: 0,
-      );
-    }
-  }else {
       return Text(
         "Offline",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
-    }}
+    }
+  }
 }
