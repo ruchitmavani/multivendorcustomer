@@ -620,6 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SliverToBoxAdapter(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           isLoadingCate
                               ? Center(
@@ -647,6 +648,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : productDataList.length == 0
                                   ? SizedBox()
                                   : Container(
+                            width: MediaQuery.of(context).size.width,
                                       color: Colors.white,
                                       padding:
                                           EdgeInsets.only(left: 10, top: 10),
