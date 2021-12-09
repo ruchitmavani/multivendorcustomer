@@ -648,10 +648,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               : productDataList.length == 0
                                   ? SizedBox()
                                   : Container(
-                            width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.of(context).size.width,
                                       color: Colors.white,
                                       padding:
-                                          EdgeInsets.only(left: 10, top: 10),
+                                          EdgeInsets.only(left: 15, top: 10,),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -662,7 +662,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Container(
                                             height: 150,
                                             margin: EdgeInsets.only(
-                                                left: 5,
                                                 right: 5,
                                                 top: 7,
                                                 bottom: 9),
@@ -671,74 +670,80 @@ class _HomeScreenState extends State<HomeScreen> {
                                               itemCount: productDataList.length,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, item) =>
-                                                  Stack(
+                                                  InkWell(
+                                                    onTap: (){
+                                                      context.go(helper(PageCollection.categories +
+                                                          '/${productDataList.elementAt(item).categoryId}'));
+                                                    },
+                                                    child: Stack(
                                                 alignment: Alignment.center,
                                                 children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6),
-                                                    child: CachedNetworkImage(
-                                                      height: 150,
-                                                      width: 150,
-                                                      imageUrl:
-                                                          "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
-                                                      fit: BoxFit.fill,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              SizedBox(
-                                                        width: 8,
-                                                        height: 8,
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.asset(
-                                                        'images/placeholdersquare.jpg',
-                                                        height: 150,
-                                                        width: 150,
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    height: 150,
-                                                    width: 150,
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 10, left: 10),
-                                                    margin: EdgeInsets.only(
-                                                        top: 4,
-                                                        right: 5,
-                                                        left: 5),
-                                                    decoration: BoxDecoration(
+                                                    ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               6),
-                                                      gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.transparent,
-                                                            Colors.black87
-                                                          ],
-                                                          stops: [
-                                                            0.4,
-                                                            0.8
-                                                          ],
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
-                                                          tileMode:
-                                                              TileMode.clamp),
+                                                      child: CachedNetworkImage(
+                                                        height: 150,
+                                                        width: 150,
+                                                        imageUrl:
+                                                            "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
+                                                        fit: BoxFit.fill,
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                SizedBox(
+                                                          width: 8,
+                                                          height: 8,
+                                                        ),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Image.asset(
+                                                          'images/placeholdersquare.jpg',
+                                                          height: 150,
+                                                          width: 150,
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    child: Text(
-                                                      "${productDataList.elementAt(item).categoryName}",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
+                                                    Container(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      height: 150,
+                                                      width: 150,
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 10, left: 10),
+                                                      margin: EdgeInsets.only(
+                                                          top: 4,
+                                                          right: 5,
+                                                          left: 5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                6),
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                              Colors.transparent,
+                                                              Colors.black87
+                                                            ],
+                                                            stops: [
+                                                              0.4,
+                                                              0.8
+                                                            ],
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                            tileMode:
+                                                                TileMode.clamp),
+                                                      ),
+                                                      child: Text(
+                                                        "${productDataList.elementAt(item).categoryName}",
+                                                        style: TextStyle(
+                                                            color: Colors.white),
+                                                      ),
                                                     ),
-                                                  ),
                                                 ],
                                               ),
+                                                  ),
                                             ),
                                           ),
                                         ],
@@ -753,7 +758,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : recentlyBought.length == 0
                                     ? Container()
                                     : Padding(
-                                        padding: const EdgeInsets.only(left: 5),
+                                        padding: const EdgeInsets.only(left: 5,right: 5),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -768,7 +773,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 4.0),
+                                                        horizontal: 8.0),
                                                 child: ListView.builder(
                                                     shrinkWrap: true,
                                                     scrollDirection:
@@ -777,17 +782,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         recentlyBought.length,
                                                     itemBuilder:
                                                         (context, index) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
-                                                        child: RecentlyBought(
-                                                          productData:
-                                                              recentlyBought
-                                                                  .elementAt(
-                                                                      index),
-                                                        ),
+                                                      return RecentlyBought(
+                                                        productData:
+                                                            recentlyBought
+                                                                .elementAt(
+                                                                    index),
                                                       );
                                                     }),
                                               ),
@@ -1044,7 +1043,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                  vendorProvider != null
+                  (vendorProvider != null && isLoadingBan)
                       ? Expanded(
                           child: Center(
                             child: Column(
@@ -1073,6 +1072,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget categoryWiseProducts() {
     return productDataList.length == 0
         ? Container(
+      alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.43,
             child: Column(
               mainAxisSize: MainAxisSize.max,
