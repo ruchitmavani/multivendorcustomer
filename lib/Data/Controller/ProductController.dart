@@ -17,7 +17,7 @@ class ProductController {
       required int limit,
       required int page,
       required String sortKey}) async {
-    String url = StringConstants.api_url + StringConstants.vendor_all_product;
+    String url = StringConstants.api_url + StringConstants.customer_find_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
