@@ -144,7 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           isLoadingTop = false;
           trendingProducts = value.data;
@@ -170,7 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           isLoadingRece = false;
           recentlyBought = value.data!;
@@ -368,18 +366,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 imageUrl:
                                                     "${StringConstants.api_url}${vendorProvider.logo}",
                                                 fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    SizedBox(
-                                                  width: 12,
-                                                  height: 12,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                ),
+                                                placeholder: (context, url) {
+                                                  return SizedBox(
+                                                    width: 12,
+                                                    height: 12,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  );
+                                                },
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Icon(Icons.map),
@@ -650,8 +649,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : Container(
                                       width: MediaQuery.of(context).size.width,
                                       color: Colors.white,
-                                      padding:
-                                          EdgeInsets.only(left: 15, top: 10,),
+                                      padding: EdgeInsets.only(
+                                        left: 15,
+                                        top: 10,
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -660,91 +661,106 @@ class _HomeScreenState extends State<HomeScreen> {
                                               style: FontsTheme.boldTextStyle(
                                                   size: 15)),
                                           Container(
-                                            height: 150,
+                                            height: 100,
                                             margin: EdgeInsets.only(
-                                                right: 5,
-                                                top: 7,
-                                                bottom: 9),
+                                                right: 5, top: 7, bottom: 9),
                                             child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: productDataList.length,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, item) =>
-                                                  InkWell(
-                                                    onTap: (){
-                                                      context.go(helper(PageCollection.categories +
-                                                          '/${productDataList.elementAt(item).categoryId}'));
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    productDataList.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, item) {
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      context.go(helper(
+                                                          PageCollection
+                                                                  .categories +
+                                                              '/${productDataList.elementAt(item).categoryId}'));
                                                     },
                                                     child: Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      child: CachedNetworkImage(
-                                                        height: 150,
-                                                        width: 150,
-                                                        imageUrl:
-                                                            "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
-                                                        fit: BoxFit.fill,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                SizedBox(
-                                                          width: 8,
-                                                          height: 8,
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Image.asset(
-                                                          'images/placeholdersquare.jpg',
-                                                          height: 150,
-                                                          width: 150,
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
                                                       alignment:
-                                                          Alignment.bottomLeft,
-                                                      height: 150,
-                                                      width: 150,
-                                                      padding: EdgeInsets.only(
-                                                          bottom: 10, left: 10),
-                                                      margin: EdgeInsets.only(
-                                                          top: 4,
-                                                          right: 5,
-                                                          left: 5),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
-                                                        gradient: LinearGradient(
-                                                            colors: [
-                                                              Colors.transparent,
-                                                              Colors.black87
-                                                            ],
-                                                            stops: [
-                                                              0.4,
-                                                              0.8
-                                                            ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                            tileMode:
-                                                                TileMode.clamp),
-                                                      ),
-                                                      child: Text(
-                                                        "${productDataList.elementAt(item).categoryName}",
-                                                        style: TextStyle(
-                                                            color: Colors.white),
-                                                      ),
+                                                          Alignment.center,
+                                                      children: [
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(6),
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            height: 100,
+                                                            width: 100,
+                                                            imageUrl:
+                                                                "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
+                                                            fit: BoxFit.fill,
+                                                            placeholder:
+                                                                (context,
+                                                                        url) =>
+                                                                    SizedBox(
+                                                              width: 8,
+                                                              height: 8,
+                                                            ),
+                                                            errorWidget:
+                                                                (context, url,
+                                                                        error) =>
+                                                                    Image.asset(
+                                                              'images/placeholdersquare.jpg',
+                                                              height: 150,
+                                                              width: 150,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          height: 100,
+                                                          width: 100,
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10,
+                                                                  left: 10),
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 4,
+                                                                  right: 5,
+                                                                  left: 5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6),
+                                                            gradient: LinearGradient(
+                                                                colors: [
+                                                                  Colors
+                                                                      .transparent,
+                                                                  Colors.black87
+                                                                ],
+                                                                stops: [
+                                                                  0.4,
+                                                                  0.8
+                                                                ],
+                                                                begin: Alignment
+                                                                    .topCenter,
+                                                                end: Alignment
+                                                                    .bottomCenter,
+                                                                tileMode:
+                                                                    TileMode
+                                                                        .clamp),
+                                                          ),
+                                                          child: Text(
+                                                            "${productDataList.elementAt(item).categoryName}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 11),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                ],
-                                              ),
-                                                  ),
-                                            ),
+                                                  );
+                                                }),
                                           ),
                                         ],
                                       ),
@@ -758,7 +774,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : recentlyBought.length == 0
                                     ? Container()
                                     : Padding(
-                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -1072,7 +1089,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget categoryWiseProducts() {
     return productDataList.length == 0
         ? Container(
-      alignment: Alignment.center,
+            alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.43,
             child: Column(

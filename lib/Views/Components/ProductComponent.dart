@@ -27,10 +27,11 @@ class ProductComponentGrid extends StatefulWidget {
 class _ProductComponentGridState extends State<ProductComponentGrid> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
-        width: 200,
+        width: size.width > 400 ? 220 : size.width / 2.2,
         height: 254,
         child: Container(
           decoration: BoxDecoration(
@@ -60,127 +61,129 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
                         ? Image.network(
-                        StringConstants.api_url +
-                            widget.productData.productImageUrl.first,
-                        fit: BoxFit.contain)
+                            StringConstants.api_url +
+                                widget.productData.productImageUrl.first,
+                            fit: BoxFit.contain)
                         : Image.asset("images/placeholder.png"),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    "${widget.productData.productName}",
-                    style: FontsTheme.subTitleStyle(),
-                  ),
-                ),
-                Text(
-                  "${widget.productData.productDescription}",
-                  style: FontsTheme.descriptionText(
-                      size: 11, fontWeight: FontWeight.w500),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "${widget.productData.productName}",
+                        style: FontsTheme.subTitleStyle(),
+                      ),
+                    ),
+                    Text(
+                      "${widget.productData.productDescription}",
+                      style: FontsTheme.descriptionText(
+                          size: 11, fontWeight: FontWeight.w500),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (widget.productData.productSellingPrice !=
-                              widget.productData.productMrp)
-                            if (!(widget.productData.isRequestPrice ||
-                                widget.productData.bulkPriceList!.length > 0))
-                              Text(
-                                "\u{20B9} ${widget.productData.productMrp}",
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationThickness: 3,
-                                    decorationColor:
-                                    Provider
-                                        .of<CustomColor>(context)
-                                        .appPrimaryMaterialColor,
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey.shade700,
-                                    fontSize: 11),
-                              ),
-                          if (!(widget.productData.isRequestPrice ||
-                              widget.productData.bulkPriceList!.length > 0))
-                            Row(
-                              children: [
-                                Text(
-                                  "\u{20B9}",
-                                  style: TextStyle(
-                                      fontFamily: "",
-                                      fontSize: 12,
-                                      color: Colors.black87),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (widget.productData.productSellingPrice !=
+                                  widget.productData.productMrp)
+                                if (!(widget.productData.isRequestPrice ||
+                                    widget.productData.bulkPriceList!.length >
+                                        0))
+                                  Text(
+                                    "\u{20B9} ${widget.productData.productMrp}",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationThickness: 3,
+                                        decorationColor:
+                                            Provider.of<CustomColor>(context)
+                                                .appPrimaryMaterialColor,
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey.shade700,
+                                        fontSize: 11),
+                                  ),
+                              if (!(widget.productData.isRequestPrice ||
+                                  widget.productData.bulkPriceList!.length > 0))
+                                Row(
+                                  children: [
+                                    Text(
+                                      "\u{20B9}",
+                                      style: TextStyle(
+                                          fontFamily: "",
+                                          fontSize: 12,
+                                          color: Colors.black87),
+                                    ),
+                                    Text(
+                                      "${widget.productData.productSellingPrice} ",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Colors.black87,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    DiscountTag(
+                                        mrp: widget.productData.productMrp,
+                                        selling: widget
+                                            .productData.productSellingPrice)
+                                  ],
                                 ),
+                              if (widget.productData.isRequestPrice)
                                 Text(
-                                  "${widget.productData.productSellingPrice} ",
+                                  "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Colors.black87,
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                DiscountTag(
-                                    mrp: widget.productData.productMrp,
-                                    selling:
-                                    widget.productData.productSellingPrice)
-                              ],
-                            ),
-                          if (widget.productData.isRequestPrice)
-                            Text(
-                              "Request Price",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          if (widget.productData.isRequestPrice)
-                            Text(
-                              "",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
-                                  fontSize: 4,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          if (widget.productData.bulkPriceList!.length > 0)
-                            Row(
-                              children: [
+                              if (widget.productData.isRequestPrice)
                                 Text(
-                                  "\u{20B9}",
-                                  style: TextStyle(
-                                      fontFamily: "",
-                                      fontSize: 12,
-                                      color: Colors.black87),
-                                ),
-                                Text(
-                                  "${widget.productData.bulkPriceList!.first
-                                      .pricePerUnit}",
+                                  "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Colors.black87,
-                                      fontSize: 12,
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      fontSize: 4,
                                       fontWeight: FontWeight.w600),
                                 ),
-                              ],
-                            ),
+                              if (widget.productData.bulkPriceList!.length > 0)
+                                Row(
+                                  children: [
+                                    Text(
+                                      "\u{20B9}",
+                                      style: TextStyle(
+                                          fontFamily: "",
+                                          fontSize: 12,
+                                          color: Colors.black87),
+                                    ),
+                                    Text(
+                                      "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Colors.black87,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                          cartButton(),
                         ],
                       ),
-                      cartButton(),
-                    ],
-                  ),
+                    )
+                  ],
                 )
               ],
             ),
@@ -191,18 +194,14 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    if (Provider
-        .of<VendorModelWrapper>(context)
-        .isShopOpen != "" &&
-        Provider
-            .of<VendorModelWrapper>(context)
-            .isShopOpen != "Offline") {
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Text(
           "Unavailable",
           style:
-          TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(
@@ -211,9 +210,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider
-                .of<CustomColor>(context)
-                .appPrimaryMaterialColor,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -261,7 +258,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       return Text(
         "Offline",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
@@ -301,13 +298,10 @@ class _ProductComponentListState extends State<ProductComponentList> {
           children: [
             SizedBox(
               height: 110,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
                   ? Image.network(StringConstants.api_url +
-                  widget.productData.productImageUrl.first)
+                      widget.productData.productImageUrl.first)
                   : Image.asset("images/placeholder.png"),
             ),
             Space(width: 8),
@@ -324,8 +318,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                         "${widget.productData.productName}",
                         style: TextStyle(
                             fontSize: 13,
-                            color: Provider
-                                .of<CustomColor>(context)
+                            color: Provider.of<CustomColor>(context)
                                 .appPrimaryMaterialColor,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Poppins'),
@@ -334,7 +327,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                         padding: const EdgeInsets.only(right: 4.0),
                         child: widget.productData.productRatingAverage != 0
                             ? ProductRating(
-                            widget.productData.productRatingAverage)
+                                widget.productData.productRatingAverage)
                             : SizedBox(),
                       )
                     ],
@@ -363,9 +356,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                  Provider
-                                      .of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
+                                      Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Colors.grey.shade700,
@@ -393,7 +385,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                 DiscountTag(
                                     mrp: widget.productData.productMrp,
                                     selling:
-                                    widget.productData.productSellingPrice)
+                                        widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -401,8 +393,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
+                                  color: Provider.of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
@@ -412,8 +403,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
+                                  color: Provider.of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
@@ -429,8 +419,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.bulkPriceList!.first
-                                      .pricePerUnit}",
+                                  "${widget.productData.bulkPriceList!.first.pricePerUnit}",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
@@ -454,18 +443,14 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    if (Provider
-        .of<VendorModelWrapper>(context)
-        .isShopOpen != "" &&
-        Provider
-            .of<VendorModelWrapper>(context)
-            .isShopOpen != "Offline") {
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Text(
           "Unavailable",
           style:
-          TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(
@@ -474,9 +459,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider
-                .of<CustomColor>(context)
-                .appPrimaryMaterialColor,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -524,7 +507,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
       return Text(
         "Offline",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }

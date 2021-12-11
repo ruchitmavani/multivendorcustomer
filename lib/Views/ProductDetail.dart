@@ -281,32 +281,37 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                           Space(height: 8),
                                         Text(
                                             "${productData.productDescription}",
-                                            style: FontsTheme.descriptionText(),
+                                            style: FontsTheme.descriptionText(
+                                                fontWeight: FontWeight.w400),
                                             textAlign: TextAlign.justify),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
                                         SizedBox(
                                             width: 45,
                                             child: DiscountTag(
                                                 mrp: productData.productMrp,
                                                 selling: productData
                                                     .productSellingPrice)),
+                                        if (productData.isStock)
+                                          if (productData.stockLeft <= 20)
+                                            Text(
+                                              "${productData.stockLeft}  left in Stock",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.w400,
+                                                  color: productData.stockLeft <
+                                                          10
+                                                      ? Colors.red
+                                                      : Provider.of<
+                                                                  CustomColor>(
+                                                              context)
+                                                          .appPrimaryMaterialColor),
+                                            ),
                                         Divider(
                                           height: 15,
                                         ),
-                                        if (productData.isStock)
-                                          if(productData.stockLeft<=20)
-                                          Text(
-                                            "${productData.stockLeft}  left in Stock",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w400,
-                                                color: productData.stockLeft <
-                                                        10
-                                                    ? Colors.red
-                                                    : Provider.of<CustomColor>(
-                                                            context)
-                                                        .appPrimaryMaterialColor),
-                                          ),
                                         productData.productLiveTiming.length > 0
                                             ? productData.productLiveTiming
                                                     .contains("All Time")
@@ -328,7 +333,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
-                                                                size: 13),
+                                                                size: 12),
                                                       ),
                                                       Space(height: 4),
                                                       for (int i = 0;
@@ -340,9 +345,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                         Text(
                                                           "${productData.productLiveTiming[i]}",
                                                           style: TextStyle(
-                                                            fontSize: 13,
+                                                            fontSize: 11,
                                                             fontWeight:
-                                                                FontWeight.w700,
+                                                                FontWeight.w600,
                                                             color: Colors
                                                                 .grey[800],
                                                           ),
@@ -363,7 +368,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                 style: FontsTheme.subTitleStyle(
                                                     color: Colors.black54,
                                                     fontWeight: FontWeight.w600,
-                                                    size: 13),
+                                                    size: 12),
                                               ),
                                               Space(height: 8),
                                               Row(
@@ -423,13 +428,13 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Space(height: 18),
-                                              Text("Size Option",
-                                                  style:
-                                                      FontsTheme.subTitleStyle(
-                                                          color: Colors.black54,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          size: 13)),
+                                              Text(
+                                                "Size Option",
+                                                style: FontsTheme.subTitleStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight: FontWeight.w600,
+                                                    size: 12),
+                                              ),
                                               Space(height: 8),
                                               Row(
                                                 children: sizeList.map<Widget>(
@@ -517,7 +522,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               style: FontsTheme.subTitleStyle(
                                                   color: Colors.black54,
                                                   fontWeight: FontWeight.w600,
-                                                  size: 13)),
+                                                  size: 12)),
                                         Space(height: 6),
                                         Column(
                                           children: bulkPrice.map<Widget>((e) {
@@ -868,8 +873,8 @@ class _QuantitySelectState extends State<QuantitySelect> {
                         },
                         child: Icon(
                           Icons.close,
-                          size: 16
-                          ,color: Colors.white,
+                          size: 16,
+                          color: Colors.white,
                         ),
                       ),
                       width: 24,
