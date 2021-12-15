@@ -57,96 +57,147 @@ class _SearchState extends State<Search> {
         shrinkWrap: true,
         slivers: [
           SliverToBoxAdapter(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      if (Navigator.canPop(context)) Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back)),
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.only(bottom: 6),
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          offset: Offset(1,1
-                          ),
-                        ),
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          offset: Offset(-0.5,-0.5
-                          ),
-                        ),BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          offset: Offset(-0.5,1
-                          ),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: new ListTile(
-                      horizontalTitleGap: 0,
-                      leading: new Icon(
-                        Icons.search,
-                        color: Provider.of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                      ),
-                      title: new TextField(
-                        autofocus: true,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back)),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 12.0, right: 12),
+                      child: TextFormField(
                         controller: search,
-                        decoration: InputDecoration(
-                            fillColor: Colors.grey.shade200,
-                            focusColor: Colors.green,
-                            hintText: "Search",
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
-                            floatingLabelBehavior:
-                                FloatingLabelBehavior.never,
-                            contentPadding:
-                                EdgeInsets.only(top: 4, bottom: 4),
-                            errorStyle: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7),
-                              borderSide: BorderSide(
-                                width: 1.5,
-                                color: Colors.red,
-                                style: BorderStyle.solid,
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
-                              ),
-                            )),
-                        onChanged: (value) {
-                          _search(search.text);
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(fontSize: 13),
+                        onChanged: (text) {
+                          _search(text);
                           setState(() {});
                         },
-                      ),
-                      trailing: search.text.isEmpty
-                          ? SizedBox()
-                          : IconButton(
-                              icon: new Icon(Icons.cancel),
-                              onPressed: () {
-                                search.text = "";
-                                setState(() {
-                                });
-                              },
+                        decoration: InputDecoration(
+                          // filled: true,
+                          fillColor: Colors.white,
+                          hoverColor: Colors.white,
+                          hintText: "Search here...",
+                          hintStyle: TextStyle(
+                              fontSize: 12, color: Colors.grey.shade400),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          contentPadding: EdgeInsets.only(
+                              left: 15, right: 8, top: 4, bottom: 4),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          suffixIcon: search.text.isEmpty
+                              ? SizedBox()
+                              : IconButton(
+                                  icon: new Icon(Icons.cancel),
+                                  onPressed: () {
+                                    search.text = "";
+                                    setState(() {});
+                                  },
+                                ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                                width: 0.7),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor,
+                              style: BorderStyle.solid,
                             ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  // Expanded(
+                  //   child: Container(
+                  //     height: 50,
+                  //     padding: EdgeInsets.only(bottom: 6),
+                  //     margin: EdgeInsets.only(right: 10),
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(30),
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.4),
+                  //           offset: Offset(1, 1),
+                  //         ),
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.4),
+                  //           offset: Offset(-0.5, -0.5),
+                  //         ),
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.4),
+                  //           offset: Offset(-0.5, 1),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     alignment: Alignment.center,
+                  //     child: new ListTile(
+                  //       horizontalTitleGap: 0,
+                  //       leading: new Icon(
+                  //         Icons.search,
+                  //         color: Provider.of<CustomColor>(context)
+                  //             .appPrimaryMaterialColor,
+                  //       ),
+                  //       title: new TextField(
+                  //         autofocus: true,
+                  //         controller: search,
+                  //         decoration: InputDecoration(
+                  //             fillColor: Colors.grey.shade200,
+                  //             focusColor: Colors.green,
+                  //             hintText: "Search",
+                  //             hintStyle: TextStyle(color: Colors.grey.shade400),
+                  //             floatingLabelBehavior: FloatingLabelBehavior.never,
+                  //             contentPadding: EdgeInsets.only(top: 4, bottom: 4),
+                  //             errorStyle: TextStyle(
+                  //                 color: Colors.red, fontWeight: FontWeight.bold),
+                  //             errorBorder: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(7),
+                  //               borderSide: BorderSide(
+                  //                 width: 1.5,
+                  //                 color: Colors.red,
+                  //                 style: BorderStyle.solid,
+                  //               ),
+                  //             ),
+                  //             border: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(8),
+                  //               borderSide: BorderSide(
+                  //                 width: 0,
+                  //                 style: BorderStyle.none,
+                  //               ),
+                  //             )),
+                  //         onChanged: (value) {
+                  //           _search(search.text);
+                  //           setState(() {});
+                  //         },
+                  //       ),
+                  //       trailing: search.text.isEmpty
+                  //           ? SizedBox()
+                  //           : IconButton(
+                  //               icon: new Icon(Icons.cancel),
+                  //               onPressed: () {
+                  //                 search.text = "";
+                  //                 setState(() {});
+                  //               },
+                  //             ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
           ),
           SliverToBoxAdapter(
@@ -207,13 +258,16 @@ class _SearchState extends State<Search> {
                                             right: 15.0, bottom: 15.0),
                                         child: SizedBox(
                                           child: FloatingActionButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                setState(() {});
-                                              },
-                                              child:
-                                                  Icon(Icons.close, size: 16,color: Colors.white,),
-                                             ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              setState(() {});
+                                            },
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 16,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                           width: 24,
                                           height: 24,
                                         ),

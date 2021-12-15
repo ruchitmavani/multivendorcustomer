@@ -111,7 +111,13 @@ class _TopButtonsState extends State<TopButtons> {
                                             .onClick!(SortKeys.NtoO.toString());
                                       },
                                       child: ListTile(
-                                        title: const Text('New to Old'),
+                                        title: Text(
+                                          'New to Old',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.NtoO,
                                           groupValue: _selection,
@@ -138,7 +144,13 @@ class _TopButtonsState extends State<TopButtons> {
                                             .onClick!(SortKeys.OtoN.toString());
                                       },
                                       child: ListTile(
-                                        title: const Text('Old to New'),
+                                        title: Text(
+                                          'Old to New',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.OtoN,
                                           groupValue: _selection,
@@ -165,7 +177,13 @@ class _TopButtonsState extends State<TopButtons> {
                                             SortKeys.spHtoL.toString());
                                       },
                                       child: ListTile(
-                                        title: const Text('Price: High to Low'),
+                                        title: Text(
+                                          'Price: High to Low',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.spHtoL,
                                           groupValue: _selection,
@@ -192,7 +210,13 @@ class _TopButtonsState extends State<TopButtons> {
                                             SortKeys.spLtoH.toString());
                                       },
                                       child: ListTile(
-                                        title: const Text('Price: Low to High'),
+                                        title: Text(
+                                          'Price: Low to High',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                         leading: Radio<SortKeys>(
                                           value: SortKeys.spLtoH,
                                           groupValue: _selection,

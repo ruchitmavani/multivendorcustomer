@@ -217,8 +217,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-        child: Card(
-          color: Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
@@ -232,6 +239,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: ListTile(
+                    dense: true,
+                    visualDensity:
+                    VisualDensity(horizontal: 0, vertical: -4),
                     title: const Text(
                       'Cash on Delivery', style: TextStyle(fontSize: 12),),
                     leading: Radio<paymentMethods>(
@@ -249,9 +259,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
+                Divider(
+                  thickness: 1,
+                  color: Colors.white,
                 ),
                 InkWell(
                   onTap: () {
@@ -260,6 +270,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: ListTile(
+                    dense: true,
+                    visualDensity:
+                    VisualDensity(horizontal: 0, vertical: -4),
                     title: const Text(
                       'Pay Online', style: TextStyle(fontSize: 12),),
                     leading: Radio<paymentMethods>(
@@ -281,9 +294,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     .of<VendorModelWrapper>(context)
                     .vendorModel!
                     .isStorePickupEnable)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
                   ),
                 if(Provider
                     .of<VendorModelWrapper>(context)
