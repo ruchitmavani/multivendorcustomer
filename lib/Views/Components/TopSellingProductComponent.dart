@@ -42,7 +42,7 @@ class _TopSellingProductComponentState
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
                 child: widget.productData.productImageUrl.length != 0
                     ? Container(
                         height: 60,
@@ -53,7 +53,7 @@ class _TopSellingProductComponentState
                           fit: BoxFit.contain,
                         ),
                       )
-                    : Image.asset("images/placeholder.png"),
+                    : Image.asset("images/placeholder.png",height: 60,),
               ),
               Space(
                 width: 4,
@@ -66,6 +66,7 @@ class _TopSellingProductComponentState
                     "${widget.productData.productName}",
                     style: FontsTheme.boldTextStyle(),
                   ),
+                  if(widget.productData.productRatingAverage!=0)
                   ProductRating(widget.productData.productRatingAverage),
                   Padding(
                     padding: const EdgeInsets.only(top: 1.0),
@@ -82,6 +83,8 @@ class _TopSellingProductComponentState
                   width: 35,
                   child: InkWell(
                     onTap: () {
+                      context.go(helper(
+                          PageCollection.product + '/${widget.productData.productId}'));
                       // showModalBottomSheet(
                       //     context: context,
                       //     isScrollControlled: true,

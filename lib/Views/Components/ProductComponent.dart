@@ -8,8 +8,10 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,10 +27,11 @@ class ProductComponentGrid extends StatefulWidget {
 class _ProductComponentGridState extends State<ProductComponentGrid> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
-        width: 200,
+        width: size.width > 400 ? 220 : size.width / 2.2,
         height: 254,
         child: Container(
           decoration: BoxDecoration(
@@ -38,7 +41,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
               BoxShadow(
                 color: Colors.grey.shade200,
                 spreadRadius: 2,
-                blurRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0.5, 0.5),
               ),
             ],
           ),
@@ -49,122 +53,137 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProductRating(widget.productData.productRatingAverage),
+                if (widget.productData.productRatingAverage != 0)
+                  ProductRating(widget.productData.productRatingAverage),
                 Center(
-                    child: Container(
-                  height: 110,
-                  width: 110,
-                  child: widget.productData.productImageUrl.length > 0
-                      ? Image.network(
-                          StringConstants.api_url +
-                              widget.productData.productImageUrl.first,
-                          fit: BoxFit.contain)
-                      : Image.asset("images/placeholder.png"),
-                )),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    "${widget.productData.productName}",
-                    style: FontsTheme.subTitleStyle(),
+                  child: Container(
+                    height: 110,
+                    width: 110,
+                    child: widget.productData.productImageUrl.length > 0
+                        ? Image.network(
+                            StringConstants.api_url +
+                                widget.productData.productImageUrl.first,
+                            fit: BoxFit.contain)
+                        : Image.asset("images/placeholder.png"),
                   ),
                 ),
-                Text(
-                  "${widget.productData.productDescription}",
-                  style: FontsTheme.descriptionText(
-                      size: 11, fontWeight: FontWeight.w500),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "${widget.productData.productName}",
+                        style: FontsTheme.subTitleStyle(),
+                      ),
+                    ),
+                    Text(
+                      "${widget.productData.productDescription}",
+                      style: FontsTheme.descriptionText(
+                          size: 11, fontWeight: FontWeight.w500),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (!(widget.productData.isRequestPrice ||
-                              widget.productData.bulkPriceList!.length > 0))
-                            Text(
-                              "\u{20B9} ${widget.productData.productMrp}",
-                              style: TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationThickness: 3,
-                                  decorationColor:
-                                      Provider.of<CustomColor>(context)
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (widget.productData.productSellingPrice !=
+                                  widget.productData.productMrp)
+                                if (!(widget.productData.isRequestPrice ||
+                                    widget.productData.bulkPriceList!.length >
+                                        0))
+                                  Text(
+                                    "\u{20B9} ${widget.productData.productMrp}",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationThickness: 3,
+                                        decorationColor:
+                                            Provider.of<CustomColor>(context)
+                                                .appPrimaryMaterialColor,
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey.shade700,
+                                        fontSize: 11),
+                                  ),
+                              if (!(widget.productData.isRequestPrice ||
+                                  widget.productData.bulkPriceList!.length > 0))
+                                Row(
+                                  children: [
+                                    Text(
+                                      "\u{20B9}",
+                                      style: TextStyle(
+                                          fontFamily: "",
+                                          fontSize: 12,
+                                          color: Colors.black87),
+                                    ),
+                                    Text(
+                                      "${widget.productData.productSellingPrice} ",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Colors.black87,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    DiscountTag(
+                                        mrp: widget.productData.productMrp,
+                                        selling: widget
+                                            .productData.productSellingPrice)
+                                  ],
+                                ),
+                              if (widget.productData.isRequestPrice)
+                                Text(
+                                  "Request Price",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: Provider.of<CustomColor>(context)
                                           .appPrimaryMaterialColor,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey.shade700,
-                                  fontSize: 11),
-                            ),
-                          if (!(widget.productData.isRequestPrice ||
-                              widget.productData.bulkPriceList!.length > 0))
-                            Row(
-                              children: [
-                                Text(
-                                  "\u{20B9}",
-                                  style: TextStyle(
-                                      fontFamily: "",
-                                      fontSize: 12,
-                                      color: Colors.black87),
-                                ),
-                                Text(
-                                  "${widget.productData.productSellingPrice}",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                          if (widget.productData.isRequestPrice)
-                            Text(
-                              "Request Price",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          if (widget.productData.isRequestPrice)
-                            Text(
-                              "",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                                  fontSize: 4,
-                                  fontWeight: FontWeight.w600),
-                            ),
-
-                          if (widget.productData.bulkPriceList!.length > 0)
-                            Row(
-                              children: [
-                                Text(
-                                  "\u{20B9}",
-                                  style: TextStyle(
-                                      fontFamily: "",
-                                      fontSize: 12,
-                                      color: Colors.black87),
                                 ),
+                              if (widget.productData.isRequestPrice)
                                 Text(
-                                  "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                  "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Colors.black87,
-                                      fontSize: 12,
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      fontSize: 4,
                                       fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
+                                ),
+                              if (widget.productData.bulkPriceList!.length > 0)
+                                Row(
+                                  children: [
+                                    Text(
+                                      "\u{20B9}",
+                                      style: TextStyle(
+                                          fontFamily: "",
+                                          fontSize: 12,
+                                          color: Colors.black87),
+                                    ),
+                                    Text(
+                                      "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Colors.black87,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                          cartButton(),
                         ],
                       ),
-                      cartButton(),
-                    ],
-                  ),
+                    )
+                  ],
                 )
               ],
             ),
@@ -175,47 +194,58 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    if (!isProductAvailable(
-        liveTimings: widget.productData.productLiveTiming)) {
-      return Text(
-        "Unavailable",
-        style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-      );
-    } else if (widget.productData.isRequestPrice) {
-      return SizedBox(
-        width: 35,
-        height: 35,
-        child: Card(
-          shape: CircleBorder(),
-          elevation: 0,
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: InkWell(
-                onTap: () {
-                  launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                },
-                child: Icon(
-                  Icons.link,
-                  size: 18,
-                  color: Colors.white,
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+      if (!isProductAvailable(
+          liveTimings: widget.productData.productLiveTiming)) {
+        return Text(
+          "Unavailable",
+          style:
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        );
+      } else if (widget.productData.isRequestPrice) {
+        return SizedBox(
+          width: 35,
+          height: 35,
+          child: Card(
+            shape: CircleBorder(),
+            elevation: 0,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    launch(
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                  },
+                  child: Icon(
+                    Icons.link,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    } else if (widget.productData.bulkPriceList!.length > 0) {
-      return SizedBox();
-    } else if (widget.productData.isStock) {
-      if (widget.productData.stockLeft <= 0) {
-        return Text(
-          "Out of Stock",
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
         );
+      } else if (widget.productData.bulkPriceList!.length > 0) {
+        return SizedBox();
+      } else if (widget.productData.isStock) {
+        if (widget.productData.stockLeft <= 0) {
+          return Text(
+            "Out of Stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+          );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
       } else {
         return AddRemoveButton(
           productData: widget.productData,
@@ -225,11 +255,10 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
         );
       }
     } else {
-      return AddRemoveButton(
-        productData: widget.productData,
-        isRounded: true,
-        colorIndex: 0,
-        sizeIndex: 0,
+      return Text(
+        "Offline",
+        style:
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
@@ -257,7 +286,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
             BoxShadow(
               color: Colors.grey.shade200,
               spreadRadius: 2,
-              blurRadius: 2,
+              blurRadius: 3,
+              offset: Offset(0.5, 0.5),
             ),
           ],
         ),
@@ -295,8 +325,10 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 4.0),
-                        child: ProductRating(
-                            widget.productData.productRatingAverage),
+                        child: widget.productData.productRatingAverage != 0
+                            ? ProductRating(
+                                widget.productData.productRatingAverage)
+                            : SizedBox(),
                       )
                     ],
                   ),
@@ -324,8 +356,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                  Provider.of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
+                                      Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Colors.grey.shade700,
@@ -343,13 +375,17 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.productSellingPrice}",
+                                  "${widget.productData.productSellingPrice} ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
-                                )
+                                ),
+                                DiscountTag(
+                                    mrp: widget.productData.productMrp,
+                                    selling:
+                                        widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -357,7 +393,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -366,7 +403,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -405,47 +443,58 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    if (!isProductAvailable(
-        liveTimings: widget.productData.productLiveTiming)) {
-      return Text(
-        "Unavailable",
-        style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-      );
-    } else if (widget.productData.isRequestPrice) {
-      return SizedBox(
-        width: 35,
-        height: 35,
-        child: Card(
-          shape: CircleBorder(),
-          elevation: 0,
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: InkWell(
-                onTap: () {
-                  launch("https://wa.me/${sharedPrefs.vendorMobileNumber}");
-                },
-                child: Icon(
-                  Icons.link,
-                  size: 18,
-                  color: Colors.white,
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+      if (!isProductAvailable(
+          liveTimings: widget.productData.productLiveTiming)) {
+        return Text(
+          "Unavailable",
+          style:
+              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        );
+      } else if (widget.productData.isRequestPrice) {
+        return SizedBox(
+          width: 35,
+          height: 35,
+          child: Card(
+            shape: CircleBorder(),
+            elevation: 0,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    launch(
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                  },
+                  child: Icon(
+                    Icons.link,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    } else if (widget.productData.bulkPriceList!.length > 0) {
-      return SizedBox();
-    } else if (widget.productData.isStock) {
-      if (widget.productData.stockLeft <= 0) {
-        return Text(
-          "Out of Stock",
-          style:
-          TextStyle(fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
         );
+      } else if (widget.productData.bulkPriceList!.length > 0) {
+        return SizedBox();
+      } else if (widget.productData.isStock) {
+        if (widget.productData.stockLeft <= 0) {
+          return Text(
+            "Out of Stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+          );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
       } else {
         return AddRemoveButton(
           productData: widget.productData,
@@ -455,11 +504,10 @@ class _ProductComponentListState extends State<ProductComponentList> {
         );
       }
     } else {
-      return AddRemoveButton(
-        productData: widget.productData,
-        isRounded: true,
-        colorIndex: 0,
-        sizeIndex: 0,
+      return Text(
+        "Offline",
+        style:
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }

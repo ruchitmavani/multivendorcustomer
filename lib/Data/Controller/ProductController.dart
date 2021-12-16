@@ -17,7 +17,7 @@ class ProductController {
       required int limit,
       required int page,
       required String sortKey}) async {
-    String url = StringConstants.api_url + StringConstants.vendor_all_product;
+    String url = StringConstants.api_url + StringConstants.customer_find_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
@@ -174,12 +174,15 @@ class ProductController {
 
   /*-----------Recently Bought Product Data-----------*/
   static Future<ResponseClass<List<ProductData>>> recentlyBought(
-      {required String customerId}) async {
+      {required String customerId,required String vendorId}) async {
     String url =
         StringConstants.api_url + StringConstants.recently_bought_product;
 
     //body Data
-    var data = {"customer_uniq_id": "$customerId"};
+    var data = {
+      "vendor_uniq_id" : "$vendorId",
+      "customer_uniq_id" : "$customerId"
+    };
 
     ResponseClass<List<ProductData>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");

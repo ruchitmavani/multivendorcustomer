@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/main.dart';
 import 'package:provider/provider.dart';
 
 class Loading extends StatefulWidget {
@@ -34,7 +33,7 @@ class _LoadingState extends State<Loading> {
           .loadVendorData(id)
           .then((value) async {
         if (!mounted) return;
-        log("vendor exist : ${value} -------");
+        log("vendor exist : $value");
         if (value == true) {
           String? path = window.location.pathname;
           print("load path ------- ${window.location.pathname}");

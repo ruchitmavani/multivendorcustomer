@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -48,10 +49,29 @@ class _AboutUsState extends State<AboutUs> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.network(
-                              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
-                              width: 60,
-                              height: 60),
+                          CachedNetworkImage(
+                            height: 60,
+                            width: 60,
+                            imageUrl:
+                            "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                SizedBox(
+                                  width: 12,
+                                  height: 12,
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets.all(
+                                        10.0),
+                                    child:
+                                    CircularProgressIndicator(),
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) =>
+                                Icon(Icons.map),
+                          ),
+
                           Space(width: 8.0),
                           // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
                           //     style: FontsTheme.boldTextStyle(size: 17))
@@ -67,40 +87,17 @@ class _AboutUsState extends State<AboutUs> {
                           await launch(
                               'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                         },
-                        child: Icon(Icons.call,
-                            color: Provider.of<CustomColor>(context)
-                                .appPrimaryMaterialColor),
+                        child: Icon(Icons.call, color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
                       ),
-                      Provider.of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .isWhatsappChatSupport
-                          ? Space(width: 8)
-                          : Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .isWhatsappChatSupport
-                          ? Container(
-                              height: 18, width: 0.9, color: Colors.grey)
-                          : Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .isWhatsappChatSupport
-                          ? Space(width: 8)
-                          : Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .isWhatsappChatSupport
-                          ? InkWell(
-                              onTap: () async {
-                                await launch(
-                                    "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                              },
-                              child: SvgPicture.asset(
-                                "images/whatsappcus.png",
-                                color: Provider.of<CustomColor>(context)
-                                    .appPrimaryMaterialColor,
-                              ))
-                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
+                          onTap: () async {
+                            await launch(
+                                "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                          },
+                          child: SvgPicture.asset("images/whatsapp.svg",color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,)):Container(),
                       Space(width: 10)
                     ],
                   ),
@@ -111,6 +108,7 @@ class _AboutUsState extends State<AboutUs> {
             Space(
               height: 20,
             ),
+            if(Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl!="")
             Image.network(
               "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
               fit: BoxFit.fill,

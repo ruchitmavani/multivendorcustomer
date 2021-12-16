@@ -216,71 +216,115 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ListTile(
-                  title: const Text('Cash on Delivery'),
-                  leading: Radio<paymentMethods>(
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    value: paymentMethods.COD,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      });
-                    },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.COD;
+                    });
+                  },
+                  child: ListTile(
+                    dense: true,
+                    visualDensity:
+                    VisualDensity(horizontal: 0, vertical: -4),
+                    title: const Text(
+                      'Cash on Delivery', style: TextStyle(fontSize: 12),),
+                    leading: Radio<paymentMethods>(
+                      activeColor: Provider
+                          .of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      value: paymentMethods.COD,
+                      groupValue: _selection,
+                      onChanged: (paymentMethods? value) {
+                        setState(() {
+                          _selection = value!;
+                          print(value);
+                        },);
+                      },
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
+                Divider(
+                  thickness: 1,
+                  color: Colors.white,
                 ),
-                ListTile(
-                  title: const Text('Pay Online'),
-                  leading: Radio<paymentMethods>(
-                    value: paymentMethods.PAY_ONLINE,
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      });
-                    },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.PAY_ONLINE;
+                    });
+                  },
+                  child: ListTile(
+                    dense: true,
+                    visualDensity:
+                    VisualDensity(horizontal: 0, vertical: -4),
+                    title: const Text(
+                      'Pay Online', style: TextStyle(fontSize: 12),),
+                    leading: Radio<paymentMethods>(
+                      value: paymentMethods.PAY_ONLINE,
+                      activeColor: Provider
+                          .of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      groupValue: _selection,
+                      onChanged: (paymentMethods? value) {
+                        setState(() {
+                          _selection = value!;
+                          print(value);
+                        });
+                      },
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
-                ),
-                ListTile(
-                  title: const Text('Take Away'),
-                  leading: Radio<paymentMethods>(
-                    value: paymentMethods.TAKEAWAY,
-                    activeColor: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    groupValue: _selection,
-                    onChanged: (paymentMethods? value) {
-                      setState(() {
-                        _selection = value!;
-                        print(value);
-                      });
-                    },
+                if(Provider
+                    .of<VendorModelWrapper>(context)
+                    .vendorModel!
+                    .isStorePickupEnable)
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
                   ),
-                ),
+                if(Provider
+                    .of<VendorModelWrapper>(context)
+                    .vendorModel!
+                    .isStorePickupEnable)
+                  InkWell(onTap: () {
+                    setState(() {
+                      _selection = paymentMethods.TAKEAWAY;
+                    });
+                  },
+                    child: ListTile(
+                      title: const Text(
+                        'Take Away', style: TextStyle(fontSize: 12),),
+                      leading: Radio<paymentMethods>(
+                        value: paymentMethods.TAKEAWAY,
+                        activeColor: Provider
+                            .of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        groupValue: _selection,
+                        onChanged: (paymentMethods? value) {
+                          setState(() {
+                            _selection = value!;
+                            print(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

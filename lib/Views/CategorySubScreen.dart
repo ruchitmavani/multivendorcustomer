@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +10,6 @@ import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
-import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
@@ -123,15 +121,15 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _provider = Provider.of<CategoryName>(context).categoryName;
+    var provider = Provider.of<CategoryName>(context).categoryName;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text(_provider.indexWhere(
+        title: Text(provider.indexWhere(
                     (element) => element.categoryId == widget.categoryId) ==
                 -1
             ? ""
-            : "${_provider.elementAt(_provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}"),
+            : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}",style: TextStyle(color: Colors.black,fontFamily: 'Poppins',fontWeight: FontWeight.w700,fontSize: 16),),
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
@@ -192,7 +190,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 6),
+                        horizontal: 8.0, vertical: 10),
                     child: GridView.builder(
                       controller: scrollController,
                       itemCount: productDataList.length,
@@ -207,54 +205,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            // String path = Uri(
-                            //     path: PageCollection.product,
-                            //     queryParameters: {
-                            //       "productName":
-                            //           "${productDataList.elementAt(index).productName}",
-                            //       "id":
-                            //           "${productDataList.elementAt(index).productId}"
-                            //     }).toString();
-                            // showModalBottomSheet(
-                            //     useRootNavigator: true,
-                            //     context: context,
-                            //     isScrollControlled: true,
-                            //     backgroundColor: Colors.transparent,
-                            //     routeSettings: RouteSettings(name: path),
-                            //     builder: (context) {
-                            //       return Column(
-                            //         crossAxisAlignment: CrossAxisAlignment.end,
-                            //         mainAxisAlignment: MainAxisAlignment.end,
-                            //         children: [
-                            //           Padding(
-                            //             padding: const EdgeInsets.only(
-                            //                 bottom: 15.0, right: 10),
-                            //             child: SizedBox(
-                            //               child: FloatingActionButton(
-                            //                   onPressed: () {
-                            //                     Navigator.of(context).pop();
-                            //                     setState(() {});
-                            //                   },
-                            //                   child:
-                            //                       Icon(Icons.close, size: 16),
-                            //                   backgroundColor: Colors.white),
-                            //               width: 24,
-                            //               height: 24,
-                            //             ),
-                            //           ),
-                            //           Container(
-                            //             decoration: BoxDecoration(
-                            //               color: Colors.white,
-                            //               borderRadius: BorderRadius.only(
-                            //                   topRight: Radius.circular(10.0),
-                            //                   topLeft: Radius.circular(10.0)),
-                            //             ),
-                            //             child: ProductDescription(productId:
-                            //                 productDataList.elementAt(index).productId),
-                            //           ),
-                            //         ],
-                            //       );
-                            //     });
                             context.go(helper(PageCollection.product +
                                 '/${productDataList.elementAt(index).productId}'));
                           },

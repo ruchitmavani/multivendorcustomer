@@ -10,7 +10,9 @@ class CartDataWrapper extends ChangeNotifier {
   List<TaxDetail> taxData = [];
   bool _isLoading = true;
   bool isCouponApplied = false;
+
   bool get isLoading => _isLoading;
+
   set isLoading(bool isLoading) => _isLoading = isLoading;
   int totalItems = 0;
   late double totalAmount;
@@ -52,28 +54,36 @@ class CartDataWrapper extends ChangeNotifier {
             couponName: "$coupon")
         .then((value) {
       if (value.success) {
-        print(value.success);
-        Fluttertoast.showToast(msg: "${value.message}");
-        if (value.data!.couponType == "flat") {
+        if (value.data!.couponType.toLowerCase() == "flat") {
           if (totalAmount >= value.data!.minAmount) {
             totalAmount = totalAmount - value.data!.flatAmount;
             discount = value.data!.flatAmount as double;
+            isCouponApplied = true;
+            Fluttertoast.showToast(msg: "${value.message}");
+          } else {
+            discount = 0;
+            Fluttertoast.showToast(
+                msg: "your coupon do not meet minimum requirements");
           }
         }
-        if (value.data!.couponType == "percentage") {
+        if (value.data!.couponType.toLowerCase() == "percentage") {
           if (totalAmount >= value.data!.minAmount) {
-            double temp =
-                totalAmount - (totalAmount * value.data!.offerPercentage / 100);
+            double temp = (totalAmount * value.data!.offerPercentage / 100);
             if (temp <= value.data!.offerUptoAmount) {
               totalAmount = totalAmount - temp;
-              discount = totalAmount * value.data!.offerPercentage / 100;
+              discount = temp;
             } else {
               totalAmount = totalAmount - value.data!.offerUptoAmount;
               discount = value.data!.offerUptoAmount.toDouble();
             }
+            isCouponApplied = true;
+            Fluttertoast.showToast(msg: "${value.message}");
+          } else {
+            discount = 0;
+            Fluttertoast.showToast(
+                msg: "your coupon do not meet minimum requirements");
           }
         }
-        isCouponApplied = true;
         notifyListeners();
       } else {
         Fluttertoast.showToast(msg: "${value.message}");

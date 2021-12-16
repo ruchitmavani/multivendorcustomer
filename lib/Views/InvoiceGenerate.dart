@@ -1,7 +1,6 @@
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
+
 import 'package:intl/intl.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';

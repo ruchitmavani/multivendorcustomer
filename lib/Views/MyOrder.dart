@@ -1,18 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
-import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
-import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderComponent.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MyOrder extends StatefulWidget {
@@ -54,6 +46,8 @@ class _MyOrderState extends State<MyOrder> {
     _loadData();
   }
 
+  int todayIndex = DateTime.now().weekday - 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,21 +57,22 @@ class _MyOrderState extends State<MyOrder> {
           "My Orders",
           style: FontsTheme.boldTextStyle(size: 16),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(CupertinoIcons.search,
-                size: 20,
-                color:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor),
-            onPressed: () {
-              GoRouter.of(context).push(PageCollection.search);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: cartIconWidget(context),
-          ),
-        ],
+        //todo: shop close
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(CupertinoIcons.search,
+        //         size: 20,
+        //         color:
+        //             Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+        //     onPressed: () {
+        //       GoRouter.of(context).push(PageCollection.search);
+        //     },
+        //   ),
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 16.0),
+        //     child: cartIconWidget(context),
+        //   ),
+        // ],
       ),
       body: Padding(
         padding:

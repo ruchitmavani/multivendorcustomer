@@ -10,7 +10,7 @@ class StringConstants{
 
   /*API NAMES*/
   //vendor
-  static String vendor_all_product="vendor_all_product/";
+  static String customer_find_product="customer_find_product";
   static String vendor_send_sms="vendor_send_sms";
   static String vendor_view="vendor_view";
   static String vendor_all_banner = "vendor_all_banner";

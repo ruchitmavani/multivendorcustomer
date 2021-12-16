@@ -11,19 +11,20 @@ import 'ProductController.dart';
 
 class CategoryController {
   /*-----------Get Product Data-----------*/
-  static Future<ResponseClass> getCategoryWiseProduct(String vendorId,String sortKey) async {
+  static Future<ResponseClass> getCategoryWiseProduct(
+      String vendorId, String sortKey) async {
     String url = StringConstants.api_url +
         StringConstants.customer_category_wise_all_product_find;
 
     //body Data
     var data = (sharedPrefs.customer_id.isEmpty)
-        ? {"vendor_uniq_id": "$vendorId",  "sort" : "$sortKey"}
+        ? {"vendor_uniq_id": "$vendorId", "sort": "$sortKey"}
         : {
             "vendor_uniq_id": "$vendorId",
             "customer_uniq_id": "${sharedPrefs.customer_id}",
-      "sort" : "$sortKey"
+            "sort": "$sortKey"
           };
-
+    print("customer --> $data");
     print("all product $data");
     ResponseClass<List<AllCategoryModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -50,19 +51,18 @@ class CategoryController {
     }
   }
 
-
   /*-----------Get Category Name Data-----------*/
   static Future<ResponseClass> getCategoryName() async {
-    String url = StringConstants.api_url +
-        StringConstants.vendor_all_category_name;
+    String url =
+        StringConstants.api_url + StringConstants.vendor_all_category_name;
 
     //body Data
-    var data ={"vendor_uniq_id": "${sharedPrefs.vendor_uniq_id}"};
+    var data = {"vendor_uniq_id": "${sharedPrefs.vendor_uniq_id}"};
     print(data);
 
     print("all product $data");
     ResponseClass<List<CategoryNameModel>> responseClass =
-    ResponseClass(success: false, message: "Something went wrong");
+        ResponseClass(success: false, message: "Something went wrong");
     try {
       Response response = await dio.post(
         url,
@@ -76,7 +76,7 @@ class CategoryController {
         responseClass.message = response.data["message"];
         List productList = response.data["data"];
         List<CategoryNameModel> list =
-        productList.map((e) => CategoryNameModel.fromJson(e)).toList();
+            productList.map((e) => CategoryNameModel.fromJson(e)).toList();
         responseClass.data = list;
       }
       return responseClass;

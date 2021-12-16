@@ -6,10 +6,6 @@ class CategoryName extends ChangeNotifier {
   List<CategoryNameModel> categoryName = [];
   bool _isLoading = true;
 
-  bool get isLoading => _isLoading;
-
-  set isLoading(bool isLoading) => _isLoading = isLoading;
-
   Future loadCategoryName() async {
     _isLoading = true;
 
