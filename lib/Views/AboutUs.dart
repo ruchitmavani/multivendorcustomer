@@ -67,17 +67,40 @@ class _AboutUsState extends State<AboutUs> {
                           await launch(
                               'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                         },
-                        child: Icon(Icons.call, color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                        child: Icon(Icons.call,
+                            color: Provider.of<CustomColor>(context)
+                                .appPrimaryMaterialColor),
                       ),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
-                          onTap: () async {
-                            await launch(
-                                "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                          },
-                          child: SvgPicture.asset("images/whatsapp.svg",color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,)):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Container(
+                              height: 18, width: 0.9, color: Colors.grey)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? InkWell(
+                              onTap: () async {
+                                await launch(
+                                    "https://wa.me/${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                              },
+                              child: SvgPicture.asset(
+                                "images/whatsappcus.png",
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                              ))
+                          : Container(),
                       Space(width: 10)
                     ],
                   ),
