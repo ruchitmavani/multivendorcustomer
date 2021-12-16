@@ -53,22 +53,17 @@ class _AboutUsState extends State<AboutUs> {
                             height: 60,
                             width: 60,
                             imageUrl:
-                            "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                                "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
                             fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                SizedBox(
-                                  width: 12,
-                                  height: 12,
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.all(
-                                        10.0),
-                                    child:
-                                    CircularProgressIndicator(),
-                                  ),
-                                ),
-                            errorWidget:
-                                (context, url, error) =>
+                            placeholder: (context, url) => SizedBox(
+                              width: 12,
+                              height: 12,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
                                 Icon(Icons.map),
                           ),
 
@@ -87,17 +82,40 @@ class _AboutUsState extends State<AboutUs> {
                           await launch(
                               'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                         },
-                        child: Icon(Icons.call, color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                        child: Icon(Icons.call,
+                            color: Provider.of<CustomColor>(context)
+                                .appPrimaryMaterialColor),
                       ),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Container(height: 18, width: 0.9, color: Colors.grey):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?Space(width: 8):Container(),
-                      Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.isWhatsappChatSupport?InkWell(
-                          onTap: () async {
-                            await launch(
-                                "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                          },
-                          child: SvgPicture.asset("images/whatsapp.svg",color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,)):Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Container(
+                              height: 18, width: 0.9, color: Colors.grey)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? Space(width: 8)
+                          : Container(),
+                      Provider.of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .isWhatsappChatSupport
+                          ? InkWell(
+                              onTap: () async {
+                                await launch(
+                                    "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                              },
+                              child: SvgPicture.asset(
+                                "images/whatsapp.svg",
+                                color: Provider.of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
+                              ))
+                          : Container(),
                       Space(width: 10)
                     ],
                   ),
@@ -108,13 +126,16 @@ class _AboutUsState extends State<AboutUs> {
             Space(
               height: 20,
             ),
-            if(Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl!="")
-            Image.network(
-              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
-              fit: BoxFit.fill,
-              width: MediaQuery.of(context).size.width,
-              height: 160,
-            ),
+            if (Provider.of<VendorModelWrapper>(context, listen: false)
+                    .vendorModel!
+                    .coverImageUrl !=
+                "")
+              Image.network(
+                "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
+                fit: BoxFit.fill,
+                width: MediaQuery.of(context).size.width,
+                height: 160,
+              ),
             Space(
               height: 18,
             ),
