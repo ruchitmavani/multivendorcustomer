@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RejectOrder.dart';
@@ -175,8 +174,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 await launch(
                                     "https://wa.me/+91${widget.orderData.vendorDetails.mobileNumber}");
                               },
-                              child: SvgPicture.asset(
-                                "images/whatsapp.svg",
+                              child: Image.asset(
+                                "images/swhatsapp.png.",
+                                height: 21,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/app_icons.dart';
@@ -110,11 +109,13 @@ class _AboutUsState extends State<AboutUs> {
                                 await launch(
                                     "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                               },
-                              child: SvgPicture.asset(
-                                "images/whatsapp.svg",
+                              child: Image.asset(
+                                "images/swhatsapp.png.",
+                                height: 21,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
-                              ))
+                              ),
+                            )
                           : Container(),
                       Space(width: 10)
                     ],

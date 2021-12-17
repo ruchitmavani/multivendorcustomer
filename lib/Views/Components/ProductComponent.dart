@@ -74,6 +74,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         "${widget.productData.productName}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: FontsTheme.subTitleStyle(),
                       ),
                     ),
@@ -306,7 +308,6 @@ class _ProductComponentListState extends State<ProductComponentList> {
             ),
             Space(width: 8),
             Expanded(
-              flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,14 +315,18 @@ class _ProductComponentListState extends State<ProductComponentList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${widget.productData.productName}",
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Provider.of<CustomColor>(context)
-                                .appPrimaryMaterialColor,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Poppins'),
+                      Expanded(
+                        child: Text(
+                          "${widget.productData.productName}",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Poppins'),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 4.0),

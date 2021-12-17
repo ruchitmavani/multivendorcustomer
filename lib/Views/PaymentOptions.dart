@@ -210,6 +210,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Choose Payment Method",
           style: FontsTheme.boldTextStyle(size: 16),
@@ -238,24 +239,27 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       _selection = paymentMethods.COD;
                     });
                   },
-                  child: ListTile(
-                    dense: true,
-                    visualDensity:
-                    VisualDensity(horizontal: 0, vertical: -4),
-                    title: const Text(
-                      'Cash on Delivery', style: TextStyle(fontSize: 12),),
-                    leading: Radio<paymentMethods>(
-                      activeColor: Provider
-                          .of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      value: paymentMethods.COD,
-                      groupValue: _selection,
-                      onChanged: (paymentMethods? value) {
-                        setState(() {
-                          _selection = value!;
-                          print(value);
-                        },);
-                      },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top:5.0),
+                    child: ListTile(
+                      dense: true,
+                      visualDensity:
+                      VisualDensity(horizontal: 0, vertical: -4),
+                      title: const Text(
+                        'Cash on Delivery', style: TextStyle(fontSize: 12),),
+                      leading: Radio<paymentMethods>(
+                        activeColor: Provider
+                            .of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        value: paymentMethods.COD,
+                        groupValue: _selection,
+                        onChanged: (paymentMethods? value) {
+                          setState(() {
+                            _selection = value!;
+                            print(value);
+                          },);
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -307,21 +311,27 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       _selection = paymentMethods.TAKEAWAY;
                     });
                   },
-                    child: ListTile(
-                      title: const Text(
-                        'Take Away', style: TextStyle(fontSize: 12),),
-                      leading: Radio<paymentMethods>(
-                        value: paymentMethods.TAKEAWAY,
-                        activeColor: Provider
-                            .of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        groupValue: _selection,
-                        onChanged: (paymentMethods? value) {
-                          setState(() {
-                            _selection = value!;
-                            print(value);
-                          });
-                        },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: ListTile(
+                        dense: true,
+                        visualDensity:
+                        VisualDensity(horizontal: 0, vertical: -4),
+                        title: const Text(
+                          'Take Away', style: TextStyle(fontSize: 12),),
+                        leading: Radio<paymentMethods>(
+                          value: paymentMethods.TAKEAWAY,
+                          activeColor: Provider
+                              .of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                          groupValue: _selection,
+                          onChanged: (paymentMethods? value) {
+                            setState(() {
+                              _selection = value!;
+                              print(value);
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

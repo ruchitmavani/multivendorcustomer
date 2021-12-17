@@ -364,6 +364,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Cart",
           style: FontsTheme.boldTextStyle(size: 16),
@@ -402,7 +403,9 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Text("Delivery address",
                                   style: FontsTheme.descriptionText(
-                                      size: 13, color: Colors.black54,fontWeight: FontWeight.normal)),
+                                      size: 11,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.normal)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 1.0),
                                 child: Row(
@@ -411,7 +414,9 @@ class _CartScreenState extends State<CartScreen> {
                                   children: [
                                     Text(
                                       "${customerData.customerAddress.elementAt(addressIndex).type}",
-                                      style: FontsTheme.boldTextStyle(size: 13,fontWeight: FontWeight.w600),
+                                      style: FontsTheme.boldTextStyle(
+                                          size: 13,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     changeAddress(),
                                   ],
@@ -422,7 +427,9 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Text(
                                   "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
                                   style: FontsTheme.descriptionText(
-                                      size: 13, color: Colors.black87,fontWeight: FontWeight.normal),
+                                      size: 13,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.normal),
                                 ),
                               ),
                             ],
@@ -728,17 +735,23 @@ class _CartScreenState extends State<CartScreen> {
                           title: Text(
                             Provider.of<CartDataWrapper>(context)
                                     .isCouponApplied
-                                ? "Total Savings(${couponText.text})"
+                                ? "Total Savings(${couponText.text}),"
                                 : "Total Savings",
                             style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
+                                fontSize: 12,
+                                color: Colors.green,
+                                fontWeight: FontWeight.w600),
                           ),
-                          trailing: Text(Provider.of<CartDataWrapper>(context)
-                                  .isCouponApplied
-                              ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
-                              : "\u{20B9} 0"),
+                          trailing: Text(
+                            Provider.of<CartDataWrapper>(context)
+                                    .isCouponApplied
+                                ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
+                                : "\u{20B9} 0",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.green,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -765,16 +778,16 @@ class _CartScreenState extends State<CartScreen> {
                                       .isDeliveryCharges ==
                                   true
                               ? SizedBox(
-                                height: 25,
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  dense: true,
-                                  title: Text(
-                                      "Shipping Fee(Not applicable in TakeAway)"),
-                                  trailing: Text(
-                                      "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
-                                ),
-                              )
+                                  height: 25,
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    dense: true,
+                                    title: Text(
+                                        "Shipping Fee(Not applicable in TakeAway)"),
+                                    trailing: Text(
+                                        "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+                                  ),
+                                )
                               : Container()
                           : Center(child: CircularProgressIndicator()),
                       SizedBox(

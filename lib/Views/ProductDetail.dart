@@ -18,11 +18,12 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+import 'Components/DiscountTag.dart';
 
 class ProductDescription extends StatefulWidget {
   String productId;
@@ -251,6 +252,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Text("${productData.productName}",
                                             style: FontsTheme.boldTextStyle(
                                                 size: 16)),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0, bottom: 8),
+                                          child: SizedBox(
+                                              width: 45,
+                                              child: DiscountTag(
+                                                  mrp: productData.productMrp,
+                                                  selling: productData
+                                                      .productSellingPrice)),
+                                        ),
                                         if (productData.productRatingAverage !=
                                             0)
                                           Space(height: 8),
@@ -287,12 +298,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         SizedBox(
                                           height: 4,
                                         ),
-                                        SizedBox(
-                                            width: 45,
-                                            child: DiscountTag(
-                                                mrp: productData.productMrp,
-                                                selling: productData
-                                                    .productSellingPrice)),
+
                                         if (productData.isStock)
                                           if (productData.stockLeft <= 20)
                                             Text(
