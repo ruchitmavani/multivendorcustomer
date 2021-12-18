@@ -16,10 +16,9 @@ import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
-import 'package:multi_vendor_customer/Views/InvoiceGenerate.dart';
+import 'package:multi_vendor_customer/Views/shareInvoice.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -456,7 +455,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (widget.orderData.orderStatus.last == "Delivered")
-                    SizedBox(
+                    shareInvoice(context, widget.orderData)
+                  /* SizedBox(
                       height: 44,
                       child: ElevatedButton(
                         child: Text(
@@ -498,7 +498,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           // generateInvoice(PdfPageFormat.a4, qrcodeData);
                         },
                       ),
-                    ),
+                    ),*/
                 ],
               ),
       ),
