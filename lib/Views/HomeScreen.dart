@@ -71,10 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getBannerData();
     _getTrendingData();
     _recentlyBought();
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
     Provider.of<CustomColor>(context, listen: false).updateColor();
     print(Provider.of<VendorModelWrapper>(context, listen: false)
@@ -431,8 +428,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const EdgeInsets.only(
                                                           left: 4.0),
                                                   child: Image.asset(
-                                                    "images/swhatsapp.png.",
-                                                    height: 21,
+                                                    "images/whatsapp.png.",
+                                                    height: 22,
                                                     color: Provider.of<
                                                                 CustomColor>(
                                                             context)
@@ -745,11 +742,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     left: 10),
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    top: 4,
+                                                                    // top: 4,
                                                                     right: 5,
                                                                     left: 5),
                                                             decoration:
                                                                 BoxDecoration(
+                                                              color: Colors
+                                                                  .blueAccent,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -962,8 +961,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     "https://wa.me/${vendorProvider.mobileNumber}");
                                               },
                                               child: Image.asset(
-                                                "images/swhatsapp.png.",
-                                                height: 21,
+                                                "images/whatsapp.png.",
+                                                height: 22,
                                                 color: Provider.of<CustomColor>(
                                                         context)
                                                     .appPrimaryMaterialColor,

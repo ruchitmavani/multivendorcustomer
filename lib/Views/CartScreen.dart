@@ -34,6 +34,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isLoadingCustomer = false;
   bool isLoadingCoupon = false;
   int addressIndex = 0;
+
   List<CartDataModel> cartData = [];
   CustomerDataModel customerData = CustomerDataModel(
       customerName: "",
@@ -56,6 +57,8 @@ class _CartScreenState extends State<CartScreen> {
         isLoggedIn = value;
       });
     });
+    //saving= "${cartProvider.elementAt(index).productName}",
+    // totalSaving="${Provider.of<CartDataWrapper>(context).discount}"+
   }
 
   _loadCustomerData() async {
@@ -738,17 +741,14 @@ class _CartScreenState extends State<CartScreen> {
                                 ? "Total Savings(${couponText.text}),"
                                 : "Total Savings",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                                 color: Colors.green,
                                 fontWeight: FontWeight.w600),
                           ),
                           trailing: Text(
-                            Provider.of<CartDataWrapper>(context)
-                                    .isCouponApplied
-                                ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
-                                : "\u{20B9} 0",
+                            "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                                 color: Colors.green,
                                 fontWeight: FontWeight.w600),
                           ),
@@ -762,14 +762,17 @@ class _CartScreenState extends State<CartScreen> {
                           title: Text(
                             "Tax",
                             style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                              fontSize: 14,
                             ),
                           ),
-                          trailing: Text(Provider.of<CartDataWrapper>(context)
-                                  .isLoading
-                              ? "0"
-                              : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
+                          trailing: Text(
+                            Provider.of<CartDataWrapper>(context).isLoading
+                                ? "0"
+                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ),
                       Provider.of<VendorModelWrapper>(context).isLoaded
@@ -783,30 +786,41 @@ class _CartScreenState extends State<CartScreen> {
                                     contentPadding: EdgeInsets.zero,
                                     dense: true,
                                     title: Text(
-                                        "Shipping Fee(Not applicable in TakeAway)"),
+                                      "Shipping Fee(Not applicable in TakeAway)",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                     trailing: Text(
-                                        "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+                                      "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   ),
                                 )
                               : Container()
                           : Center(child: CircularProgressIndicator()),
-                      SizedBox(
-                        height: 35,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                          title: Text(
-                            "Total",
-                            style: FontsTheme.boldTextStyle(
-                              size: 14,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 35,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            title: Text(
+                              "Total",
+                              style: FontsTheme.boldTextStyle(
+                                size: 15,
+                              ),
                             ),
-                          ),
-                          trailing: Text(
-                            Provider.of<CartDataWrapper>(context).isLoading
-                                ? "0"
-                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                            style: FontsTheme.boldTextStyle(
-                              size: 14,
+                            trailing: Text(
+                              Provider.of<CartDataWrapper>(context).isLoading
+                                  ? "0"
+                                  : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
+                              style: FontsTheme.boldTextStyle(
+                                size: 15,
+                              ),
                             ),
                           ),
                         ),

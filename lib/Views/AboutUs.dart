@@ -110,8 +110,8 @@ class _AboutUsState extends State<AboutUs> {
                                     "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
                               },
                               child: Image.asset(
-                                "images/swhatsapp.png.",
-                                height: 21,
+                                "images/whatsapp.png.",
+                                height: 22,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),

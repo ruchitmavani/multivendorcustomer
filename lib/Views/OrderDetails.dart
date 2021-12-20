@@ -19,6 +19,7 @@ import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart
 import 'package:multi_vendor_customer/Views/shareInvoice.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -174,8 +175,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     "https://wa.me/+91${widget.orderData.vendorDetails.mobileNumber}");
                               },
                               child: Image.asset(
-                                "images/swhatsapp.png.",
-                                height: 21,
+                                "images/whatsapp.png.",
+                                height: 22,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),
@@ -455,50 +456,21 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (widget.orderData.orderStatus.last == "Delivered")
-                    shareInvoice(context, widget.orderData)
-                  /* SizedBox(
+                    SizedBox(
                       height: 44,
                       child: ElevatedButton(
                         child: Text(
                           "Download invoice",
                           style: TextStyle(fontSize: 13),
                         ),
-                        onPressed: () {
-                          Printing.layoutPdf(
-                            onLayout: (PdfPageFormat format) {
-                              return generateInvoice(
-                                  format,
-                                  Invoice(
-                                      products: List.generate(
-                                          widget.orderData.orderItems.length,
-                                          (index) => Product(
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productDetails
-                                                  .productName,
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productDetails
-                                                  .productSellingPrice,
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productQuantity)),
-                                      customerName:
-                                          "${sharedPrefs.customer_name}",
-                                      invoiceNumber:
-                                          "${widget.orderData.orderId}",
-                                      tax: widget.orderData.taxPercentage == 0
-                                          ? 0
-                                          : widget.orderData.taxPercentage /
-                                              100,
-                                      baseColor: PdfColors.teal,
-                                      accentColor: PdfColors.blueGrey900));
-                            },
-                          );
+                        onPressed: () async {
+                          await Printing.layoutPdf(
+                              onLayout: (format) =>
+                                  shareInvoice(context, widget.orderData));
                           // generateInvoice(PdfPageFormat.a4, qrcodeData);
                         },
                       ),
-                    ),*/
+                    ),
                 ],
               ),
       ),

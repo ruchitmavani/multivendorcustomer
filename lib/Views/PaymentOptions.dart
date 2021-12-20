@@ -167,7 +167,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               .cartData
               .clear();
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-              vendorId: "${sharedPrefs.vendor_uniq_id}");
+              );
 
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");

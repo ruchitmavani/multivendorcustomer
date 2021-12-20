@@ -1,16 +1,12 @@
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:share/share.dart';
 
 shareInvoice(BuildContext context, orderData) async {
   final pdf = pw.Document();
@@ -336,12 +332,7 @@ shareInvoice(BuildContext context, orderData) async {
         );
       },
     ),
-  ); //save PDF
+  );
 
-  final String dir = (await getApplicationDocumentsDirectory()).path;
-  final String path = '$dir/Store_Qrcode.pdf';
-  final File file = File(path);
-  file.writeAsBytesSync(List.from(await pdf.save()));
-  file.exists().then((value) => log("$value"));
-  Share.shareFiles(['$dir/Store_Qrcode.pdf']);
+//save PDF
 }

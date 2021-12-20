@@ -53,7 +53,7 @@ class _TopButtonsState extends State<TopButtons> {
                     isGrid ? "GridView" : "ListView",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: 13,
                         color: Colors.grey.shade700),
                   ))),
           Container(

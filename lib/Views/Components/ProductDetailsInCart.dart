@@ -8,7 +8,6 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -157,8 +156,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                         .isActive
                     : false),
             isBulk: false);
-    Provider.of<CartDataWrapper>(context, listen: false)
-        .loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Fluttertoast.showToast(msg: "Update success");
   }
 

@@ -21,13 +21,13 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 4,left: 4, top: 8.0,bottom: 2),
+      padding: const EdgeInsets.only(right: 4, left: 4, top: 8.0, bottom: 2),
       child: SizedBox(
         width: 180,
         child: InkWell(
-          onTap: (){
-            context.go(helper(PageCollection.product +
-                '/${widget.productData.productId}'));
+          onTap: () {
+            context.go(helper(
+                PageCollection.product + '/${widget.productData.productId}'));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -52,13 +52,16 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                     child: SizedBox(
                       height: 120,
                       width: 100,
-                      child:widget.productData.productImageUrl.length==0? Image.asset("images/placeholder.png"):Image.network(
-                          "${StringConstants.api_url}${widget.productData.productImageUrl.first}"),
+                      child: widget.productData.productImageUrl.length == 0
+                          ? Image.asset("images/placeholder.png")
+                          : Image.network(
+                              "${StringConstants.api_url}${widget.productData.productImageUrl.first}"),
                     ),
                   ),
                   Space(height: 8),
                   Text(
                     "${widget.productData.productName}",
+                    overflow: TextOverflow.ellipsis,
                     style: FontsTheme.subTitleStyle(),
                   ),
                   Text("${widget.productData.productDescription}",
