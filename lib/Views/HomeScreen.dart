@@ -428,8 +428,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const EdgeInsets.only(
                                                           left: 4.0),
                                                   child: Image.asset(
-                                                    "images/whatsapp.png.",
+                                                    "images/whatsapp.png",
                                                     height: 22,
+                                                    width: 22,
                                                     color: Provider.of<
                                                                 CustomColor>(
                                                             context)
@@ -437,6 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 )
                                                 /*     SvgPicture.asset(
+
                                                   "images/whatsappcus.png",
                                                   height: 30,
                                                   color: Provider.of<
