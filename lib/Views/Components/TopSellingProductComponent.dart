@@ -32,7 +32,7 @@ class _TopSellingProductComponentState
             PageCollection.product + '/${widget.productData.productId}'));
       },
       child: SizedBox(
-        width: MediaQuery.of(context).size.width / 3.5,
+        width: 260,
         child: Card(
           elevation: 0,
           shape: RoundedRectangleBorder(

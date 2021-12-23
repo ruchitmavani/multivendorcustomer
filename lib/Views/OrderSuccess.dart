@@ -41,7 +41,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
               height: 72,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 3.5,
+              width: 200,
               height: 32,
               child: ElevatedButton(
                 onPressed: () {
@@ -58,7 +58,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
               height: 40,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 3.5,
+              width: 200,
               height: 32,
               child: ElevatedButton(
                 onPressed: () {
