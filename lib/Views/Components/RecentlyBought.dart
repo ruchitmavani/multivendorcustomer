@@ -21,7 +21,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 4,left: 4, top: 8.0,bottom: 2),
+      padding: const EdgeInsets.only(right: 4,left: 4, top: 6.0,bottom: 2),
       child: SizedBox(
         width: 180,
         child: InkWell(

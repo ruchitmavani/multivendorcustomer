@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -195,27 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String getShopTimingStatus(VendorDataModel vendorProvider) {
     List<BusinessHour> list = vendorProvider.businessHours;
     if (vendorProvider.isOnline) {
-      // if (list[weekIndex(list)].isOpen == false) {
-      //   return "Closed";
-      // } else {
-      //   TimeOfDay startTime = TimeOfDay.fromDateTime(
-      //       DateFormat.jm().parse(list[weekIndex(list)].openTime));
-      //   TimeOfDay endTime = TimeOfDay.fromDateTime(
-      //       DateFormat.jm().parse(list[weekIndex(list)].closeTime));
-      //   TimeOfDay currentTime = TimeOfDay.now();
-      //   if (currentTime.hour > startTime.hour &&
-      //       currentTime.hour < endTime.hour) {
-      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
-      //   } else if ((currentTime.hour == startTime.hour &&
-      //           currentTime.minute > startTime.minute) ||
-      //       (currentTime.hour == endTime.hour &&
-      //           currentTime.minute < endTime.minute)) {
-      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
-      //   } else {
-      //     return "Closed";
-      //   }
-      // }
-
       return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
     } else {
       return "Offline";
@@ -609,6 +589,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       pinned: true,
                       snap: false,
                       floating: true,
+                      toolbarHeight: 30,
+                      expandedHeight: 30,
                       flexibleSpace: TopButtons(onChanged: (value) {
                         setState(() {
                           isGrid = value;
@@ -620,6 +602,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SliverToBoxAdapter(
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           isLoadingCate
@@ -640,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8)),
-                                        ),
+                                         ),
                                       ),
                                     ),
                                   ),
@@ -650,34 +634,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : Container(
                                       width: MediaQuery.of(context).size.width,
                                       color: Colors.white,
-                                      padding:
-                                          EdgeInsets.only(left: 15, top: 10,),
+                                      padding: EdgeInsets.only(
+                                        left: 15,
+                                        top: 10,
+                                      ),
                                       child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Text("Categories",
                                               style: FontsTheme.boldTextStyle(
                                                   size: 15)),
                                           Container(
-                                            height: 150,
+                                            height: 130,
                                             margin: EdgeInsets.only(
-                                                right: 5,
-                                                top: 7,
-                                                bottom: 9),
+                                                right: 5, top: 7,),
                                             child: ListView.builder(
                                               shrinkWrap: true,
                                               itemCount: productDataList.length,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, item) =>
                                                   InkWell(
-                                                    onTap: (){
-                                                      context.go(helper(PageCollection.categories +
-                                                          '/${productDataList.elementAt(item).categoryId}'));
-                                                    },
-                                                    child: Stack(
-                                                alignment: Alignment.center,
-                                                children: [
+                                                onTap: () {
+                                                  context.go(helper(PageCollection
+                                                          .categories +
+                                                      '/${productDataList.elementAt(item).categoryId}'));
+                                                },
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
                                                     ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -717,11 +704,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           left: 5),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                6),
+                                                            BorderRadius
+                                                                .circular(6),
                                                         gradient: LinearGradient(
                                                             colors: [
-                                                              Colors.transparent,
+                                                              Colors
+                                                                  .transparent,
                                                               Colors.black87
                                                             ],
                                                             stops: [
@@ -738,12 +726,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       child: Text(
                                                         "${productDataList.elementAt(item).categoryName}",
                                                         style: TextStyle(
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                     ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                                  ),
                                             ),
                                           ),
                                         ],
@@ -758,7 +747,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : recentlyBought.length == 0
                                     ? Container()
                                     : Padding(
-                                        padding: const EdgeInsets.only(left: 5,right: 5),
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5,top: 5),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -769,7 +759,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               isViewAll: false,
                                             ),
                                             SizedBox(
-                                              height: 245,
+                                              height: 220,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -832,6 +822,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   if (vendorProvider != null)
                     Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                           color: Colors.white,
@@ -1072,7 +1064,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget categoryWiseProducts() {
     return productDataList.length == 0
         ? Container(
-      alignment: Alignment.center,
+            alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.43,
             child: Column(
@@ -1093,7 +1085,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         : Container(
             margin: EdgeInsets.only(bottom: 80),
-            padding: EdgeInsets.only(left: 5, top: 10),
+            padding: EdgeInsets.only(left: 5, top: 5),
             color: Colors.white,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),

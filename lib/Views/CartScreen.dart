@@ -463,7 +463,7 @@ class _CartScreenState extends State<CartScreen> {
                               alignment: Alignment.center,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height - 60,
-                              child: Text("No items in Cart"))
+                              child:Image.asset("images/cartempty.png"))
                           : ListView.separated(
                               shrinkWrap: true,
                               padding: EdgeInsets.all(0),
