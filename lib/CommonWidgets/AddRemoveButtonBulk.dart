@@ -7,7 +7,6 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButtonBulk extends StatefulWidget {
@@ -92,10 +91,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
           );
     }
 
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
 
     // await CartController.addToCart(
     //         customerId: "${sharedPrefs.customer_id}",
@@ -175,10 +171,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
     // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(productId: widget.productData.productId);
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
   }
 
   @override

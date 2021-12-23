@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
@@ -28,10 +26,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
   Future deleteCart() async {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(productId: widget.productId);
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     // await CartController.deleteCart(cartId: "${widget.cartData.cartId}").then(
     //     (value) {
     //   if (value.success) {
@@ -70,7 +65,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
 
     provider.incrementQuantity(quantity: quantity, productId: widget.productId);
-    provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
+    provider.loadCartData();
   }
 
   @override

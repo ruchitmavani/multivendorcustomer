@@ -49,38 +49,45 @@ class _OrderComponentState extends State<OrderComponent> {
                       Container(
                         constraints:
                             BoxConstraints(maxHeight: 49, maxWidth: 49),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: widget.orderData.orderItems.length >= 4
-                              ? 4
-                              : widget.orderData.orderItems.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 3,
-                            mainAxisSpacing: 3,
-                            childAspectRatio: 1,
-                          ),
-                          itemBuilder: (context, index) {
-                            return widget.orderData.orderItems
-                                        .elementAt(index)
-                                        .productDetails
-                                        .productImageUrl
-                                        .length ==
-                                    0
-                                ? Image.asset(
-                                    "images/placeholder.png",
-                                    width: 23,
-                                    height: 23,
-                                  )
-                                : Image.network(
-                                    "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.first}",
-                                    width: 23,
-                                    height: 23,
-                                  );
-                          },
-                        ),
+                        child: widget.orderData.orderItems.length == 4
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    widget.orderData.orderItems.length >= 4
+                                        ? 4
+                                        : widget.orderData.orderItems.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 3,
+                                  mainAxisSpacing: 3,
+                                  childAspectRatio: 1,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return widget.orderData.orderItems
+                                              .elementAt(index)
+                                              .productDetails
+                                              .productImageUrl
+                                              .length ==
+                                          0
+                                      ? Image.asset(
+                                          "images/placeholder.png",
+                                          width: 23,
+                                          height: 23,
+                                        )
+                                      : Image.network(
+                                          "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(index).productDetails.productImageUrl.first}",
+                                          width: 23,
+                                          height: 23,
+                                        );
+                                },
+                              )
+                            : Image.network(
+                                "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(0).productDetails.productImageUrl.first}",
+                                width: 50,
+                                height: 50,
+                              ),
                       ),
                       Expanded(
                         child: Padding(
@@ -177,7 +184,8 @@ class _OrderComponentState extends State<OrderComponent> {
                           width: 85,
                           decoration: BoxDecoration(
                             color: Provider.of<CustomColor>(context)
-                                .appPrimaryMaterialColor.withOpacity(0.1),
+                                .appPrimaryMaterialColor
+                                .withOpacity(0.1),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(17.0)),
                           ),

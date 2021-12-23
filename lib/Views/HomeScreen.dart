@@ -72,10 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getBannerData();
     _getTrendingData();
     _recentlyBought();
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
     Provider.of<CustomColor>(context, listen: false).updateColor();
     print(Provider.of<VendorModelWrapper>(context, listen: false)
@@ -145,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           isLoadingTop = false;
           trendingProducts = value.data;
@@ -171,7 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           isLoadingRece = false;
           recentlyBought = value.data!;
@@ -196,6 +191,27 @@ class _HomeScreenState extends State<HomeScreen> {
   String getShopTimingStatus(VendorDataModel vendorProvider) {
     List<BusinessHour> list = vendorProvider.businessHours;
     if (vendorProvider.isOnline) {
+      // if (list[weekIndex(list)].isOpen == false) {
+      //   return "Closed";
+      // } else {
+      //   TimeOfDay startTime = TimeOfDay.fromDateTime(
+      //       DateFormat.jm().parse(list[weekIndex(list)].openTime));
+      //   TimeOfDay endTime = TimeOfDay.fromDateTime(
+      //       DateFormat.jm().parse(list[weekIndex(list)].closeTime));
+      //   TimeOfDay currentTime = TimeOfDay.now();
+      //   if (currentTime.hour > startTime.hour &&
+      //       currentTime.hour < endTime.hour) {
+      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      //   } else if ((currentTime.hour == startTime.hour &&
+      //           currentTime.minute > startTime.minute) ||
+      //       (currentTime.hour == endTime.hour &&
+      //           currentTime.minute < endTime.minute)) {
+      //     return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      //   } else {
+      //     return "Closed";
+      //   }
+      // }
+
       return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
     } else {
       return "Offline";
@@ -348,18 +364,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 imageUrl:
                                                     "${StringConstants.api_url}${vendorProvider.logo}",
                                                 fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    SizedBox(
-                                                  width: 12,
-                                                  height: 12,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                ),
+                                                placeholder: (context, url) {
+                                                  return SizedBox(
+                                                    width: 12,
+                                                    height: 12,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  );
+                                                },
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Icon(Icons.map),
@@ -407,15 +424,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   await launch(
                                                       "https://wa.me/+91${vendorProvider.mobileNumber}");
                                                 },
-                                                child: SvgPicture.asset(
-                                                  "images/whatsapp.svg",
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 4.0),
+                                                  child: Image.asset(
+                                                    "images/whatsapp.png",
+                                                    height: 22,
+                                                    width: 22,
+                                                    color: Provider.of<
+                                                                CustomColor>(
+                                                            context)
+                                                        .appPrimaryMaterialColor,
+                                                  ),
+                                                )
+                                                /*     SvgPicture.asset(
+
+                                                  "images/whatsappcus.png",
+                                                  height: 30,
                                                   color: Provider.of<
                                                           CustomColor>(context)
                                                       .appPrimaryMaterialColor,
-                                                ),
-                                              )
+                                                ),*/
+                                                )
                                             : Container(),
-                                        Space(width: 22)
+                                        Space(width: 25)
                                       ],
                                     ),
                                   ],
@@ -555,7 +588,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : trendingProducts.length != 0
                                   ? Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 15.0, top: 10),
+                                          left: 15.0, top: 17, bottom: 9),
                                       child: Row(
                                         children: [
                                           Text("Top Selling Products",
@@ -734,6 +767,112 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                             ),
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    productDataList.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, item) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 5.0),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        context.go(helper(
+                                                            PageCollection
+                                                                    .categories +
+                                                                '/${productDataList.elementAt(item).categoryId}'));
+                                                      },
+                                                      child: Stack(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        children: [
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              height: 100,
+                                                              width: 100,
+                                                              imageUrl:
+                                                                  "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
+                                                              fit: BoxFit.fill,
+                                                              placeholder:
+                                                                  (context,
+                                                                          url) =>
+                                                                      SizedBox(
+                                                                width: 8,
+                                                                height: 8,
+                                                              ),
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  Image.asset(
+                                                                'images/placeholdersquare.jpg',
+                                                                height: 150,
+                                                                width: 150,
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .bottomLeft,
+                                                            height: 100,
+                                                            width: 100,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10,
+                                                                    left: 10),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    // top: 4,
+                                                                    right: 5,
+                                                                    left: 5),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Colors
+                                                                  .blueAccent,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          6),
+                                                              gradient: LinearGradient(
+                                                                  colors: [
+                                                                    Colors
+                                                                        .transparent,
+                                                                    Colors
+                                                                        .black87
+                                                                  ],
+                                                                  stops: [
+                                                                    0.4,
+                                                                    0.8
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .topCenter,
+                                                                  end: Alignment
+                                                                      .bottomCenter,
+                                                                  tileMode:
+                                                                      TileMode
+                                                                          .clamp),
+                                                            ),
+                                                            child: Text(
+                                                              "${productDataList.elementAt(item).categoryName}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
                                           ),
                                         ],
                                       ),
@@ -911,8 +1050,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 await launch(
                                                     "https://wa.me/${vendorProvider.mobileNumber}");
                                               },
-                                              child: SvgPicture.asset(
-                                                "images/whatsapp.svg",
+                                              child: Image.asset(
+                                                "images/whatsapp.png.",
+                                                height: 22,
                                                 color: Provider.of<CustomColor>(
                                                         context)
                                                     .appPrimaryMaterialColor,

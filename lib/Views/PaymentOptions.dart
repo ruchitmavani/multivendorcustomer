@@ -167,7 +167,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               .cartData
               .clear();
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-              vendorId: "${sharedPrefs.vendor_uniq_id}");
+              );
 
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
@@ -210,6 +210,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Choose Payment Method",
           style: FontsTheme.boldTextStyle(size: 16),
@@ -217,8 +218,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-        child: Card(
-          color: Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
@@ -231,27 +239,33 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       _selection = paymentMethods.COD;
                     });
                   },
-                  child: ListTile(
-                    title: const Text(
-                      'Cash on Delivery', style: TextStyle(fontSize: 12),),
-                    leading: Radio<paymentMethods>(
-                      activeColor: Provider
-                          .of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      value: paymentMethods.COD,
-                      groupValue: _selection,
-                      onChanged: (paymentMethods? value) {
-                        setState(() {
-                          _selection = value!;
-                          print(value);
-                        },);
-                      },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top:5.0),
+                    child: ListTile(
+                      dense: true,
+                      visualDensity:
+                      VisualDensity(horizontal: 0, vertical: -4),
+                      title: const Text(
+                        'Cash on Delivery', style: TextStyle(fontSize: 12),),
+                      leading: Radio<paymentMethods>(
+                        activeColor: Provider
+                            .of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        value: paymentMethods.COD,
+                        groupValue: _selection,
+                        onChanged: (paymentMethods? value) {
+                          setState(() {
+                            _selection = value!;
+                            print(value);
+                          },);
+                        },
+                      ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(),
+                Divider(
+                  thickness: 1,
+                  color: Colors.white,
                 ),
                 InkWell(
                   onTap: () {
@@ -260,6 +274,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: ListTile(
+                    dense: true,
+                    visualDensity:
+                    VisualDensity(horizontal: 0, vertical: -4),
                     title: const Text(
                       'Pay Online', style: TextStyle(fontSize: 12),),
                     leading: Radio<paymentMethods>(
@@ -281,9 +298,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     .of<VendorModelWrapper>(context)
                     .vendorModel!
                     .isStorePickupEnable)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
                   ),
                 if(Provider
                     .of<VendorModelWrapper>(context)
@@ -294,21 +311,27 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       _selection = paymentMethods.TAKEAWAY;
                     });
                   },
-                    child: ListTile(
-                      title: const Text(
-                        'Take Away', style: TextStyle(fontSize: 12),),
-                      leading: Radio<paymentMethods>(
-                        value: paymentMethods.TAKEAWAY,
-                        activeColor: Provider
-                            .of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        groupValue: _selection,
-                        onChanged: (paymentMethods? value) {
-                          setState(() {
-                            _selection = value!;
-                            print(value);
-                          });
-                        },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: ListTile(
+                        dense: true,
+                        visualDensity:
+                        VisualDensity(horizontal: 0, vertical: -4),
+                        title: const Text(
+                          'Take Away', style: TextStyle(fontSize: 12),),
+                        leading: Radio<paymentMethods>(
+                          value: paymentMethods.TAKEAWAY,
+                          activeColor: Provider
+                              .of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                          groupValue: _selection,
+                          onChanged: (paymentMethods? value) {
+                            setState(() {
+                              _selection = value!;
+                              print(value);
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

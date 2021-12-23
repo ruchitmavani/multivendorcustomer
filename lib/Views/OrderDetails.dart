@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/RejectOrder.dart';
@@ -17,7 +16,7 @@ import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
-import 'package:multi_vendor_customer/Views/InvoiceGenerate.dart';
+import 'package:multi_vendor_customer/Views/shareInvoice.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -175,8 +174,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 await launch(
                                     "https://wa.me/+91${widget.orderData.vendorDetails.mobileNumber}");
                               },
-                              child: SvgPicture.asset(
-                                "images/whatsapp.svg",
+                              child: Image.asset(
+                                "images/whatsapp.png.",
+                                height: 22,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),
@@ -463,38 +463,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                           "Download invoice",
                           style: TextStyle(fontSize: 13),
                         ),
-                        onPressed: () {
-                          Printing.layoutPdf(
-                            onLayout: (PdfPageFormat format) {
-                              return generateInvoice(
-                                  format,
-                                  Invoice(
-                                      products: List.generate(
-                                          widget.orderData.orderItems.length,
-                                          (index) => Product(
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productDetails
-                                                  .productName,
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productDetails
-                                                  .productSellingPrice,
-                                              widget.orderData.orderItems
-                                                  .elementAt(index)
-                                                  .productQuantity)),
-                                      customerName:
-                                          "${sharedPrefs.customer_name}",
-                                      invoiceNumber:
-                                          "${widget.orderData.orderId}",
-                                      tax: widget.orderData.taxPercentage == 0
-                                          ? 0
-                                          : widget.orderData.taxPercentage /
-                                              100,
-                                      baseColor: PdfColors.teal,
-                                      accentColor: PdfColors.blueGrey900));
-                            },
-                          );
+                        onPressed: () async {
+                          await Printing.layoutPdf(
+                              onLayout: (format) =>
+                                  shareInvoice(context, widget.orderData));
                           // generateInvoice(PdfPageFormat.a4, qrcodeData);
                         },
                       ),

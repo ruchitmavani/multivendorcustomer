@@ -7,8 +7,6 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
-import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButton extends StatefulWidget {
@@ -89,10 +87,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         .forEach((element) {
       print(element.toJson());
     });
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Fluttertoast.showToast(msg: "Added to Cart");
 
     // await CartController.addToCart(
@@ -173,10 +168,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(productId: widget.productData.productId);
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-        vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .vendorUniqId);
+    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
   }
 
   Future updateCart(int quantity) async {
@@ -201,18 +193,18 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     if (widget.productData.isStock) {
-      if (quantity  <= widget.productData.stockLeft) {
+      if (quantity <= widget.productData.stockLeft) {
         provider.incrementQuantity(
             quantity: quantity, productId: widget.productData.productId);
       } else {
         Fluttertoast.showToast(msg: "No more left in Stock");
       }
-    }else{
+    } else {
       provider.incrementQuantity(
           quantity: quantity, productId: widget.productData.productId);
     }
 
-    provider.loadCartData(vendorId: "${sharedPrefs.vendor_uniq_id}");
+    provider.loadCartData();
   }
 
   @override

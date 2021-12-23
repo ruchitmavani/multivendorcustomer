@@ -14,6 +14,7 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart';
 import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
@@ -33,6 +34,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isLoadingCustomer = false;
   bool isLoadingCoupon = false;
   int addressIndex = 0;
+
   List<CartDataModel> cartData = [];
   CustomerDataModel customerData = CustomerDataModel(
       customerName: "",
@@ -55,6 +57,8 @@ class _CartScreenState extends State<CartScreen> {
         isLoggedIn = value;
       });
     });
+    //saving= "${cartProvider.elementAt(index).productName}",
+    // totalSaving="${Provider.of<CartDataWrapper>(context).discount}"+
   }
 
   _loadCustomerData() async {
@@ -96,7 +100,11 @@ class _CartScreenState extends State<CartScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(Icons.close, size: 16,color: Colors.white,),
+                        child: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Colors.white,
+                        ),
                       ),
                       width: 24,
                       height: 24,
@@ -198,7 +206,11 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(Icons.close, size: 16,color: Colors.white,),
+                          child: Icon(
+                            Icons.close,
+                            size: 16,
+                            color: Colors.white,
+                          ),
                         ),
                         width: 24,
                         height: 24,
@@ -355,6 +367,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Cart",
           style: FontsTheme.boldTextStyle(size: 16),
@@ -393,7 +406,9 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Text("Delivery address",
                                   style: FontsTheme.descriptionText(
-                                      size: 13, color: Colors.black54)),
+                                      size: 11,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.normal)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 1.0),
                                 child: Row(
@@ -402,7 +417,9 @@ class _CartScreenState extends State<CartScreen> {
                                   children: [
                                     Text(
                                       "${customerData.customerAddress.elementAt(addressIndex).type}",
-                                      style: FontsTheme.boldTextStyle(size: 13),
+                                      style: FontsTheme.boldTextStyle(
+                                          size: 13,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     changeAddress(),
                                   ],
@@ -413,7 +430,9 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Text(
                                   "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
                                   style: FontsTheme.descriptionText(
-                                      size: 13, color: Colors.black87),
+                                      size: 13,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.normal),
                                 ),
                               ),
                             ],
@@ -497,8 +516,11 @@ class _CartScreenState extends State<CartScreen> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Icon(Icons.close,
-                                                        size: 16,color: Colors.white,),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      size: 16,
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
                                                   width: 24,
                                                   height: 24,
@@ -593,6 +615,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   height: 2,
                                                 ),
                                                 Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
@@ -672,6 +696,19 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ],
                                                     ),
+                                                    SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 45,
+                                                      child: DiscountTag(
+                                                          mrp: cartProvider
+                                                              .elementAt(index)
+                                                              .productMrp,
+                                                          selling: cartProvider
+                                                              .elementAt(index)
+                                                              .productSellingPrice),
+                                                    )
                                                   ],
                                                 ),
                                               ],
@@ -686,14 +723,14 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                 ),
               if (cartProvider.length > 0)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (isLoggedIn) applyCoupon() else transparentBox(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 16),
-                      child: SizedBox(
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10, left: 12, right: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (isLoggedIn) applyCoupon() else transparentBox(),
+                      SizedBox(
                         height: 25,
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
@@ -701,23 +738,23 @@ class _CartScreenState extends State<CartScreen> {
                           title: Text(
                             Provider.of<CartDataWrapper>(context)
                                     .isCouponApplied
-                                ? "Total Savings(${couponText.text})"
+                                ? "Total Savings(${couponText.text}),"
                                 : "Total Savings",
                             style: TextStyle(
-                              fontSize: 14,
-                            ),
+                                fontSize: 14,
+                                color: Colors.green,
+                                fontWeight: FontWeight.w600),
                           ),
-                          trailing: Text(Provider.of<CartDataWrapper>(context)
-                                  .isCouponApplied
-                              ? "- \u{20B9} ${Provider.of<CartDataWrapper>(context).discount}"
-                              : "\u{20B9} 0"),
+                          trailing: Text(
+                            "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 16),
-                      child: SizedBox(
+                      SizedBox(
                         height: 25,
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
@@ -728,61 +765,68 @@ class _CartScreenState extends State<CartScreen> {
                               fontSize: 14,
                             ),
                           ),
-                          trailing: Text(Provider.of<CartDataWrapper>(context)
-                                  .isLoading
-                              ? "0"
-                              : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}"),
+                          trailing: Text(
+                            Provider.of<CartDataWrapper>(context).isLoading
+                                ? "0"
+                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Provider.of<VendorModelWrapper>(context).isLoaded
-                        ? Provider.of<VendorModelWrapper>(context)
-                                    .vendorModel!
-                                    .isDeliveryCharges ==
-                                true
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 16),
-                                child: SizedBox(
+                      Provider.of<VendorModelWrapper>(context).isLoaded
+                          ? Provider.of<VendorModelWrapper>(context)
+                                      .vendorModel!
+                                      .isDeliveryCharges ==
+                                  true
+                              ? SizedBox(
                                   height: 25,
                                   child: ListTile(
                                     contentPadding: EdgeInsets.zero,
                                     dense: true,
                                     title: Text(
-                                        "Shipping Fee(Not applicable in TakeAway)"),
+                                      "Shipping Fee(Not applicable in TakeAway)",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                     trailing: Text(
-                                        "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}"),
+                                      "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                            : Container()
-                        : Center(child: CircularProgressIndicator()),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 16),
-                      child: SizedBox(
-                        height: 35,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                          title: Text(
-                            "Total",
-                            style: FontsTheme.boldTextStyle(
-                              size: 14,
+                                )
+                              : Container()
+                          : Center(child: CircularProgressIndicator()),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          height: 35,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            title: Text(
+                              "Total",
+                              style: FontsTheme.boldTextStyle(
+                                size: 15,
+                              ),
                             ),
-                          ),
-                          trailing: Text(
-                            Provider.of<CartDataWrapper>(context).isLoading
-                                ? "0"
-                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                            style: FontsTheme.boldTextStyle(
-                              size: 14,
+                            trailing: Text(
+                              Provider.of<CartDataWrapper>(context).isLoading
+                                  ? "0"
+                                  : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
+                              style: FontsTheme.boldTextStyle(
+                                size: 15,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
             ],
           ),

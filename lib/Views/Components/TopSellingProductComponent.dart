@@ -26,13 +26,13 @@ class _TopSellingProductComponentState
     extends State<TopSellingProductComponent> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: InkWell(
-        onTap: () {
-          context.go(helper(
-              PageCollection.product + '/${widget.productData.productId}'));
-        },
+    return InkWell(
+      onTap: () {
+        context.go(helper(
+            PageCollection.product + '/${widget.productData.productId}'));
+      },
+      child: SizedBox(
+        width: 260,
         child: Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
@@ -42,39 +42,47 @@ class _TopSellingProductComponentState
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 18.0, horizontal: 8),
                 child: widget.productData.productImageUrl.length != 0
                     ? Container(
-                        height: 60,
-                        width: 60,
+                        height: 62,
+                        width: 62,
                         child: Image.network(
                           "${StringConstants.api_url}${widget.productData.productImageUrl.first}",
                           alignment: Alignment.center,
                           fit: BoxFit.contain,
                         ),
                       )
-                    : Image.asset("images/placeholder.png",height: 60,),
+                    : Image.asset(
+                        "images/placeholder.png",
+                        height: 60,
+                      ),
               ),
               Space(
                 width: 4,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${widget.productData.productName}",
-                    style: FontsTheme.boldTextStyle(),
-                  ),
-                  if(widget.productData.productRatingAverage!=0)
-                  ProductRating(widget.productData.productRatingAverage),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text("₹ ${widget.productData.productSellingPrice}",
-                        style: FontsTheme.digitStyle(
-                            fontWeight: FontWeight.w400, size: 13)),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${widget.productData.productName}",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: FontsTheme.boldTextStyle(),
+                    ),
+                    if (widget.productData.productRatingAverage != 0)
+                      ProductRating(widget.productData.productRatingAverage),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 1.0),
+                      child: Text("₹ ${widget.productData.productSellingPrice}",
+                          style: FontsTheme.digitStyle(
+                              fontWeight: FontWeight.w400, size: 13)),
+                    ),
+                  ],
+                ),
               ),
               Space(width: 8),
               Padding(
@@ -83,8 +91,8 @@ class _TopSellingProductComponentState
                   width: 35,
                   child: InkWell(
                     onTap: () {
-                      context.go(helper(
-                          PageCollection.product + '/${widget.productData.productId}'));
+                      context.go(helper(PageCollection.product +
+                          '/${widget.productData.productId}'));
                       // showModalBottomSheet(
                       //     context: context,
                       //     isScrollControlled: true,

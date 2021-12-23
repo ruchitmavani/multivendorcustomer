@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Data/Controller/CouponController.dart';
@@ -18,12 +20,15 @@ class CartDataWrapper extends ChangeNotifier {
   late double totalAmount;
   late double tax;
   late double taxPercentage;
-  late double discount;
+  late double discount = 0;
   late int shipping;
+  late double intialSaving = 0;
 
-  Future loadCartData({required String vendorId}) async {
+  Future loadCartData() async {
     totalItems = cartData.length;
     totalAmount = 0;
+    intialSaving = 0;
+
     for (int i = 0; i < cartData.length; i++) {
       totalAmount = totalAmount +
           (cartData.elementAt(i).productQuantity *
@@ -32,6 +37,13 @@ class CartDataWrapper extends ChangeNotifier {
                   : cartData.elementAt(i).productSize == null
                       ? cartData.elementAt(i).productSellingPrice
                       : cartData.elementAt(i).productSize!.sellingPrice));
+
+      int q = cartData.elementAt(i).productQuantity;
+
+      intialSaving = intialSaving +
+          q *
+              (cartData.elementAt(i).productMrp -
+                  cartData.elementAt(i).productSellingPrice);
     }
     tax = 0;
     taxPercentage = 0;
@@ -103,12 +115,17 @@ class CartDataWrapper extends ChangeNotifier {
     return 0;
   }
 
+  getTotalSavings() {}
+
   incrementQuantity({required int quantity, required String productId}) {
-    print(cartData.indexWhere((element) => element.productId == productId));
+    int index =
+        cartData.indexWhere((element) => element.productId == productId);
     cartData
         .elementAt(
             cartData.indexWhere((element) => element.productId == productId))
         .productQuantity = quantity;
+
+    log("--$intialSaving");
     notifyListeners();
   }
 
