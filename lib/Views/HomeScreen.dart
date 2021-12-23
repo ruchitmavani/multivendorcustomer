@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -383,10 +384,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             Space(width: 8.0),
-                                            Text(
+                                            AutoSizeText(
                                               "${vendorProvider.businessName}",
+                                              minFontSize: 6,
                                               style: FontsTheme.boldTextStyle(
-                                                  size: 17),
+                                                  size: 17,),
                                             )
                                           ],
                                         ),
@@ -396,15 +398,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        InkWell(
-                                          onTap: () async {
-                                            await launch(
-                                                'tel: ${vendorProvider.mobileNumber}');
-                                          },
-                                          child: Icon(Icons.call,
-                                              color: Provider.of<CustomColor>(
-                                                      context)
-                                                  .appPrimaryMaterialColor),
+                                        FittedBox(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await launch(
+                                                  'tel: ${vendorProvider.mobileNumber}');
+                                            },
+                                            child: Icon(Icons.call,
+                                                color: Provider.of<CustomColor>(
+                                                        context)
+                                                    .appPrimaryMaterialColor),
+                                          ),
                                         ),
                                         vendorProvider.isWhatsappChatSupport
                                             ? Space(width: 8)
@@ -419,34 +423,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ? Space(width: 8)
                                             : Container(),
                                         vendorProvider.isWhatsappChatSupport
-                                            ? InkWell(
-                                                onTap: () async {
-                                                  await launch(
-                                                      "https://wa.me/+91${vendorProvider.mobileNumber}");
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 4.0),
-                                                  child: Image.asset(
-                                                    "images/whatsapp.png",
-                                                    height: 22,
-                                                    width: 22,
-                                                    color: Provider.of<
-                                                                CustomColor>(
-                                                            context)
-                                                        .appPrimaryMaterialColor,
-                                                  ),
-                                                )
-                                                /*     SvgPicture.asset(
+                                            ? FittedBox(
+                                              child: InkWell(
+                                                  onTap: () async {
+                                                    await launch(
+                                                        "https://wa.me/+91${vendorProvider.mobileNumber}");
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4.0),
+                                                    child: Image.asset(
+                                                      "images/whatsapp.png",
+                                                      height: 22,
+                                                      width: 22,
+                                                      color: Provider.of<
+                                                                  CustomColor>(
+                                                              context)
+                                                          .appPrimaryMaterialColor,
+                                                    ),
+                                                  )
+                                                  /*     SvgPicture.asset(
 
-                                                  "images/whatsappcus.png",
-                                                  height: 30,
-                                                  color: Provider.of<
-                                                          CustomColor>(context)
-                                                      .appPrimaryMaterialColor,
-                                                ),*/
-                                                )
+                                                    "images/whatsappcus.png",
+                                                    height: 30,
+                                                    color: Provider.of<
+                                                            CustomColor>(context)
+                                                        .appPrimaryMaterialColor,
+                                                  ),*/
+                                                  ),
+                                            )
                                             : Container(),
                                         Space(width: 25)
                                       ],
@@ -494,67 +500,84 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }).toList(),
                                   ),
                                 if (banners.length > 0) Space(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "Shop Timing :",
-                                        style: FontsTheme.descriptionText(
-                                            fontWeight: FontWeight.w500),
-                                        children: [
-                                          vendorProvider.businessHours.length ==
-                                                  0
-                                              ? TextSpan(
-                                                  text: "  Open",
-                                                  style: FontsTheme.valueStyle(
-                                                      color: Colors.black54,
-                                                      size: 11,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                )
-                                              : TextSpan(
-                                                  text: getShopTimingStatus(
-                                                      vendorProvider),
-                                                  style: FontsTheme.valueStyle(
-                                                      color: Colors.black54,
-                                                      size: 11,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                )
-                                        ],
-                                      ),
-                                    ),
-                                    Space(width: 20),
-                                    Row(
-                                      children: [
-                                        RichText(
-                                            text: TextSpan(
-                                          text: "Location:",
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 18, right: 23),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        (MediaQuery.of(context).size.width >
+                                                450)
+                                            ? MainAxisAlignment.center
+                                            : MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text: "Shop Timing :",
                                           style: FontsTheme.descriptionText(
                                               fontWeight: FontWeight.w500),
-                                        )),
-                                        Icon(Icons.directions,
-                                            size: 18,
-                                            color: Provider.of<CustomColor>(
-                                                    context)
-                                                .appPrimaryMaterialColor),
-                                        InkWell(
-                                          onTap: () {
-                                            launch(
-                                                "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                                          },
-                                          child: Text(" Direction",
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Provider.of<
-                                                          CustomColor>(context)
-                                                      .appPrimaryMaterialColor,
-                                                  fontWeight: FontWeight.w600)),
+                                          children: [
+                                            vendorProvider
+                                                        .businessHours.length ==
+                                                    0
+                                                ? TextSpan(
+                                                    text: "  Open",
+                                                    style:
+                                                        FontsTheme.valueStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            size: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                  )
+                                                : TextSpan(
+                                                    text: getShopTimingStatus(
+                                                        vendorProvider),
+                                                    style:
+                                                        FontsTheme.valueStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            size: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                  )
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                      Space(width: 20),
+                                      Row(
+                                        children: [
+                                          RichText(
+                                              text: TextSpan(
+                                            text: "Location:",
+                                            style: FontsTheme.descriptionText(
+                                                fontWeight: FontWeight.w500),
+                                          )),
+                                          Icon(Icons.directions,
+                                              size: 18,
+                                              color: Provider.of<CustomColor>(
+                                                      context)
+                                                  .appPrimaryMaterialColor),
+                                          InkWell(
+                                            onTap: () {
+                                              launch(
+                                                  "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                            },
+                                            child: Text(" Direction",
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Provider.of<
+                                                                CustomColor>(
+                                                            context)
+                                                        .appPrimaryMaterialColor,
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Space(
                                   height: 20,
@@ -657,7 +680,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8)),
-                                         ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -675,7 +698,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
                                           Text("Categories",
                                               style: FontsTheme.boldTextStyle(
@@ -683,7 +707,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Container(
                                             height: 130,
                                             margin: EdgeInsets.only(
-                                                right: 5, top: 7,),
+                                              right: 5,
+                                              top: 7,
+                                            ),
                                             child: ListView.builder(
                                               shrinkWrap: true,
                                               itemCount: productDataList.length,
@@ -767,112 +793,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                             ),
-                                                shrinkWrap: true,
-                                                itemCount:
-                                                    productDataList.length,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemBuilder: (context, item) {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 5.0),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        context.go(helper(
-                                                            PageCollection
-                                                                    .categories +
-                                                                '/${productDataList.elementAt(item).categoryId}'));
-                                                      },
-                                                      child: Stack(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        children: [
-                                                          ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        6),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              height: 100,
-                                                              width: 100,
-                                                              imageUrl:
-                                                                  "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
-                                                              fit: BoxFit.fill,
-                                                              placeholder:
-                                                                  (context,
-                                                                          url) =>
-                                                                      SizedBox(
-                                                                width: 8,
-                                                                height: 8,
-                                                              ),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  Image.asset(
-                                                                'images/placeholdersquare.jpg',
-                                                                height: 150,
-                                                                width: 150,
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .bottomLeft,
-                                                            height: 100,
-                                                            width: 100,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    bottom: 10,
-                                                                    left: 10),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    // top: 4,
-                                                                    right: 5,
-                                                                    left: 5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .blueAccent,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          6),
-                                                              gradient: LinearGradient(
-                                                                  colors: [
-                                                                    Colors
-                                                                        .transparent,
-                                                                    Colors
-                                                                        .black87
-                                                                  ],
-                                                                  stops: [
-                                                                    0.4,
-                                                                    0.8
-                                                                  ],
-                                                                  begin: Alignment
-                                                                      .topCenter,
-                                                                  end: Alignment
-                                                                      .bottomCenter,
-                                                                  tileMode:
-                                                                      TileMode
-                                                                          .clamp),
-                                                            ),
-                                                            child: Text(
-                                                              "${productDataList.elementAt(item).categoryName}",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 11),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
                                           ),
                                         ],
                                       ),
@@ -887,7 +807,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? Container()
                                     : Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5,top: 5),
+                                            left: 5, right: 5, top: 5),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -1033,7 +953,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .appPrimaryMaterialColor),
                                       ),
                                       vendorProvider.isWhatsappChatSupport
-                                          ? Space(width: 8)
+                                          ? Space(width: 10)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
                                           ? Container(
@@ -1042,7 +962,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.grey)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
-                                          ? Space(width: 8)
+                                          ? Space(width: 10)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
                                           ? InkWell(
@@ -1103,69 +1023,77 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }).toList(),
                                 ),
                               if (banners.length > 0) Space(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "Shop Timing :",
-                                      style: FontsTheme.descriptionText(
-                                          fontWeight: FontWeight.w500),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 18.0, right: 23),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AutoSizeText.rich(
+                                       TextSpan(
+                                        text: "Shop Timing :",
+                                        style: FontsTheme.descriptionText(
+                                            fontWeight: FontWeight.w500),
+                                        children: [
+                                          vendorProvider.businessHours.length ==
+                                                  0
+                                              ? TextSpan(
+                                                  text: "  Open",
+                                                  style: FontsTheme.valueStyle(
+                                                      color: Colors.black54,
+                                                      size: 11,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                )
+                                              : TextSpan(
+                                                  text: getShopTimingStatus(
+                                                      vendorProvider),
+                                                  style: FontsTheme.valueStyle(
+                                                      color: Colors.black54,
+                                                      size: 11,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                )
+                                        ],
+                                      ),
+                                    ),
+                                    Space(width: 20),
+                                    Row(
                                       children: [
-                                        vendorProvider.businessHours.length == 0
-                                            ? TextSpan(
-                                                text: "  Open",
-                                                style: FontsTheme.valueStyle(
-                                                    color: Colors.black54,
-                                                    size: 11,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              )
-                                            : TextSpan(
-                                                text: getShopTimingStatus(
-                                                    vendorProvider),
-                                                style: FontsTheme.valueStyle(
-                                                    color: Colors.black54,
-                                                    size: 11,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              )
+                                        AutoSizeText.rich(
+                                           TextSpan(
+                                            text: "Location:",
+                                            style: FontsTheme.descriptionText(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Icon(Icons.directions,
+                                            size: 18,
+                                            color: Provider.of<CustomColor>(
+                                                    context)
+                                                .appPrimaryMaterialColor),
+                                        FittedBox(
+                                          child: InkWell(
+                                            onTap: () {
+                                              launch(
+                                                  "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                            },
+                                            child: Text(
+                                              " Direction",
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Provider.of<CustomColor>(
+                                                          context)
+                                                      .appPrimaryMaterialColor,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Space(width: 20),
-                                  Row(
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Location:",
-                                          style: FontsTheme.descriptionText(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Icon(Icons.directions,
-                                          size: 18,
-                                          color:
-                                              Provider.of<CustomColor>(context)
-                                                  .appPrimaryMaterialColor),
-                                      InkWell(
-                                        onTap: () {
-                                          launch(
-                                              "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                                        },
-                                        child: Text(
-                                          " Direction",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Provider.of<CustomColor>(
-                                                      context)
-                                                  .appPrimaryMaterialColor,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Space(
                                 height: 20,
