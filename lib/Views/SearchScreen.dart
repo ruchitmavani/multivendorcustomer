@@ -7,6 +7,8 @@ import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'ProductDetail.dart';
+
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -147,47 +149,48 @@ class _SearchState extends State<Search> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 15.0, bottom: 15.0),
-                                        child: SizedBox(
-                                          child: FloatingActionButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              setState(() {});
-                                            },
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 16,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          width: 24,
-                                          height: 24,
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(10.0),
-                                              topLeft: Radius.circular(10.0)),
-                                        ),
-                                        // child: ProductDescription(
-                                        //     productList.elementAt(index)),
-                                      ),
-                                    ],
-                                  );
-                                });
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDescription(productId: productList.elementAt(index).productId,),));
+                            // showModalBottomSheet(
+                            //     context: context,
+                            //     isScrollControlled: true,
+                            //     backgroundColor: Colors.transparent,
+                            //     builder: (context) {
+                            //       return Column(
+                            //         crossAxisAlignment: CrossAxisAlignment.end,
+                            //         mainAxisAlignment: MainAxisAlignment.end,
+                            //         children: [
+                            //           Padding(
+                            //             padding: const EdgeInsets.only(
+                            //                 right: 15.0, bottom: 15.0),
+                            //             child: SizedBox(
+                            //               child: FloatingActionButton(
+                            //                 onPressed: () {
+                            //                   Navigator.of(context).pop();
+                            //                   setState(() {});
+                            //                 },
+                            //                 child: Icon(
+                            //                   Icons.close,
+                            //                   size: 16,
+                            //                   color: Colors.white,
+                            //                 ),
+                            //               ),
+                            //               width: 24,
+                            //               height: 24,
+                            //             ),
+                            //           ),
+                            //           Container(
+                            //             decoration: BoxDecoration(
+                            //               color: Colors.white,
+                            //               borderRadius: BorderRadius.only(
+                            //                   topRight: Radius.circular(10.0),
+                            //                   topLeft: Radius.circular(10.0)),
+                            //             ),
+                            //             // child: ProductDescription(
+                            //             //     productList.elementAt(index)),
+                            //           ),
+                            //         ],
+                            //       );
+                            //     });
                           },
                           child: ProductComponentGrid(
                               productData: productList.elementAt(index)),
