@@ -88,14 +88,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             Icons.list_sharp,
                           ),
                           onTap: () {
-                            GoRouter.of(context).push(PageCollection.myOrders);
+                            GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
                           }),
                       ListTile(
                           title: Text("My Account"),
                           leading: Icon(Icons.account_circle),
                           enabled: true,
                           onTap: () {
-                            GoRouter.of(context).push(PageCollection.myAccount);
+                            GoRouter.of(context).push('/'+storeConcat(PageCollection.myAccount));
                           }),
                     ],
                   ),
@@ -169,7 +169,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             Icons.lock,
                           ),
                           onTap: () {
-                            GoRouter.of(context).go(PageCollection.login);
+                            GoRouter.of(context).go('/'+storeConcat(PageCollection.login));
                           }),
                     ],
                   ),

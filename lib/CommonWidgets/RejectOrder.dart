@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 
 import 'MyTextFormField.dart';
 
@@ -31,7 +32,7 @@ class _RejectOrderState extends State<RejectOrder> {
       if (value.success) {
         print(value.data);
         setState(() {
-          GoRouter.of(context).push(PageCollection.myOrders);
+          GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
           Fluttertoast.showToast(msg: "Order Rejected");
           isLoading = false;
         });

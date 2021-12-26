@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'dart:html';
 
 import 'package:direct_select_flutter/direct_select_container.dart';
@@ -13,6 +12,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -108,11 +108,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
           actions: [
             IconButton(
               icon: Icon(CupertinoIcons.search,
-                  size: 20,
+                  size: 25,
                   color: Provider.of<CustomColor>(context)
                       .appPrimaryMaterialColor),
               onPressed: () {
-                GoRouter.of(context).push(PageCollection.search);
+                GoRouter.of(context).push('/'+storeConcat(PageCollection.search));
               },
             ),
             Padding(
@@ -351,9 +351,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                         Text(
                                                           "${productData.productLiveTiming[i]}",
                                                           style: TextStyle(
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight.w600,
+                                                            fontSize: 13,
+                                                            // fontWeight:
+                                                            //     FontWeight.w600,
                                                             color: Colors
                                                                 .grey[800],
                                                           ),
@@ -663,7 +663,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                     contentPadding:
                                                         EdgeInsets.zero,
                                                     dense: true,
-                                                    title: Text("Price"),
+                                                    title: Text(
+                                                      "Price",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
                                                     trailing: Text(finalQuantity !=
                                                             0
                                                         ? "\u{20B9} ${finalPrice / finalQuantity}"
@@ -682,7 +687,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                     contentPadding:
                                                         EdgeInsets.zero,
                                                     dense: true,
-                                                    title: Text("Qty"),
+                                                    title: Text(
+                                                      "Qty",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
                                                     trailing:
                                                         Text("$finalQuantity"),
                                                   ),

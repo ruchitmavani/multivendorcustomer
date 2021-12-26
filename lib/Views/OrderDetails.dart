@@ -13,6 +13,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
@@ -76,7 +77,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       if (value.success) {
         print(value.data);
         setState(() {
-          GoRouter.of(context).push(PageCollection.myOrders);
+          GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
           Fluttertoast.showToast(msg: "Order Accepted");
           isLoading = false;
         });

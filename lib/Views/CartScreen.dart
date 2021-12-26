@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
@@ -9,6 +8,7 @@ import 'package:multi_vendor_customer/Constants/app_icons.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/CartDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -57,8 +57,6 @@ class _CartScreenState extends State<CartScreen> {
         isLoggedIn = value;
       });
     });
-    //saving= "${cartProvider.elementAt(index).productName}",
-    // totalSaving="${Provider.of<CartDataWrapper>(context).discount}"+
   }
 
   _loadCustomerData() async {
@@ -374,23 +372,95 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (sharedPrefs.customer_id.isNotEmpty)
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10, left: 12, right: 12),
-                    child: isLoadingCustomer
-                        ? Center(
-                            child: Shimmer.fromColors(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (sharedPrefs.customer_id.isNotEmpty)
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10.0, bottom: 10, left: 12, right: 12),
+                  child: isLoadingCustomer
+                      ? Center(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.white,
+                            highlightColor: Colors.grey[300]!,
+                            period: Duration(seconds: 2),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 20,
+                              height: 60,
+                              decoration: ShapeDecoration(
+                                color: Colors.grey[300]!,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Delivery address",
+                                style: FontsTheme.descriptionText(
+                                    size: 11,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.normal)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 1.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "${customerData.customerAddress.elementAt(addressIndex).type}",
+                                    style: FontsTheme.boldTextStyle(
+                                        size: 13,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  changeAddress(),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 1.0),
+                              child: Text(
+                                "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
+                                style: FontsTheme.descriptionText(
+                                    size: 13,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
+                width: MediaQuery.of(context).size.width,
+                color: Colors.grey.shade200,
+              ),
+            if (isLoading)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4.0,
+                ),
+                child: Provider.of<CartDataWrapper>(context).isLoading
+                    ? Center(
+                        child: ListView.builder(
+                          itemCount: 3,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Shimmer.fromColors(
                               baseColor: Colors.white,
                               highlightColor: Colors.grey[300]!,
                               period: Duration(seconds: 2),
                               child: Container(
+                                margin: EdgeInsets.all(8),
                                 width: MediaQuery.of(context).size.width - 20,
                                 height: 60,
                                 decoration: ShapeDecoration(
@@ -399,437 +469,362 @@ class _CartScreenState extends State<CartScreen> {
                                       borderRadius: BorderRadius.circular(8)),
                                 ),
                               ),
-                            ),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Delivery address",
-                                  style: FontsTheme.descriptionText(
-                                      size: 11,
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.normal)),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 1.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${customerData.customerAddress.elementAt(addressIndex).type}",
-                                      style: FontsTheme.boldTextStyle(
-                                          size: 13,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    changeAddress(),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 1.0),
-                                child: Text(
-                                  "${customerData.customerAddress.elementAt(addressIndex).subAddress}",
-                                  style: FontsTheme.descriptionText(
-                                      size: 13,
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                            ],
-                          ),
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.grey.shade200,
-                ),
-              if (isLoading)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4.0,
-                  ),
-                  child: Provider.of<CartDataWrapper>(context).isLoading
-                      ? Center(
-                          child: ListView.builder(
-                            itemCount: 3,
+                            );
+                          },
+                        ),
+                      )
+                    : cartProvider.length == 0
+                        ? Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height - 60,
+                            child:Image.asset("images/cartempty.png"))
+                        : ListView.separated(
                             shrinkWrap: true,
+                            padding: EdgeInsets.all(0),
+                            scrollDirection: Axis.vertical,
+                            itemCount: cartProvider.length,
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                thickness: 1,
+                              );
+                            },
                             itemBuilder: (context, index) {
-                              return Shimmer.fromColors(
-                                baseColor: Colors.white,
-                                highlightColor: Colors.grey[300]!,
-                                period: Duration(seconds: 2),
-                                child: Container(
-                                  margin: EdgeInsets.all(8),
-                                  width: MediaQuery.of(context).size.width - 20,
-                                  height: 60,
-                                  decoration: ShapeDecoration(
-                                    color: Colors.grey[300]!,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
+                              return GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (context) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15.0, bottom: 15.0),
+                                              child: SizedBox(
+                                                child: FloatingActionButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop();
+                                                  },
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    size: 16,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                width: 24,
+                                                height: 24,
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(
+                                                                10.0),
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                10.0)),
+                                              ),
+                                              child: ProductDescriptionInCart(
+                                                productId: cartProvider
+                                                    .elementAt(index)
+                                                    .productId,
+                                                color: cartProvider
+                                                    .elementAt(index)
+                                                    .productColor,
+                                                size: cartProvider
+                                                    .elementAt(index)
+                                                    .productSize,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      cartProvider
+                                                  .elementAt(index)
+                                                  .productImageUrl
+                                                  .length ==
+                                              0
+                                          ? Image.asset(
+                                              'images/placeholdersquare.jpg',
+                                              height: 55,
+                                              width: 55,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : CachedNetworkImage(
+                                              height: 55,
+                                              width: 55,
+                                              imageUrl:
+                                                  "${StringConstants.api_url}${cartProvider.elementAt(index).productImageUrl.first}",
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  SizedBox(
+                                                width: 8,
+                                                height: 8,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Image.asset(
+                                                'images/placeholdersquare.jpg',
+                                                height: 55,
+                                                width: 55,
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 15.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  "${cartProvider.elementAt(index).productName}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey[700],
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                              const SizedBox(
+                                                height: 2,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              text:
+                                                                  "\u{20B9}",
+                                                              style:
+                                                                  TextStyle(
+                                                                fontFamily:
+                                                                    "Poppins",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Colors
+                                                                    .red
+                                                                    .shade700,
+                                                                fontSize: 12,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .lineThrough,
+                                                                decorationThickness:
+                                                                    3,
+                                                              ),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${cartProvider.elementAt(index).productMrp}",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 2,
+                                                          ),
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              text:
+                                                                  "\u{20B9}",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Poppins",
+                                                                  color: Colors
+                                                                      .black87,
+                                                                  fontSize:
+                                                                      13,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${cartProvider.elementAt(index).productSellingPrice}",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      RoundedAddRemove(
+                                                        productId:
+                                                            cartProvider
+                                                                .elementAt(
+                                                                    index)
+                                                                .productId,
+                                                        isBulk: cartProvider
+                                                            .elementAt(index)
+                                                            .isBulk,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 45,
+                                                    child: DiscountTag(
+                                                        mrp: cartProvider
+                                                            .elementAt(index)
+                                                            .productMrp,
+                                                        selling: cartProvider
+                                                            .elementAt(index)
+                                                            .productSellingPrice),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
                             },
                           ),
-                        )
-                      : cartProvider.length == 0
-                          ? Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height - 60,
-                              child:Image.asset("images/cartempty.png"))
-                          : ListView.separated(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.all(0),
-                              scrollDirection: Axis.vertical,
-                              itemCount: cartProvider.length,
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  thickness: 1,
-                                );
-                              },
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (context) {
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 15.0, bottom: 15.0),
-                                                child: SizedBox(
-                                                  child: FloatingActionButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: Icon(
-                                                      Icons.close,
-                                                      size: 16,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  width: 24,
-                                                  height: 24,
-                                                ),
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10.0)),
-                                                ),
-                                                child: ProductDescriptionInCart(
-                                                  productId: cartProvider
-                                                      .elementAt(index)
-                                                      .productId,
-                                                  color: cartProvider
-                                                      .elementAt(index)
-                                                      .productColor,
-                                                  size: cartProvider
-                                                      .elementAt(index)
-                                                      .productSize,
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        cartProvider
-                                                    .elementAt(index)
-                                                    .productImageUrl
-                                                    .length ==
-                                                0
-                                            ? Image.asset(
-                                                'images/placeholdersquare.jpg',
-                                                height: 55,
-                                                width: 55,
-                                                fit: BoxFit.fill,
-                                              )
-                                            : CachedNetworkImage(
-                                                height: 55,
-                                                width: 55,
-                                                imageUrl:
-                                                    "${StringConstants.api_url}${cartProvider.elementAt(index).productImageUrl.first}",
-                                                fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    SizedBox(
-                                                  width: 8,
-                                                  height: 8,
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Image.asset(
-                                                  'images/placeholdersquare.jpg',
-                                                  height: 55,
-                                                  width: 55,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 15.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    "${cartProvider.elementAt(index).productName}",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[700],
-                                                        fontWeight:
-                                                            FontWeight.w600)),
-                                                const SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            RichText(
-                                                              text: TextSpan(
-                                                                text:
-                                                                    "\u{20B9}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .red
-                                                                      .shade700,
-                                                                  fontSize: 12,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .lineThrough,
-                                                                  decorationThickness:
-                                                                      3,
-                                                                ),
-                                                                children: [
-                                                                  TextSpan(
-                                                                    text:
-                                                                        "${cartProvider.elementAt(index).productMrp}",
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 2,
-                                                            ),
-                                                            RichText(
-                                                              text: TextSpan(
-                                                                text:
-                                                                    "\u{20B9}",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Poppins",
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontSize:
-                                                                        13,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                                children: [
-                                                                  TextSpan(
-                                                                    text:
-                                                                        "${cartProvider.elementAt(index).productSellingPrice}",
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        RoundedAddRemove(
-                                                          productId:
-                                                              cartProvider
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .productId,
-                                                          isBulk: cartProvider
-                                                              .elementAt(index)
-                                                              .isBulk,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 45,
-                                                      child: DiscountTag(
-                                                          mrp: cartProvider
-                                                              .elementAt(index)
-                                                              .productMrp,
-                                                          selling: cartProvider
-                                                              .elementAt(index)
-                                                              .productSellingPrice),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                ),
-              if (cartProvider.length > 0)
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 10, left: 12, right: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (isLoggedIn) applyCoupon() else transparentBox(),
-                      SizedBox(
-                        height: 25,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                          title: Text(
-                            Provider.of<CartDataWrapper>(context)
-                                    .isCouponApplied
-                                ? "Total Savings(${couponText.text}),"
-                                : "Total Savings",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                                fontWeight: FontWeight.w600),
+              ),
+            if (cartProvider.length > 0)
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 10.0, bottom: 10, left: 12, right: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isLoggedIn) applyCoupon() else transparentBox(),
+                    SizedBox(
+                      height: 25,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(
+                          Provider.of<CartDataWrapper>(context)
+                                  .isCouponApplied
+                              ? "Total Savings(${couponText.text}),"
+                              : "Total Savings",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        trailing: Text(
+                          "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(
+                          "Tax",
+                          style: TextStyle(
+                            fontSize: 14,
                           ),
-                          trailing: Text(
-                            "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                                fontWeight: FontWeight.w600),
+                        ),
+                        trailing: Text(
+                          Provider.of<CartDataWrapper>(context).isLoading
+                              ? "0"
+                              : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
+                          style: TextStyle(
+                            fontSize: 14,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 25,
+                    ),
+                    Provider.of<VendorModelWrapper>(context).isLoaded
+                        ? Provider.of<VendorModelWrapper>(context)
+                                    .vendorModel!
+                                    .isDeliveryCharges ==
+                                true
+                            ? SizedBox(
+                                height: 25,
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  dense: true,
+                                  title: Text(
+                                    "Shipping Fee(Not applicable in TakeAway)",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container()
+                        : Center(child: CircularProgressIndicator()),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: SizedBox(
+                        height: 35,
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                           title: Text(
-                            "Tax",
-                            style: TextStyle(
-                              fontSize: 14,
+                            "Total",
+                            style: FontsTheme.boldTextStyle(
+                              size: 15,
                             ),
                           ),
                           trailing: Text(
                             Provider.of<CartDataWrapper>(context).isLoading
                                 ? "0"
-                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
-                            style: TextStyle(
-                              fontSize: 14,
+                                : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
+                            style: FontsTheme.boldTextStyle(
+                              size: 15,
                             ),
                           ),
                         ),
                       ),
-                      Provider.of<VendorModelWrapper>(context).isLoaded
-                          ? Provider.of<VendorModelWrapper>(context)
-                                      .vendorModel!
-                                      .isDeliveryCharges ==
-                                  true
-                              ? SizedBox(
-                                  height: 25,
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    dense: true,
-                                    title: Text(
-                                      "Shipping Fee(Not applicable in TakeAway)",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    trailing: Text(
-                                      "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Container()
-                          : Center(child: CircularProgressIndicator()),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: SizedBox(
-                          height: 35,
-                          child: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: Text(
-                              "Total",
-                              style: FontsTheme.boldTextStyle(
-                                size: 15,
-                              ),
-                            ),
-                            trailing: Text(
-                              Provider.of<CartDataWrapper>(context).isLoading
-                                  ? "0"
-                                  : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                              style: FontsTheme.boldTextStyle(
-                                size: 15,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              )
+          ],
         ),
       ),
       bottomNavigationBar: cartProvider.length > 0
@@ -881,7 +876,7 @@ class _CartScreenState extends State<CartScreen> {
                     child: InkWell(
                       onTap: () {
                         if (sharedPrefs.customer_id.isEmpty) {
-                          GoRouter.of(context).go(PageCollection.login);
+                          GoRouter.of(context).go('/'+storeConcat(PageCollection.login));
                           return;
                         }
                         if (Provider.of<CartDataWrapper>(context, listen: false)

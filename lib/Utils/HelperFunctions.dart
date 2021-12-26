@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:provider/provider.dart';
 
 import 'Providers/CartProvider.dart';
@@ -43,7 +44,7 @@ Widget cartIconWidget(BuildContext context) {
     child: IconButton(
       iconSize: 30,
       onPressed: () {
-        GoRouter.of(context).push(PageCollection.cart);
+        GoRouter.of(context).push('/'+storeConcat(PageCollection.cart));
       },
       icon: Image.asset("images/cart_icon.png",
           width: 35,

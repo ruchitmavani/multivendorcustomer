@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -243,11 +242,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Provider.of<CustomColor>(context)
                           .appPrimaryMaterialColor),
                   onPressed: () {
-                    GoRouter.of(context).push(PageCollection.search);
+                    GoRouter.of(context)
+                        .push('/' + storeConcat(PageCollection.search));
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                  padding: const EdgeInsets.only(right: 15.0),
                   child: cartIconWidget(context),
                 ),
               ],
@@ -344,8 +344,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        GoRouter.of(context)
-                                            .go(PageCollection.about_us);
+                                        GoRouter.of(context).go('/' +
+                                            storeConcat(
+                                                PageCollection.about_us));
                                       },
                                       child: Padding(
                                         padding:
@@ -388,7 +389,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               "${vendorProvider.businessName}",
                                               minFontSize: 6,
                                               style: FontsTheme.boldTextStyle(
-                                                  size: 17,),
+                                                size: 17,
+                                              ),
                                             )
                                           ],
                                         ),
@@ -411,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         vendorProvider.isWhatsappChatSupport
-                                            ? Space(width: 8)
+                                            ? Space(width: 11)
                                             : Container(),
                                         vendorProvider.isWhatsappChatSupport
                                             ? Container(
@@ -420,11 +422,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: Colors.grey)
                                             : Container(),
                                         vendorProvider.isWhatsappChatSupport
-                                            ? Space(width: 8)
+                                            ? Space(width: 11)
                                             : Container(),
                                         vendorProvider.isWhatsappChatSupport
                                             ? FittedBox(
-                                              child: InkWell(
+                                                child: InkWell(
                                                   onTap: () async {
                                                     await launch(
                                                         "https://wa.me/+91${vendorProvider.mobileNumber}");
@@ -442,17 +444,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               context)
                                                           .appPrimaryMaterialColor,
                                                     ),
-                                                  )
-                                                  /*     SvgPicture.asset(
-
-                                                    "images/whatsappcus.png",
-                                                    height: 30,
-                                                    color: Provider.of<
-                                                            CustomColor>(context)
-                                                        .appPrimaryMaterialColor,
-                                                  ),*/
                                                   ),
-                                            )
+                                                ),
+                                              )
                                             : Container(),
                                         Space(width: 25)
                                       ],
@@ -512,9 +506,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       RichText(
                                         text: TextSpan(
-                                          text: "Shop Timing :",
+                                          text: "Shop Timing : ",
                                           style: FontsTheme.descriptionText(
-                                              fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w500,
+                                              size: 11),
                                           children: [
                                             vendorProvider
                                                         .businessHours.length ==
@@ -522,25 +517,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? TextSpan(
                                                     text: "  Open",
                                                     style:
-                                                        FontsTheme.valueStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            size: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                        FontsTheme.gilroyText(
+                                                      color: Colors.black54,
+                                                      size: 13,
+                                                    ),
                                                   )
                                                 : TextSpan(
                                                     text: getShopTimingStatus(
                                                         vendorProvider),
                                                     style:
-                                                        FontsTheme.valueStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            size: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                        FontsTheme.gilroyText(
+                                                      color: Colors.black54,
+                                                      size: 13,
+                                                    ),
                                                   )
                                           ],
                                         ),
@@ -565,14 +554,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
                                             },
                                             child: Text(" Direction",
-                                                style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: Provider.of<
-                                                                CustomColor>(
-                                                            context)
-                                                        .appPrimaryMaterialColor,
-                                                    fontWeight:
-                                                        FontWeight.w600)),
+                                                style: FontsTheme.gilroyText(
+                                                  size: 13,
+                                                  color: Provider.of<
+                                                          CustomColor>(context)
+                                                      .appPrimaryMaterialColor,
+                                                )),
                                           ),
                                         ],
                                       ),
@@ -645,8 +632,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       pinned: true,
                       snap: false,
                       floating: true,
-                      toolbarHeight: 30,
-                      expandedHeight: 30,
+                      toolbarHeight: 40,
+                      expandedHeight: 40,
                       flexibleSpace: TopButtons(onChanged: (value) {
                         setState(() {
                           isGrid = value;
@@ -692,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white,
                                       padding: EdgeInsets.only(
                                         left: 15,
-                                        top: 10,
+                                        top: 15,
                                       ),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -705,9 +692,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               style: FontsTheme.boldTextStyle(
                                                   size: 15)),
                                           Container(
-                                            height: 130,
+                                            height: 100,
                                             margin: EdgeInsets.only(
-                                              right: 5,
                                               top: 7,
                                             ),
                                             child: ListView.builder(
@@ -724,43 +710,49 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: Stack(
                                                   alignment: Alignment.center,
                                                   children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      child: CachedNetworkImage(
-                                                        height: 150,
-                                                        width: 150,
-                                                        imageUrl:
-                                                            "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
-                                                        fit: BoxFit.fill,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                SizedBox(
-                                                          width: 8,
-                                                          height: 8,
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Image.asset(
-                                                          'images/placeholdersquare.jpg',
-                                                          height: 150,
-                                                          width: 150,
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 4.0),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          height: 100,
+                                                          width: 100,
+                                                          imageUrl:
+                                                              "${StringConstants.api_url}${productDataList.elementAt(item).categoryImageUrl}",
                                                           fit: BoxFit.fill,
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  SizedBox(
+                                                            width: 8,
+                                                            height: 8,
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Image.asset(
+                                                            'images/placeholdersquare.jpg',
+                                                            height: 100,
+                                                            width: 100,
+                                                            fit: BoxFit.fill,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                     Container(
                                                       alignment:
                                                           Alignment.bottomLeft,
-                                                      height: 150,
-                                                      width: 150,
+                                                      height: 100,
+                                                      width: 100,
                                                       padding: EdgeInsets.only(
                                                           bottom: 10, left: 10),
                                                       margin: EdgeInsets.only(
                                                           top: 4,
                                                           right: 5,
-                                                          left: 5),
+                                                          left: 0),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -892,8 +884,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      GoRouter.of(context)
-                                          .go(PageCollection.about_us);
+                                      GoRouter.of(context).go('/' +
+                                          storeConcat(PageCollection.about_us));
                                     },
                                     child: Padding(
                                       padding:
@@ -953,7 +945,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .appPrimaryMaterialColor),
                                       ),
                                       vendorProvider.isWhatsappChatSupport
-                                          ? Space(width: 10)
+                                          ? Space(width: 13)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
                                           ? Container(
@@ -962,7 +954,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.grey)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
-                                          ? Space(width: 10)
+                                          ? Space(width: 13)
                                           : Container(),
                                       vendorProvider.isWhatsappChatSupport
                                           ? InkWell(
@@ -1031,7 +1023,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     AutoSizeText.rich(
-                                       TextSpan(
+                                      TextSpan(
                                         text: "Shop Timing :",
                                         style: FontsTheme.descriptionText(
                                             fontWeight: FontWeight.w500),
@@ -1062,7 +1054,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Row(
                                       children: [
                                         AutoSizeText.rich(
-                                           TextSpan(
+                                          TextSpan(
                                             text: "Location:",
                                             style: FontsTheme.descriptionText(
                                                 fontWeight: FontWeight.w500),
@@ -1083,8 +1075,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               " Direction",
                                               style: TextStyle(
                                                   fontSize: 11,
-                                                  color: Provider.of<CustomColor>(
-                                                          context)
+                                                  color: Provider.of<
+                                                          CustomColor>(context)
                                                       .appPrimaryMaterialColor,
                                                   fontWeight: FontWeight.w600),
                                             ),

@@ -45,13 +45,11 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -96,12 +94,12 @@ class _MyAppState extends State<MyApp> {
         ),
         fontFamily: 'Poppins',
         primaryColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-        primarySwatch: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        primarySwatch:
+            Provider.of<CustomColor>(context).appPrimaryMaterialColor,
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(),
         ),
       ),
-
       debugShowCheckedModeBanner: false,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
@@ -167,50 +165,50 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                 ]),
+            GoRoute(
+              path: PageCollection.search,
+              name: "search",
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: Search(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.cart,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: CartScreen(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.about_us,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: AboutUs(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.login,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: LoginScreen(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.myOrders,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: MyOrder(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.myAccount,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: MyAccount(),
+              ),
+            ),
           ]),
-      GoRoute(
-        path: PageCollection.search,
-        name: "search",
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: Search(),
-        ),
-      ),
-      GoRoute(
-        path: PageCollection.cart,
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: CartScreen(),
-        ),
-      ),
-      GoRoute(
-        path: PageCollection.about_us,
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: AboutUs(),
-        ),
-      ),
-      GoRoute(
-        path: PageCollection.login,
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: LoginScreen(),
-        ),
-      ),
-      GoRoute(
-        path: PageCollection.myOrders,
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: MyOrder(),
-        ),
-      ),
-      GoRoute(
-        path: PageCollection.myAccount,
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: MyAccount(),
-        ),
-      ),
     ],
     errorPageBuilder: (context, state) => MaterialPage<void>(
       key: state.pageKey,

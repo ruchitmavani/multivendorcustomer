@@ -133,11 +133,11 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
-                size: 20,
+                size: 25,
                 color: Provider.of<CustomColor>(context)
                     .appPrimaryMaterialColor),
             onPressed: () {
-              GoRouter.of(context).push(PageCollection.search);
+              GoRouter.of(context).push('/'+storeConcat(PageCollection.search));
             },
           ),
           Padding(

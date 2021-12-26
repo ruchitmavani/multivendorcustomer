@@ -77,7 +77,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          if(widget.productData.productSellingPrice!=widget.productData.productMrp)  Text(
                             "\u{20B9} ${widget.productData.productMrp}",
                             style: TextStyle(
                                 fontFamily: "Poppins",

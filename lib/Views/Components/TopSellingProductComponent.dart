@@ -77,14 +77,15 @@ class _TopSellingProductComponentState
                       ProductRating(widget.productData.productRatingAverage),
                     Padding(
                       padding: const EdgeInsets.only(top: 1.0),
-                      child: Text("₹ ${widget.productData.productSellingPrice}",
-                          style: FontsTheme.digitStyle(
-                              fontWeight: FontWeight.w400, size: 13)),
+                      child: Text(
+                        "₹ ${widget.productData.productSellingPrice}",
+                        style: FontsTheme.digitStyle(size: 12),
+                      ),
                     ),
                   ],
                 ),
               ),
-              Space(width: 8),
+              Space(width: 5),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SizedBox(

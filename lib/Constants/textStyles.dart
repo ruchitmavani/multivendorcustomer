@@ -51,4 +51,12 @@ class FontsTheme {
         fontWeight: fontWeight == null ? FontWeight.w600 : fontWeight,
         fontFamily: "Poppins");
   }
+
+  static TextStyle gilroyText({double? size, Color? color,}) {
+    return TextStyle(
+        fontSize: size == null ? 12 : size,
+        color: color == null ? Colors.grey : color,
+        fontWeight: FontWeight.w700,
+        fontFamily: "Gilroy");
+  }
 }
