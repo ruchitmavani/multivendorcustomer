@@ -26,12 +26,12 @@ class FontsTheme {
   }
 
   static TextStyle digitStyle(
-      {double? size, FontWeight? fontWeight, Color? colors}) {
+      {double? fontSize, FontWeight? fontWeight, Color? color}) {
     return TextStyle(
         fontWeight: fontWeight == null ? FontWeight.w600 : fontWeight,
         fontFamily: "Montserrat",
-        fontSize: size == null ? 11 : size,
-        color: colors == null ? Colors.black87 : colors);
+        fontSize: fontSize == null ? 11 : fontSize,
+        color: color == null ? Colors.black87 : color);
   }
 
   static TextStyle valueStyle(

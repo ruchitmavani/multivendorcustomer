@@ -88,7 +88,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       print(element.toJson());
     });
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    Fluttertoast.showToast(msg: "Added to Cart");
+    Fluttertoast.showToast(msg: "Added to Cart",webPosition:"center" ,webBgColor: "linear-gradient(to right, #c2c2c2, #c2c2c2)");
 
     // await CartController.addToCart(
     //         customerId: "${sharedPrefs.customer_id}",

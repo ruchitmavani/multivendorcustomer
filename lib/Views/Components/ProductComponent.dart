@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -200,10 +201,15 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
-        return Text(
-          "Unavailable",
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        return Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: Text(
+            "Unavailable\nat this time",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            textAlign: TextAlign.justify,
+            maxLines: 2,
+          ),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(
@@ -452,10 +458,18 @@ class _ProductComponentListState extends State<ProductComponentList> {
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
-        return Text(
-          "Unavailable",
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        return Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: Container(
+            child: Text(
+              "Unavailable\nat this time",
+              style: TextStyle(
+                  fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+              textAlign: TextAlign.justify,
+
+              maxLines: 2,
+            ),
+          ),
         );
       } else if (widget.productData.isRequestPrice) {
         return SizedBox(

@@ -477,8 +477,8 @@ class _CartScreenState extends State<CartScreen> {
                         ? Container(
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height - 60,
-                            child:Image.asset("images/cartempty.png"))
+                            height: MediaQuery.of(context).size.height-80,
+                            child:Image.asset("images/cartempty.png",))
                         : ListView.separated(
                             shrinkWrap: true,
                             padding: EdgeInsets.all(0),

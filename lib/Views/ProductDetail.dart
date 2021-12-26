@@ -98,6 +98,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
     });
   }
 
+  TextStyle label = FontsTheme.subTitleStyle(
+      color: Colors.black.withOpacity(0.75),
+      fontWeight: FontWeight.w600,
+      size: 12);
+
   @override
   Widget build(BuildContext context) {
     return DirectSelectContainer(
@@ -112,7 +117,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   color: Provider.of<CustomColor>(context)
                       .appPrimaryMaterialColor),
               onPressed: () {
-                GoRouter.of(context).push('/'+storeConcat(PageCollection.search));
+                GoRouter.of(context)
+                    .push('/' + storeConcat(PageCollection.search));
               },
             ),
             Padding(
@@ -298,7 +304,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         SizedBox(
                                           height: 4,
                                         ),
-
                                         if (productData.isStock)
                                           if (productData.stockLeft <= 20)
                                             Text(
@@ -328,18 +333,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                             .start,
                                                     children: [
                                                       Space(
-                                                        height: 6,
+                                                        height: 1,
                                                       ),
                                                       Text(
                                                         "Available Time",
-                                                        style: FontsTheme
-                                                            .subTitleStyle(
-                                                                color: Colors
-                                                                    .black54,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                size: 12),
+                                                        style: label,
                                                       ),
                                                       Space(height: 4),
                                                       for (int i = 0;
@@ -359,6 +357,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                           ),
                                                         ),
                                                       ],
+                                                      Space(height: 15),
                                                     ],
                                                   )
                                             : SizedBox(),
@@ -368,13 +367,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Space(height: 15),
                                               Text(
                                                 "Color option",
-                                                style: FontsTheme.subTitleStyle(
-                                                    color: Colors.black54,
-                                                    fontWeight: FontWeight.w600,
-                                                    size: 12),
+                                                style: label,
                                               ),
                                               Space(height: 8),
                                               Row(
@@ -433,13 +428,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Space(height: 18),
+                                              Space(height: 15),
                                               Text(
                                                 "Size Option",
-                                                style: FontsTheme.subTitleStyle(
-                                                    color: Colors.black54,
-                                                    fontWeight: FontWeight.w600,
-                                                    size: 12),
+                                                style: label,
                                               ),
                                               Space(height: 8),
                                               Row(
@@ -519,17 +511,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             ],
                                           ),
 
+                                        // if (productData.bulkPriceList!.length !=
+                                        //     0)
+                                        //   Space(height: 15),
                                         if (productData.bulkPriceList!.length !=
                                             0)
-                                          Space(height: 18),
-                                        if (productData.bulkPriceList!.length !=
-                                            0)
-                                          Text("Bulk Prices",
-                                              style: FontsTheme.subTitleStyle(
-                                                  color: Colors.black54,
-                                                  fontWeight: FontWeight.w600,
-                                                  size: 12)),
-                                        Space(height: 6),
+                                          Text(
+                                            "Bulk Prices",
+                                            style: label,
+                                          ),
+                                        Space(height: 2),
                                         Column(
                                           children: bulkPrice.map<Widget>((e) {
                                             List<int> _numbers = [];
@@ -616,22 +607,22 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                           .w400)),
                                                           Text(
                                                             "₹",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    "Poppins",
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade600),
+                                                            style: FontsTheme
+                                                                .digitStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade600),
                                                           ),
                                                           Text(
                                                               "${e.pricePerUnit}",
                                                               style: FontsTheme
-                                                                  .subTitleStyle(
+                                                                  .digitStyle(
                                                                       color: Colors
                                                                           .grey
                                                                           .shade600,
-                                                                      size:
+                                                                      fontSize:
                                                                           12)),
                                                         ],
                                                       ),
@@ -739,7 +730,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       RichText(
                         text: TextSpan(
                             text: "₹",
-                            style: FontsTheme.digitStyle(size: 15),
+                            style: FontsTheme.digitStyle(fontSize: 15),
                             children: [
                               TextSpan(
                                 text: productData.bulkPriceList!.length == 0 &&
@@ -806,12 +797,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             )
                         else
                           Text(
-                            "Unavailable",
+                            "Unavailable at this time",
                             style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 13,
                                 color: Colors.red),
-                          )
+                              textAlign: TextAlign.justify,                          )
                       else
                         Text(
                           "Shop is Offline",
@@ -936,18 +927,32 @@ class _QuantitySelectState extends State<QuantitySelect> {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(right: 4, left: 6, top: 4, bottom: 4),
-          child: Row(
-            children: [
-              Text(
-                "Select Qty:",
-                style: TextStyle(fontSize: 12),
-              ),
-              Icon(
-                Icons.arrow_drop_down,
-                size: 16,
-              ),
-            ],
-          ),
+          child: _quantity == 0
+              ? Row(
+                  children: [
+                    Text(
+                      "Select Qty:",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 16,
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Text(
+                      "$_quantity",
+                      style: FontsTheme.digitStyle(
+                          fontSize: 12, color: Colors.grey.shade600),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 16,
+                    ),
+                  ],
+                ),
         ),
       ),
     );

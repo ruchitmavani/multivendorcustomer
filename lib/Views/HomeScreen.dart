@@ -1144,8 +1144,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           )
         : Container(
-            margin: EdgeInsets.only(bottom: 80),
-            padding: EdgeInsets.only(left: 5, top: 5),
+            // margin: EdgeInsets.only(bottom: 80),
+            padding: EdgeInsets.only(left: 5, top: 5,bottom: 80),
             color: Colors.white,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),

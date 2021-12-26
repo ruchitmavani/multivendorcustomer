@@ -79,7 +79,7 @@ class _TopSellingProductComponentState
                       padding: const EdgeInsets.only(top: 1.0),
                       child: Text(
                         "₹ ${widget.productData.productSellingPrice}",
-                        style: FontsTheme.digitStyle(size: 12),
+                        style: FontsTheme.digitStyle(fontSize: 12),
                       ),
                     ),
                   ],

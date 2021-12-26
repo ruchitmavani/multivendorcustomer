@@ -557,11 +557,11 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                         RichText(
                           text: TextSpan(
                               text: "₹",
-                              style: FontsTheme.digitStyle(size: 16),
+                              style: FontsTheme.digitStyle(fontSize: 16),
                               children: [
                                 TextSpan(
                                   text: " $finalPrice",
-                                  style: FontsTheme.digitStyle(size: 15),
+                                  style: FontsTheme.digitStyle(fontSize: 15),
                                 ),
                               ]),
                         ),

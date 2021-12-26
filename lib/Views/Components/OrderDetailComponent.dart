@@ -142,8 +142,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                         children: [
                           Text("\u{20B9}",
                               style: FontsTheme.digitStyle(
-                                  size: 14,
-                                  colors: Colors.black54,
+                                  fontSize: 14,
+                                  color: Colors.black54,
                                   fontWeight: FontWeight.w500)),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -151,8 +151,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                             ),
                             child: Text("$price",
                                 style: FontsTheme.digitStyle(
-                                    size: 14,
-                                    colors: Colors.black54,
+                                    fontSize: 14,
+                                    color: Colors.black54,
                                     fontWeight: FontWeight.w500)),
                           ),
                         ],

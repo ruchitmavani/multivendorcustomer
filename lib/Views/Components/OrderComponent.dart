@@ -133,7 +133,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                           child: Text(
                                               "${widget.orderData.orderAmount}",
                                               style: FontsTheme.digitStyle(
-                                                  size: 13)),
+                                                  fontSize: 13)),
                                         )
                                       ],
                                     ),

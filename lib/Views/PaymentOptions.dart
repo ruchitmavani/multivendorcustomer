@@ -167,7 +167,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
               .cartData
               .clear();
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-              );
+          );
 
           print("payment id  ${window.localStorage["payment_id"]}");
           print("order id  ${window.localStorage["order_Id"]}");
@@ -240,7 +240,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(top:5.0),
+                    padding: const EdgeInsets.only(top: 5.0),
                     child: ListTile(
                       dense: true,
                       visualDensity:
@@ -273,24 +273,28 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       _selection = paymentMethods.PAY_ONLINE;
                     });
                   },
-                  child: ListTile(
-                    dense: true,
-                    visualDensity:
-                    VisualDensity(horizontal: 0, vertical: -4),
-                    title: const Text(
-                      'Pay Online', style: TextStyle(fontSize: 12),),
-                    leading: Radio<paymentMethods>(
-                      value: paymentMethods.PAY_ONLINE,
-                      activeColor: Provider
-                          .of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      groupValue: _selection,
-                      onChanged: (paymentMethods? value) {
-                        setState(() {
-                          _selection = value!;
-                          print(value);
-                        });
-                      },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+
+                    child: ListTile(
+                      dense: true,
+                      visualDensity:
+                      VisualDensity(horizontal: 0, vertical: -4),
+                      title: const Text(
+                        'Pay Online', style: TextStyle(fontSize: 12),),
+                      leading: Radio<paymentMethods>(
+                        value: paymentMethods.PAY_ONLINE,
+                        activeColor: Provider
+                            .of<CustomColor>(context)
+                            .appPrimaryMaterialColor,
+                        groupValue: _selection,
+                        onChanged: (paymentMethods? value) {
+                          setState(() {
+                            _selection = value!;
+                            print(value);
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),
