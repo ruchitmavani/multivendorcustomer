@@ -1,4 +1,4 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:auto_size_text/auto_size_text.dart' show AutoSizeText;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -320,7 +320,10 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : FloatingActionButton(
               onPressed: () {
-                Fluttertoast.showToast(msg: "Shop is Offline");
+                Fluttertoast.showToast(
+                    msg: "Shop is Offline",
+                    webPosition: "center",
+                    webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
               },
               child: Icon(
                 Icons.category_outlined,
@@ -504,12 +507,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ? MainAxisAlignment.center
                                             : MainAxisAlignment.spaceBetween,
                                     children: [
-                                      RichText(
-                                        text: TextSpan(
+                                      AutoSizeText.rich(
+                                        TextSpan(
                                           text: "Shop Timing : ",
                                           style: FontsTheme.descriptionText(
                                               fontWeight: FontWeight.w500,
-                                              size: 11),
+                                              size: 10),
                                           children: [
                                             vendorProvider
                                                         .businessHours.length ==
@@ -519,7 +522,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     style:
                                                         FontsTheme.gilroyText(
                                                       color: Colors.black54,
-                                                      size: 13,
+                                                      size: 12,
                                                     ),
                                                   )
                                                 : TextSpan(
@@ -528,21 +531,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     style:
                                                         FontsTheme.gilroyText(
                                                       color: Colors.black54,
-                                                      size: 13,
+                                                      size: 12,
                                                     ),
                                                   )
                                           ],
                                         ),
+                                        minFontSize: 6,
                                       ),
-                                      Space(width: 20),
+                                      Space(width: 10),
                                       Row(
                                         children: [
-                                          RichText(
-                                              text: TextSpan(
-                                            text: "Location:",
+                                          AutoSizeText(
+                                            "Location:",
                                             style: FontsTheme.descriptionText(
-                                                fontWeight: FontWeight.w500),
-                                          )),
+                                                fontWeight: FontWeight.w500,
+                                                size: 10),
+                                            minFontSize: 8,
+                                          ),
                                           Icon(Icons.directions,
                                               size: 18,
                                               color: Provider.of<CustomColor>(
@@ -553,9 +558,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               launch(
                                                   "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
                                             },
-                                            child: Text(" Direction",
+                                            child: AutoSizeText(" Direction",
+                                                minFontSize: 8,
                                                 style: FontsTheme.gilroyText(
-                                                  size: 13,
+                                                  size: 12,
                                                   color: Provider.of<
                                                           CustomColor>(context)
                                                       .appPrimaryMaterialColor,
@@ -598,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : trendingProducts.length != 0
                                   ? Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 15.0, top: 17, bottom: 9),
+                                          left: 15.0, top: 15, bottom: 5),
                                       child: Row(
                                         children: [
                                           Text("Top Selling Products",
@@ -611,7 +617,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (trendingProducts.length != 0)
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 4.0, bottom: 12, right: 4, left: 9),
+                                  top: 0, bottom: 15, right: 4, left: 9),
                               child: SizedBox(
                                 height: 90,
                                 child: ListView.builder(
@@ -694,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Container(
                                             height: 100,
                                             margin: EdgeInsets.only(
-                                              top: 7,
+                                              top: 10,
                                             ),
                                             child: ListView.builder(
                                               shrinkWrap: true,
@@ -748,7 +754,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       height: 100,
                                                       width: 100,
                                                       padding: EdgeInsets.only(
-                                                          bottom: 10, left: 10),
+                                                          bottom: 8, left: 10),
                                                       margin: EdgeInsets.only(
                                                           top: 4,
                                                           right: 5,
@@ -799,7 +805,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? Container()
                                     : Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5, top: 5),
+                                            left: 5, right: 5, top: 10),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -810,7 +816,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               isViewAll: false,
                                             ),
                                             SizedBox(
-                                              height: 220,
+                                              height: 222,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -1145,7 +1151,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         : Container(
             // margin: EdgeInsets.only(bottom: 80),
-            padding: EdgeInsets.only(left: 5, top: 5,bottom: 80),
+            padding: EdgeInsets.only(left: 5, top: 5, bottom: 80),
             color: Colors.white,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
@@ -1153,58 +1159,61 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: productDataList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleViewAll(
-                      title: "${productDataList.elementAt(index).categoryName}",
-                      onPressed: () {
-                        context.go(helper(PageCollection.categories +
-                            '/${productDataList.elementAt(index).categoryId}'));
-                      },
-                      isViewAll: true,
-                    ),
-                    SizedBox(
-                      height: isGrid ? 254 : null,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4),
-                        child: ListView.builder(
-                          shrinkWrap: isGrid ? false : true,
-                          physics: isGrid
-                              ? AlwaysScrollableScrollPhysics()
-                              : NeverScrollableScrollPhysics(),
-                          scrollDirection:
-                              isGrid ? Axis.horizontal : Axis.vertical,
-                          itemCount: productDataList
-                              .elementAt(index)
-                              .productDetails
-                              .length,
-                          itemBuilder: (context, i) {
-                            return InkWell(
-                              onTap: () {
-                                context.go(helper(PageCollection.product +
-                                    '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
-                              },
-                              child: isGrid
-                                  ? ProductComponentGrid(
-                                      productData: productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i),
-                                    )
-                                  : ProductComponentList(
-                                      productData: productDataList
-                                          .elementAt(index)
-                                          .productDetails
-                                          .elementAt(i),
-                                    ),
-                            );
-                          },
+                return Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleViewAll(
+                        title: "${productDataList.elementAt(index).categoryName}",
+                        onPressed: () {
+                          context.go(helper(PageCollection.categories +
+                              '/${productDataList.elementAt(index).categoryId}'));
+                        },
+                        isViewAll: true,
+                      ),
+                      SizedBox(
+                        height: isGrid ? 254 : null,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 2),
+                          child: ListView.builder(
+                            shrinkWrap: isGrid ? false : true,
+                            physics: isGrid
+                                ? AlwaysScrollableScrollPhysics()
+                                : NeverScrollableScrollPhysics(),
+                            scrollDirection:
+                                isGrid ? Axis.horizontal : Axis.vertical,
+                            itemCount: productDataList
+                                .elementAt(index)
+                                .productDetails
+                                .length,
+                            itemBuilder: (context, i) {
+                              return InkWell(
+                                onTap: () {
+                                  context.go(helper(PageCollection.product +
+                                      '/${productDataList.elementAt(index).productDetails.elementAt(i).productId}'));
+                                },
+                                child: isGrid
+                                    ? ProductComponentGrid(
+                                        productData: productDataList
+                                            .elementAt(index)
+                                            .productDetails
+                                            .elementAt(i),
+                                      )
+                                    : ProductComponentList(
+                                        productData: productDataList
+                                            .elementAt(index)
+                                            .productDetails
+                                            .elementAt(i),
+                                      ),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),

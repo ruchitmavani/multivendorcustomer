@@ -25,7 +25,7 @@ class _LocationState extends State<Location> {
 
   _saveAdress(Address address) async {
     if (addressList.contains(address)) {
-      Fluttertoast.showToast(msg: "Address Already Exist");
+      Fluttertoast.showToast(msg: "Address Already Exist",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     } else {
       addressList.add(address);
       print("$address");

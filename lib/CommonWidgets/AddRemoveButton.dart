@@ -88,7 +88,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       print(element.toJson());
     });
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    Fluttertoast.showToast(msg: "Added to Cart",webPosition:"center" ,webBgColor: "linear-gradient(to right, #c2c2c2, #c2c2c2)");
+    Fluttertoast.showToast(msg: "Added to Cart",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
 
     // await CartController.addToCart(
     //         customerId: "${sharedPrefs.customer_id}",
@@ -197,7 +197,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         provider.incrementQuantity(
             quantity: quantity, productId: widget.productData.productId);
       } else {
-        Fluttertoast.showToast(msg: "No more left in Stock");
+        Fluttertoast.showToast(msg: "No more left in Stock",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     } else {
       provider.incrementQuantity(

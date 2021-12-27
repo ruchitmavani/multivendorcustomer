@@ -48,6 +48,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
   bool isVideo = false;
   int finalQuantity = 0;
 
+  int? selectedQtyIndex;
+
   _loadData() async {
     setState(() {
       isLoading = true;
@@ -91,9 +93,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
     _loadData();
   }
 
-  setPrice(double price, int qty) {
+  setPrice(double price, int qty, int index) {
     setState(() {
       finalPrice = price;
+      selectedQtyIndex = index;
       finalQuantity = qty;
     });
   }
@@ -521,124 +524,136 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             style: label,
                                           ),
                                         Space(height: 2),
-                                        Column(
-                                          children: bulkPrice.map<Widget>((e) {
-                                            List<int> _numbers = [];
-                                            for (int i = e.fromQty;
-                                                i <= e.toQty;
-                                                i++) {
-                                              _numbers.add(i);
-                                            }
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text("From: ",
-                                                              style: FontsTheme.subTitleStyle(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade400,
-                                                                  size: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
-                                                          Text("${e.fromQty}",
-                                                              style: FontsTheme
-                                                                  .subTitleStyle(
-                                                                      color: Colors
-                                                                          .grey
-                                                                          .shade600,
-                                                                      size: 12))
-                                                        ],
-                                                      ),
-                                                      Space(
-                                                        width: 6,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text("To: ",
-                                                              style: FontsTheme.subTitleStyle(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade400,
-                                                                  size: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
-                                                          Text("${e.toQty}",
-                                                              style: FontsTheme
-                                                                  .subTitleStyle(
-                                                                      color: Colors
-                                                                          .grey
-                                                                          .shade600,
-                                                                      size: 12))
-                                                        ],
-                                                      ),
-                                                      Space(
-                                                        width: 6,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text("Price: ",
-                                                              style: FontsTheme.subTitleStyle(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade400,
-                                                                  size: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
-                                                          Text(
-                                                            "₹",
-                                                            style: FontsTheme
-                                                                .digitStyle(
-                                                                    fontSize:
-                                                                        12,
+                                        if (productData.bulkPriceList!.length !=
+                                            0)
+                                          ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: bulkPrice.length,
+                                            itemBuilder: (context, i) {
+                                              List<int> _numbers = [];
+                                              for (int index = bulkPrice[i].fromQty;
+                                              index <= bulkPrice[i].toQty;
+                                              index++) {
+                                                _numbers.add(index);
+                                              }
+                                              return Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(6),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text("From: ",
+                                                                style: FontsTheme.subTitleStyle(
                                                                     color: Colors
                                                                         .grey
-                                                                        .shade600),
-                                                          ),
-                                                          Text(
-                                                              "${e.pricePerUnit}",
+                                                                        .shade400,
+                                                                    size: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text(
+                                                                "${bulkPrice[i].fromQty}",
+                                                                style: FontsTheme
+                                                                    .subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        size:
+                                                                            12))
+                                                          ],
+                                                        ),
+                                                        Space(
+                                                          width: 6,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text("To: ",
+                                                                style: FontsTheme.subTitleStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400,
+                                                                    size: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text(
+                                                                "${bulkPrice[i].toQty}",
+                                                                style: FontsTheme
+                                                                    .subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        size:
+                                                                            12))
+                                                          ],
+                                                        ),
+                                                        Space(
+                                                          width: 6,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text("Price: ",
+                                                                style: FontsTheme.subTitleStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade400,
+                                                                    size: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                            Text(
+                                                              "₹",
                                                               style: FontsTheme
                                                                   .digitStyle(
+                                                                      fontSize:
+                                                                          12,
                                                                       color: Colors
                                                                           .grey
-                                                                          .shade600,
-                                                                      fontSize:
-                                                                          12)),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                                          .shade600),
+                                                            ),
+                                                            Text(
+                                                                "${bulkPrice[i].pricePerUnit}",
+                                                                style: FontsTheme
+                                                                    .digitStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade600,
+                                                                        fontSize:
+                                                                            12)),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                QuantitySelect(
-                                                  price: e.pricePerUnit,
-                                                  numbers: _numbers,
-                                                  setPrice: setPrice,
-                                                  productId: widget.productId,
-                                                ),
-                                              ],
-                                            );
-                                          }).toList(),
-                                        ),
+                                                  QuantitySelect(
+                                                    price: bulkPrice[i]
+                                                        .pricePerUnit,
+                                                    numbers: _numbers,
+                                                    setPrice: setPrice,
+                                                    index: i,
+                                                    isSelected:
+                                                        i != selectedQtyIndex,
+                                                    productId: widget.productId,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         if (productData.bulkPriceList!.length !=
                                             0)
                                           Column(
@@ -775,10 +790,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           else if (productData.isStock &&
                               productData.stockLeft <= 0)
                             Text(
-                              "Out of Stock",
+                              "Out of stock",
                               style: TextStyle(
                                   fontFamily: 'Poppins',
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   color: Colors.red),
                             )
                           else if (productData.bulkPriceList!.length != 0)
@@ -802,7 +817,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 fontFamily: 'Poppins',
                                 fontSize: 13,
                                 color: Colors.red),
-                              textAlign: TextAlign.justify,                          )
+                            textAlign: TextAlign.justify,
+                          )
                       else
                         Text(
                           "Shop is Offline",
@@ -842,11 +858,15 @@ class QuantitySelect extends StatefulWidget {
   double price;
   Function setPrice;
   String productId;
+  int index;
+  bool isSelected;
 
   QuantitySelect(
       {required this.numbers,
       required this.price,
       required this.setPrice,
+      required this.index,
+      required this.isSelected,
       required this.productId});
 
   @override
@@ -855,8 +875,6 @@ class QuantitySelect extends StatefulWidget {
 
 class _QuantitySelectState extends State<QuantitySelect> {
   int _quantity = 0;
-  int finalPrice = 0;
-  int finalQuantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -906,8 +924,8 @@ class _QuantitySelectState extends State<QuantitySelect> {
                               });
                               Navigator.pop(context);
                               print("${_quantity * widget.price}");
-                              widget.setPrice(
-                                  _quantity * widget.price, _quantity);
+                              widget.setPrice(_quantity * widget.price,
+                                  _quantity, widget.index);
                               Provider.of<CartDataWrapper>(context,
                                       listen: false)
                                   .deleteFromCart(productId: widget.productId);
@@ -927,7 +945,7 @@ class _QuantitySelectState extends State<QuantitySelect> {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(right: 4, left: 6, top: 4, bottom: 4),
-          child: _quantity == 0
+          child: widget.isSelected
               ? Row(
                   children: [
                     Text(

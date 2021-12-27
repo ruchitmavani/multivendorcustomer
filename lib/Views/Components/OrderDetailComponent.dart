@@ -100,7 +100,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(msg: value.message);
+        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         if (Navigator.canPop(context)) Navigator.pop(context);
       } else {
         setState(() {

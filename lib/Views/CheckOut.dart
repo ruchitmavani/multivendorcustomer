@@ -28,7 +28,7 @@ class WebPayment extends StatelessWidget {
         if (value.data == 'MODAL_CLOSED') {
           Navigator.pop(context);
         } else if (value.data == 'SUCCESS') {
-          Fluttertoast.showToast(msg: 'Payment Success ${(price! * 0.01)}');
+          Fluttertoast.showToast(msg: 'Payment Success ${(price! * 0.01)}',webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           addOrder("PAY_ONLINE");
         }
       });

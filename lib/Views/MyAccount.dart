@@ -113,9 +113,9 @@ class _MyAccountState extends State<MyAccount> {
         });
         GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
 
-        Fluttertoast.showToast(msg: "Account Update Success");
+        Fluttertoast.showToast(msg: "Account Update Success",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       } else {
-        Fluttertoast.showToast(msg: value.message);
+        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         setState(() {
           isLoading = false;
         });

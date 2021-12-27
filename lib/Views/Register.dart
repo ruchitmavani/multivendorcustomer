@@ -79,7 +79,7 @@ class _RegisterState extends State<Register> {
         });
         GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
       } else {
-        Fluttertoast.showToast(msg: value.message);
+        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         setState(() {
           isLoading = false;
         });

@@ -67,7 +67,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   isBulk: true),
             );
       } else {
-        Fluttertoast.showToast(msg: "No in Stock");
+        Fluttertoast.showToast(msg: "Not in Stock",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     } else {
       Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
@@ -222,7 +222,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   if (widget.qty > 0) addToCart();
                   if (widget.qty == 0)
                     Fluttertoast.showToast(
-                        msg: "quantity should be greater than 0");
+                        msg: "quantity should be greater than 0",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                 },
                 child: Text("Add to Cart",
                     style: FontsTheme.boldTextStyle(color: Colors.white)),

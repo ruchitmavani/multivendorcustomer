@@ -157,7 +157,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                     : false),
             isBulk: false);
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    Fluttertoast.showToast(msg: "Update success");
+    Fluttertoast.showToast(msg: "Update success",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
   }
 
   @override

@@ -21,7 +21,11 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 4,left: 4, top: 6.0,bottom: 2),
+      padding: const EdgeInsets.only(
+        right: 4,
+        left: 4,
+        top: 6.0,
+      ),
       child: SizedBox(
         width: 180,
         child: InkWell(
@@ -77,19 +81,21 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if(widget.productData.productSellingPrice!=widget.productData.productMrp)  Text(
-                            "\u{20B9} ${widget.productData.productMrp}",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey.shade700,
-                                fontSize: 11,
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor:
-                                    Provider.of<CustomColor>(context)
-                                        .appPrimaryMaterialColor,
-                                decorationThickness: 3),
-                          ),
+                          if (widget.productData.productSellingPrice !=
+                              widget.productData.productMrp)
+                            Text(
+                              "\u{20B9} ${widget.productData.productMrp}",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey.shade700,
+                                  fontSize: 11,
+                                  decoration: TextDecoration.lineThrough,
+                                  decorationColor:
+                                      Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                  decorationThickness: 3),
+                            ),
                           Row(
                             children: [
                               Text(

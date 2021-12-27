@@ -242,9 +242,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       } else if (widget.productData.isStock) {
         if (widget.productData.stockLeft <= 0) {
           return Text(
-            "Out of Stock",
+            "Out of stock",
             style: TextStyle(
-                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+                fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
           );
         } else {
           return AddRemoveButton(
@@ -502,9 +502,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
       } else if (widget.productData.isStock) {
         if (widget.productData.stockLeft <= 0) {
           return Text(
-            "Out of Stock",
+            "Out of stock",
             style: TextStyle(
-                fontFamily: 'Poppins', fontSize: 12, color: Colors.red),
+                fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
           );
         } else {
           return AddRemoveButton(

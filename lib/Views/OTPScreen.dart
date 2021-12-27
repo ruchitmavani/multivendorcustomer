@@ -60,7 +60,7 @@ class _OTPScreenState extends State<OTPScreen> {
             return Register(widget.mobileNumber);
           },
         ));
-        Fluttertoast.showToast(msg: value.message);
+        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     }, onError: (e) {
       setState(() {
@@ -81,7 +81,7 @@ class _OTPScreenState extends State<OTPScreen> {
           isLoading = false;
           widget.otp = value.data;
         });
-        Fluttertoast.showToast(msg: "Resend Success");
+        Fluttertoast.showToast(msg: "Resend Success",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     }, onError: (e) {
       setState(() {
@@ -157,7 +157,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         if (widget.otp == otp.text) {
                           _login();
                         } else {
-                          Fluttertoast.showToast(msg: "Wrong otp");
+                          Fluttertoast.showToast(msg: "Wrong otp",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                         }
                       },
                       child: Padding(

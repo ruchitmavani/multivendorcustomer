@@ -78,7 +78,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         print(value.data);
         setState(() {
           GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
-          Fluttertoast.showToast(msg: "Order Accepted");
+          Fluttertoast.showToast(msg: "Order Accepted",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           isLoading = false;
         });
       } else {

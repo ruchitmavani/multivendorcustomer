@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (mobileNo.text.length == 10) {
                           _sendOtp();
                         } else {
-                          Fluttertoast.showToast(msg: "enter valid number");
+                          Fluttertoast.showToast(msg: "enter valid number",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                         }
                       },
                       child: Padding(

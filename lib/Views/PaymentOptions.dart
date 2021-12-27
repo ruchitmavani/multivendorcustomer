@@ -161,7 +161,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       if (value.success) {
         setState(() {
           isLoadingCate = false;
-          Fluttertoast.showToast(msg: "Order Success");
+          Fluttertoast.showToast(msg: "Order Success",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           Provider
               .of<CartDataWrapper>(context, listen: false)
               .cartData
@@ -197,7 +197,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         print(value.data);
 
         isLoadingCate = false;
-        Fluttertoast.showToast(msg: "${value.data!.orderId}");
+        Fluttertoast.showToast(msg: "${value.data!.orderId}",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         orderId = value.data!.orderId;
         window.localStorage["orderId"] = orderId;
       } else {}

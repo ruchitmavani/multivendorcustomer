@@ -71,11 +71,11 @@ class CartDataWrapper extends ChangeNotifier {
             totalAmount = totalAmount - value.data!.flatAmount;
             discount = value.data!.flatAmount as double;
             isCouponApplied = true;
-            Fluttertoast.showToast(msg: "${value.message}");
+            Fluttertoast.showToast(msg: "${value.message}",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           } else {
             discount = 0;
             Fluttertoast.showToast(
-                msg: "your coupon do not meet minimum requirements");
+                msg: "your coupon do not meet minimum requirements",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           }
         }
         if (value.data!.couponType.toLowerCase() == "percentage") {
@@ -89,20 +89,20 @@ class CartDataWrapper extends ChangeNotifier {
               discount = value.data!.offerUptoAmount.toDouble();
             }
             isCouponApplied = true;
-            Fluttertoast.showToast(msg: "${value.message}");
+            Fluttertoast.showToast(msg: "${value.message}",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           } else {
             discount = 0;
             Fluttertoast.showToast(
-                msg: "your coupon do not meet minimum requirements");
+                msg: "your coupon do not meet minimum requirements",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           }
         }
         notifyListeners();
       } else {
-        Fluttertoast.showToast(msg: "${value.message}");
+        Fluttertoast.showToast(msg: "${value.message}",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     }, onError: (e) {
       Fluttertoast.showToast(
-          msg: "Apply Coupon failed, Please try after Sometime!");
+          msg: "Apply Coupon failed, Please try after Sometime!",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     });
   }
 
