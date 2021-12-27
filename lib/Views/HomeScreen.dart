@@ -805,7 +805,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? Container()
                                     : Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5, top: 10),
+                                            left: 5, right: 5, top: 10,bottom: 4),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -1151,7 +1151,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         : Container(
             // margin: EdgeInsets.only(bottom: 80),
-            padding: EdgeInsets.only(left: 5, top: 5, bottom: 80),
+            padding: EdgeInsets.only(left: 5, top: 3, bottom: 80),
             color: Colors.white,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
