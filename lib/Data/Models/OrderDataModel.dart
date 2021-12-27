@@ -27,6 +27,7 @@ class OrderDataModel {
     required this.deliveryAddress,
     required this.vendorDetails,
     required this.orderStatusWithTime,
+    required this.createdDateTime
   });
 
   String id;
@@ -46,6 +47,7 @@ class OrderDataModel {
   double deliveryCharges;
   double taxAmount;
   double taxPercentage;
+  DateTime? createdDateTime;
   double couponAmount;
   String couponId;
   int updatedDeliveryCharges;
@@ -77,6 +79,7 @@ class OrderDataModel {
       orderId: json["order_id"],
       deliveryAddress: DeliveryAddress.fromJson(json["delivery_address"]),
       vendorDetails: VendorDetails.fromJson(json["vendor_details"]),
+      createdDateTime: DateTime.parse(json["created_date_time"]),
       orderStatusWithTime: List<OrderStatus>.from(
           json["order_status_with_time"].map((x) => OrderStatus.fromJson(x))));
 }

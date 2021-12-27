@@ -49,7 +49,7 @@ class _OrderComponentState extends State<OrderComponent> {
                       Container(
                         constraints:
                             BoxConstraints(maxHeight: 49, maxWidth: 49),
-                        child: widget.orderData.orderItems.length == 4
+                        child: widget.orderData.orderItems.length != 1
                             ? GridView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -83,11 +83,22 @@ class _OrderComponentState extends State<OrderComponent> {
                                         );
                                 },
                               )
-                            : Image.network(
-                                "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(0).productDetails.productImageUrl.first}",
-                                width: 50,
-                                height: 50,
-                              ),
+                            : widget.orderData.orderItems
+                                        .elementAt(0)
+                                        .productDetails
+                                        .productImageUrl
+                                        .length !=
+                                    0
+                                ? Image.network(
+                                    "${StringConstants.api_url}${widget.orderData.orderItems.elementAt(0).productDetails.productImageUrl.first}",
+                                    width: 50,
+                                    height: 50,
+                                  )
+                                : Image.asset(
+                                    "images/placeholder.png",
+                                    width: 50,
+                                    height: 50,
+                                  ),
                       ),
                       Expanded(
                         child: Padding(
