@@ -207,7 +207,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
             "Unavailable\nat this time",
             style: TextStyle(
                 fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.center,
             maxLines: 2,
           ),
         );
@@ -460,15 +460,12 @@ class _ProductComponentListState extends State<ProductComponentList> {
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(
           padding: const EdgeInsets.only(right: 4.0),
-          child: Container(
-            child: Text(
-              "Unavailable\nat this time",
-              style: TextStyle(
-                  fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
-              textAlign: TextAlign.justify,
-
-              maxLines: 2,
-            ),
+          child: Text(
+            "Unavailable\nat this time",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            textAlign: TextAlign.center,
+            maxLines: 2,
           ),
         );
       } else if (widget.productData.isRequestPrice) {

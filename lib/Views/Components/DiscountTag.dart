@@ -11,7 +11,7 @@ class DiscountTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return mrp != selling
+    return mrp > selling
         ? Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(

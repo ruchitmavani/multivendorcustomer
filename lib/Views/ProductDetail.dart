@@ -310,7 +310,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         if (productData.isStock)
                                           if (productData.stockLeft <= 20)
                                             Text(
-                                              "${productData.stockLeft}  left in Stock",
+                                              productData.stockLeft==0?"Out of stock":"${productData.stockLeft}  left in Stock",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontFamily: 'Poppins',
@@ -375,54 +375,57 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                 style: label,
                                               ),
                                               Space(height: 8),
-                                              Row(
-                                                children:
-                                                    colorList.map<Widget>((e) {
-                                                  int index =
-                                                      colorList.indexOf(e);
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        currentIndex = index;
-                                                      });
-                                                    },
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 8.0),
-                                                      child: Container(
-                                                        decoration: currentIndex ==
-                                                                index
-                                                            ? BoxDecoration(
-                                                                border: Border.all(
-                                                                    width: 2,
-                                                                    color: Provider.of<CustomColor>(
-                                                                            context)
-                                                                        .appPrimaryMaterialColor),
+                                              SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children:
+                                                      colorList.map<Widget>((e) {
+                                                    int index =
+                                                        colorList.indexOf(e);
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          currentIndex = index;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                right: 8.0),
+                                                        child: Container(
+                                                          decoration: currentIndex ==
+                                                                  index
+                                                              ? BoxDecoration(
+                                                                  border: Border.all(
+                                                                      width: 2,
+                                                                      color: Provider.of<CustomColor>(
+                                                                              context)
+                                                                          .appPrimaryMaterialColor),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.0))
+                                                              : null,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(4.0),
+                                                            child: ClipRRect(
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            50.0))
-                                                            : null,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          50.0),
-                                                              child: Container(
-                                                                  color: Color(e
-                                                                      .colorCode),
-                                                                  height: 25,
-                                                                  width: 25)),
+                                                                            50.0),
+                                                                child: Container(
+                                                                    color: Color(e
+                                                                        .colorCode),
+                                                                    height: 25,
+                                                                    width: 25)),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  );
-                                                }).toList(),
+                                                    );
+                                                  }).toList(),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -437,80 +440,85 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                 style: label,
                                               ),
                                               Space(height: 8),
-                                              Row(
-                                                children: sizeList.map<Widget>(
-                                                  (e) {
-                                                    int index =
-                                                        sizeList.indexOf(e);
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          currentSizeIndex =
-                                                              index;
-                                                          finalPrice = sizeList
-                                                              .elementAt(index)
-                                                              .sellingPrice;
-                                                        });
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              border: Border.all(
-                                                                  width: 1,
-                                                                  color: currentSizeIndex == index
-                                                                      ? Provider.of<CustomColor>(
-                                                                              context)
-                                                                          .appPrimaryMaterialColor
-                                                                      : Colors
-                                                                          .grey
-                                                                          .shade400),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(2.0),
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          50.0),
-                                                              child: Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
-                                                                  horizontal: 4,
+                                              SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: sizeList.map<Widget>(
+                                                    (e) {
+                                                      int index =
+                                                          sizeList.indexOf(e);
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            currentSizeIndex =
+                                                                index;
+                                                            finalPrice = sizeList
+                                                                .elementAt(index)
+                                                                .sellingPrice;
+                                                          });
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 8.0),
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    width: 1,
+                                                                    color: currentSizeIndex == index
+                                                                        ? Provider.of<CustomColor>(
+                                                                                context)
+                                                                            .appPrimaryMaterialColor
+                                                                        : Colors
+                                                                            .grey
+                                                                            .shade400),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0)),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(2.0),
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50.0),
+                                                                child: Container(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                    horizontal: 4,
+                                                                  ),
+                                                                  child: Text(
+                                                                    "${e.size}  \u{20B9}${e.sellingPrice}",
+                                                                    style: FontsTheme.subTitleStyle(
+                                                                        color: currentSizeIndex ==
+                                                                                index
+                                                                            ? Provider.of<CustomColor>(context)
+                                                                                .appPrimaryMaterialColor
+                                                                            : Colors
+                                                                                .grey
+                                                                                .shade400,
+                                                                        size: 12),
+                                                                  ),
+                                                                  height: 20,
                                                                 ),
-                                                                child: Text(
-                                                                  "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                                  style: FontsTheme.subTitleStyle(
-                                                                      color: currentSizeIndex ==
-                                                                              index
-                                                                          ? Provider.of<CustomColor>(context)
-                                                                              .appPrimaryMaterialColor
-                                                                          : Colors
-                                                                              .grey
-                                                                              .shade400,
-                                                                      size: 12),
-                                                                ),
-                                                                height: 20,
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ).toList(),
+                                                      );
+                                                    },
+                                                  ).toList(),
+                                                ),
                                               ),
+                                              Space(height: 4),
+
                                             ],
                                           ),
 
