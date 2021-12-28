@@ -274,8 +274,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-
+                    padding: EdgeInsets.only(bottom: Provider
+                        .of<VendorModelWrapper>(context)
+                        .vendorModel!
+                        .isStorePickupEnable? 0:5.0),
                     child: ListTile(
                       dense: true,
                       visualDensity:

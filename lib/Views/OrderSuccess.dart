@@ -43,19 +43,17 @@ class _OrderSuccessState extends State<OrderSuccess> {
               height: 36,
             ),
             SizedBox(
-              width: 200,
-              height: 32,
+              width: 208,
+              height: 38,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(6)
-                ),
+                style: ElevatedButton.styleFrom(padding: EdgeInsets.all(6)),
                 onPressed: () {
                   GoRouter.of(context)
                       .go('/' + storeConcat(PageCollection.home));
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Text("Continue Shopping"),
+                child: Text(
+                  "Continue Shopping",
+                  style: TextStyle(fontSize: 12),
                 ),
               ),
             ),
@@ -69,8 +67,9 @@ class _OrderSuccessState extends State<OrderSuccess> {
                 style: OutlinedButton.styleFrom(
                   primary:
                       Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-
-                  side: BorderSide(color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+                  side: BorderSide(
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor),
                 ),
                 onPressed: () {
                   GoRouter.of(context)
@@ -78,7 +77,10 @@ class _OrderSuccessState extends State<OrderSuccess> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: Text("Track"),
+                  child: Text(
+                    "Track",
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               ),
             ),

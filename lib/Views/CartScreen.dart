@@ -482,6 +482,7 @@ class _CartScreenState extends State<CartScreen> {
                         : ListView.separated(
                             shrinkWrap: true,
                             padding: EdgeInsets.all(0),
+                            physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemCount: cartProvider.length,
                             separatorBuilder: (context, index) {

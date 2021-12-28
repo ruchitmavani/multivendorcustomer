@@ -100,7 +100,10 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        Fluttertoast.showToast(
+            msg: value.message,
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         if (Navigator.canPop(context)) Navigator.pop(context);
       } else {
         setState(() {
@@ -245,9 +248,15 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("${widget.productDetail.productName}",
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: Text(
+                          "${widget.productDetail.productName}",
+                          maxLines: null,
                           style: FontsTheme.valueStyle(
-                              size: 13, fontWeight: FontWeight.w600)),
+                              size: 13, fontWeight: FontWeight.w600),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           ratingBottomSheet(context, price);
