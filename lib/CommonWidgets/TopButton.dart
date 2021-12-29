@@ -75,7 +75,9 @@ class _TopButtonsState extends State<TopButtons> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                                right: 15.0, bottom: 15.0),
+                              right: 15.0,
+                              bottom: 15.0,
+                            ),
                             child: SizedBox(
                               child: FloatingActionButton(
                                 onPressed: () {
@@ -99,132 +101,172 @@ class _TopButtonsState extends State<TopButtons> {
                                   topLeft: Radius.circular(10.0)),
                             ),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selection = SortKeys.NtoO;
-                                      Navigator.pop(context);
-                                    });
-                                    widget.onClick!(SortKeys.NtoO.toString());
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      'New to Old',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                    leading: Radio<SortKeys>(
-                                      value: SortKeys.NtoO,
-                                      groupValue: _selection,
-                                      activeColor:
-                                          Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor,
-                                      onChanged: (SortKeys? value) {
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: SizedBox(
+                                    height: 20,
+                                    child: InkWell(
+                                      onTap: () {
                                         setState(() {
-                                          _selection = value!;
+                                          _selection = SortKeys.NtoO;
                                           Navigator.pop(context);
                                         });
-                                        widget.onClick!(value.toString());
+                                        widget
+                                            .onClick!(SortKeys.NtoO.toString());
                                       },
+                                      child: ListTile(
+                                        title: Text(
+                                          'New to Old',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        leading: Radio<SortKeys>(
+                                          value: SortKeys.NtoO,
+                                          groupValue: _selection,
+                                          splashRadius: 10,
+                                          activeColor:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor,
+                                          onChanged: (SortKeys? value) {
+                                            setState(() {
+                                              _selection = value!;
+                                              Navigator.pop(context);
+                                            });
+                                            widget.onClick!(value.toString());
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selection = SortKeys.OtoN;
-                                      Navigator.pop(context);
-                                    });
-                                    widget.onClick!(SortKeys.OtoN.toString());
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      'Old to New',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                    leading: Radio<SortKeys>(
-                                      value: SortKeys.OtoN,
-                                      groupValue: _selection,
-                                      activeColor:
-                                          Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor,
-                                      onChanged: (SortKeys? value) {
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: SizedBox(
+                                    height: 20,
+                                    child: InkWell(
+                                      onTap: () {
                                         setState(() {
-                                          _selection = value!;
+                                          _selection = SortKeys.OtoN;
                                           Navigator.pop(context);
                                         });
-                                        widget.onClick!(value.toString());
+                                        widget
+                                            .onClick!(SortKeys.OtoN.toString());
                                       },
+                                      child: ListTile(
+                                        minVerticalPadding: 2,
+                                        title: Text(
+                                          'Old to New',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        leading: Radio<SortKeys>(
+                                          splashRadius: 10,
+                                          value: SortKeys.OtoN,
+                                          groupValue: _selection,
+                                          activeColor:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor,
+                                          onChanged: (SortKeys? value) {
+                                            setState(() {
+                                              _selection = value!;
+                                              Navigator.pop(context);
+                                            });
+                                            widget.onClick!(value.toString());
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selection = SortKeys.spHtoL;
-                                      Navigator.pop(context);
-                                    });
-                                    widget.onClick!(SortKeys.spHtoL.toString());
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      'Price: High to Low',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                    leading: Radio<SortKeys>(
-                                      value: SortKeys.spHtoL,
-                                      groupValue: _selection,
-                                      activeColor:
-                                          Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor,
-                                      onChanged: (SortKeys? value) {
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: SizedBox(
+                                    height: 20,
+                                    child: InkWell(
+                                      onTap: () {
                                         setState(() {
-                                          _selection = value!;
+                                          _selection = SortKeys.spHtoL;
                                           Navigator.pop(context);
                                         });
-                                        widget.onClick!(value.toString());
+                                        widget.onClick!(
+                                            SortKeys.spHtoL.toString());
                                       },
+                                      child: ListTile(
+                                        minVerticalPadding: 2,
+                                        title: Text(
+                                          'Price: High to Low',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        leading: Radio<SortKeys>(
+                                          splashRadius: 10,
+                                          value: SortKeys.spHtoL,
+                                          groupValue: _selection,
+                                          activeColor:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor,
+                                          onChanged: (SortKeys? value) {
+                                            setState(() {
+                                              _selection = value!;
+                                              Navigator.pop(context);
+                                            });
+                                            widget.onClick!(value.toString());
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selection = SortKeys.spLtoH;
-                                      Navigator.pop(context);
-                                    });
-                                    widget.onClick!(SortKeys.spLtoH.toString());
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                      'Price: Low to High',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                    leading: Radio<SortKeys>(
-                                      value: SortKeys.spLtoH,
-                                      groupValue: _selection,
-                                      activeColor:
-                                          Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor,
-                                      onChanged: (SortKeys? value) {
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 30),
+                                  child: SizedBox(
+                                    height: 20,
+                                    child: InkWell(
+                                      onTap: () {
                                         setState(() {
-                                          _selection = value!;
+                                          _selection = SortKeys.spLtoH;
                                           Navigator.pop(context);
                                         });
-                                        widget.onClick!(value.toString());
+                                        widget.onClick!(
+                                            SortKeys.spLtoH.toString());
                                       },
+                                      child: ListTile(
+                                        minVerticalPadding: 2,
+                                        title: Text(
+                                          'Price: Low to High',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        leading: Radio<SortKeys>(
+                                          splashRadius: 10,
+                                          value: SortKeys.spLtoH,
+                                          groupValue: _selection,
+                                          activeColor:
+                                              Provider.of<CustomColor>(context)
+                                                  .appPrimaryMaterialColor,
+                                          onChanged: (SortKeys? value) {
+                                            setState(() {
+                                              _selection = value!;
+                                              Navigator.pop(context);
+                                            });
+                                            widget.onClick!(value.toString());
+                                          },
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

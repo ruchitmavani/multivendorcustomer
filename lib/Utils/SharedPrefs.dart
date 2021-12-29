@@ -4,9 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPrefs {
   static SharedPreferences? _sharedPrefs;
 
-   logout() async {
-    for(String key in _sharedPrefs!.getKeys()){
-      if(key != StringConstants.vendor_uniq_id && key != StringConstants.storeLink){
+  logout() async {
+    for (String key in _sharedPrefs!.getKeys()) {
+      if (key != StringConstants.vendor_uniq_id &&
+          key != StringConstants.storeLink) {
         await _sharedPrefs!.remove(key);
       }
     }
@@ -70,6 +71,9 @@ class SharedPrefs {
 
   List<String> get tax =>
       _sharedPrefs!.getStringList(StringConstants.tax) ?? [];
+
+  List<String> get taxName =>
+      _sharedPrefs!.getStringList(StringConstants.taxName) ?? [];
 
   // Setter
 
@@ -141,12 +145,16 @@ class SharedPrefs {
     _sharedPrefs!.setBool(StringConstants.isWhatsappSupport, value);
   }
 
-  set colorTheme(String value){
+  set colorTheme(String value) {
     _sharedPrefs!.setString(StringConstants.color_theme, value);
   }
 
-  set tax(List<String> value){
+  set tax(List<String> value) {
     _sharedPrefs!.setStringList(StringConstants.tax, value);
+  }
+
+  set taxName(List<String> value) {
+    _sharedPrefs!.setStringList(StringConstants.taxName, value);
   }
 
   /*--------------- Check Is Login or Not --------------------*/

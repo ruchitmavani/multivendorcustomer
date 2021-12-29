@@ -125,19 +125,27 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text(provider.indexWhere(
-                    (element) => element.categoryId == widget.categoryId) ==
-                -1
-            ? ""
-            : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}",style: TextStyle(color: Colors.black,fontFamily: 'Poppins',fontWeight: FontWeight.w700,fontSize: 16),),
+        title: Text(
+          provider.indexWhere(
+                      (element) => element.categoryId == widget.categoryId) ==
+                  -1
+              ? ""
+              : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.categoryId)).categoryName}",
+          style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w700,
+              fontSize: 16),
+        ),
         actions: [
           IconButton(
             icon: Icon(CupertinoIcons.search,
                 size: 25,
-                color: Provider.of<CustomColor>(context)
-                    .appPrimaryMaterialColor),
+                color:
+                    Provider.of<CustomColor>(context).appPrimaryMaterialColor),
             onPressed: () {
-              GoRouter.of(context).push('/'+storeConcat(PageCollection.search));
+              GoRouter.of(context)
+                  .push('/' + storeConcat(PageCollection.search));
             },
           ),
           Padding(
@@ -148,17 +156,17 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
       ),
       body: Column(
         children: [
-          Space(
-            height: 4,
+          SizedBox(
+            height: 40,
+            child: TopButtons(onChanged: (value) {
+              setState(() {
+                isGrid = value;
+              });
+              print(value);
+            }, onClick: (value) {
+              _getProduct(value);
+            }),
           ),
-          TopButtons(onChanged: (value) {
-            setState(() {
-              isGrid = value;
-            });
-            print(value);
-          }, onClick: (value) {
-            _getProduct(value);
-          }),
           Expanded(
             child: isLoading
                 ? Padding(
@@ -189,35 +197,36 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 10),
-                    child: GridView.builder(
-                      controller: scrollController,
-                      itemCount: productDataList.length,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent:
-                            isGrid ? 200 : MediaQuery.of(context).size.width,
-                        mainAxisExtent: isGrid ? 245 : 120,
-                        childAspectRatio: isGrid ? 0.75 : 3.5,
-                        crossAxisSpacing: 3,
-                        mainAxisSpacing: 3,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            context.go(helper(PageCollection.product +
-                                '/${productDataList.elementAt(index).productId}'));
-                          },
-                          child: isGrid
-                              ? ProductComponentGrid(
-                                  productData: productDataList.elementAt(index))
-                              : ProductComponentList(
-                                  productData:
-                                      productDataList.elementAt(index)),
-                        );
-                      },
+                  padding: const EdgeInsets.only(top: 2),
+                  child: GridView.builder(
+                    controller: scrollController,
+                    shrinkWrap: true,
+                    itemCount: productDataList.length,
+                    padding: EdgeInsets.symmetric( horizontal: 8.0, vertical: 8),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent:
+                          isGrid ? 220 : MediaQuery.of(context).size.width,
+                      mainAxisExtent: isGrid ? 245 : 120,
+                      childAspectRatio: isGrid ? 0.75 : 3.5,
+                      crossAxisSpacing: 3,
+                      mainAxisSpacing: 3,
                     ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          context.go(helper(PageCollection.product +
+                              '/${productDataList.elementAt(index).productId}'));
+                        },
+                        child: isGrid
+                            ? ProductComponentGrid(
+                                productData: productDataList.elementAt(index))
+                            : ProductComponentList(
+                                productData:
+                                    productDataList.elementAt(index)),
+                      );
+                    },
                   ),
+                ),
           ),
           isLoadingBottom ? CircularProgressIndicator() : Container(),
         ],

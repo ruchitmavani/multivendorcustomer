@@ -63,26 +63,29 @@ class _TopSellingProductComponentState
                 width: 4,
               ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${widget.productData.productName}",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: FontsTheme.boldTextStyle(),
-                    ),
-                    if (widget.productData.productRatingAverage != 0)
-                      ProductRating(widget.productData.productRatingAverage),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1.0),
-                      child: Text(
-                        "₹ ${widget.productData.productSellingPrice}",
-                        style: FontsTheme.digitStyle(fontSize: 12),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 11.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${widget.productData.productName}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: FontsTheme.subTitleStyle(),
                       ),
-                    ),
-                  ],
+                      if (widget.productData.productRatingAverage != 0)
+                        ProductRating(widget.productData.productRatingAverage),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1.0),
+                        child: Text(
+                          "₹ ${widget.productData.productSellingPrice}",
+                          style: FontsTheme.digitStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Space(width: 5),
@@ -94,41 +97,6 @@ class _TopSellingProductComponentState
                     onTap: () {
                       context.go(helper(PageCollection.product +
                           '/${widget.productData.productId}'));
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //     isScrollControlled: true,
-                      //     backgroundColor: Colors.transparent,
-                      //     builder: (context) {
-                      //       return Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.end,
-                      //         mainAxisAlignment: MainAxisAlignment.end,
-                      //         children: [
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(
-                      //                 right: 15.0, bottom: 15.0),
-                      //             child: SizedBox(
-                      //               child: FloatingActionButton(
-                      //                   onPressed: () {
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                   child: Icon(Icons.close, size: 16),
-                      //                   backgroundColor: Colors.white),
-                      //               width: 24,
-                      //               height: 24,
-                      //             ),
-                      //           ),
-                      //           Container(
-                      //             decoration: BoxDecoration(
-                      //               color: Colors.white,
-                      //               borderRadius: BorderRadius.only(
-                      //                   topRight: Radius.circular(10.0),
-                      //                   topLeft: Radius.circular(10.0)),
-                      //             ),
-                      //             // child: ProductDescription(widget.productData),
-                      //           ),
-                      //         ],
-                      //       );
-                      //     });
                     },
                     child: Card(
                       color: Provider.of<CustomColor>(context)

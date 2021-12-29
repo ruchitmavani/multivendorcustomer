@@ -161,7 +161,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       if (value.success) {
         setState(() {
           isLoadingCate = false;
-          Fluttertoast.showToast(msg: "Order Success",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+          Fluttertoast.showToast(msg: "Order Success",
+              webPosition: "center",
+              webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           Provider
               .of<CartDataWrapper>(context, listen: false)
               .cartData
@@ -197,7 +199,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         print(value.data);
 
         isLoadingCate = false;
-        Fluttertoast.showToast(msg: "${value.data!.orderId}",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        Fluttertoast.showToast(msg: "${value.data!.orderId}",
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         orderId = value.data!.orderId;
         window.localStorage["orderId"] = orderId;
       } else {}
@@ -247,18 +251,22 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         'Cash on Delivery', style: TextStyle(fontSize: 12),),
-                      leading: Radio<paymentMethods>(
-                        activeColor: Provider
-                            .of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        value: paymentMethods.COD,
-                        groupValue: _selection,
-                        onChanged: (paymentMethods? value) {
-                          setState(() {
-                            _selection = value!;
-                            print(value);
-                          },);
-                        },
+                      leading: Transform.scale(
+                        scale: 0.92,
+
+                        child: Radio<paymentMethods>(
+                          activeColor: Provider
+                              .of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                          value: paymentMethods.COD,
+                          groupValue: _selection,
+                          onChanged: (paymentMethods? value) {
+                            setState(() {
+                              _selection = value!;
+                              print(value);
+                            },);
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -277,25 +285,28 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     padding: EdgeInsets.only(bottom: Provider
                         .of<VendorModelWrapper>(context)
                         .vendorModel!
-                        .isStorePickupEnable? 0:5.0),
+                        .isStorePickupEnable ? 0 : 5.0),
                     child: ListTile(
                       dense: true,
                       visualDensity:
                       VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
                         'Pay Online', style: TextStyle(fontSize: 12),),
-                      leading: Radio<paymentMethods>(
-                        value: paymentMethods.PAY_ONLINE,
-                        activeColor: Provider
-                            .of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                        groupValue: _selection,
-                        onChanged: (paymentMethods? value) {
-                          setState(() {
-                            _selection = value!;
-                            print(value);
-                          });
-                        },
+                      leading: Transform.scale(
+                        scale: 0.92,
+                        child: Radio<paymentMethods>(
+                          value: paymentMethods.PAY_ONLINE,
+                          activeColor: Provider
+                              .of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                          groupValue: _selection,
+                          onChanged: (paymentMethods? value) {
+                            setState(() {
+                              _selection = value!;
+                              print(value);
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -325,18 +336,21 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                         VisualDensity(horizontal: 0, vertical: -4),
                         title: const Text(
                           'Take Away', style: TextStyle(fontSize: 12),),
-                        leading: Radio<paymentMethods>(
-                          value: paymentMethods.TAKEAWAY,
-                          activeColor: Provider
-                              .of<CustomColor>(context)
-                              .appPrimaryMaterialColor,
-                          groupValue: _selection,
-                          onChanged: (paymentMethods? value) {
-                            setState(() {
-                              _selection = value!;
-                              print(value);
-                            });
-                          },
+                        leading: Transform.scale(
+                          scale: 0.92,
+                          child: Radio<paymentMethods>(
+                            value: paymentMethods.TAKEAWAY,
+                            activeColor: Provider
+                                .of<CustomColor>(context)
+                                .appPrimaryMaterialColor,
+                            groupValue: _selection,
+                            onChanged: (paymentMethods? value) {
+                              setState(() {
+                                _selection = value!;
+                                print(value);
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),

@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -76,7 +75,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                       child: Text(
                         "${widget.productData.productName}",
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                        maxLines: 1,
                         style: FontsTheme.subTitleStyle(),
                       ),
                     ),
@@ -285,7 +284,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3),
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -312,7 +311,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       widget.productData.productImageUrl.first)
                   : Image.asset("images/placeholder.png"),
             ),
-            Space(width: 8),
+            Space(width: 10),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -328,8 +327,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: 13,
-                              color: Provider.of<CustomColor>(context)
-                                  .appPrimaryMaterialColor,
+                              // color: Provider.of<CustomColor>(context)
+                              //     .appPrimaryMaterialColor,
                               fontWeight: FontWeight.w600,
                               fontFamily: 'Poppins'),
                         ),

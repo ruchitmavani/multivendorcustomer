@@ -66,6 +66,7 @@ class StringConstants {
   static String isWhatsappSupport = "isWhatsappSupport";
   static String color_theme = "color_theme";
   static String tax = "tax";
+  static String taxName = "taxName";
 }
 
 class PageCollection {

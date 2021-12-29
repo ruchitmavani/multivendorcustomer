@@ -9,7 +9,7 @@ import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 class VendorModelWrapper with ChangeNotifier {
   VendorDataModel? vendorModel;
   bool isLoaded = false;
-  String isShopOpen="";
+  String isShopOpen = "";
 
   Future<bool?> loadVendorData(String vendorId) async {
     bool res = false;
@@ -32,7 +32,9 @@ class VendorModelWrapper with ChangeNotifier {
         sharedPrefs.tax = vendorModel!.taxDetails
             .map((e) => e.taxPercentage.toString())
             .toList();
-        isShopOpen= getShopTimingStatus();
+        sharedPrefs.taxName =
+            vendorModel!.taxDetails.map((e) => e.taxName.toString()).toList();
+        isShopOpen = getShopTimingStatus();
         res = true;
       } else {
         res = false;
@@ -76,7 +78,6 @@ class VendorModelWrapper with ChangeNotifier {
       //   }
       // }
       return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
-
     } else {
       return "Offline";
     }

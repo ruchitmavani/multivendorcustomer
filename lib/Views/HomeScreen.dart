@@ -522,7 +522,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     style:
                                                         FontsTheme.gilroyText(
                                                       color: Colors.black54,
-                                                      size: 12,
+                                                      size: 11,
                                                     ),
                                                   )
                                                 : TextSpan(
@@ -531,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     style:
                                                         FontsTheme.gilroyText(
                                                       color: Colors.black54,
-                                                      size: 12,
+                                                      size: 11,
                                                     ),
                                                   )
                                           ],
@@ -783,8 +783,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       child: Text(
                                                         "${productDataList.elementAt(item).categoryName}",
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                            color: Colors.white,
+                                                            fontSize: 12),
                                                       ),
                                                     ),
                                                   ],
@@ -805,7 +805,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? Container()
                                     : Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5, top: 10,bottom: 4),
+                                            left: 5,
+                                            right: 5,
+                                            top: 10,
+                                            bottom: 2),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -1063,7 +1066,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           TextSpan(
                                             text: "Location:",
                                             style: FontsTheme.descriptionText(
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w500,
+                                                size: 10),
                                           ),
                                         ),
                                         Icon(Icons.directions,
@@ -1160,12 +1164,15 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
+                  padding: const EdgeInsets.only(
+                    top: 5.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TitleViewAll(
-                        title: "${productDataList.elementAt(index).categoryName}",
+                        title:
+                            "${productDataList.elementAt(index).categoryName}",
                         onPressed: () {
                           context.go(helper(PageCollection.categories +
                               '/${productDataList.elementAt(index).categoryId}'));
@@ -1201,11 +1208,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .productDetails
                                             .elementAt(i),
                                       )
-                                    : ProductComponentList(
-                                        productData: productDataList
-                                            .elementAt(index)
-                                            .productDetails
-                                            .elementAt(i),
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 4.0),
+                                        child: ProductComponentList(
+                                          productData: productDataList
+                                              .elementAt(index)
+                                              .productDetails
+                                              .elementAt(i),
+                                        ),
                                       ),
                               );
                             },

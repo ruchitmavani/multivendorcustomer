@@ -414,8 +414,7 @@ class _CartScreenState extends State<CartScreen> {
                                   Text(
                                     "${customerData.customerAddress.elementAt(addressIndex).type}",
                                     style: FontsTheme.boldTextStyle(
-                                        size: 13,
-                                        fontWeight: FontWeight.w600),
+                                        size: 13, fontWeight: FontWeight.w600),
                                   ),
                                   changeAddress(),
                                 ],
@@ -477,8 +476,10 @@ class _CartScreenState extends State<CartScreen> {
                         ? Container(
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height-80,
-                            child:Image.asset("images/cartempty.png",))
+                            height: MediaQuery.of(context).size.height - 80,
+                            child: Image.asset(
+                              "images/cartempty.png",
+                            ))
                         : ListView.separated(
                             shrinkWrap: true,
                             padding: EdgeInsets.all(0),
@@ -510,8 +511,7 @@ class _CartScreenState extends State<CartScreen> {
                                               child: SizedBox(
                                                 child: FloatingActionButton(
                                                   onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop();
+                                                    Navigator.of(context).pop();
                                                   },
                                                   child: Icon(
                                                     Icons.close,
@@ -526,14 +526,11 @@ class _CartScreenState extends State<CartScreen> {
                                             Container(
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(
-                                                                10.0),
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                10.0)),
+                                                borderRadius: BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(10.0),
+                                                    topLeft:
+                                                        Radius.circular(10.0)),
                                               ),
                                               child: ProductDescriptionInCart(
                                                 productId: cartProvider
@@ -555,8 +552,7 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -595,8 +591,8 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                       Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 15.0),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -627,10 +623,8 @@ class _CartScreenState extends State<CartScreen> {
                                                         children: [
                                                           RichText(
                                                             text: TextSpan(
-                                                              text:
-                                                                  "\u{20B9}",
-                                                              style:
-                                                                  TextStyle(
+                                                              text: "\u{20B9}",
+                                                              style: TextStyle(
                                                                 fontFamily:
                                                                     "Poppins",
                                                                 fontWeight:
@@ -659,15 +653,13 @@ class _CartScreenState extends State<CartScreen> {
                                                           ),
                                                           RichText(
                                                             text: TextSpan(
-                                                              text:
-                                                                  "\u{20B9}",
+                                                              text: "\u{20B9}",
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       "Poppins",
                                                                   color: Colors
                                                                       .black87,
-                                                                  fontSize:
-                                                                      13,
+                                                                  fontSize: 13,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600),
@@ -682,11 +674,9 @@ class _CartScreenState extends State<CartScreen> {
                                                         ],
                                                       ),
                                                       RoundedAddRemove(
-                                                        productId:
-                                                            cartProvider
-                                                                .elementAt(
-                                                                    index)
-                                                                .productId,
+                                                        productId: cartProvider
+                                                            .elementAt(index)
+                                                            .productId,
                                                         isBulk: cartProvider
                                                             .elementAt(index)
                                                             .isBulk,
@@ -733,8 +723,7 @@ class _CartScreenState extends State<CartScreen> {
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(
-                          Provider.of<CartDataWrapper>(context)
-                                  .isCouponApplied
+                          Provider.of<CartDataWrapper>(context).isCouponApplied
                               ? "Total Savings(${couponText.text}),"
                               : "Total Savings",
                           style: TextStyle(
@@ -751,27 +740,51 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 25,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          "Tax",
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
+                    if (sharedPrefs.tax.length != 0)
+                      SizedBox(
+                        height: 25 * (sharedPrefs.tax.length).toDouble(),
+                        child: ListView.builder(
+                          itemCount: sharedPrefs.tax.length,
+                          itemBuilder: (context, i) {
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text(
+                                "${sharedPrefs.taxName.elementAt(i)}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black.withOpacity(0.7),
+                                ),
+                              ),
+                              trailing: Text(
+                                "%${sharedPrefs.tax.elementAt(i)}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black.withOpacity(0.7),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        trailing: Text(
-                          Provider.of<CartDataWrapper>(context).isLoading
-                              ? "0"
-                              : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
+                        // child: ListTile(
+                        //   contentPadding: EdgeInsets.zero,
+                        //   dense: true,
+                        //   title: Text(
+                        //     "Tax",
+                        //     style: TextStyle(
+                        //       fontSize: 14,
+                        //     ),
+                        //   ),
+                        //   trailing: Text(
+                        //     Provider.of<CartDataWrapper>(context).isLoading
+                        //         ? "0"
+                        //         : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
+                        //     style: TextStyle(
+                        //       fontSize: 14,
+                        //     ),
+                        //   ),
+                        // ),
                       ),
-                    ),
                     Provider.of<VendorModelWrapper>(context).isLoaded
                         ? Provider.of<VendorModelWrapper>(context)
                                     .vendorModel!
@@ -877,7 +890,8 @@ class _CartScreenState extends State<CartScreen> {
                     child: InkWell(
                       onTap: () {
                         if (sharedPrefs.customer_id.isEmpty) {
-                          GoRouter.of(context).go('/'+storeConcat(PageCollection.login));
+                          GoRouter.of(context)
+                              .go('/' + storeConcat(PageCollection.login));
                           return;
                         }
                         if (Provider.of<CartDataWrapper>(context, listen: false)

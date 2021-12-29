@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -34,6 +35,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                 PageCollection.product + '/${widget.productData.productId}'));
           },
           child: Container(
+            margin: EdgeInsets.only(bottom: 2),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(6.0),
@@ -42,7 +44,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                   color: Colors.grey.shade200,
                   spreadRadius: 2,
                   blurRadius: 2,
-                  //offset: Offset(0, 2), // changes position of shadow
+                  offset: Offset(0, 2), // changes position of shadow
                 ),
               ],
             ),
@@ -73,7 +75,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                       overflow: TextOverflow.ellipsis,
                       style: FontsTheme.descriptionText(
                           size: 11, fontWeight: FontWeight.w500)),
-                  Space(height: 6),
+                  Space(height: 5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,8 +102,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                             children: [
                               Text(
                                 "\u{20B9}",
-                                style: TextStyle(
-                                    fontFamily: "",
+                                style: FontsTheme.digitStyle(
                                     fontSize: 12,
                                     color: Colors.black87),
                               ),

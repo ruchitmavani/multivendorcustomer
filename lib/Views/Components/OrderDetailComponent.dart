@@ -139,8 +139,11 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("${widget.productDetail.productName}",
-                          style: FontsTheme.descriptionText(size: 15)),
+                      Text(
+                        "${widget.productDetail.productName}",
+                        style: FontsTheme.descriptionText(size: 15),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       Row(
                         children: [
                           Text("\u{20B9}",
