@@ -251,7 +251,7 @@ class ProductRating extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 2.0),
           child: Text(
-            "$rating",
+            rating!=0?"$rating":"No rating",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),

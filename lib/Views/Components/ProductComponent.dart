@@ -27,9 +27,7 @@ class ProductComponentGrid extends StatefulWidget {
 class _ProductComponentGridState extends State<ProductComponentGrid> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
@@ -50,22 +48,27 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 10.0, right: 8.0, bottom: 8, top: 8),
+                left: 10.0, right: 8.0, bottom: 8, top: 6),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.productData.productRatingAverage != 0)
+                // if (widget.productData.productRatingAverage != 0)
                   ProductRating(widget.productData.productRatingAverage),
+                // else
+                //   Text(
+                //     "Pending",
+                //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+                //   ),
                 Center(
                   child: Container(
                     height: 110,
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
                         ? Image.network(
-                        StringConstants.api_url +
-                            widget.productData.productImageUrl.first,
-                        fit: BoxFit.contain)
+                            StringConstants.api_url +
+                                widget.productData.productImageUrl.first,
+                            fit: BoxFit.contain)
                         : Image.asset("images/placeholder.png"),
                   ),
                 ),
@@ -109,9 +112,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
                                         decorationColor:
-                                        Provider
-                                            .of<CustomColor>(context)
-                                            .appPrimaryMaterialColor,
+                                            Provider.of<CustomColor>(context)
+                                                .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade700,
@@ -129,8 +131,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                           color: Colors.black87),
                                     ),
                                     Text(
-                                      "${widget.productData
-                                          .productSellingPrice} ",
+                                      "${widget.productData.productSellingPrice} ",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.black87,
@@ -148,8 +149,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider
-                                          .of<CustomColor>(context)
+                                      color: Provider.of<CustomColor>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -159,8 +159,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider
-                                          .of<CustomColor>(context)
+                                      color: Provider.of<CustomColor>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -176,8 +175,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                           color: Colors.black87),
                                     ),
                                     Text(
-                                      "${widget.productData.bulkPriceList!.first
-                                          .pricePerUnit}",
+                                      "${widget.productData.bulkPriceList!.first.pricePerUnit}",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.black87,
@@ -203,12 +201,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    if (Provider
-        .of<VendorModelWrapper>(context)
-        .isShopOpen != "" &&
-        Provider
-            .of<VendorModelWrapper>(context)
-            .isShopOpen != "Offline") {
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(
@@ -228,9 +222,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider
-                .of<CustomColor>(context)
-                .appPrimaryMaterialColor,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -278,7 +270,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       return Text(
         "Offline",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
@@ -318,13 +310,10 @@ class _ProductComponentListState extends State<ProductComponentList> {
           children: [
             SizedBox(
               height: 110,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
                   ? Image.network(StringConstants.api_url +
-                  widget.productData.productImageUrl.first)
+                      widget.productData.productImageUrl.first)
                   : Image.asset("images/placeholder.png"),
             ),
             Space(width: 10),
@@ -351,11 +340,17 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 4.0),
-                        child: widget.productData.productRatingAverage != 0
-                            ? ProductRating(
-                            widget.productData.productRatingAverage)
-                            : SizedBox(),
-                      )
+                        child:
+                        // widget.productData.productRatingAverage != 0
+                        //     ?
+                        ProductRating(
+                                widget.productData.productRatingAverage)
+                          // : Text(
+                          //     "Pending",
+                          //     style: TextStyle(
+                          //         fontWeight: FontWeight.bold, fontSize: 11),
+                          //   ),
+                          )
                     ],
                   ),
                   Text(
@@ -382,9 +377,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                  Provider
-                                      .of<CustomColor>(context)
-                                      .appPrimaryMaterialColor,
+                                      Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Colors.grey.shade700,
@@ -412,7 +406,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                 DiscountTag(
                                     mrp: widget.productData.productMrp,
                                     selling:
-                                    widget.productData.productSellingPrice)
+                                        widget.productData.productSellingPrice)
                               ],
                             ),
                           if (widget.productData.isRequestPrice)
@@ -420,8 +414,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
+                                  color: Provider.of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
@@ -431,8 +424,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider
-                                      .of<CustomColor>(context)
+                                  color: Provider.of<CustomColor>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
@@ -448,8 +440,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                       color: Colors.black87),
                                 ),
                                 Text(
-                                  "${widget.productData.bulkPriceList!.first
-                                      .pricePerUnit}",
+                                  "${widget.productData.bulkPriceList!.first.pricePerUnit}",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Colors.black87,
@@ -473,12 +464,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    if (Provider
-        .of<VendorModelWrapper>(context)
-        .isShopOpen != "" &&
-        Provider
-            .of<VendorModelWrapper>(context)
-            .isShopOpen != "Offline") {
+    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
+        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(
@@ -498,9 +485,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider
-                .of<CustomColor>(context)
-                .appPrimaryMaterialColor,
+            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -548,7 +533,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
       return Text(
         "Offline",
         style:
-        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
