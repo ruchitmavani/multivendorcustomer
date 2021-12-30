@@ -261,11 +261,13 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Text("${productData.productName}",
                                             style: FontsTheme.boldTextStyle(
                                                 size: 16)),
+                                       if( productData.productMrp > productData
+                                            .productSellingPrice)
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               top: 8.0, bottom: 8),
                                           child: SizedBox(
-                                              width: 45,
+                                              width: 48,
                                               child: DiscountTag(
                                                   mrp: productData.productMrp,
                                                   selling: productData
@@ -310,7 +312,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         if (productData.isStock)
                                           if (productData.stockLeft <= 20)
                                             Text(
-                                              productData.stockLeft==0?"Out of stock":"${productData.stockLeft}  left in Stock",
+                                              productData.stockLeft == 0
+                                                  ? "Out of stock"
+                                                  : "${productData.stockLeft}  left in Stock",
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   fontFamily: 'Poppins',
@@ -376,10 +380,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               ),
                                               Space(height: 8),
                                               SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
+                                                scrollDirection:
+                                                    Axis.horizontal,
                                                 child: Row(
-                                                  children:
-                                                      colorList.map<Widget>((e) {
+                                                  children: colorList
+                                                      .map<Widget>((e) {
                                                     int index =
                                                         colorList.indexOf(e);
                                                     return GestureDetector(
@@ -390,7 +395,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                       },
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 right: 8.0),
                                                         child: Container(
                                                           decoration: currentIndex ==
@@ -416,8 +422,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                         .circular(
                                                                             50.0),
                                                                 child: Container(
-                                                                    color: Color(e
-                                                                        .colorCode),
+                                                                    color: Color(
+                                                                        e.colorCode),
                                                                     height: 25,
                                                                     width: 25)),
                                                           ),
@@ -441,9 +447,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                               ),
                                               Space(height: 8),
                                               SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
+                                                scrollDirection:
+                                                    Axis.horizontal,
                                                 child: Row(
-                                                  children: sizeList.map<Widget>(
+                                                  children:
+                                                      sizeList.map<Widget>(
                                                     (e) {
                                                       int index =
                                                           sizeList.indexOf(e);
@@ -453,7 +461,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                             currentSizeIndex =
                                                                 index;
                                                             finalPrice = sizeList
-                                                                .elementAt(index)
+                                                                .elementAt(
+                                                                    index)
                                                                 .sellingPrice;
                                                           });
                                                         },
@@ -466,9 +475,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                             decoration: BoxDecoration(
                                                                 border: Border.all(
                                                                     width: 1,
-                                                                    color: currentSizeIndex == index
-                                                                        ? Provider.of<CustomColor>(
-                                                                                context)
+                                                                    color: currentSizeIndex ==
+                                                                            index
+                                                                        ? Provider.of<CustomColor>(context)
                                                                             .appPrimaryMaterialColor
                                                                         : Colors
                                                                             .grey
@@ -486,13 +495,15 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             50.0),
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   alignment:
                                                                       Alignment
                                                                           .center,
                                                                   margin: EdgeInsets
                                                                       .symmetric(
-                                                                    horizontal: 4,
+                                                                    horizontal:
+                                                                        4,
                                                                   ),
                                                                   child: Text(
                                                                     "${e.size}  \u{20B9}${e.sellingPrice}",
@@ -502,9 +513,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                             ? Provider.of<CustomColor>(context)
                                                                                 .appPrimaryMaterialColor
                                                                             : Colors
-                                                                                .grey
-                                                                                .shade400,
-                                                                        size: 12),
+                                                                                .grey.shade400,
+                                                                        size:
+                                                                            12),
                                                                   ),
                                                                   height: 20,
                                                                 ),
@@ -518,7 +529,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                 ),
                                               ),
                                               Space(height: 4),
-
                                             ],
                                           ),
 
@@ -539,9 +549,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                             itemCount: bulkPrice.length,
                                             itemBuilder: (context, i) {
                                               List<int> _numbers = [];
-                                              for (int index = bulkPrice[i].fromQty;
-                                              index <= bulkPrice[i].toQty;
-                                              index++) {
+                                              for (int index =
+                                                      bulkPrice[i].fromQty;
+                                                  index <= bulkPrice[i].toQty;
+                                                  index++) {
                                                 _numbers.add(index);
                                               }
                                               return Row(

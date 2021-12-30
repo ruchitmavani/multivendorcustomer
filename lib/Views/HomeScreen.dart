@@ -754,7 +754,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       height: 100,
                                                       width: 100,
                                                       padding: EdgeInsets.only(
-                                                          bottom: 8, left: 10),
+                                                          bottom: 8,
+                                                          left: 10,
+                                                          right: 10,
+                                                          top: 8),
                                                       margin: EdgeInsets.only(
                                                           top: 4,
                                                           right: 5,
@@ -783,8 +786,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       child: Text(
                                                         "${productDataList.elementAt(item).categoryName}",
                                                         style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 12),
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],

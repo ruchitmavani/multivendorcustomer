@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
+import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Views/OrderDetails.dart';
 import 'package:provider/provider.dart';
 
 class OrderComponent extends StatefulWidget {
@@ -22,14 +23,16 @@ class _OrderComponentState extends State<OrderComponent> {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => OrderDetails(
-                orderData: widget.orderData,
-              ),
-            ),
-          );
+          GoRouter.of(context).push( helper(PageCollection.order),
+              extra: widget.orderData);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => OrderDetails(
+          //       orderData: widget.orderData,
+          //     ),
+          //   ),
+          // );
         },
         child: Card(
             elevation: 0.1,
@@ -136,7 +139,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                       children: [
                                         Text("\u{20B9}",
                                             style: FontsTheme.digitStyle(
-                                               fontSize: 13,
+                                                fontSize: 13,
                                                 fontWeight: FontWeight.w600)),
                                         Padding(
                                           padding:

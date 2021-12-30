@@ -23,7 +23,9 @@ import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:provider/provider.dart';
 
+import 'Data/Models/OrderDataModel.dart';
 import 'Utils/SharedPrefs.dart';
+import 'Views/OrderDetails.dart';
 import 'Views/ProductDetail.dart';
 
 void main() async {
@@ -195,12 +197,27 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             GoRoute(
-              path: PageCollection.myOrders,
-              pageBuilder: (context, state) => MaterialPage<void>(
-                key: state.pageKey,
-                child: MyOrder(),
-              ),
-            ),
+                path: PageCollection.myOrders,
+                pageBuilder: (context, state) => MaterialPage<void>(
+                      key: state.pageKey,
+                      child: MyOrder(),
+                    ),
+                routes: [
+                  GoRoute(
+                      path: PageCollection.order,
+                      pageBuilder:(context, state) {
+                        OrderDataModel? serviceDetail = state.extra != null
+                            ? state.extra as OrderDataModel
+                            : null;
+                        return MaterialPage<void>(
+                          key: state.pageKey,
+                          child: OrderDetails(
+                              orderData: serviceDetail!,
+                          ),
+                        );
+                      },
+                  ),
+                ]),
             GoRoute(
               path: PageCollection.myAccount,
               pageBuilder: (context, state) => MaterialPage<void>(

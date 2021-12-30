@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:typed_data';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -111,10 +112,10 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "#Order id:${widget.orderData.orderId}",
+        title: AutoSizeText(
+          "#Order ${widget.orderData.orderId}",
           style: TextStyle(
-              fontWeight: FontWeight.w700, color: Colors.black, fontSize: 13),
+              fontWeight: FontWeight.w700, color: Colors.black, fontSize: 12),
         ),
       ),
       body: Padding(
@@ -160,11 +161,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            AutoSizeText(
                                 "${widget.orderData.vendorDetails.businessName}",
                                 style: FontsTheme.valueStyle(
                                     fontWeight: FontWeight.w600, size: 14)),
-                            Text(
+                            AutoSizeText(
                                 "${widget.orderData.vendorDetails.businessCategory}",
                                 style: FontsTheme.valueStyle(
                                     fontWeight: FontWeight.w600, size: 11)),
@@ -204,6 +205,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: Image.asset(
                                 "images/whatsapp.png.",
                                 height: 22,
+                                width: 22,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),

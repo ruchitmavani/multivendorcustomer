@@ -76,6 +76,7 @@ class PageCollection {
   static const String about_us = 'about_us';
   static const String myAccount = 'myAccount';
   static const String categories = 'categories';
+  static const String order = 'order';
   static const String myOrders = 'myOrders';
   static const String register = '/register';
   static const String savedAddress = '/savedAddress';

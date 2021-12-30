@@ -741,12 +741,13 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     if (sharedPrefs.tax.length != 0)
-                      SizedBox(
-                        height: 25 * (sharedPrefs.tax.length).toDouble(),
-                        child: ListView.builder(
-                          itemCount: sharedPrefs.tax.length,
-                          itemBuilder: (context, i) {
-                            return ListTile(
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: sharedPrefs.tax.length,
+                        itemBuilder: (context, i) {
+                          return SizedBox(
+                            height: 25,
+                            child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               dense: true,
                               title: Text(
@@ -763,27 +764,9 @@ class _CartScreenState extends State<CartScreen> {
                                   color: Colors.black.withOpacity(0.7),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                        // child: ListTile(
-                        //   contentPadding: EdgeInsets.zero,
-                        //   dense: true,
-                        //   title: Text(
-                        //     "Tax",
-                        //     style: TextStyle(
-                        //       fontSize: 14,
-                        //     ),
-                        //   ),
-                        //   trailing: Text(
-                        //     Provider.of<CartDataWrapper>(context).isLoading
-                        //         ? "0"
-                        //         : "\u{20B9} ${Provider.of<CartDataWrapper>(context).tax}",
-                        //     style: TextStyle(
-                        //       fontSize: 14,
-                        //     ),
-                        //   ),
-                        // ),
+                            ),
+                          );
+                        },
                       ),
                     Provider.of<VendorModelWrapper>(context).isLoaded
                         ? Provider.of<VendorModelWrapper>(context)
