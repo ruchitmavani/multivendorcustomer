@@ -113,7 +113,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: AutoSizeText(
-          "#Order ${widget.orderData.orderId}",
+          "#Order ${widget.orderData.orderId.split("_").first}",
           style: TextStyle(
               fontWeight: FontWeight.w700, color: Colors.black, fontSize: 12),
         ),

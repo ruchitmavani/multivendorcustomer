@@ -53,7 +53,6 @@ class CartDataWrapper extends ChangeNotifier {
       taxPercentage =
           taxPercentage + double.parse(sharedPrefs.tax.elementAt(i));
     }
-
     isLoading = false;
     isCouponApplied = false;
     notifyListeners();

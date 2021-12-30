@@ -94,6 +94,7 @@ class _TopButtonsState extends State<TopButtons> {
                             ),
                           ),
                           Container(
+                            padding: EdgeInsets.only(bottom: 45),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -230,7 +231,8 @@ class _TopButtonsState extends State<TopButtons> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 10, bottom: 30),
+                                    top: 10,
+                                  ),
                                   child: SizedBox(
                                     height: 20,
                                     child: InkWell(

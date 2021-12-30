@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/CommonWidgets/TopButton.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
@@ -197,36 +196,40 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                     ),
                   )
                 : Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: GridView.builder(
-                    controller: scrollController,
-                    shrinkWrap: true,
-                    itemCount: productDataList.length,
-                    padding: EdgeInsets.symmetric( horizontal: 8.0, vertical: 8),
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent:
-                          isGrid ? 220 : MediaQuery.of(context).size.width,
-                      mainAxisExtent: isGrid ? 245 : 120,
-                      childAspectRatio: isGrid ? 0.75 : 3.5,
-                      crossAxisSpacing: 3,
-                      mainAxisSpacing: 3,
+                    padding: const EdgeInsets.only(top: 2),
+                    child: GridView.builder(
+                      controller: scrollController,
+                      shrinkWrap: true,
+                      itemCount: productDataList.length,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent:
+                            isGrid ? 220 : MediaQuery.of(context).size.width,
+                        mainAxisExtent: isGrid ? 245 : 120,
+                        childAspectRatio: isGrid ? 0.75 : 3.5,
+                        crossAxisSpacing: 3,
+                        mainAxisSpacing: 3,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            context.go(helper(PageCollection.product +
+                                '/${productDataList.elementAt(index).productId}'));
+                          },
+                          child: isGrid
+                              ? ProductComponentGrid(
+                                  productData: productDataList.elementAt(index))
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                  child: ProductComponentList(
+                                      productData:
+                                          productDataList.elementAt(index)),
+                                ),
+                        );
+                      },
                     ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          context.go(helper(PageCollection.product +
-                              '/${productDataList.elementAt(index).productId}'));
-                        },
-                        child: isGrid
-                            ? ProductComponentGrid(
-                                productData: productDataList.elementAt(index))
-                            : ProductComponentList(
-                                productData:
-                                    productDataList.elementAt(index)),
-                      );
-                    },
                   ),
-                ),
           ),
           isLoadingBottom ? CircularProgressIndicator() : Container(),
         ],
