@@ -64,7 +64,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                       mrp: widget.productData.productMrp,
                       sellingPrice: widget.productData.productSellingPrice,
                       isActive: false),
-                  isBulk: true),
+                  isBulk: true,rating: widget.productData.productRatingAverage),
             );
       } else {
         Fluttertoast.showToast(msg: "Not in Stock",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
@@ -87,7 +87,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                     mrp: widget.productData.productMrp,
                     sellingPrice: widget.productData.productSellingPrice,
                     isActive: false),
-                isBulk: true),
+                isBulk: true,rating: widget.productData.productRatingAverage),
           );
     }
 

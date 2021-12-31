@@ -13,10 +13,13 @@ class VendorModelWrapper with ChangeNotifier {
 
   Future<bool?> loadVendorData(String vendorId) async {
     bool res = false;
+    isLoaded = false;
+    notifyListeners();
     await VendorController.getVendorData(vendorId: vendorId).then((value) {
       if (value.success && value.data != null) {
         vendorModel = value.data;
         isLoaded = true;
+        notifyListeners();
         sharedPrefs.vendor_uniq_id = vendorModel!.vendorUniqId;
         sharedPrefs.vendor_email_address = vendorModel!.emailAddress;
         sharedPrefs.businessName = vendorModel!.businessName;
@@ -43,7 +46,6 @@ class VendorModelWrapper with ChangeNotifier {
       print(e);
       res = false;
     });
-
     return res;
   }
 

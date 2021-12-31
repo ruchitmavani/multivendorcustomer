@@ -80,7 +80,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                           .elementAt(widget.sizeIndex)
                           .isActive
                       : false),
-              isBulk: false),
+              isBulk: false,rating: widget.productData.productRatingAverage),
         );
     Provider.of<CartDataWrapper>(context, listen: false)
         .cartData

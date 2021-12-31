@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'ProductModel.dart';
 
-List<NewCartModel> newCartModelFromJson(String str) => List<NewCartModel>.from(json.decode(str).map((x) => NewCartModel.fromJson(x)));
+// List<NewCartModel> newCartModelFromJson(String str) => List<NewCartModel>.from(json.decode(str).map((x) => NewCartModel.fromJson(x)));
 
 String newCartModelToJson(List<NewCartModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -20,7 +20,9 @@ class NewCartModel {
     required this.productName,
     required this.productMrp,
     required this.productSellingPrice,
-    required this.isBulk
+    required this.isBulk,
+    required this.rating
+
   });
 
   String productId;
@@ -32,18 +34,19 @@ class NewCartModel {
   double productMrp;
   double productSellingPrice;
   bool isBulk;
+  double rating;
 
-  factory NewCartModel.fromJson(Map<String, dynamic> json) => NewCartModel(
-    productId: json["product_id"],
-    productQuantity: json["product_quantity"],
-    productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
-    productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
-    productImageUrl: List<String>.from(json["product_image_url"].map((x) => x)),
-    productName: json["product_name"],
-    productMrp: json["product_mrp"],
-    productSellingPrice: json["product_selling_price"],
-    isBulk: json["isBulk"],
-  );
+  // factory NewCartModel.fromJson(Map<String, dynamic> json) => NewCartModel(
+  //   productId: json["product_id"],
+  //   productQuantity: json["product_quantity"],
+  //   productSize: json["product_size"] == null ? null : ProductSize.fromJson(json["product_size"]),
+  //   productColor: json["product_color"] == null ? null : ProductColor.fromJson(json["product_color"]),
+  //   productImageUrl: List<String>.from(json["product_image_url"].map((x) => x)),
+  //   productName: json["product_name"],
+  //   productMrp: json["product_mrp"],
+  //   productSellingPrice: json["product_selling_price"],
+  //   isBulk: json["isBulk"],
+  // );
 
   Map<String, dynamic> toJson() => {
     "product_id": productId,

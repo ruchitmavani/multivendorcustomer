@@ -21,6 +21,8 @@ import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'CategorySubScreen.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
@@ -597,13 +599,34 @@ class _CartScreenState extends State<CartScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                  "${cartProvider.elementAt(index).productName}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[700],
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.6,
+                                                    child: Text(
+                                                      "${cartProvider.elementAt(index).productName}",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              Colors.grey[700],
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  ProductRating(cartProvider
+                                                      .elementAt(index)
+                                                      .rating),
+                                                ],
+                                              ),
                                               const SizedBox(
                                                 height: 2,
                                               ),
@@ -754,14 +777,16 @@ class _CartScreenState extends State<CartScreen> {
                                 "${sharedPrefs.taxName.elementAt(i)}(${sharedPrefs.tax.elementAt(i)}%)",
                                 style: FontsTheme.digitStyle(
                                   fontSize: 14,
-                                  color: Colors.black.withOpacity(0.7),
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               trailing: Text(
                                 "\u{20B9} ${((context.watch<CartDataWrapper>().tax / context.watch<CartDataWrapper>().taxPercentage) * double.parse(sharedPrefs.tax.elementAt(i))).toStringAsFixed(2)}",
                                 style: FontsTheme.digitStyle(
                                   fontSize: 14,
-                                  color: Colors.black.withOpacity(0.7),
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
