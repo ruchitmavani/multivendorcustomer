@@ -626,7 +626,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               text: "\u{20B9}",
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    "Poppins",
+                                                                    "Montserrat",
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -656,7 +656,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               text: "\u{20B9}",
                                                               style: TextStyle(
                                                                   fontFamily:
-                                                                      "Poppins",
+                                                                      "Montserrat",
                                                                   color: Colors
                                                                       .black87,
                                                                   fontSize: 13,
@@ -733,7 +733,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         trailing: Text(
                           "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
-                          style: TextStyle(
+                          style: FontsTheme.digitStyle(
                               fontSize: 14,
                               color: Colors.green,
                               fontWeight: FontWeight.w600),
@@ -752,14 +752,14 @@ class _CartScreenState extends State<CartScreen> {
                               dense: true,
                               title: Text(
                                 "${sharedPrefs.taxName.elementAt(i)}(${sharedPrefs.tax.elementAt(i)}%)",
-                                style: TextStyle(
+                                style: FontsTheme.digitStyle(
                                   fontSize: 14,
                                   color: Colors.black.withOpacity(0.7),
                                 ),
                               ),
                               trailing: Text(
-                                "${((context.watch<CartDataWrapper>().tax / context.watch<CartDataWrapper>().taxPercentage) * double.parse(sharedPrefs.tax.elementAt(i))).toStringAsFixed(2)}",
-                                style: TextStyle(
+                                "\u{20B9} ${((context.watch<CartDataWrapper>().tax / context.watch<CartDataWrapper>().taxPercentage) * double.parse(sharedPrefs.tax.elementAt(i))).toStringAsFixed(2)}",
+                                style: FontsTheme.digitStyle(
                                   fontSize: 14,
                                   color: Colors.black.withOpacity(0.7),
                                 ),
@@ -786,9 +786,9 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   trailing: Text(
                                     "\u{20B9} ${Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges}",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
+                                    style: FontsTheme.digitStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               )
@@ -811,8 +811,9 @@ class _CartScreenState extends State<CartScreen> {
                             Provider.of<CartDataWrapper>(context).isLoading
                                 ? "0"
                                 : "\u{20B9} ${Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax}",
-                            style: FontsTheme.boldTextStyle(
-                              size: 15,
+                            style: FontsTheme.digitStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
