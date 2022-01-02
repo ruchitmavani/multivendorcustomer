@@ -13,8 +13,15 @@ import 'package:printing/printing.dart';
 
 shareInvoice(BuildContext context, OrderDataModel orderData) async {
   var pdf = pw.Document();
-  final ByteData logo = await rootBundle.load("images/wellsel.png");
-  final Uint8List logoByteList = logo.buffer.asUint8List();
+  ByteData? imageData;
+  await rootBundle
+      .load('wellsel.png')
+      .then((data) => imageData = data);
+  // final image = PdfImage.jpeg(
+  //     doc.document,
+  //     image: imageData.buffer.asUint8List()
+  // );
+  final Uint8List logoByteList = imageData!.buffer.asUint8List();
   pdf.addPage(
     pw.Page(
       theme: pw.ThemeData.withFont(
@@ -354,7 +361,7 @@ shareInvoice(BuildContext context, OrderDataModel orderData) async {
   final url = Url.createObjectUrlFromBlob(blob);
   window.open(url, '_blank');
   Url.revokeObjectUrl(url);
-  return pdf.save();
+  return await pdf.save();
 
   // final String dir = (await getApplicationDocumentsDirectory()).path;
   // final String path = '$dir/Store_Qrcode.pdf';
