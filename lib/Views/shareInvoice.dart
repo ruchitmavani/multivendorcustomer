@@ -12,7 +12,7 @@ import 'package:printing/printing.dart';
 
 
 shareInvoice(BuildContext context, OrderDataModel orderData) async {
-  final pdf = pw.Document();
+  var pdf = pw.Document();
   final ByteData logo = await rootBundle.load("images/wellsel.png");
   final Uint8List logoByteList = logo.buffer.asUint8List();
   pdf.addPage(
@@ -145,120 +145,144 @@ shareInvoice(BuildContext context, OrderDataModel orderData) async {
                 ],
               ),
             ),
-            pw.Padding(
-              padding: const pw.EdgeInsets.only(top: 11.0),
-              child: pw.Column(
-                children: List.generate(
-                    orderData.orderItems.length,
-                        (index) => pw.Padding(
-                      padding: const pw.EdgeInsets.only(
-                          top: 10, left: 20.0, right: 21),
-                      child: pw.Container(
-                        child: pw.Row(
-                          mainAxisAlignment: pw.MainAxisAlignment.start,
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Expanded(
-                              child: pw.Column(
-                                crossAxisAlignment:
-                                pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.Row(
-                                    children: [
-                                      pw.Expanded(
-                                        child: pw.Padding(
-                                          padding: const pw.EdgeInsets.only(
-                                              left: 14.0),
-                                          child: pw.Column(
-                                            crossAxisAlignment:
-                                            pw.CrossAxisAlignment.start,
-                                            children: [
-                                              pw.Text(
-                                                  "${orderData.orderItems[index].productDetails.productName}",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight: pw
-                                                          .FontWeight
-                                                          .bold)),
-                                              pw.Padding(
-                                                padding: const pw
-                                                    .EdgeInsets.only(
-                                                    top: 5.0),
-                                                child: pw.Row(
-                                                  mainAxisAlignment: pw
-                                                      .MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    pw.Row(
-                                                      children: [
-                                                        pw.Container(
-                                                          decoration: pw.BoxDecoration(
-                                                              borderRadius: pw
-                                                                  .BorderRadius
-                                                                  .circular(
-                                                                  3)),
-                                                          height: 22,
-                                                          width: 22,
-                                                          child: pw.Center(
-                                                            child: pw.Text(
-                                                                "${orderData.orderItems[index].productQuantity}",
-                                                                style: pw.TextStyle(
-                                                                    fontWeight: pw
-                                                                        .FontWeight
-                                                                        .bold)),
-                                                          ),
-                                                        ),
-                                                        pw.Padding(
-                                                          padding: const pw
-                                                              .EdgeInsets.only(
-                                                              left: 9.0),
-                                                          child:
-                                                          pw.RichText(
-                                                              text: pw.TextSpan(
-                                                                  text:
-                                                                  "₹",
-                                                                  style: pw.TextStyle(
-                                                                      fontSize: 12,
-                                                                      color: PdfColors.black),
-                                                                  children: [
-                                                                    pw.TextSpan(
-                                                                        text:
-                                                                        " X ${orderData.orderItems[index].productDetails.productSellingPrice}")
-                                                                  ])),
-                                                        )
-                                                        /*pw.Text("x  ₹$productPrice",
-                                                  style: FontsTheme.valueStyle(
-                                                      fontWeight: FontWeight.w600)),*/
-                                                      ],
-                                                    ),
-                                                    pw.Text("₹ " +
-                                                        "${orderData.orderItems[index].productQuantity.toDouble() * orderData.orderItems[index].productDetails.productSellingPrice.toDouble()}"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  pw.Padding(
-                                    padding:
-                                    const pw.EdgeInsets.only(top: 15.0),
-                                    child: pw.Divider(
-                                      color: PdfColors.grey,
-                                      thickness: 0.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )),
-              ),
-            ),
+            // pw.Padding(
+            //   padding: const pw.EdgeInsets.only(top: 11.0),
+            //   child: pw.Column(
+            //     children: List.generate(
+            //         orderData.orderItems.length,
+            //             (index) =>
+            //             pw.Padding(
+            //               padding: const pw.EdgeInsets.only(
+            //                   top: 10, left: 20.0, right: 21),
+            //               child: pw.Container(
+            //                 child: pw.Row(
+            //                   mainAxisAlignment: pw.MainAxisAlignment.start,
+            //                   crossAxisAlignment: pw.CrossAxisAlignment.start,
+            //                   children: [
+            //                     pw.Expanded(
+            //                       child: pw.Column(
+            //                         crossAxisAlignment:
+            //                         pw.CrossAxisAlignment.start,
+            //                         children: [
+            //                           pw.Row(
+            //                             children: [
+            //                               pw.Expanded(
+            //                                 child: pw.Padding(
+            //                                   padding: const pw.EdgeInsets.only(
+            //                                       left: 14.0),
+            //                                   child: pw.Column(
+            //                                     crossAxisAlignment:
+            //                                     pw.CrossAxisAlignment.start,
+            //                                     children: [
+            //                                       pw.Text(
+            //                                           "${orderData
+            //                                               .orderItems[index]
+            //                                               .productDetails
+            //                                               .productName}",
+            //                                           style: pw.TextStyle(
+            //                                               fontSize: 12,
+            //                                               fontWeight: pw
+            //                                                   .FontWeight
+            //                                                   .bold)),
+            //                                       pw.Padding(
+            //                                         padding: const pw
+            //                                             .EdgeInsets.only(
+            //                                             top: 5.0),
+            //                                         child: pw.Row(
+            //                                           mainAxisAlignment: pw
+            //                                               .MainAxisAlignment
+            //                                               .spaceBetween,
+            //                                           children: [
+            //                                             pw.Row(
+            //                                               children: [
+            //                                                 pw.Container(
+            //                                                   decoration: pw
+            //                                                       .BoxDecoration(
+            //                                                       borderRadius: pw
+            //                                                           .BorderRadius
+            //                                                           .circular(
+            //                                                           3)),
+            //                                                   height: 22,
+            //                                                   width: 22,
+            //                                                   child: pw.Center(
+            //                                                     child: pw.Text(
+            //                                                         "${orderData
+            //                                                             .orderItems[index]
+            //                                                             .productQuantity}",
+            //                                                         style: pw
+            //                                                             .TextStyle(
+            //                                                             fontWeight: pw
+            //                                                                 .FontWeight
+            //                                                                 .bold)),
+            //                                                   ),
+            //                                                 ),
+            //                                                 pw.Padding(
+            //                                                   padding: const pw
+            //                                                       .EdgeInsets
+            //                                                       .only(
+            //                                                       left: 9.0),
+            //                                                   child:
+            //                                                   pw.RichText(
+            //                                                       text: pw
+            //                                                           .TextSpan(
+            //                                                           text:
+            //                                                           "₹",
+            //                                                           style: pw
+            //                                                               .TextStyle(
+            //                                                               fontSize: 12,
+            //                                                               color: PdfColors
+            //                                                                   .black),
+            //                                                           children: [
+            //                                                             pw
+            //                                                                 .TextSpan(
+            //                                                                 text:
+            //                                                                 " X ${orderData
+            //                                                                     .orderItems[index]
+            //                                                                     .productDetails
+            //                                                                     .productSellingPrice}")
+            //                                                           ])),
+            //                                                 )
+            //                                                 /*pw.Text("x  ₹$productPrice",
+            //                                       style: FontsTheme.valueStyle(
+            //                                           fontWeight: FontWeight.w600)),*/
+            //                                               ],
+            //                                             ),
+            //                                             pw.Text("₹ " +
+            //                                                 "${orderData
+            //                                                     .orderItems[index]
+            //                                                     .productQuantity
+            //                                                     .toDouble() *
+            //                                                     orderData
+            //                                                         .orderItems[index]
+            //                                                         .productDetails
+            //                                                         .productSellingPrice
+            //                                                         .toDouble()}"),
+            //                                           ],
+            //                                         ),
+            //                                       ),
+            //                                     ],
+            //                                   ),
+            //                                 ),
+            //                               ),
+            //                             ],
+            //                           ),
+            //                           pw.Padding(
+            //                             padding:
+            //                             const pw.EdgeInsets.only(top: 15.0),
+            //                             child: pw.Divider(
+            //                               color: PdfColors.grey,
+            //                               thickness: 0.3,
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     )
+            //                   ],
+            //                 ),
+            //               ),
+            //             )),
+            //   ),
+            // ),
             pw.Padding(
               padding: const pw.EdgeInsets.only(top: 30.0, left: 20, right: 20),
               child: pw.Column(
@@ -330,7 +354,7 @@ shareInvoice(BuildContext context, OrderDataModel orderData) async {
   final url = Url.createObjectUrlFromBlob(blob);
   window.open(url, '_blank');
   Url.revokeObjectUrl(url);
-  // return pdf.save();
+  return pdf.save();
 
   // final String dir = (await getApplicationDocumentsDirectory()).path;
   // final String path = '$dir/Store_Qrcode.pdf';

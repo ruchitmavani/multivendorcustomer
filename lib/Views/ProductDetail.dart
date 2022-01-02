@@ -18,6 +18,7 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -261,46 +262,22 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         Text("${productData.productName}",
                                             style: FontsTheme.boldTextStyle(
                                                 size: 16)),
-                                       if( productData.productMrp > productData
-                                            .productSellingPrice)
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, bottom: 8),
-                                          child: SizedBox(
-                                              width: 48,
-                                              child: DiscountTag(
-                                                  mrp: productData.productMrp,
-                                                  selling: productData
-                                                      .productSellingPrice)),
-                                        ),
-                                        if (productData.productRatingAverage !=
-                                            0)
-                                          Space(height: 8),
-                                        if (productData.productRatingAverage !=
-                                            0)
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(Icons.star,
-                                                  color: Colors.amber,
-                                                  size: 18),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 2.0),
-                                                child: Text(
-                                                    "${productData.productRatingAverage}",
-                                                    style:
-                                                        FontsTheme.valueStyle(
-                                                            size: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600)),
-                                              )
-                                            ],
+                                        if (productData.productMrp >
+                                            productData.productSellingPrice)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0,),
+                                            child: SizedBox(
+                                                width: 48,
+                                                child: DiscountTag(
+                                                    mrp: productData.productMrp,
+                                                    selling: productData
+                                                        .productSellingPrice)),
                                           ),
-                                        if (productData.productRatingAverage !=
-                                            0)
-                                          Space(height: 8),
+                                        Space(height: 8),
+                                        ProductRating(
+                                            productData.productRatingAverage),
+                                        Space(height: 8),
                                         Text(
                                             "${productData.productDescription}",
                                             style: FontsTheme.descriptionText(

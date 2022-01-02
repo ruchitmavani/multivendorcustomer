@@ -112,6 +112,7 @@ class _AboutUsState extends State<AboutUs> {
                               child: Image.asset(
                                 "images/whatsapp.png.",
                                 height: 22,
+                                width: 22,
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
                               ),
