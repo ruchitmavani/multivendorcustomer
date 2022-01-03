@@ -3,8 +3,9 @@ import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -41,6 +42,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   bool isLoading = false;
   bool isChanged = false;
   List<String> status = [];
+  bool isDownload = false;
 
   // Invoice orderData = Invoice(
   //     products: List.generate(widget.orderData.orderItems.length, (index) => Product(productName, price, quantity)),
@@ -62,8 +64,12 @@ class _OrderDetailsState extends State<OrderDetails> {
         ? ["Pending", "Ready", "Delivered"]
         : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
-      if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
-          widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
+      if (widget.orderData.orderItems
+          .elementAt(i)
+          .updatedQuantity != 0 &&
+          widget.orderData.orderItems
+              .elementAt(i)
+              .updatedQuantity != null) {
         setState(() {
           isChanged = true;
         });
@@ -112,7 +118,9 @@ class _OrderDetailsState extends State<OrderDetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: AutoSizeText(
-          "#Order ${widget.orderData.orderId.split("_").first}",
+          "#Order ${widget.orderData.orderId
+              .split("_")
+              .first}",
           style: TextStyle(
               fontWeight: FontWeight.w700, color: Colors.black, fontSize: 12),
         ),
@@ -133,20 +141,28 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CachedNetworkImage(
-                    height: 60,
-                    width: 60,
-                    imageUrl: "${StringConstants.api_url}${sharedPrefs.logo}",
-                    fit: BoxFit.fill,
-                    placeholder: (context, url) => SizedBox(
-                      width: 8,
-                      height: 8,
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'images/placeholdersquare.jpg',
+                  InkWell(
+                    onTap: () {
+                      window.open(
+                          "${widget.orderData.vendorDetails.storeLink}", "");
+                    },
+                    child: CachedNetworkImage(
                       height: 60,
                       width: 60,
+                      imageUrl: "${StringConstants.api_url}${sharedPrefs.logo}",
                       fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          SizedBox(
+                            width: 8,
+                            height: 8,
+                          ),
+                      errorWidget: (context, url, error) =>
+                          Image.asset(
+                            'images/placeholdersquare.jpg',
+                            height: 60,
+                            width: 60,
+                            fit: BoxFit.fill,
+                          ),
                     ),
                   ),
                   Expanded(
@@ -161,11 +177,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AutoSizeText(
-                                "${widget.orderData.vendorDetails.businessName}",
+                                "${widget.orderData.vendorDetails
+                                    .businessName}",
                                 style: FontsTheme.valueStyle(
                                     fontWeight: FontWeight.w600, size: 14)),
                             AutoSizeText(
-                                "${widget.orderData.vendorDetails.businessCategory}",
+                                "${widget.orderData.vendorDetails
+                                    .businessCategory}",
                                 style: FontsTheme.valueStyle(
                                     fontWeight: FontWeight.w600, size: 11)),
                           ],
@@ -179,10 +197,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                       InkWell(
                         onTap: () async {
                           await launch(
-                              'tel: ${widget.orderData.vendorDetails.mobileNumber}');
+                              'tel: ${widget.orderData.vendorDetails
+                                  .mobileNumber}');
                         },
                         child: Icon(Icons.call,
-                            color: Provider.of<CustomColor>(context)
+                            color: Provider
+                                .of<CustomColor>(context)
                                 .appPrimaryMaterialColor),
                       ),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
@@ -190,25 +210,27 @@ class _OrderDetailsState extends State<OrderDetails> {
                           : Container(),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
                           ? Container(
-                              height: 18, width: 0.9, color: Colors.grey)
+                          height: 18, width: 0.9, color: Colors.grey)
                           : Container(),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
                           ? Space(width: 8)
                           : Container(),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
                           ? InkWell(
-                              onTap: () async {
-                                await launch(
-                                    "https://wa.me/+91${widget.orderData.vendorDetails.mobileNumber}");
-                              },
-                              child: Image.asset(
-                                "images/whatsapp.png.",
-                                height: 22,
-                                width: 22,
-                                color: Provider.of<CustomColor>(context)
-                                    .appPrimaryMaterialColor,
-                              ),
-                            )
+                        onTap: () async {
+                          await launch(
+                              "https://wa.me/+91${widget.orderData.vendorDetails
+                                  .mobileNumber}");
+                        },
+                        child: Image.asset(
+                          "images/whatsapp.png.",
+                          height: 22,
+                          width: 22,
+                          color: Provider
+                              .of<CustomColor>(context)
+                              .appPrimaryMaterialColor,
+                        ),
+                      )
                           : Container(),
                       Space(width: 10)
                     ],
@@ -238,13 +260,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                               .elementAt(index)
                               .productDetails,
                           orderItem:
-                              widget.orderData.orderItems.elementAt(index),
+                          widget.orderData.orderItems.elementAt(index),
                         );
                       },
-                      separatorBuilder: (context, index) => Divider(
-                        color: Colors.grey[300],
-                        thickness: 0.6,
-                      ),
+                      separatorBuilder: (context, index) =>
+                          Divider(
+                            color: Colors.grey[300],
+                            thickness: 0.6,
+                          ),
                     ),
                     Divider(),
                     Padding(
@@ -267,10 +290,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                           // ),
                           builder: TimelineTileBuilder.connected(
                             itemCount:
-                                widget.orderData.orderStatusWithTime.length < 2
-                                    ? 3
-                                    : widget
-                                        .orderData.orderStatusWithTime.length,
+                            widget.orderData.orderStatusWithTime.length < 2
+                                ? 3
+                                : widget
+                                .orderData.orderStatusWithTime.length,
                             contentsBuilder: (_, index) {
                               int count =
                                   widget.orderData.orderStatusWithTime.length;
@@ -282,13 +305,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   children: [
                                     if (count < 2) ...[
                                       Text(
-                                          "${index == 1 ? "Accepted" : index == 2 ? "Delivered" : widget.orderData.orderStatusWithTime[0].status}",
+                                          "${index == 1 ? "Accepted" : index ==
+                                              2 ? "Delivered" : widget.orderData
+                                              .orderStatusWithTime[0].status}",
                                           style: TextStyle(fontSize: 12)),
-                                    ] else ...[
-                                      Text(
-                                          "${widget.orderData.orderStatusWithTime[index].status}",
-                                          style: TextStyle(fontSize: 10)),
-                                    ]
+                                    ] else
+                                      ...[
+                                        Text(
+                                            "${widget.orderData
+                                                .orderStatusWithTime[index]
+                                                .status}",
+                                            style: TextStyle(fontSize: 10)),
+                                      ]
                                   ],
                                 ),
                               );
@@ -296,14 +324,16 @@ class _OrderDetailsState extends State<OrderDetails> {
                             indicatorBuilder: (_, i) {
                               return DotIndicator(
                                 color: widget.orderData.orderStatusWithTime
-                                            .length <
-                                        2
+                                    .length <
+                                    2
                                     ? i == 1 || i == 2
-                                        ? Colors.grey
-                                        : Provider.of<CustomColor>(context)
-                                            .appPrimaryMaterialColor
-                                    : Provider.of<CustomColor>(context)
-                                        .appPrimaryMaterialColor,
+                                    ? Colors.grey
+                                    : Provider
+                                    .of<CustomColor>(context)
+                                    .appPrimaryMaterialColor
+                                    : Provider
+                                    .of<CustomColor>(context)
+                                    .appPrimaryMaterialColor,
                                 child: Icon(
                                   Icons.check,
                                   color: Colors.white,
@@ -312,20 +342,23 @@ class _OrderDetailsState extends State<OrderDetails> {
                               );
                             },
                             itemExtent:
-                                widget.orderData.orderStatusWithTime.length <= 2
-                                    ? 120
-                                    : 90,
-                            connectorBuilder: (_, i, ___) => SolidLineConnector(
-                              color:
+                            widget.orderData.orderStatusWithTime.length <= 2
+                                ? 120
+                                : 90,
+                            connectorBuilder: (_, i, ___) =>
+                                SolidLineConnector(
+                                  color:
                                   widget.orderData.orderStatusWithTime.length <
-                                          2
+                                      2
                                       ? i == 1 || i == 2
-                                          ? Colors.grey
-                                          : Provider.of<CustomColor>(context)
-                                              .appPrimaryMaterialColor
-                                      : Provider.of<CustomColor>(context)
-                                          .appPrimaryMaterialColor,
-                            ),
+                                      ? Colors.grey
+                                      : Provider
+                                      .of<CustomColor>(context)
+                                      .appPrimaryMaterialColor
+                                      : Provider
+                                      .of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
+                                ),
                           ),
                         ),
                       ),
@@ -405,7 +438,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 trailing: Text(
                                     widget.orderData.couponAmount != 0
                                         ? "- \u{20B9}" +
-                                            "${widget.orderData.couponAmount}"
+                                        "${widget.orderData.couponAmount}"
                                         : "\u{20B9}0",
                                     style: FontsTheme.valueStyle(
                                         size: 14,
@@ -448,9 +481,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         style: FontsTheme.valueStyle(
                                             size: 14,
                                             color:
-                                                Colors.black.withOpacity(0.7))),
+                                            Colors.black.withOpacity(0.7))),
                                     if (widget
-                                            .orderData.updatedDeliveryCharges !=
+                                        .orderData.updatedDeliveryCharges !=
                                         0)
                                       UpdatedLabel(),
                                   ],
@@ -465,31 +498,32 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            "${widget.orderData.deliveryCharges}",
+                                        "${widget.orderData.deliveryCharges}",
                                         style: widget
-                                                    .orderData.updatedDeliveryCharges !=
-                                                0
+                                            .orderData.updatedDeliveryCharges !=
+                                            0
                                             ? FontsTheme.valueStyle(
-                                                    size: 14,
-                                                    fontWeight: FontWeight.w500)
-                                                .copyWith(
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    decorationThickness: 3,
-                                                    decorationColor: Provider
-                                                            .of<CustomColor>(
-                                                                context)
-                                                        .appPrimaryMaterialColor)
+                                            size: 14,
+                                            fontWeight: FontWeight.w500)
+                                            .copyWith(
+                                            decoration: TextDecoration
+                                                .lineThrough,
+                                            decorationThickness: 3,
+                                            decorationColor: Provider
+                                                .of<CustomColor>(
+                                                context)
+                                                .appPrimaryMaterialColor)
                                             : FontsTheme.valueStyle(
-                                                size: 14,
-                                                fontWeight: FontWeight.w500),
+                                            size: 14,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                       if (widget.orderData
-                                              .updatedDeliveryCharges !=
+                                          .updatedDeliveryCharges !=
                                           0)
                                         TextSpan(
                                           text:
-                                              " ${widget.orderData.updatedDeliveryCharges}",
+                                          " ${widget.orderData
+                                              .updatedDeliveryCharges}",
                                           style: FontsTheme.valueStyle(
                                               size: 14,
                                               fontWeight: FontWeight.w500),
@@ -539,73 +573,96 @@ class _OrderDetailsState extends State<OrderDetails> {
         padding: const EdgeInsets.only(right: 25.0, bottom: 20),
         child: (isChanged)
             ? (isLoading)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text("Accept Order?"),
-                      ),
-                      OutlinedButton(
-                        child: Text("No"),
-                        onPressed: () {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) => RejectOrder(
-                                    oderIdData: widget.orderData.orderId,
-                                  ));
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: ElevatedButton(
-                          child: Text("Yes"),
-                          onPressed: () {
-                            _acceptOrder();
-                          },
-                        ),
-                      )
-                    ],
-                  )
+            ? Center(
+          child: CircularProgressIndicator(),
+        )
             : Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (widget.orderData.orderStatus.last == "Delivered")
-                    SizedBox(
-                      height: 44,
-                      child: ElevatedButton(
-                        child: Text(
-                          "Download invoice",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                        onPressed: () async {
-                          // await compute(
-                          buildPdf(PdfPageFormat.a4, widget.orderData);
-                          // generateInvoice(PdfPageFormat.a4, qrcodeData);
-                        },
-                      ),
-                    ),
-                ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text("Accept Order?"),
+            ),
+            OutlinedButton(
+              child: Text("No"),
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) =>
+                        RejectOrder(
+                          oderIdData: widget.orderData.orderId,
+                        ));
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: ElevatedButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  _acceptOrder();
+                },
               ),
+            )
+          ],
+        )
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (widget.orderData.orderStatus.last == "Delivered")
+              isDownload
+                  ? SizedBox(
+                height: 44,
+                child: ElevatedButton(
+                  child: Text(
+                    "Please wait",
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onPressed: () async {
+                    // generateInvoice(PdfPageFormat.a4, qrcodeData);
+                  },
+                ),
+              )
+                  : SizedBox(
+                height: 44,
+                child: ElevatedButton(
+                  child: Text(
+                    "Download invoice",
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onPressed: () async {
+                    // await compute(
+                    setState(() {
+                      isDownload = true;
+                    });
+                    await compute(
+                        buildPdf(
+                            PdfPageFormat.a4, widget.orderData),
+                        "Q");
+                    setState(() {
+                      isDownload = false;
+                    });
+                    // generateInvoice(PdfPageFormat.a4, qrcodeData);
+                  },
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
 
-  Future<Uint8List> buildPdf(PdfPageFormat format, OrderDataModel order) async {
+  buildPdf(PdfPageFormat format, OrderDataModel order) async {
     // Create the Pdf document
     final pw.Document doc = pw.Document();
-    // ByteData? imageData;
-    // rootBundle
-    //     .load('wellsel.png')
-    //     .then((data) => setState(() => imageData = data));
-    // // final image = PdfImage.jpeg(
-    // //     doc.document,
-    // //     image: imageData.buffer.asUint8List()
-    // // );
-    // final Uint8List logoByteList = imageData!.buffer.asUint8List();
+    late ByteData imageData;
+    await rootBundle
+        .load('wellsel.png')
+        .then((data) => setState(() => imageData = data));
+    // final image = PdfImage.jpeg(
+    //     doc.document,
+    //     image: imageData.buffer.asUint8List()
+    // );
+    final Uint8List logoByteList = imageData.buffer.asUint8List();
     // print("-->>> $logoByteList");
     // Add one page with centered text "Hello World"
     doc.addPage(
@@ -619,12 +676,12 @@ class _OrderDetailsState extends State<OrderDetails> {
             children: [
               pw.Padding(
                 padding:
-                    const pw.EdgeInsets.only(top: 12.0, left: 8, right: 15),
+                const pw.EdgeInsets.only(top: 12.0, left: 8, right: 15),
                 child: pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      // pw.Image(pw.MemoryImage(logoByteList),
-                      //     height: 100, width: 100),
+                      pw.Image(pw.MemoryImage(logoByteList),
+                          height: 100, width: 100),
                       pw.Padding(
                         padding: const pw.EdgeInsets.only(left: 8.0),
                         child: pw.Column(
@@ -643,7 +700,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               pw.Padding(
                 padding:
-                    const pw.EdgeInsets.only(left: 20.0, right: 20, top: 45),
+                const pw.EdgeInsets.only(left: 20.0, right: 20, top: 45),
                 child: pw.Column(
                   children: [
                     pw.Row(
@@ -748,7 +805,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 child: pw.Column(
                   children: List.generate(
                       order.orderItems.length,
-                      (index) => pw.Padding(
+                          (index) =>
+                          pw.Padding(
                             padding: const pw.EdgeInsets.only(
                                 top: 10, left: 20.0, right: 21),
                             child: pw.Container(
@@ -759,21 +817,24 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   pw.Expanded(
                                     child: pw.Column(
                                       crossAxisAlignment:
-                                          pw.CrossAxisAlignment.start,
+                                      pw.CrossAxisAlignment.start,
                                       children: [
                                         pw.Row(
                                           children: [
                                             pw.Expanded(
                                               child: pw.Padding(
                                                 padding:
-                                                    const pw.EdgeInsets.only(
-                                                        left: 14.0),
+                                                const pw.EdgeInsets.only(
+                                                    left: 14.0),
                                                 child: pw.Column(
                                                   crossAxisAlignment: pw
                                                       .CrossAxisAlignment.start,
                                                   children: [
                                                     pw.Text(
-                                                        "${order.orderItems.elementAt(index).productDetails.productName}",
+                                                        "${order.orderItems
+                                                            .elementAt(index)
+                                                            .productDetails
+                                                            .productName}",
                                                         style: pw.TextStyle(
                                                             fontSize: 12,
                                                             fontWeight: pw
@@ -781,7 +842,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                 .bold)),
                                                     pw.Padding(
                                                       padding: const pw
-                                                              .EdgeInsets.only(
+                                                          .EdgeInsets.only(
                                                           top: 5.0),
                                                       child: pw.Row(
                                                         mainAxisAlignment: pw
@@ -791,18 +852,25 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                           pw.Row(
                                                             children: [
                                                               pw.Container(
-                                                                decoration: pw.BoxDecoration(
+                                                                decoration: pw
+                                                                    .BoxDecoration(
                                                                     borderRadius: pw
-                                                                            .BorderRadius
+                                                                        .BorderRadius
                                                                         .circular(
-                                                                            3)),
+                                                                        3)),
                                                                 height: 22,
                                                                 width: 22,
                                                                 child:
-                                                                    pw.Center(
-                                                                  child: pw.Text(
-                                                                      "${order.orderItems.elementAt(index).productQuantity}",
-                                                                      style: pw.TextStyle(
+                                                                pw.Center(
+                                                                  child: pw
+                                                                      .Text(
+                                                                      "${order
+                                                                          .orderItems
+                                                                          .elementAt(
+                                                                          index)
+                                                                          .productQuantity}",
+                                                                      style: pw
+                                                                          .TextStyle(
                                                                           fontWeight: pw
                                                                               .FontWeight
                                                                               .bold)),
@@ -810,20 +878,32 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                               ),
                                                               pw.Padding(
                                                                 padding: const pw
-                                                                        .EdgeInsets.only(
+                                                                    .EdgeInsets
+                                                                    .only(
                                                                     left: 9.0),
                                                                 child:
-                                                                    pw.RichText(
-                                                                        text: pw.TextSpan(
-                                                                            text:
-                                                                                "₹",
-                                                                            style:
-                                                                                pw.TextStyle(fontSize: 12, color: PdfColors.black),
-                                                                            children: [
-                                                                      pw.TextSpan(
-                                                                          text:
-                                                                              " X ${order.orderItems.elementAt(index).productDetails.productSellingPrice}")
-                                                                    ])),
+                                                                pw.RichText(
+                                                                    text: pw
+                                                                        .TextSpan(
+                                                                        text:
+                                                                        "₹",
+                                                                        style:
+                                                                        pw
+                                                                            .TextStyle(
+                                                                            fontSize: 12,
+                                                                            color: PdfColors
+                                                                                .black),
+                                                                        children: [
+                                                                          pw
+                                                                              .TextSpan(
+                                                                              text:
+                                                                              " X ${order
+                                                                                  .orderItems
+                                                                                  .elementAt(
+                                                                                  index)
+                                                                                  .productDetails
+                                                                                  .productSellingPrice}")
+                                                                        ])),
                                                               )
                                                               /*pw.Text("x  ₹$productPrice",
                                                     style: FontsTheme.valueStyle(
@@ -831,7 +911,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             ],
                                                           ),
                                                           pw.Text("₹ " +
-                                                              "${order.orderItems[index].productQuantity.toDouble() * order.orderItems[index].productDetails.productSellingPrice.toDouble()}"),
+                                                              "${order
+                                                                  .orderItems[index]
+                                                                  .productQuantity
+                                                                  .toDouble() *
+                                                                  order
+                                                                      .orderItems[index]
+                                                                      .productDetails
+                                                                      .productSellingPrice
+                                                                      .toDouble()}"),
                                                         ],
                                                       ),
                                                     ),
@@ -860,7 +948,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               pw.Padding(
                 padding:
-                    const pw.EdgeInsets.only(top: 30.0, left: 20, right: 20),
+                const pw.EdgeInsets.only(top: 30.0, left: 20, right: 20),
                 child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
@@ -918,7 +1006,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               pw.Padding(
                 padding:
-                    const pw.EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
+                const pw.EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
               ),
             ],
           );
@@ -931,8 +1019,11 @@ class _OrderDetailsState extends State<OrderDetails> {
     final url = Url.createObjectUrlFromBlob(blob);
     window.open(url, '_blank');
     Url.revokeObjectUrl(url);
-    return await doc.save();
+    setState(() {
+      isDownload = false;
+    });
+    // return await doc.save();
     // Build and return the final Pdf file data
-    return await doc.save();
+    // return await doc.save();
   }
 }

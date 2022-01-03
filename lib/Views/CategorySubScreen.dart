@@ -39,10 +39,10 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
   @override
   void initState() {
     super.initState();
+    _getProduct(sortKeyList.first);
     scrollController.addListener(() {
       pagination();
     });
-    _getProduct(sortKeyList.first);
   }
 
   _getProduct(String sortKey) async {
@@ -251,7 +251,7 @@ class ProductRating extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 2.0),
           child: Text(
-            rating!=0?"$rating":"Pending rating",
+            rating != 0 ? "$rating" : "Pending rating",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),

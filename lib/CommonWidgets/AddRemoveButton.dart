@@ -15,11 +15,10 @@ class AddRemoveButton extends StatefulWidget {
   int colorIndex = 0;
   int sizeIndex = 0;
 
-  AddRemoveButton(
-      {required this.productData,
-      required this.isRounded,
-      required this.colorIndex,
-      required this.sizeIndex});
+  AddRemoveButton({required this.productData,
+    required this.isRounded,
+    required this.colorIndex,
+    required this.sizeIndex});
 
   @override
   _AddRemoveButtonState createState() => _AddRemoveButtonState();
@@ -35,60 +34,75 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   }
 
   Future addToCart() async {
-    Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
-          NewCartModel(
-              productId: widget.productData.productId,
-              productColor: ProductColor(
-                colorCode:
-                    widget.productData.productVariationColors!.length != 0
-                        ? widget.productData.productVariationColors!
-                            .elementAt(widget.colorIndex)
-                            .colorCode
-                        : 0,
-                isActive: widget.productData.productVariationColors!.length != 0
-                    ? widget.productData.productVariationColors!
-                        .elementAt(widget.colorIndex)
-                        .isActive
-                    : false,
-              ),
-              productImageUrl: widget.productData.productImageUrl,
-              productQuantity: 1,
-              productMrp: widget.productData.productMrp,
-              productName: "${widget.productData.productName}",
-              productSellingPrice:
-                  widget.productData.productVariationSizes!.length != 0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .sellingPrice
-                      : widget.productData.productSellingPrice,
-              productSize: ProductSize(
-                  size: widget.productData.productVariationSizes!.length != 0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .size
-                      : "",
-                  mrp: widget.productData.productMrp,
-                  sellingPrice:
-                      widget.productData.productVariationSizes!.length != 0
-                          ? widget.productData.productVariationSizes!
-                              .elementAt(widget.sizeIndex)
-                              .sellingPrice
-                          : widget.productData.productSellingPrice,
-                  isActive: widget.productData.productVariationSizes!.length !=
-                          0
-                      ? widget.productData.productVariationSizes!
-                          .elementAt(widget.sizeIndex)
-                          .isActive
-                      : false),
-              isBulk: false,rating: widget.productData.productRatingAverage),
-        );
-    Provider.of<CartDataWrapper>(context, listen: false)
+    Provider
+        .of<CartDataWrapper>(context, listen: false)
+        .cartData
+        .add(
+      NewCartModel(
+          productId: widget.productData.productId,
+          productColor: ProductColor(
+            colorCode:
+            widget.productData.productVariationColors!.length != 0
+                ? widget.productData.productVariationColors!
+                .elementAt(widget.colorIndex)
+                .colorCode
+                : 0,
+            isActive: widget.productData.productVariationColors!.length != 0
+                ? widget.productData.productVariationColors!
+                .elementAt(widget.colorIndex)
+                .isActive
+                : false,
+          ),
+          productImageUrl: widget.productData.productImageUrl,
+          productQuantity: 1,
+          productMrp: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .mrp
+              : widget.productData.productMrp,
+          productName: "${widget.productData.productName}",
+          productSellingPrice:
+          widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .sellingPrice
+              : widget.productData.productSellingPrice,
+          productSize: ProductSize(
+              size: widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .size
+                  : "",
+              mrp: widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .mrp
+                  : widget.productData.productMrp,
+              sellingPrice:
+              widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .sellingPrice
+                  : widget.productData.productSellingPrice,
+              isActive: widget.productData.productVariationSizes!.length !=
+                  0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .isActive
+                  : false),
+          isBulk: false,
+          rating: widget.productData.productRatingAverage),
+    );
+    Provider
+        .of<CartDataWrapper>(context, listen: false)
         .cartData
         .forEach((element) {
       print(element.toJson());
     });
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    Fluttertoast.showToast(msg: "Added to Cart",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
+    Fluttertoast.showToast(msg: "Added to Cart",
+      webPosition: "center",
+      webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
 
     // await CartController.addToCart(
     //         customerId: "${sharedPrefs.customer_id}",
@@ -197,7 +211,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         provider.incrementQuantity(
             quantity: quantity, productId: widget.productData.productId);
       } else {
-        Fluttertoast.showToast(msg: "No more left in Stock",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        Fluttertoast.showToast(msg: "No more left in Stock",
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     } else {
       provider.incrementQuantity(
@@ -222,127 +238,133 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Widget build(BuildContext context) {
     //todo pending is request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
-                productId: widget.productData.productId) ==
-            0
+        productId: widget.productData.productId) ==
+        0
         ? widget.isRounded
-            ? SizedBox(
-                width: 35,
-                height: 35,
-                child: Card(
-                  shape: CircleBorder(),
-                  elevation: 0,
-                  color:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () {
-                          addToCart();
-                        },
-                        child: Icon(
-                          Icons.add,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            : ElevatedButton(
-                onPressed: () {
-                  addToCart();
-                },
-                child: Text("Add to Cart",
-                    style: FontsTheme.boldTextStyle(color: Colors.white)),
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                ),
-              )
-        : SizedBox(
-            width: 85,
-            height: 35,
-            child: Card(
-              elevation: 0,
-              color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () {
-                          if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId: widget.productData.productId) >
-                              1) {
-                            updateCart((Provider.of<CartDataWrapper>(context,
-                                        listen: false)
-                                    .getIndividualQuantity(
-                                        productId:
-                                            widget.productData.productId) -
-                                1));
-                          } else if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId:
-                                          widget.productData.productId) ==
-                              1) {
-                            deleteCart();
-                          }
-                        },
-                        child: Icon(
-                          Icons.remove,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Consumer<CartDataWrapper>(
-                      builder: (context, CartDataWrapper value, child) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "${value.getIndividualQuantity(productId: widget.productData.productId)}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11,
-                                fontFamily: "Poppins"),
-                          ),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () {
-                          updateCart(Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
-                                      productId: widget.productData.productId) +
-                              1);
-                        },
-                        child: Icon(
-                          Icons.add,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+        ? SizedBox(
+      width: 35,
+      height: 35,
+      child: Card(
+        shape: CircleBorder(),
+        elevation: 0,
+        color:
+        Provider
+            .of<CustomColor>(context)
+            .appPrimaryMaterialColor,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+              onTap: () {
+                addToCart();
+              },
+              child: Icon(
+                Icons.add,
+                size: 18,
+                color: Colors.white,
               ),
             ),
-          );
+          ),
+        ),
+      ),
+    )
+        : ElevatedButton(
+      onPressed: () {
+        addToCart();
+      },
+      child: Text("Add to Cart",
+          style: FontsTheme.boldTextStyle(color: Colors.white)),
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(0),
+        backgroundColor: MaterialStateProperty.all<Color>(
+            Provider
+                .of<CustomColor>(context)
+                .appPrimaryMaterialColor),
+        foregroundColor:
+        MaterialStateProperty.all<Color>(Colors.white),
+      ),
+    )
+        : SizedBox(
+      width: 85,
+      height: 35,
+      child: Card(
+        elevation: 0,
+        color: Provider
+            .of<CustomColor>(context)
+            .appPrimaryMaterialColor,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    if (Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                        productId: widget.productData.productId) >
+                        1) {
+                      updateCart((Provider.of<CartDataWrapper>(context,
+                          listen: false)
+                          .getIndividualQuantity(
+                          productId:
+                          widget.productData.productId) -
+                          1));
+                    } else if (Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                        productId:
+                        widget.productData.productId) ==
+                        1) {
+                      deleteCart();
+                    }
+                  },
+                  child: Icon(
+                    Icons.remove,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Consumer<CartDataWrapper>(
+                builder: (context, CartDataWrapper value, child) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      "${value.getIndividualQuantity(productId: widget
+                          .productData.productId)}",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                          fontFamily: "Poppins"),
+                    ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    updateCart(Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                        productId: widget.productData.productId) +
+                        1);
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

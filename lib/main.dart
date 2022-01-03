@@ -4,10 +4,7 @@ import 'dart:html';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
-import 'package:multi_vendor_customer/Utils/Hive/DemoHive.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -31,10 +28,7 @@ import 'Views/ProductDetail.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await sharedPrefs.init();
-  await Hive.initFlutter();
   Firebase.initializeApp();
-  Hive.registerAdapter(DemoHiveAdapter());
-  await Hive.openBox<DemoHive>("demo");
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
