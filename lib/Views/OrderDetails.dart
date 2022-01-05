@@ -40,6 +40,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   LineStyle lineStyle = LineStyle(color: Colors.grey.shade300, thickness: 2);
   bool isLoading = false;
   bool isChanged = false;
+  bool isRejected =false;
   List<String> status = [];
   bool isDownload = false;
 
@@ -63,8 +64,8 @@ class _OrderDetailsState extends State<OrderDetails> {
         ? ["Pending", "Ready", "Delivered"]
         : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
-      if (widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
-          widget.orderData.orderItems.elementAt(i).updatedQuantity != null) {
+      if ((widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
+          widget.orderData.orderItems.elementAt(i).updatedQuantity != null)) {
         setState(() {
           isChanged = true;
         });
@@ -227,6 +228,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               height: 10,
               color: Colors.grey.shade200,
             ),
+            //order status
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -337,62 +339,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         ),
                       ),
                     ),
-
-                    // if (widget.orderData.orderStatus.last == "Pending" ||
-                    //     widget.orderData.orderStatus.last == "Dispatched" ||
-                    //     widget.orderData.orderStatus.last == "Delivered" ||
-                    //     widget.orderData.orderStatus.last == "Ready")
-                    //   Timeline(
-                    //     children: List.generate(
-                    //       status.length,
-                    //       (index) => Container(
-                    //         alignment: Alignment.centerLeft,
-                    //         height: 40,
-                    //         child: Text(
-                    //           status.elementAt(index),
-                    //           style: TextStyle(
-                    //             fontSize: 14,
-                    //             color: widget.orderData.orderStatus.last ==
-                    //                     status.elementAt(index)
-                    //                 ? Provider.of<CustomColor>(context)
-                    //                     .appPrimaryMaterialColor
-                    //                 : Colors.grey,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     indicators: List.generate(
-                    //       status.length,
-                    //       (index) => Icon(
-                    //         Icons.adjust,
-                    //         size: 22,
-                    //         color: widget.orderData.orderStatus.last ==
-                    //                 status.elementAt(index)
-                    //             ? Provider.of<CustomColor>(context)
-                    //                 .appPrimaryMaterialColor
-                    //             : Colors.grey,
-                    //       ),
-                    //     ),
-                    //   )
-                    // else
-                    //   Container(
-                    //     margin:
-                    //         EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    //     child: Row(
-                    //       children: [
-                    //         Icon(Icons.report_problem),
-                    //         SizedBox(
-                    //           width: 10,
-                    //         ),
-                    //         Text(
-                    //           "${widget.orderData.orderStatus.last}",
-                    //           style: TextStyle(
-                    //               color: Provider.of<CustomColor>(context)
-                    //                   .appPrimaryMaterialColor),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
+                    //discount
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15, bottom: 30),
@@ -421,6 +368,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                             ),
                           ),
+                          //tax
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: SizedBox(
@@ -442,6 +390,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                             ),
                           ),
+                          //delivery charges
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: SizedBox(
@@ -507,6 +456,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                             ),
                           ),
+                          //total amount
                           Padding(
                             padding: const EdgeInsets.only(top: 13.0),
                             child: SizedBox(

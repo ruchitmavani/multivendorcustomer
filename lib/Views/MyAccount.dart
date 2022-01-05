@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +37,7 @@ class _MyAccountState extends State<MyAccount> {
   TextEditingController mobile = TextEditingController();
   TextEditingController dob = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -49,31 +51,42 @@ class _MyAccountState extends State<MyAccount> {
     });
     print(sharedPrefs.customer_id);
     await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
-        (value) {
-      if (value.success) {
-        print(value.success);
-        print(sharedPrefs.customer_id);
-        customerData = value.data;
-        print(customerData);
-        addressList.clear();
-        for (int i = 0; i < customerData.customerAddress.length; i++) {
-          addressList.add(Address(
-              type: customerData.customerAddress.elementAt(i).type,
-              subAddress: customerData.customerAddress.elementAt(i).subAddress,
-              area: customerData.customerAddress.elementAt(i).area,
-              city: customerData.customerAddress.elementAt(i).city,
-              pinCode: customerData.customerAddress.elementAt(i).pincode));
-        }
-        setState(() {
-          customerData = value.data;
-          name.text = customerData.customerName;
-          email.text = customerData.customerEmailAddress;
-          mobile.text = customerData.customerMobileNumber;
-          dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
-          isLoadingCustomer = false;
-        });
-      }
-    }, onError: (e) {
+            (value) {
+          if (value.success) {
+            print(value.success);
+            print(sharedPrefs.customer_id);
+            customerData = value.data;
+            print(customerData);
+            addressList.clear();
+            for (int i = 0; i < customerData.customerAddress.length; i++) {
+              addressList.add(Address(
+                  type: customerData.customerAddress
+                      .elementAt(i)
+                      .type,
+                  subAddress: customerData.customerAddress
+                      .elementAt(i)
+                      .subAddress,
+                  area: customerData.customerAddress
+                      .elementAt(i)
+                      .area,
+                  city: customerData.customerAddress
+                      .elementAt(i)
+                      .city,
+                  pinCode: customerData.customerAddress
+                      .elementAt(i)
+                      .pincode));
+            }
+            setState(() {
+              customerData = value.data;
+              name.text = customerData.customerName;
+              email.text = customerData.customerEmailAddress;
+              mobile.text = customerData.customerMobileNumber;
+              dob.text =
+                  DateFormat("yyyy-MM-dd").format(customerData.customerDob);
+              isLoadingCustomer = false;
+            });
+          }
+        }, onError: (e) {
       setState(() {
         isLoadingCustomer = false;
       });
@@ -81,26 +94,39 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   _updateCustomerData() async {
+    if (_formKey.currentState!.validate() == false) {
+      return;
+    }
     setState(() {
       isLoading = true;
     });
     List<Map<String, dynamic>> object = [];
     for (int i = 0; i < addressList.length; i++) {
       object.add({
-        "type": addressList.elementAt(i).type,
-        "subAddress": addressList.elementAt(i).subAddress,
-        "area": addressList.elementAt(i).area,
-        "city": addressList.elementAt(i).city,
-        "pincode": addressList.elementAt(i).pinCode,
+        "type": addressList
+            .elementAt(i)
+            .type,
+        "subAddress": addressList
+            .elementAt(i)
+            .subAddress,
+        "area": addressList
+            .elementAt(i)
+            .area,
+        "city": addressList
+            .elementAt(i)
+            .city,
+        "pincode": addressList
+            .elementAt(i)
+            .pinCode,
       });
     }
     await CustomerController.updateCustomerData(
-            customerId: sharedPrefs.customer_id,
-            name: name.text,
-            email: email.text,
-            mobileNumber: mobile.text,
-            address: object,
-            dob: dob.text)
+        customerId: sharedPrefs.customer_id,
+        name: name.text,
+        email: email.text,
+        mobileNumber: mobile.text,
+        address: object,
+        dob: dob.text)
         .then((value) {
       if (value.success) {
         print(value.success);
@@ -162,153 +188,200 @@ class _MyAccountState extends State<MyAccount> {
         padding: const EdgeInsets.only(left: 15.0, right: 15),
         child: isLoadingCustomer
             ? GridView.builder(
-                itemCount: 8,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: MediaQuery.of(context).size.width,
-                    mainAxisExtent: 60,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 8),
-                itemBuilder: (context, index) {
-                  return Shimmer.fromColors(
-                    baseColor: Colors.white,
-                    highlightColor: Colors.grey[300]!,
-                    period: Duration(seconds: 2),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 20,
-                      height: 100,
-                      decoration: ShapeDecoration(
-                        color: Colors.grey[300]!,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                    ),
-                  );
-                },
-              )
+          itemCount: 8,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              mainAxisExtent: 60,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 8),
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.white,
+              highlightColor: Colors.grey[300]!,
+              period: Duration(seconds: 2),
+              child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 20,
+                height: 100,
+                decoration: ShapeDecoration(
+                  color: Colors.grey[300]!,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
+            );
+          },
+        )
             : SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MyTextFormField(
-                      lable: "Name",
-                      controller: name,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: MyTextFormField(
-                        lable: "Email address",
-                        controller: email,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MyTextFormField(
+                  lable: "Name",
+                  controller: name,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: MyTextFormField(
+                    lable: "Email address",
+                    controller: email,
+                    validator: (value) {
+                      String pattern =
+                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                      RegExp regex = RegExp(pattern);
+                      if (value == "" || value == null)
+                        return "Email is Empty";
+                      if (!regex.hasMatch(value))
+                        return 'Enter Valid Email';
+                      else
+                        return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: MyTextFormField(
+                    lable: "Mobile number",
+                    controller: mobile,
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value!.length != 10)
+                        return 'Mobile Number must be of 10 digit';
+                      else
+                        return null;
+                    },
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: MyTextFormField(
+                          lable: "DOB",
+                          controller: dob,
+                          isenable: false,
+                          onChanged: (String? val) {
+                            print(val);
+                          },
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: MyTextFormField(
-                        lable: "Mobile number",
-                        controller: mobile,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 4.0, left: 4, right: 4),
+                  child: Text(
+                    "Address",
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: addressList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .height,
+                      margin: EdgeInsets.only(bottom: 8, top: 4),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade100),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              _selectDate(context);
-                            },
-                            child: MyTextFormField(
-                              lable: "DOB",
-                              controller: dob,
-                              isenable: false,
-                              onChanged: (String? val) {
-                                print(val);
-                              },
+                          Text(
+                            "${addressList
+                                .elementAt(index)
+                                .type}",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            "${addressList
+                                .elementAt(index)
+                                .subAddress}, ${addressList
+                                .elementAt(index)
+                                .area}, ${addressList
+                                .elementAt(index)
+                                .city}, ${addressList
+                                .elementAt(index)
+                                .pinCode}",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8.0, bottom: 4.0, left: 4, right: 4),
-                      child: Text(
-                        "Address",
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0, bottom: 12),
+                  child: SizedBox(
+                    height: 50,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    child: OutlinedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        side: BorderSide(
+                            width: 0.5, color: Colors.grey.shade400),
                       ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: addressList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: MediaQuery.of(context).size.height,
-                          margin: EdgeInsets.only(bottom: 8, top: 4),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 16),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey.shade100),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${addressList.elementAt(index).type}",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                ),
-                              ),
-                            ],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SavedAddress(),
                           ),
-                        );
+                        ).then((value) {
+                          setState(() {});
+                        });
                       },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 3.0, bottom: 12),
-                      child: SizedBox(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        child: OutlinedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            side: BorderSide(
-                                width: 0.5, color: Colors.grey.shade400),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SavedAddress(),
-                              ),
-                            ).then((value) {
-                              setState(() {});
-                            });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              "Manage Address",
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          "Manage Address",
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 13.0, right: 13, bottom: 18),
@@ -317,13 +390,13 @@ class _MyAccountState extends State<MyAccount> {
           child: isLoading
               ? Center(child: CircularProgressIndicator())
               : ElevatedButton(
-                  child: Text(
-                    "Update",
-                  ),
-                  onPressed: () {
-                    _updateCustomerData();
-                  },
-                ),
+            child: Text(
+              "Update",
+            ),
+            onPressed: () {
+              _updateCustomerData();
+            },
+          ),
         ),
       ),
     );

@@ -118,109 +118,110 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
 
   void ratingBottomSheet(BuildContext context, double price) {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(15.0),
-              topRight: const Radius.circular(15.0)),
-        ),
-        context: context,
-        builder: (ctx) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 19.0, right: 19, top: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Rate your Order for",
-                    style: FontsTheme.boldTextStyle(size: 17)),
-                Padding(
-                  padding: const EdgeInsets.only(top: 22.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${widget.productDetail.productName}",
-                        style: FontsTheme.descriptionText(size: 15),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Row(
-                        children: [
-                          Text("\u{20B9}",
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(15.0),
+            topRight: const Radius.circular(15.0)),
+      ),
+      context: context,
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 19.0, right: 19, top: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Rate your Order for",
+                  style: FontsTheme.boldTextStyle(size: 17)),
+              Padding(
+                padding: const EdgeInsets.only(top: 22.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${widget.productDetail.productName}",
+                      style: FontsTheme.descriptionText(size: 15),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      children: [
+                        Text("\u{20B9}",
+                            style: FontsTheme.digitStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w500)),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 2.0,
+                          ),
+                          child: Text("$price",
                               style: FontsTheme.digitStyle(
                                   fontSize: 14,
                                   color: Colors.black54,
                                   fontWeight: FontWeight.w500)),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 2.0,
-                            ),
-                            child: Text("$price",
-                                style: FontsTheme.digitStyle(
-                                    fontSize: 14,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: RatingBar(
-                    initialRating: rating,
-                    itemSize: 33,
-                    direction: Axis.horizontal,
-                    tapOnlyMode: true,
-                    ignoreGestures: false,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    ratingWidget: RatingWidget(
-                      full: Icon(
-                        Icons.star,
-                        color: Provider.of<CustomColor>(context)
-                            .appPrimaryMaterialColor,
-                      ),
-                      half: Icon(
-                        Icons.star,
-                        color: Colors.grey.shade300,
-                      ),
-                      empty: Icon(
-                        Icons.star,
-                        color: Colors.grey.shade300,
-                      ),
+                        ),
+                      ],
                     ),
-                    onRatingUpdate: (value) {
-                      rating = value;
-                    },
-                  ),
+                  ],
                 ),
-                Space(height: 40),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 25.0),
-                  child: SizedBox(
-                    height: 44,
-                    width: MediaQuery.of(context).size.width,
-                    child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : ElevatedButton(
-                            child: Text(
-                              "Save",
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            onPressed: () {
-                              _updateRating();
-                              FocusScope.of(context).unfocus();
-                            },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: RatingBar(
+                  initialRating: rating,
+                  itemSize: 33,
+                  direction: Axis.horizontal,
+                  tapOnlyMode: true,
+                  ignoreGestures: false,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  ratingWidget: RatingWidget(
+                    full: Icon(
+                      Icons.star,
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                    ),
+                    half: Icon(
+                      Icons.star,
+                      color: Colors.grey.shade300,
+                    ),
+                    empty: Icon(
+                      Icons.star,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  onRatingUpdate: (value) {
+                    rating = value;
+                  },
+                ),
+              ),
+              Space(height: 40),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25.0),
+                child: SizedBox(
+                  height: 44,
+                  width: MediaQuery.of(context).size.width,
+                  child: isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ElevatedButton(
+                          child: Text(
+                            "Save",
+                            style: TextStyle(fontSize: 13),
                           ),
-                  ),
+                          onPressed: () {
+                            _updateRating();
+                            FocusScope.of(context).unfocus();
+                          },
+                        ),
                 ),
-              ],
-            ),
-          );
-        });
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -344,16 +345,18 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                           : Text("Qty : $qty",
                               style: FontsTheme.descriptionText(
                                   fontWeight: FontWeight.w500)),
-                      Row(
-                        children: [
-                          Text("\u{20B9}",
-                              style: FontsTheme.valueStyle(
-                                  size: 14, fontWeight: FontWeight.w500)),
-                          Text("$totalPrice",
-                              style: FontsTheme.valueStyle(
-                                  size: 14, fontWeight: FontWeight.w500)),
-                        ],
-                      ),
+                      widget.orderItem.isReject == true
+                          ? RejectedLabel()
+                          : Row(
+                              children: [
+                                Text("\u{20B9}",
+                                    style: FontsTheme.valueStyle(
+                                        size: 14, fontWeight: FontWeight.w500)),
+                                Text("$totalPrice",
+                                    style: FontsTheme.valueStyle(
+                                        size: 14, fontWeight: FontWeight.w500)),
+                              ],
+                            ),
                     ],
                   ),
                 ],
