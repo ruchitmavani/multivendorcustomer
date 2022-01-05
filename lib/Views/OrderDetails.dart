@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -65,7 +64,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if ((widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
-          widget.orderData.orderItems.elementAt(i).updatedQuantity != null)) {
+          widget.orderData.orderItems.elementAt(i).updatedQuantity != null)||widget.orderData.orderItems.elementAt(i).isReject==true) {
         setState(() {
           isChanged = true;
         });
@@ -470,7 +469,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         style: FontsTheme.valueStyle(
                                             size: 16,
                                             fontWeight: FontWeight.w700)),
-                                    isChanged ? UpdatedLabel() : Container(),
+                                    isChanged && widget.orderData.orderStatus.last.toLowerCase()=="modified" ? UpdatedLabel() : Container(),
                                   ],
                                 ),
                                 trailing: Text(
@@ -494,7 +493,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(right: 25.0, bottom: 20),
-        child: (isChanged)
+        child: (isChanged && widget.orderData.orderStatus.last.toLowerCase()=="modified")
             ? (isLoading)
                 ? Center(
                     child: CircularProgressIndicator(),
