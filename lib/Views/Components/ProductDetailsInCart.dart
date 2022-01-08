@@ -579,11 +579,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                 ),
                               ]),
                         ),
-                        ElevatedButton(
+                        if (productData.bulkPriceList != null)
+                          ElevatedButton(
                             onPressed: () {
                               _updateCartDaetails();
                             },
-                            child: Text("Update")),
+                            child: Text("Update"),
+                          ),
                       ],
                     ),
                   ),

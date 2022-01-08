@@ -144,9 +144,8 @@ class _AboutUsState extends State<AboutUs> {
             Center(
               child: Text(
                 "${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
-                style: FontsTheme.subTitleStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w700,
+                style: FontsTheme.gilroyText(
+                    color: Colors.black,
                     size: 15),
               ),
             ),

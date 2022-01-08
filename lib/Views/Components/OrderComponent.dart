@@ -182,7 +182,10 @@ class _OrderComponentState extends State<OrderComponent> {
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
                               "${widget.orderData.vendorDetails.businessName}",
-                              style: FontsTheme.subTitleStyle(),
+                              style: FontsTheme.gilroyText(
+                                color: Colors.black87,
+                                size: 12
+                              ),
                             ),
                           ),
                           Text(

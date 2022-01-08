@@ -1,8 +1,11 @@
 import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +42,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   LineStyle lineStyle = LineStyle(color: Colors.grey.shade300, thickness: 2);
   bool isLoading = false;
   bool isChanged = false;
-  bool isRejected =false;
+  bool isRejected = false;
   List<String> status = [];
   bool isDownload = false;
 
@@ -64,7 +67,9 @@ class _OrderDetailsState extends State<OrderDetails> {
         : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if ((widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&
-          widget.orderData.orderItems.elementAt(i).updatedQuantity != null)||widget.orderData.orderItems.elementAt(i).isReject==true) {
+              widget.orderData.orderItems.elementAt(i).updatedQuantity !=
+                  null) ||
+          widget.orderData.orderItems.elementAt(i).isReject == true) {
         setState(() {
           isChanged = true;
         });
@@ -169,8 +174,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           children: [
                             AutoSizeText(
                                 "${widget.orderData.vendorDetails.businessName}",
-                                style: FontsTheme.valueStyle(
-                                    fontWeight: FontWeight.w600, size: 14)),
+                                style: FontsTheme.gilroyText(size: 14)),
                             AutoSizeText(
                                 "${widget.orderData.vendorDetails.businessCategory}",
                                 style: FontsTheme.valueStyle(
@@ -469,7 +473,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         style: FontsTheme.valueStyle(
                                             size: 16,
                                             fontWeight: FontWeight.w700)),
-                                    isChanged && widget.orderData.orderStatus.last.toLowerCase()=="modified" ? UpdatedLabel() : Container(),
+                                    isChanged &&
+                                            widget.orderData.orderStatus.last
+                                                    .toLowerCase() ==
+                                                "modified"
+                                        ? UpdatedLabel()
+                                        : Container(),
                                   ],
                                 ),
                                 trailing: Text(
@@ -493,7 +502,8 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(right: 25.0, bottom: 20),
-        child: (isChanged && widget.orderData.orderStatus.last.toLowerCase()=="modified")
+        child: (isChanged &&
+                widget.orderData.orderStatus.last.toLowerCase() == "modified")
             ? (isLoading)
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -576,10 +586,19 @@ class _OrderDetailsState extends State<OrderDetails> {
     // Create the Pdf document
     final pw.Document doc = pw.Document();
     // Add one page with centered text "Hello World"
+    ByteData? imageData;
+    await rootBundle.load('Gilroy-Bold.ttf').then((data) => imageData = data);
+    // final image = PdfImage.jpeg(
+    //     doc.document,
+    //     image: imageData.buffer.asUint8List()
+    // );
+    print(imageData);
+    final Uint8List logoByteList1 = imageData!.buffer.asUint8List();
     doc.addPage(
       pw.Page(
         theme: pw.ThemeData.withFont(
-            base: await PdfGoogleFonts.montserratSemiBold()),
+            base: pw.Font.ttf(await rootBundle.load("fonts/Gilroy-Bold.ttf")),
+            bold: await PdfGoogleFonts.montserratBold()),
         pageFormat: format,
         build: (pw.Context context) {
           return pw.Column(
@@ -603,7 +622,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     fontSize: 19,
                                     fontWeight: pw.FontWeight.normal)),
                             pw.Text("${order.deliveryAddress.city}",
-                                style: pw.TextStyle(fontSize: 16)),
+                                style: pw.TextStyle(
+                                  fontSize: 16,
+                                )),
                           ],
                         ),
                       ),
@@ -837,7 +858,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       children: [
                         pw.Text("Item Total",
                             style: pw.TextStyle(
-                                fontSize: 13, fontWeight: pw.FontWeight.bold)),
+                              fontSize: 13,
+                            )),
                         pw.Text("₹ " + "${order.itemTotalAmount}"),
                       ],
                     ),

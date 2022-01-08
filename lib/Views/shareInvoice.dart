@@ -15,7 +15,7 @@ shareInvtoice(BuildContext context, OrderDataModel orderData) async {
   var pdf = pw.Document();
   ByteData? imageData;
   await rootBundle
-      .load('wellsel.png')
+      .load('Gilroy-Bold.ttf')
       .then((data) => imageData = data);
   // final image = PdfImage.jpeg(
   //     doc.document,

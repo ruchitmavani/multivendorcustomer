@@ -247,7 +247,7 @@ class ProductRating extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star, color: Colors.amber, size: 15),
+        rating != 0 ?Icon(Icons.star, color: Colors.amber, size: 15):SizedBox(),
         Padding(
           padding: const EdgeInsets.only(left: 2.0),
           child: Text(
