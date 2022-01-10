@@ -6,10 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
-import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/OTPScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -85,7 +84,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (mobileNo.text.length == 10) {
                           _sendOtp();
                         } else {
-                          Fluttertoast.showToast(msg: "enter valid number",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                          Fluttertoast.showToast(
+                              msg: "enter valid number",
+                              webPosition: "center",
+                              webBgColor:
+                                  "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                         }
                       },
                       child: Padding(
@@ -98,10 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  GoRouter.of(context)
-                      .go('/' + storeConcat(PageCollection.home));
+                  GoRouter.of(context).go('/' + sharedPrefs.storeLink);
                 },
-                child: Text("skip",
+                child: Text("go back to home",
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: Colors.grey,

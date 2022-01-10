@@ -137,7 +137,7 @@ class _MyAccountState extends State<MyAccount> {
         setState(() {
           isLoading = false;
         });
-        GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
+        GoRouter.of(context).go('/' + sharedPrefs.storeLink);
 
         Fluttertoast.showToast(
             msg: "Account Update Success",

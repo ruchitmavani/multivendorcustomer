@@ -119,37 +119,28 @@ class _MyAppState extends State<MyApp> {
                 child: Loading(),
               ),
           routes: [
+            // GoRoute(
+            //     path: PageCollection.home,
+            //     name: "home",
+            //     pageBuilder: (context, state) => MaterialPage<void>(
+            //           key: state.pageKey,
+            //           child: HomeScreen(),
+            //         ),
+            //     routes: [
+            //
+            //     ]),
             GoRoute(
-                path: PageCollection.home,
-                name: "home",
-                pageBuilder: (context, state) => MaterialPage<void>(
-                      key: state.pageKey,
-                      child: HomeScreen(),
+                path: PageCollection.categories + '/:Cid',
+                pageBuilder: (context, state) {
+                  final categoryId = state.params["Cid"];
+                  return MaterialPage<void>(
+                    key: state.pageKey,
+                    child: CategorySubScreen(
+                      categoryId: categoryId!,
                     ),
+                  );
+                },
                 routes: [
-                  GoRoute(
-                      path: PageCollection.categories + '/:Cid',
-                      pageBuilder: (context, state) {
-                        final categoryId = state.params["Cid"];
-                        return MaterialPage<void>(
-                          key: state.pageKey,
-                          child: CategorySubScreen(
-                            categoryId: categoryId!,
-                          ),
-                        );
-                      },
-                      routes: [
-                        GoRoute(
-                          path: PageCollection.product + '/:Pid',
-                          pageBuilder: (context, state) {
-                            final productId = state.params["Pid"];
-                            return MaterialPage<void>(
-                              key: state.pageKey,
-                              child: ProductDescription(productId: productId!),
-                            );
-                          },
-                        ),
-                      ]),
                   GoRoute(
                     path: PageCollection.product + '/:Pid',
                     pageBuilder: (context, state) {
@@ -161,6 +152,16 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                 ]),
+            GoRoute(
+              path: PageCollection.product + '/:Pid',
+              pageBuilder: (context, state) {
+                final productId = state.params["Pid"];
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: ProductDescription(productId: productId!),
+                );
+              },
+            ),
             GoRoute(
               path: PageCollection.search,
               name: "search",

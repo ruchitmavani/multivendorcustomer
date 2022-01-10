@@ -49,7 +49,7 @@ class _OTPScreenState extends State<OTPScreen> {
         sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
         Provider.of<CartDataWrapper>(context, listen: false).cartData.length > 0
             ? GoRouter.of(context).go('/' + storeConcat(PageCollection.cart))
-            : GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
+            : GoRouter.of(context).go('/' + sharedPrefs.storeLink);
       } else {
         setState(() {
           isLoadingCustomer = false;

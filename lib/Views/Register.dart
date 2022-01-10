@@ -3,12 +3,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/AuthConntroller.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
-import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
 
@@ -77,9 +75,12 @@ class _RegisterState extends State<Register> {
           dob.text = DateFormat("yyyy-MM-dd").format(customerData.customerDob);
           isLoading = false;
         });
-        GoRouter.of(context).go('/'+storeConcat(PageCollection.home));
+        GoRouter.of(context).go('/' + sharedPrefs.storeLink);
       } else {
-        Fluttertoast.showToast(msg: value.message,webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        Fluttertoast.showToast(
+            msg: value.message,
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         setState(() {
           isLoading = false;
         });

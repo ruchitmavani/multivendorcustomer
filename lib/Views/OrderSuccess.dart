@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 class OrderSuccess extends StatefulWidget {
@@ -49,7 +50,7 @@ class _OrderSuccessState extends State<OrderSuccess> {
                 style: ElevatedButton.styleFrom(padding: EdgeInsets.all(6)),
                 onPressed: () {
                   GoRouter.of(context)
-                      .go('/' + storeConcat(PageCollection.home));
+                      .go('/' + sharedPrefs.storeLink);
                 },
                 child: Text(
                   "Continue Shopping",
