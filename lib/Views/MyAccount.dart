@@ -4,12 +4,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
-import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
-import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:shimmer/shimmer.dart';
@@ -38,6 +36,10 @@ class _MyAccountState extends State<MyAccount> {
   TextEditingController dob = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  FocusNode nameF = FocusNode();
+  FocusNode emailF = FocusNode();
+  FocusNode mobileF = FocusNode();
+  FocusNode dobF = FocusNode();
 
   @override
   void initState() {
@@ -226,12 +228,14 @@ class _MyAccountState extends State<MyAccount> {
                 MyTextFormField(
                   lable: "Name",
                   controller: name,
+                  focusNode: nameF,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: MyTextFormField(
                     lable: "Email address",
                     controller: email,
+                    focusNode: emailF,
                     validator: (value) {
                       String pattern =
                           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -251,6 +255,7 @@ class _MyAccountState extends State<MyAccount> {
                     lable: "Mobile number",
                     controller: mobile,
                     maxLength: 10,
+                    isenable: false,
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value!.length != 10)
@@ -290,9 +295,10 @@ class _MyAccountState extends State<MyAccount> {
                   child: Text(
                     "Address",
                     style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
+                        fontFamily: "Poppins",
+                        color: Color(0xFF929292),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
                 ListView.builder(
@@ -320,7 +326,8 @@ class _MyAccountState extends State<MyAccount> {
                             style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 12,
-                                fontWeight: FontWeight.w700),
+                                color: Colors.grey.shade700,
+                                fontWeight: FontWeight.w500),
                           ),
                           Text(
                             "${addressList
@@ -333,8 +340,7 @@ class _MyAccountState extends State<MyAccount> {
                                 .elementAt(index)
                                 .pinCode}",
                             style: TextStyle(
-                              fontFamily: 'Poppins',
-                            ),
+                                fontSize: 12, color: Colors.grey.shade400),
                           ),
                         ],
                       ),

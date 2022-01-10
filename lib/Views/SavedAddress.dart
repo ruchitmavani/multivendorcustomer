@@ -36,8 +36,9 @@ class _SavedAddressState extends State<SavedAddress> {
                                   "${addressList.elementAt(index).type}",
                                   style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 12,
+                                      color: Colors.grey.shade700,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Spacer(),
                                 InkWell(
@@ -69,21 +70,21 @@ class _SavedAddressState extends State<SavedAddress> {
                                     size: 18,
                                   ),
                                 ),
-                                if(addressList.length>=2)
-                                InkWell(
-                                  onTap: () {
-                                    addressList.removeAt(index);
-                                    setState(() {});
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                    size: 18,
+                                if (addressList.length >= 2)
+                                  InkWell(
+                                    onTap: () {
+                                      addressList.removeAt(index);
+                                      setState(() {});
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      size: 18,
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
                               margin: EdgeInsets.only(top: 8),
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 16),
@@ -93,8 +94,7 @@ class _SavedAddressState extends State<SavedAddress> {
                               child: Text(
                                 "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
                                 style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                ),
+                                    fontSize: 12, color: Colors.grey.shade400),
                               ),
                             ),
                           ],

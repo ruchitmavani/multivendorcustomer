@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
-class MyTextFormField extends StatelessWidget {
+class MyTextFormField extends StatefulWidget {
+  AutovalidateMode? autoValidateMode;
+  bool autofocus;
   late String? hintText;
   late String? lable;
   late TextInputType? keyboardType;
@@ -10,7 +13,7 @@ class MyTextFormField extends StatelessWidget {
   late FocusNode? focusNode;
   late EdgeInsetsGeometry? contentPadding;
   late Widget? visibility;
-  late TextCapitalization? textCapitalization = TextCapitalization.none;
+  late TextCapitalization? textCapitalization = TextCapitalization.sentences;
   late FormFieldValidator<String>? validator;
   late ValueChanged<String>? onChanged;
   late ValueChanged<String>? onFieldSubmitted;
@@ -18,21 +21,19 @@ class MyTextFormField extends StatelessWidget {
   late TextInputAction? textInputAction;
   late bool isPassword = false;
   late bool readOnly = false;
-  late bool isenableInteractiveSelection = false;
+  bool? isenableInteractiveSelection;
   late bool isenable = true;
   late Widget? icon;
   late int? maxLines;
   late int? minLines;
-  late bool? filled=true;
-  late bool autofocus=false;
-  late List<TextInputFormatter>? inputFormatters;
+  List<TextInputFormatter>? inputFormatters;
 
   MyTextFormField(
       {this.hintText,
       this.lable,
-        this.filled,
       this.keyboardType,
       this.maxLength,
+      this.autoValidateMode,
       this.focusNode,
       this.visibility,
       this.textCapitalization,
@@ -43,13 +44,39 @@ class MyTextFormField extends StatelessWidget {
       this.textInputAction,
       this.isPassword = false,
       this.readOnly = false,
-      this.isenableInteractiveSelection = false,
+      this.isenableInteractiveSelection,
       this.icon,
       this.maxLines,
       this.minLines,
       this.contentPadding,
-        this.autofocus=false,
-      this.isenable = true,this.inputFormatters});
+      this.inputFormatters,
+      this.isenable = true,
+      this.autofocus = false});
+
+  @override
+  _MyTextFormFieldState createState() => _MyTextFormFieldState();
+}
+
+class _MyTextFormFieldState extends State<MyTextFormField> {
+  Color color = Colors.grey.shade200;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNode != null) {
+      widget.focusNode!.addListener(() {
+        if (widget.focusNode!.hasFocus) {
+          setState(() {
+            color = Colors.white;
+          });
+        } else {
+          setState(() {
+            color = Colors.grey.shade200;
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,71 +85,96 @@ class MyTextFormField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (lable != null)
+          if (widget.lable != null)
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 4, right: 4),
+              padding: const EdgeInsets.only(left: 4, right: 4),
               child: Text(
-                "$lable",
+                "${widget.lable}",
                 style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600),
+                    fontFamily: "Poppins",
+                    color: Color(0xFF929292),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500),
               ),
             ),
           Padding(
             padding: const EdgeInsets.only(top: 2.0),
             child: TextFormField(
-              autofocus: autofocus,
-              enabled: isenable,
-              enableInteractiveSelection: isenableInteractiveSelection,
-              readOnly: readOnly,
-              controller: controller,
-              textCapitalization: textCapitalization ?? TextCapitalization.none,
-              keyboardType: keyboardType,
-              style: TextStyle(fontSize: 14),
-              maxLength: maxLength,
-              maxLines: maxLines ?? 1,
-              minLines: minLines,
-              focusNode: focusNode,
-              onChanged: onChanged,
-              validator: validator,
-              textInputAction: textInputAction,
-              obscureText: isPassword,
-              onFieldSubmitted: onFieldSubmitted,
-              inputFormatters: inputFormatters,
+              autovalidateMode: widget.autoValidateMode,
+              autofocus: widget.autofocus,
+              enabled: widget.isenable,
+              enableInteractiveSelection:
+                  widget.isenableInteractiveSelection ?? true,
+              readOnly: widget.readOnly,
+              controller: widget.controller,
+              textCapitalization:
+                  widget.textCapitalization ?? TextCapitalization.sentences,
+              keyboardType: widget.keyboardType,
+              style: TextStyle(fontSize: 12),
+              maxLength: widget.maxLength,
+              maxLines: widget.maxLines ?? 1,
+              minLines: widget.minLines,
+              focusNode: widget.focusNode,
+              onChanged: widget.onChanged,
+              validator: widget.validator,
+              textInputAction: widget.textInputAction,
+              obscureText: widget.isPassword,
+              onFieldSubmitted: widget.onFieldSubmitted,
+              inputFormatters: widget.inputFormatters,
               decoration: InputDecoration(
-                  fillColor: Colors.grey.shade200,
-                  focusColor: Colors.green,
-                  filled: filled??true,
-                  hintText: "${hintText ?? ""}",
-                  hintStyle: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade400),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding: contentPadding == null
-                      ? EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4)
-                      : contentPadding,
-                  counterText: "",
-                  errorStyle:
-                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                  prefixIcon: icon,
-                  suffixIcon: visibility,
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: BorderSide(
-                      width: 1.5,
-                      color: Colors.red,
-                      style: BorderStyle.solid,
-                    ),
+                filled: true,
+                hintText: "${widget.hintText ?? ""}",
+                hintStyle: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: widget.contentPadding == null
+                    ? EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4)
+                    : widget.contentPadding,
+                counterText: "",
+                errorStyle: TextStyle(
+                    color: Colors.red.shade500,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+                prefixIcon: widget.icon,
+                suffixIcon: widget.visibility,
+                errorMaxLines: 2,
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.red,
+                    style: BorderStyle.solid,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  )),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      width: 0.7),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.red,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+              ),
             ),
           )
         ],

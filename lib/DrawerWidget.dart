@@ -52,8 +52,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               .appPrimaryMaterialColor,
                           alignment: Alignment.center,
                           child: Text(
-    isLoggedin?
-                            "${sharedPrefs.customer_name}".substring(0, 1):"",
+                            isLoggedin
+                                ? "${sharedPrefs.customer_name}".substring(0, 1)
+                                : "",
                             style: TextStyle(
                                 fontSize: 28,
                                 color: Colors.white,
@@ -88,45 +89,48 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             Icons.list_sharp,
                           ),
                           onTap: () {
-                            GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
+                            GoRouter.of(context).push(
+                                '/' + storeConcat(PageCollection.myOrders),);
                           }),
                       ListTile(
                           title: Text("My Account"),
                           leading: Icon(Icons.account_circle),
                           enabled: true,
                           onTap: () {
-                            GoRouter.of(context).push('/'+storeConcat(PageCollection.myAccount));
-                          }),
+                            GoRouter.of(context).push(
+                                '/' + storeConcat(PageCollection.myAccount));
+                          },),
                     ],
                   ),
                 ),
                 SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: TextButton.icon(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFFB14040).withAlpha(30))),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          sharedPrefs.logout();
-                          setState(() {
-                            isLoggedin=false;
-                          });
-                          GoRouter.of(context)
-                              .push('/' + sharedPrefs.storeLink);
-                        },
-                        label: Text(
-                          "LOGOUT",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFFB14040),
-                              fontFamily: "Poppins"),
-                        ),
-                        icon: Icon(
-                          Icons.logout,
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  child: TextButton.icon(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Color(0xFFB14040).withAlpha(30),),),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      sharedPrefs.logout();
+                      setState(() {
+                        isLoggedin = false;
+                      },);
+                      GoRouter.of(context).push('/' + sharedPrefs.storeLink);
+                    },
+                    label: Text(
+                      "LOGOUT",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
                           color: Color(0xFFB14040),
-                        )))
+                          fontFamily: "Poppins"),
+                    ),
+                    icon: Icon(
+                      Icons.logout,
+                      color: Color(0xFFB14040),
+                    ),
+                  ),
+                ),
               ],
             ),
           )
@@ -134,8 +138,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             child: Column(
               children: [
                 Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 15)),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 15),
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -144,9 +149,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       borderRadius: BorderRadius.circular(70.0),
                       child: ClipOval(
                         child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.asset("images/profile.png")),
+                          width: 50,
+                          height: 50,
+                          child: Image.asset("images/profile.png"),
+                        ),
                       ),
                     ),
                     Space(width: 20),
@@ -160,17 +166,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   child: Column(
                     children: [
                       ListTile(
-                          title: Text("Home"),
-                          leading: Icon(Icons.home),
-                          onTap: () {}),
+                        title: Text("Home"),
+                        leading: Icon(Icons.home),
+                        onTap: () {},
+                      ),
                       ListTile(
-                          title: Text("Log in"),
-                          leading: Icon(
-                            Icons.lock,
-                          ),
-                          onTap: () {
-                            GoRouter.of(context).go('/'+storeConcat(PageCollection.login));
-                          }),
+                        title: Text("Log in"),
+                        leading: Icon(
+                          Icons.lock,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context)
+                              .go('/' + storeConcat(PageCollection.login));
+                        },
+                      ),
                     ],
                   ),
                 ),

@@ -31,7 +31,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
-        width: size.width > 400 ? 220 : size.width / 2.2,
+        width: 220 ,
         height: 254,
         child: Container(
           decoration: BoxDecoration(

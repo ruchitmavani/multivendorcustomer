@@ -30,6 +30,7 @@ class _OTPScreenState extends State<OTPScreen> {
   TextEditingController otp = TextEditingController();
   bool isLoading = false;
   bool isLoadingCustomer = false;
+  FocusNode otpFocus=FocusNode();
 
   _login() async {
     setState(() {
@@ -142,6 +143,8 @@ class _OTPScreenState extends State<OTPScreen> {
                 child: MyTextFormField(
                   hintText: "Enter OTP code",
                   maxLength: 6,
+                  focusNode: otpFocus,
+                  autofocus: true,
                   controller: otp,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[

@@ -31,8 +31,8 @@ enum paymentMethods { COD, PAY_ONLINE, TAKEAWAY }
 
 class _PaymentOptionsState extends State<PaymentOptions> {
   paymentMethods _selection = paymentMethods.COD;
-  bool isLoadingCate = false;
-  late String orderId;
+  bool isLoadingOrderId = false;
+  String? orderId;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
   _generateOrderId() async {
     setState(() {
-      isLoadingCate = true;
+      isLoadingOrderId = true;
     });
     await PaymentController.generateOrderId(
         Provider
@@ -61,18 +61,18 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       if (value.success) {
         print(value.data);
         setState(() {
-          isLoadingCate = false;
+          isLoadingOrderId = false;
           orderId = value.data!.orderId.id;
-          window.localStorage["orderId"] = orderId;
+          window.localStorage["orderId"] = orderId!;
         });
       } else {
         setState(() {
-          isLoadingCate = false;
+          isLoadingOrderId = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoadingCate = false;
+        isLoadingOrderId = false;
       });
       print(e);
     });
@@ -80,7 +80,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
   _addOrder(String type) async {
     setState(() {
-      isLoadingCate = true;
+      isLoadingOrderId = true;
     });
     await OrderController.addOrder(
         type: "$type",
@@ -160,7 +160,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         .then((value) {
       if (value.success) {
         setState(() {
-          isLoadingCate = false;
+          isLoadingOrderId = false;
           Fluttertoast.showToast(msg: "Order Success",
               webPosition: "center",
               webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
@@ -182,12 +182,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         });
       } else {
         setState(() {
-          isLoadingCate = false;
+          isLoadingOrderId = false;
         });
       }
     }, onError: (e) {
       setState(() {
-        isLoadingCate = false;
+        isLoadingOrderId = false;
       });
       print(e);
     });
@@ -198,12 +198,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       if (value.success) {
         print(value.data);
 
-        isLoadingCate = false;
+        isLoadingOrderId = false;
         Fluttertoast.showToast(msg: "${value.data!.orderId}",
             webPosition: "center",
             webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         orderId = value.data!.orderId;
-        window.localStorage["orderId"] = orderId;
+        window.localStorage["orderId"] = orderId!;
       } else {}
     }, onError: (e) {
       print(e);
@@ -271,46 +271,49 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     ),
                   ),
                 ),
-                Divider(
-                  thickness: 1,
-                  color: Colors.white,
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _selection = paymentMethods.PAY_ONLINE;
-                    });
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: Provider
-                        .of<VendorModelWrapper>(context)
-                        .vendorModel!
-                        .isStorePickupEnable ? 0 : 5.0),
-                    child: ListTile(
-                      dense: true,
-                      visualDensity:
-                      VisualDensity(horizontal: 0, vertical: -4),
-                      title: const Text(
-                        'Pay Online', style: TextStyle(fontSize: 12),),
-                      leading: Transform.scale(
-                        scale: 0.92,
-                        child: Radio<paymentMethods>(
-                          value: paymentMethods.PAY_ONLINE,
-                          activeColor: Provider
-                              .of<CustomColor>(context)
-                              .appPrimaryMaterialColor,
-                          groupValue: _selection,
-                          onChanged: (paymentMethods? value) {
-                            setState(() {
-                              _selection = value!;
-                              print(value);
-                            });
-                          },
+                if(orderId != null)
+                  Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                if(orderId != null)
+
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selection = paymentMethods.PAY_ONLINE;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: Provider
+                          .of<VendorModelWrapper>(context)
+                          .vendorModel!
+                          .isStorePickupEnable ? 0 : 5.0),
+                      child: ListTile(
+                        dense: true,
+                        visualDensity:
+                        VisualDensity(horizontal: 0, vertical: -4),
+                        title: const Text(
+                          'Pay Online', style: TextStyle(fontSize: 12),),
+                        leading: Transform.scale(
+                          scale: 0.92,
+                          child: Radio<paymentMethods>(
+                            value: paymentMethods.PAY_ONLINE,
+                            activeColor: Provider
+                                .of<CustomColor>(context)
+                                .appPrimaryMaterialColor,
+                            groupValue: _selection,
+                            onChanged: (paymentMethods? value) {
+                              setState(() {
+                                _selection = value!;
+                                print(value);
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
                 if(Provider
                     .of<VendorModelWrapper>(context)
                     .vendorModel!
@@ -373,7 +376,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         child: Row(
           children: [
             Flexible(
-              child: isLoadingCate
+              child: isLoadingOrderId
                   ? Center(
                 child: CircularProgressIndicator(),
               )
@@ -410,7 +413,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           image:
                           "${StringConstants.api_url}${sharedPrefs.logo}",
                           addOrder: _addOrder,
-                          orderId: orderId,
+                          orderId: orderId!,
                         );
                       },
                     ),

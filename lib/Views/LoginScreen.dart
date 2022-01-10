@@ -20,6 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController mobileNo = new TextEditingController();
   bool isLoading = false;
   bool isLoadingCustomer = false;
+  late FocusNode mobile;
+
+  @override
+  initState() {
+    super.initState();
+    mobile = FocusNode();
+  }
 
   _sendOtp() async {
     setState(() {
@@ -68,9 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(
                     left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
                 child: MyTextFormField(
+                  autofocus: true,
                   controller: mobileNo,
                   hintText: "Mobile number",
                   maxLength: 10,
+                  focusNode: mobile,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),

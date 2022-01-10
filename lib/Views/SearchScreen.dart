@@ -149,7 +149,7 @@ class _SearchState extends State<Search> {
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         // maxCrossAxisExtent: 220,
-                        crossAxisCount: (size.width/220).floor(),
+                        crossAxisCount: (size.width / 220).floor(),
                         mainAxisExtent: 245,
                         // childAspectRatio: 0.89
                       ),
