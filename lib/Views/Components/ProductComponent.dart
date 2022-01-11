@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
@@ -31,7 +32,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
-        width: 220 ,
+        width: 190,
         height: 254,
         child: Container(
           decoration: BoxDecoration(
@@ -48,18 +49,25 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 10.0, right: 8.0, bottom: 8, top: 6),
+                left: 14.0, right: 10.0, bottom: 8, top: 6),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // if (widget.productData.productRatingAverage != 0)
-                  ProductRating(widget.productData.productRatingAverage),
-                // else
-                //   Text(
-                //     "Pending",
-                //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-                //   ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    (widget.productData.productRatingAverage != 0)
+                        ? ProductRating(widget.productData.productRatingAverage)
+                        : SizedBox(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0, top: 4),
+                      child: DiscountTag(
+                          mrp: widget.productData.productMrp,
+                          selling: widget.productData.productSellingPrice),
+                    )
+                  ],
+                ),
                 Center(
                   child: Container(
                     height: 110,
@@ -138,10 +146,6 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    DiscountTag(
-                                        mrp: widget.productData.productMrp,
-                                        selling: widget
-                                            .productData.productSellingPrice)
                                   ],
                                 ),
                               if (widget.productData.isRequestPrice)
@@ -339,12 +343,12 @@ class _ProductComponentListState extends State<ProductComponentList> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child:
-                        // widget.productData.productRatingAverage != 0
-                        //     ?
-                        ProductRating(
-                                widget.productData.productRatingAverage)
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child:
+                              // widget.productData.productRatingAverage != 0
+                              //     ?
+                              ProductRating(
+                                  widget.productData.productRatingAverage)
                           // : Text(
                           //     "Pending",
                           //     style: TextStyle(

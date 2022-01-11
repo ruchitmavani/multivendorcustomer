@@ -75,14 +75,18 @@ class _TopSellingProductComponentState
                         maxLines: 1,
                         style: FontsTheme.subTitleStyle(),
                       ),
-                      if (widget.productData.productRatingAverage != 0)
-                        ProductRating(widget.productData.productRatingAverage),
+                      Text(
+                        "₹ ${widget.productData.productSellingPrice}",
+                        style: FontsTheme.digitStyle(fontSize: 12),
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 1.0),
-                        child: Text(
-                          "₹ ${widget.productData.productSellingPrice}",
-                          style: FontsTheme.digitStyle(fontSize: 12),
-                        ),
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: (widget.productData.productRatingAverage != 0)
+                            ? ProductRating(
+                                widget.productData.productRatingAverage)
+                            : SizedBox(
+                                height: 16,
+                              ),
                       ),
                     ],
                   ),

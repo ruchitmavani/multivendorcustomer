@@ -1002,7 +1002,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             Flexible(
               child: InkWell(
-                onTap: () {
+                onTap: () {if(isLoadingCustomer==false){
                   if (sharedPrefs.customer_id.isEmpty) {
                     GoRouter.of(context)
                         .go('/' + storeConcat(PageCollection.login));
@@ -1020,7 +1020,7 @@ class _CartScreenState extends State<CartScreen> {
                         );
                       },
                     ));
-                  }
+                  }}
                 },
                 child: Container(
                   height: 48,

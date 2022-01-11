@@ -62,6 +62,13 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         print(value.data);
         setState(() {
           isLoadingOrderId = false;
+          if (value.data == null) {
+            orderId = null;
+            Fluttertoast.showToast(msg: "More than 5,00,000 can't be paid online",
+              webPosition: "center",
+              webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",webShowClose: true);
+            return;
+          }
           orderId = value.data!.orderId.id;
           window.localStorage["orderId"] = orderId!;
         });
@@ -244,7 +251,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
+                    padding: EdgeInsets.only(top: (orderId==null)? 0: 5.0),
                     child: ListTile(
                       dense: true,
                       visualDensity:
@@ -277,7 +284,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     color: Colors.white,
                   ),
                 if(orderId != null)
-
                   InkWell(
                     onTap: () {
                       setState(() {
