@@ -120,33 +120,70 @@ class CartDataWrapper extends ChangeNotifier {
     });
   }
 
-  getIndividualQuantity({required String productId}) {
-    for (int i = 0; i < cartData.length; i++) {
-      if (cartData.elementAt(i).productId == productId) {
-        return cartData.elementAt(i).productQuantity;
-      }
+  int getIndividualQuantity(
+      {required String productId,
+      ProductSize? productSize,
+      ProductColor? productColor}) {
+    if (cartData.indexWhere((element) {
+          return element.productId == productId &&
+              element.productColor == productColor &&
+              element.productSize == productSize;
+        }) !=
+        -1) {
+      return cartData.elementAt(cartData.indexWhere((element) {
+        return element.productId == productId &&
+            element.productColor == productColor &&
+            element.productSize == productSize;
+      })).productQuantity;
     }
     return 0;
   }
 
-  getTotalSavings() {}
+  int getQuantity(String productId) {
+    int _count = 0;
+    for (int i = 0; i < cartData.length; i++) {
+      if (cartData.elementAt(i).productId == productId) {
+        _count++;
+      }
+    }
+    return _count;
+  }
 
-  incrementQuantity({required int quantity, required String productId}) {
-    int index =
-        cartData.indexWhere((element) => element.productId == productId);
-    cartData
-        .elementAt(
-            cartData.indexWhere((element) => element.productId == productId))
-        .productQuantity = quantity;
+  incrementQuantity(
+      {required int quantity,
+      required String productId,
+      required ProductSize? productSize,
+      required ProductColor? productColor}) {
+    int index = cartData.indexWhere((element) {
+      return element.productId == productId &&
+          element.productColor == productColor &&
+          element.productSize == productSize;
+    });
+    cartData.elementAt(cartData.indexWhere((element) {
+      return element.productId == productId &&
+          element.productColor == productColor &&
+          element.productSize == productSize;
+    })).productQuantity = quantity;
 
     log("--$intialSaving");
     notifyListeners();
   }
 
-  deleteFromCart({required String productId}) {
-    if (cartData.indexWhere((element) => element.productId == productId) != -1)
-      cartData.removeAt(
-          cartData.indexWhere((element) => element.productId == productId));
+  deleteFromCart(
+      {required String productId,
+      ProductSize? productSize,
+      ProductColor? productColor}) {
+    if (cartData.indexWhere((element) {
+          return element.productId == productId &&
+              element.productColor == productColor &&
+              element.productSize == productSize;
+        }) !=
+        -1)
+      cartData.removeAt(cartData.indexWhere((element) {
+        return element.productId == productId &&
+            element.productColor == productColor &&
+            element.productSize == productSize;
+      }));
     notifyListeners();
   }
 }

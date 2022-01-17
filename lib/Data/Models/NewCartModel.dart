@@ -4,26 +4,27 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import 'ProductModel.dart';
 
 // List<NewCartModel> newCartModelFromJson(String str) => List<NewCartModel>.from(json.decode(str).map((x) => NewCartModel.fromJson(x)));
 
-String newCartModelToJson(List<NewCartModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String newCartModelToJson(List<NewCartModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class NewCartModel {
-  NewCartModel({
-    required this.productId,
-     required this.productQuantity,
-    required this.productSize,
-    required this.productColor,
-    required this.productImageUrl,
-    required this.productName,
-    required this.productMrp,
-    required this.productSellingPrice,
-    required this.isBulk,
-    required this.rating
-
-  });
+class NewCartModel extends Equatable {
+  NewCartModel(
+      {required this.productId,
+      required this.productQuantity,
+      required this.productSize,
+      required this.productColor,
+      required this.productImageUrl,
+      required this.productName,
+      required this.productMrp,
+      required this.productSellingPrice,
+      required this.isBulk,
+      required this.rating});
 
   String productId;
   int productQuantity;
@@ -49,14 +50,19 @@ class NewCartModel {
   // );
 
   Map<String, dynamic> toJson() => {
-    "product_id": productId,
-    "product_quantity": productQuantity,
-    "product_size": productSize == null ? null : productSize!.toJson(),
-    "product_color": productColor == null ? null : productColor!.toJson(),
-    "product_image_url": List<dynamic>.from(productImageUrl.map((x) => x)),
-    "product_name": productName,
-    "product_mrp": productMrp,
-    "product_selling_price": productSellingPrice,
-    "isBulk": isBulk,
-  };
+        "product_id": productId,
+        "product_quantity": productQuantity,
+        "product_size": productSize == null ? null : productSize!.toJson(),
+        "product_color": productColor == null ? null : productColor!.toJson(),
+        "product_image_url": List<dynamic>.from(productImageUrl.map((x) => x)),
+        "product_name": productName,
+        "product_mrp": productMrp,
+        "product_selling_price": productSellingPrice,
+        "isBulk": isBulk,
+      };
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [productId,productQuantity,productSize,productColor,productImageUrl,productName,productMrp,productSellingPrice,isBulk];
+
 }

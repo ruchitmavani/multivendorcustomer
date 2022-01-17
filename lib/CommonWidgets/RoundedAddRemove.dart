@@ -1,15 +1,16 @@
 // ignore_for_file: must_call_super, must_be_immutable, unnecessary_brace_in_string_interps
 
 import 'package:flutter/material.dart';
+import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:provider/provider.dart';
 
 class RoundedAddRemove extends StatefulWidget {
-  String productId;
+  NewCartModel productData;
   bool isBulk;
 
-  RoundedAddRemove({required this.productId, required this.isBulk});
+  RoundedAddRemove({required this.productData, required this.isBulk});
 
   @override
   _RoundedAddRemoveState createState() => _RoundedAddRemoveState();
@@ -25,7 +26,11 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
   Future deleteCart() async {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
-    provider.deleteFromCart(productId: widget.productId);
+    provider.deleteFromCart(
+      productId: widget.productData.productId,
+      productSize: widget.productData.productSize,
+      productColor: widget.productData.productColor,
+    );
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     // await CartController.deleteCart(cartId: "${widget.cartData.cartId}").then(
     //     (value) {
@@ -64,7 +69,12 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
 
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
 
-    provider.incrementQuantity(quantity: quantity, productId: widget.productId);
+    provider.incrementQuantity(
+      quantity: quantity,
+      productId: widget.productData.productId,
+      productSize: widget.productData.productSize,
+      productColor: widget.productData.productColor,
+    );
     provider.loadCartData();
   }
 
@@ -99,7 +109,11 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            "${value.getIndividualQuantity(productId: widget.productId)}",
+                            "${value.getIndividualQuantity(
+                              productId: widget.productData.productId,
+                              productSize: widget.productData.productSize,
+                              productColor: widget.productData.productColor,
+                            )}",
                             style: TextStyle(
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
@@ -150,17 +164,26 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                           if (Provider.of<CartDataWrapper>(context,
                                       listen: false)
                                   .getIndividualQuantity(
-                                      productId: widget.productId) >
+                                productId: widget.productData.productId,
+                                productSize: widget.productData.productSize,
+                                productColor: widget.productData.productColor,
+                              ) >
                               1) {
                             updateCart(Provider.of<CartDataWrapper>(context,
                                         listen: false)
                                     .getIndividualQuantity(
-                                        productId: widget.productId) -
+                                  productId: widget.productData.productId,
+                                  productSize: widget.productData.productSize,
+                                  productColor: widget.productData.productColor,
+                                ) -
                                 1);
                           } else if (Provider.of<CartDataWrapper>(context,
                                       listen: false)
                                   .getIndividualQuantity(
-                                      productId: widget.productId) ==
+                                productId: widget.productData.productId,
+                                productSize: widget.productData.productSize,
+                                productColor: widget.productData.productColor,
+                              ) ==
                               1) {
                             deleteCart();
                           }
@@ -178,7 +201,11 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            "${value.getIndividualQuantity(productId: widget.productId)}",
+                            "${value.getIndividualQuantity(
+                              productId: widget.productData.productId,
+                              productSize: widget.productData.productSize,
+                              productColor: widget.productData.productColor,
+                            )}",
                             style: TextStyle(
                                 color: Provider.of<CustomColor>(context)
                                     .appPrimaryMaterialColor,
@@ -196,7 +223,10 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                           updateCart((Provider.of<CartDataWrapper>(context,
                                       listen: false)
                                   .getIndividualQuantity(
-                                      productId: widget.productId)) +
+                                productId: widget.productData.productId,
+                                productSize: widget.productData.productSize,
+                                productColor: widget.productData.productColor,
+                              )) +
                               1);
                         },
                         child: Icon(

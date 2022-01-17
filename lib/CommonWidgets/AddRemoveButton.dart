@@ -7,6 +7,7 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButton extends StatefulWidget {
@@ -30,7 +31,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   @override
   void initState() {
     super.initState();
-    updateQuantity();
+    // updateQuantity();
   }
 
   Future addToCart() async {
@@ -41,8 +42,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       NewCartModel(
           productId: widget.productData.productId,
           productColor: ProductColor(
-            colorCode:
-            widget.productData.productVariationColors!.length != 0
+            colorCode: widget.productData.productVariationColors!.length != 0
                 ? widget.productData.productVariationColors!
                 .elementAt(widget.colorIndex)
                 .colorCode
@@ -78,14 +78,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                   .elementAt(widget.sizeIndex)
                   .mrp
                   : widget.productData.productMrp,
-              sellingPrice:
-              widget.productData.productVariationSizes!.length != 0
+              sellingPrice: widget.productData.productVariationSizes!.length !=
+                  0
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
                   .sellingPrice
                   : widget.productData.productSellingPrice,
-              isActive: widget.productData.productVariationSizes!.length !=
-                  0
+              isActive: widget.productData.productVariationSizes!.length != 0
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
                   .isActive
@@ -100,124 +99,136 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       print(element.toJson());
     });
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    Fluttertoast.showToast(msg: "Added to Cart",
+    Fluttertoast.showToast(
+      msg: "Added to Cart",
       webPosition: "center",
-      webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
-
-    // await CartController.addToCart(
-    //         customerId: "${sharedPrefs.customer_id}",
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId,
-    //         productId: widget.productData.productId,
-    //         quantity: 1,
-    //         mrp: widget.productData.productMrp,
-    //         isActive: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .isActive
-    //             : false,
-    //         size: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .size
-    //             : "",
-    //         colorCode: widget.productData.productVariationColors!.length != 0
-    //             ? widget.productData.productVariationColors!
-    //                 .elementAt(widget.colorIndex)
-    //                 .colorCode
-    //             : "3242161711",
-    //         sellingPrice: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .sellingPrice
-    //             : 0,
-    //         isColorActive:
-    //             widget.productData.productVariationColors!.length != 0
-    //                 ? widget.productData.productVariationColors!
-    //                     .elementAt(widget.colorIndex)
-    //                     .isActive
-    //                 : false,
-    //         isVarientAvailable:
-    //             widget.productData.productVariationColors!.length != 0
-    //                 ? true
-    //                 : false)
-    //     .then((value) {
-    //   if (value.success) {
-    //     setState(() {
-    //       q++;
-    //       cartId = value.data!.cartId;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
+      webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",
+    );
   }
 
   Future deleteCart() async {
-    // log("--cart id $cartId");
-    //
-    // await CartController.deleteCart(
-    //         cartId: cartId != null
-    //             ? "$cartId"
-    //             : "${widget.productData.cartDetails!.cartId}")
-    //     .then((value) {
-    //   if (value.success) {
-    //     print(value.success);
-    //     print(value.data);
-    //     setState(() {
-    //       q = 0;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
-    provider.deleteFromCart(productId: widget.productData.productId);
+    provider.deleteFromCart(
+        productId: widget.productData.productId, productSize: ProductSize(
+        size: widget.productData.productVariationSizes!.length != 0
+            ? widget.productData.productVariationSizes!
+            .elementAt(widget.sizeIndex)
+            .size
+            : "",
+        mrp: widget.productData.productVariationSizes!.length != 0
+            ? widget.productData.productVariationSizes!
+            .elementAt(widget.sizeIndex)
+            .mrp
+            : widget.productData.productMrp,
+        sellingPrice: widget.productData.productVariationSizes!.length != 0
+            ? widget.productData.productVariationSizes!
+            .elementAt(widget.sizeIndex)
+            .sellingPrice
+            : widget.productData.productSellingPrice,
+        isActive: widget.productData.productVariationSizes!.length != 0
+            ? widget.productData.productVariationSizes!
+            .elementAt(widget.sizeIndex)
+            .isActive
+            : false), productColor: ProductColor(
+      colorCode: widget.productData.productVariationColors!.length != 0
+          ? widget.productData.productVariationColors!
+          .elementAt(widget.colorIndex)
+          .colorCode
+          : 0,
+      isActive: widget.productData.productVariationColors!.length != 0
+          ? widget.productData.productVariationColors!
+          .elementAt(widget.colorIndex)
+          .isActive
+          : false,
+    ));
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
   }
 
   Future updateCart(int quantity) async {
-    // log("--cart id $cartId");
-    // await CartController.update(jsonMap: {
-    //   "cart_id":
-    //       cartId != null ? cartId : widget.productData.cartDetails!.cartId,
-    //   "product_quantity": quantity
-    // }).then((value) {
-    //   if (value.success) {
-    //     setState(() {
-    //       print(quantity);
-    //       q = quantity;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     if (widget.productData.isStock) {
       if (quantity <= widget.productData.stockLeft) {
         provider.incrementQuantity(
-            quantity: quantity, productId: widget.productData.productId);
+            quantity: quantity,
+            productId: widget.productData.productId,
+            productColor: ProductColor(
+              colorCode: widget.productData.productVariationColors!.length != 0
+                  ? widget.productData.productVariationColors!
+                  .elementAt(widget.colorIndex)
+                  .colorCode
+                  : 0,
+              isActive: widget.productData.productVariationColors!.length != 0
+                  ? widget.productData.productVariationColors!
+                  .elementAt(widget.colorIndex)
+                  .isActive
+                  : false,
+            ),
+            productSize: ProductSize(
+                size: widget.productData.productVariationSizes!.length != 0
+                    ? widget.productData.productVariationSizes!
+                    .elementAt(widget.sizeIndex)
+                    .size
+                    : "",
+                mrp: widget.productData.productVariationSizes!.length != 0
+                    ? widget.productData.productVariationSizes!
+                    .elementAt(widget.sizeIndex)
+                    .mrp
+                    : widget.productData.productMrp,
+                sellingPrice: widget.productData.productVariationSizes!
+                    .length != 0
+                    ? widget.productData.productVariationSizes!
+                    .elementAt(widget.sizeIndex)
+                    .sellingPrice
+                    : widget.productData.productSellingPrice,
+                isActive: widget.productData.productVariationSizes!.length != 0
+                    ? widget.productData.productVariationSizes!
+                    .elementAt(widget.sizeIndex)
+                    .isActive
+                    : false));
       } else {
-        Fluttertoast.showToast(msg: "No more left in Stock",
+        Fluttertoast.showToast(
+            msg: "No more left in Stock",
             webPosition: "center",
             webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     } else {
       provider.incrementQuantity(
-          quantity: quantity, productId: widget.productData.productId);
+          quantity: quantity,
+          productId: widget.productData.productId,
+          productSize: ProductSize(
+              size: widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .size
+                  : "",
+              mrp: widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .mrp
+                  : widget.productData.productMrp,
+              sellingPrice: widget.productData.productVariationSizes!.length !=
+                  0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .sellingPrice
+                  : widget.productData.productSellingPrice,
+              isActive: widget.productData.productVariationSizes!.length != 0
+                  ? widget.productData.productVariationSizes!
+                  .elementAt(widget.sizeIndex)
+                  .isActive
+                  : false),
+          productColor: ProductColor(
+            colorCode: widget.productData.productVariationColors!.length != 0
+                ? widget.productData.productVariationColors!
+                .elementAt(widget.colorIndex)
+                .colorCode
+                : 0,
+            isActive: widget.productData.productVariationColors!.length != 0
+                ? widget.productData.productVariationColors!
+                .elementAt(widget.colorIndex)
+                .isActive
+                : false,
+          ));
     }
 
     provider.loadCartData();
@@ -230,7 +241,42 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   updateQuantity() {
     q = Provider.of<CartDataWrapper>(context, listen: false)
-        .getIndividualQuantity(productId: widget.productData.productId);
+        .getIndividualQuantity(
+      productId: widget.productData.productId,
+      productColor: ProductColor(
+        colorCode: widget.productData.productVariationColors!.length != 0
+            ? widget.productData.productVariationColors!
+            .elementAt(widget.colorIndex)
+            .colorCode
+            : 0,
+        isActive: widget.productData.productVariationColors!.length != 0
+            ? widget.productData.productVariationColors!
+            .elementAt(widget.colorIndex)
+            .isActive
+            : false,
+      ),
+      productSize: ProductSize(
+          size: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .size
+              : "",
+          mrp: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .mrp
+              : widget.productData.productMrp,
+          sellingPrice: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .sellingPrice
+              : widget.productData.productSellingPrice,
+          isActive: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .isActive
+              : false),
+    );
     setState(() {});
   }
 
@@ -238,7 +284,41 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Widget build(BuildContext context) {
     //todo pending is request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
-        productId: widget.productData.productId) ==
+      productId: widget.productData.productId,
+      productColor: ProductColor(
+        colorCode: widget.productData.productVariationColors!.length != 0
+            ? widget.productData.productVariationColors!
+            .elementAt(widget.colorIndex)
+            .colorCode
+            : 0,
+        isActive: widget.productData.productVariationColors!.length != 0
+            ? widget.productData.productVariationColors!
+            .elementAt(widget.colorIndex)
+            .isActive
+            : false,
+      ),
+      productSize: ProductSize(
+          size: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .size
+              : "",
+          mrp: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .mrp
+              : widget.productData.productMrp,
+          sellingPrice: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .sellingPrice
+              : widget.productData.productSellingPrice,
+          isActive: widget.productData.productVariationSizes!.length != 0
+              ? widget.productData.productVariationSizes!
+              .elementAt(widget.sizeIndex)
+              .isActive
+              : false),
+    ) ==
         0
         ? widget.isRounded
         ? SizedBox(
@@ -268,100 +348,315 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         ),
       ),
     )
-        : ElevatedButton(
-      onPressed: () {
-        addToCart();
+        : MeasureSize(
+      onChange: (size) {
+        print(size);
       },
-      child: Text("Add to Cart",
-          style: FontsTheme.boldTextStyle(color: Colors.white)),
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(0),
-        backgroundColor: MaterialStateProperty.all<Color>(
-            Provider
+      child: SizedBox(
+        height: 35,
+        width: 85,
+        child: InkWell(
+          onTap: () {
+            addToCart();
+          },
+          child: Card(
+            color: Provider
                 .of<CustomColor>(context)
-                .appPrimaryMaterialColor),
-        foregroundColor:
-        MaterialStateProperty.all<Color>(Colors.white),
+                .appPrimaryMaterialColor,
+            child: Center(
+              child: Text(
+                "Add to Cart",
+                style: FontsTheme.boldTextStyle(
+                    color: Colors.white, size: 9),
+                maxLines: 1,
+              ),
+            ),
+          ),
+        ),
       ),
     )
         : SizedBox(
       width: 85,
       height: 35,
-      child: Card(
-        elevation: 0,
-        color: Provider
-            .of<CustomColor>(context)
-            .appPrimaryMaterialColor,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {
-                    if (Provider.of<CartDataWrapper>(context,
-                        listen: false)
-                        .getIndividualQuantity(
-                        productId: widget.productData.productId) >
-                        1) {
-                      updateCart((Provider.of<CartDataWrapper>(context,
+      child: MeasureSize(
+        onChange: (size) {
+          print("+1 $size");
+        },
+        child: Card(
+          elevation: 0,
+          color:
+          Provider
+              .of<CustomColor>(context)
+              .appPrimaryMaterialColor,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (Provider.of<CartDataWrapper>(context,
                           listen: false)
                           .getIndividualQuantity(
-                          productId:
-                          widget.productData.productId) -
-                          1));
-                    } else if (Provider.of<CartDataWrapper>(context,
-                        listen: false)
-                        .getIndividualQuantity(
-                        productId:
-                        widget.productData.productId) ==
-                        1) {
-                      deleteCart();
-                    }
-                  },
-                  child: Icon(
-                    Icons.remove,
-                    size: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Consumer<CartDataWrapper>(
-                builder: (context, CartDataWrapper value, child) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      "${value.getIndividualQuantity(productId: widget
-                          .productData.productId)}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
-                          fontFamily: "Poppins"),
+                        productId: widget.productData.productId,
+                        productColor: ProductColor(
+                          colorCode: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .colorCode
+                              : 0,
+                          isActive: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .isActive
+                              : false,
+                        ),
+                        productSize: ProductSize(
+                            size: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .size
+                                : "",
+                            mrp: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .mrp
+                                : widget.productData.productMrp,
+                            sellingPrice: widget.productData
+                                .productVariationSizes!.length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .sellingPrice
+                                : widget.productData.productSellingPrice,
+                            isActive: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .isActive
+                                : false),
+                      ) >
+                          1) {
+                        updateCart((Provider.of<CartDataWrapper>(context,
+                            listen: false)
+                            .getIndividualQuantity(
+                          productId: widget.productData.productId,
+                          productColor: ProductColor(
+                            colorCode: widget.productData
+                                .productVariationColors!.length != 0
+                                ? widget.productData.productVariationColors!
+                                .elementAt(widget.colorIndex)
+                                .colorCode
+                                : 0,
+                            isActive: widget.productData.productVariationColors!
+                                .length != 0
+                                ? widget.productData.productVariationColors!
+                                .elementAt(widget.colorIndex)
+                                .isActive
+                                : false,
+                          ),
+                          productSize: ProductSize(
+                              size: widget.productData.productVariationSizes!
+                                  .length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .size
+                                  : "",
+                              mrp: widget.productData.productVariationSizes!
+                                  .length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .mrp
+                                  : widget.productData.productMrp,
+                              sellingPrice: widget.productData
+                                  .productVariationSizes!.length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .sellingPrice
+                                  : widget.productData.productSellingPrice,
+                              isActive: widget.productData
+                                  .productVariationSizes!.length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .isActive
+                                  : false),
+                        ) -
+                            1));
+                      } else if (Provider.of<CartDataWrapper>(context,
+                          listen: false)
+                          .getIndividualQuantity(
+                        productId: widget.productData.productId,
+                        productColor: ProductColor(
+                          colorCode: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .colorCode
+                              : 0,
+                          isActive: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .isActive
+                              : false,
+                        ),
+                        productSize: ProductSize(
+                            size: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .size
+                                : "",
+                            mrp: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .mrp
+                                : widget.productData.productMrp,
+                            sellingPrice: widget.productData
+                                .productVariationSizes!.length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .sellingPrice
+                                : widget.productData.productSellingPrice,
+                            isActive: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .isActive
+                                : false),
+                      ) ==
+                          1) {
+                        deleteCart();
+                      }
+                    },
+                    child: Icon(
+                      Icons.remove,
+                      size: 18,
+                      color: Colors.white,
                     ),
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: InkWell(
-                  onTap: () {
-                    updateCart(Provider.of<CartDataWrapper>(context,
-                        listen: false)
-                        .getIndividualQuantity(
-                        productId: widget.productData.productId) +
-                        1);
-                  },
-                  child: Icon(
-                    Icons.add,
-                    size: 18,
-                    color: Colors.white,
                   ),
                 ),
-              ),
-            ],
+                Consumer<CartDataWrapper>(
+                  builder: (context, CartDataWrapper value, child) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        "${value.getIndividualQuantity(
+                          productId: widget.productData.productId,
+                          productColor: ProductColor(
+                            colorCode: widget.productData
+                                .productVariationColors!.length != 0
+                                ? widget.productData.productVariationColors!
+                                .elementAt(widget.colorIndex)
+                                .colorCode
+                                : 0,
+                            isActive: widget.productData.productVariationColors!
+                                .length != 0
+                                ? widget.productData.productVariationColors!
+                                .elementAt(widget.colorIndex)
+                                .isActive
+                                : false,
+                          ),
+                          productSize: ProductSize(
+                              size: widget.productData.productVariationSizes!
+                                  .length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .size
+                                  : "",
+                              mrp: widget.productData.productVariationSizes!
+                                  .length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .mrp
+                                  : widget.productData.productMrp,
+                              sellingPrice: widget.productData
+                                  .productVariationSizes!.length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .sellingPrice
+                                  : widget.productData.productSellingPrice,
+                              isActive: widget.productData
+                                  .productVariationSizes!.length != 0
+                                  ? widget.productData.productVariationSizes!
+                                  .elementAt(widget.sizeIndex)
+                                  .isActive
+                                  : false),
+                        )}",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                            fontFamily: "Poppins"),
+                      ),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                    onTap: () {
+                      updateCart(Provider.of<CartDataWrapper>(context,
+                          listen: false)
+                          .getIndividualQuantity(
+                        productId: widget.productData.productId,
+                        productColor: ProductColor(
+                          colorCode: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .colorCode
+                              : 0,
+                          isActive: widget.productData.productVariationColors!
+                              .length != 0
+                              ? widget.productData.productVariationColors!
+                              .elementAt(widget.colorIndex)
+                              .isActive
+                              : false,
+                        ),
+                        productSize: ProductSize(
+                            size: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .size
+                                : "",
+                            mrp: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .mrp
+                                : widget.productData.productMrp,
+                            sellingPrice: widget.productData
+                                .productVariationSizes!.length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .sellingPrice
+                                : widget.productData.productSellingPrice,
+                            isActive: widget.productData.productVariationSizes!
+                                .length != 0
+                                ? widget.productData.productVariationSizes!
+                                .elementAt(widget.sizeIndex)
+                                .isActive
+                                : false),
+                      ) +
+                          1);
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

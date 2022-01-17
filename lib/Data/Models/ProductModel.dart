@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class ProductData {
   ProductData({
     required this.id,
@@ -173,7 +175,7 @@ class CartDetails {
       };
 }
 
-class ProductColor {
+class ProductColor extends Equatable {
   ProductColor({
     required this.colorCode,
     required this.isActive,
@@ -191,9 +193,12 @@ class ProductColor {
         "color_code": colorCode,
         "is_active": isActive,
       };
+
+  @override
+  List<Object?> get props => [colorCode, isActive];
 }
 
-class ProductSize {
+class ProductSize extends Equatable {
   ProductSize({
     required this.size,
     required this.mrp,
@@ -219,56 +224,9 @@ class ProductSize {
         "selling_price": sellingPrice,
         "is_active": isActive,
       };
-}
 
-class ProductVariationColor {
-  ProductVariationColor({
-    required this.colorCode,
-    required this.isActive,
-  });
-
-  String colorCode;
-  bool isActive;
-
-  factory ProductVariationColor.fromJson(Map<String, dynamic> json) =>
-      ProductVariationColor(
-        colorCode: json["color_code"],
-        isActive: json["is_active"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "color_code": colorCode,
-        "is_active": isActive,
-      };
-}
-
-class ProductVariationSize {
-  ProductVariationSize({
-    required this.size,
-    required this.mrp,
-    required this.sellingPrice,
-    required this.isActive,
-  });
-
-  String size;
-  int mrp;
-  int sellingPrice;
-  bool isActive;
-
-  factory ProductVariationSize.fromJson(Map<String, dynamic> json) =>
-      ProductVariationSize(
-        size: json["size"],
-        mrp: json["mrp"],
-        sellingPrice: json["selling_price"],
-        isActive: json["is_active"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "size": size,
-        "mrp": mrp,
-        "selling_price": sellingPrice,
-        "is_active": isActive,
-      };
+  @override
+  List<Object?> get props => [size, mrp, sellingPrice, isActive];
 }
 
 class TaxDetail {

@@ -762,9 +762,9 @@ class _CartScreenState extends State<CartScreen> {
                                               ],
                                             ),
                                             RoundedAddRemove(
-                                              productId: cartProvider
+                                              productData:  cartProvider
                                                   .elementAt(index)
-                                                  .productId,
+                                                  ,
                                               isBulk: cartProvider
                                                   .elementAt(index)
                                                   .isBulk,

@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
@@ -8,6 +7,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -131,22 +131,38 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   widget.productData.bulkPriceList!.length > 0))
                                 Row(
                                   children: [
-                                    Text(
-                                      "\u{20B9}",
-                                      style: TextStyle(
-                                          fontFamily: "",
-                                          fontSize: 12,
-                                          color: Colors.black87),
-                                    ),
-                                    Text(
-                                      "${widget.productData.productSellingPrice} ",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          color: Colors.black87,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: "\u{20B9}",
+                                        style: TextStyle(
+                                            fontFamily: "",
+                                            fontSize: 12,
+                                            color: Colors.black87),
+                                        children: [
+                                          TextSpan(
+                                            text:
+                                                "${widget.productData.productSellingPrice}",
+                                            style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                color: Colors.black87,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
+                                ),
+                              if (!(widget.productData.isRequestPrice ||
+                                  widget.productData.bulkPriceList!.length > 0))
+                                Text(
+                                  "",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: Provider.of<CustomColor>(context)
+                                          .appPrimaryMaterialColor,
+                                      fontSize: 4,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               if (widget.productData.isRequestPrice)
                                 Text(
@@ -254,6 +270,19 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
             style: TextStyle(
                 fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
           );
+        } else if (widget.productData.productVariationSizes!.length != 0 ||
+            widget.productData.productVariationColors!.length != 0) {
+          return context
+                      .watch<CartDataWrapper>()
+                      .getQuantity(widget.productData.productId) >
+                  1
+              ? SizedBox()
+              : AddRemoveButton(
+                  productData: widget.productData,
+                  isRounded: true,
+                  colorIndex: 0,
+                  sizeIndex: 0,
+                );
         } else {
           return AddRemoveButton(
             productData: widget.productData,
