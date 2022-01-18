@@ -50,20 +50,13 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
         Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
               NewCartModel(
                   productId: widget.productData.productId,
-                  productColor: ProductColor(
-                    colorCode: 0,
-                    isActive: false,
-                  ),
+                  productColor:null,
                   productImageUrl: widget.productData.productImageUrl,
                   productQuantity: widget.qty,
                   productMrp: widget.price,
                   productName: "${widget.productData.productName}",
                   productSellingPrice: widget.price,
-                  productSize: ProductSize(
-                      size: "",
-                      mrp: widget.productData.productMrp,
-                      sellingPrice: widget.productData.productSellingPrice,
-                      isActive: false),
+                  productSize: null,
                   isBulk: true,
                   rating: widget.productData.productRatingAverage),
             );
@@ -77,20 +70,13 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
       Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
             NewCartModel(
                 productId: widget.productData.productId,
-                productColor: ProductColor(
-                  colorCode: 0,
-                  isActive: false,
-                ),
+                productColor: null,
                 productImageUrl: widget.productData.productImageUrl,
                 productQuantity: widget.qty,
                 productMrp: widget.price,
                 productName: "${widget.productData.productName}",
                 productSellingPrice: widget.price,
-                productSize: ProductSize(
-                    size: "",
-                    mrp: widget.productData.productMrp,
-                    sellingPrice: widget.productData.productSellingPrice,
-                    isActive: false),
+                productSize: null,
                 isBulk: true,
                 rating: widget.productData.productRatingAverage),
           );

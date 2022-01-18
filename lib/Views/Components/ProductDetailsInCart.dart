@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
@@ -117,7 +118,9 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     Provider.of<CartDataWrapper>(context, listen: false).cartData[index] =
         NewCartModel(
             productId: productData.productId,
-            productColor: ProductColor(
+            productColor: productData.productVariationColors != null
+                && productData.productVariationColors!.length != 0
+                ?ProductColor(
               colorCode: productData.productVariationColors!.length != 0
                   ? productData.productVariationColors!
                       .elementAt(currentIndex)
@@ -128,7 +131,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                       .elementAt(currentIndex)
                       .isActive
                   : false,
-            ),
+            ):null,
             productImageUrl: productData.productImageUrl,
             productQuantity: 1,
             productMrp: productData.productVariationSizes!.length != 0
@@ -440,8 +443,13 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                                   .circular(
                                                                       50.0),
                                                           child: Container(
-                                                              color: Color(
+                                                            decoration: BoxDecoration(
+                                                              color:Color(
                                                                   e.colorCode),
+                                                              borderRadius: BorderRadius.circular(50),
+                                                              border: Border.all(width: 0.5,color: Colors.grey)
+                                                            ),
+
                                                               height: 25,
                                                               width: 25)),
                                                     ),
@@ -580,12 +588,8 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                               ]),
                         ),
                         if (productData.bulkPriceList != null)
-                          ElevatedButton(
-                            onPressed: () {
-                              _updateCartDaetails();
-                            },
-                            child: Text("Update"),
-                          ),
+
+                              AddRemoveButton(productData: productData,colorIndex: currentIndex,isRounded: false,sizeIndex: currentSizeIndex,)
                       ],
                     ),
                   ),

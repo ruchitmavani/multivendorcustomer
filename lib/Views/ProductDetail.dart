@@ -72,7 +72,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
           }
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
-            finalColor = productData.productVariationColors!.first.colorCode;
+               finalColor = productData.productVariationColors!.first.colorCode;
           }
         });
       } else {
@@ -398,8 +398,15 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                         .circular(
                                                                             50.0),
                                                                 child: Container(
-                                                                    color: Color(
-                                                                        e.colorCode),
+                                                                    decoration: BoxDecoration(
+                                                                      color: Color(
+                                                                          e.colorCode),
+                                                                      border: Border.all(color: Colors.grey,width: 0.3),
+                                                                      borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                          50.0),
+                                                                    ),
                                                                     height: 25,
                                                                     width: 25)),
                                                           ),

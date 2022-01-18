@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'CategorySubScreen.dart';
+import 'ProductDetail.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -762,9 +763,9 @@ class _CartScreenState extends State<CartScreen> {
                                               ],
                                             ),
                                             RoundedAddRemove(
-                                              productData:  cartProvider
+                                              productData: cartProvider
                                                   .elementAt(index)
-                                                  ,
+                                              ,
                                               isBulk: cartProvider
                                                   .elementAt(index)
                                                   .isBulk,
@@ -774,15 +775,43 @@ class _CartScreenState extends State<CartScreen> {
                                         SizedBox(
                                           height: 3,
                                         ),
-                                        SizedBox(
-                                          width: 48,
-                                          child: DiscountTag(
-                                              mrp: cartProvider
-                                                  .elementAt(index)
-                                                  .productMrp,
-                                              selling: cartProvider
-                                                  .elementAt(index)
-                                                  .productSellingPrice),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 48,
+                                              child: DiscountTag(
+                                                  mrp: cartProvider
+                                                      .elementAt(index)
+                                                      .productMrp,
+                                                  selling: cartProvider
+                                                      .elementAt(index)
+                                                      .productSellingPrice),
+                                            ),
+                                            if(cartProvider.elementAt(index).productColor != null)
+                                            Container(
+                                              margin: EdgeInsets.only(left: 10),
+                                              height: 20,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                border: Border.all(width: 0.3,color: Colors.grey),
+                                                color: Color(cartProvider.elementAt(index).productColor!.colorCode)
+                                              ),
+                                            ),
+                                            if(cartProvider.elementAt(index).productSize != null)
+                                              Container(
+                                                margin: EdgeInsets.only(left: 10),
+                                                height: 20,
+                                                padding: EdgeInsets.symmetric(horizontal: 6,vertical: 1),
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(5),
+                                                    border: Border.all(width: 1,color: Colors.grey)
+                                                ),
+                                                child: Text("${cartProvider.elementAt(index).productSize!.size}",style:  FontsTheme.subTitleStyle(color: Colors
+                                                    .grey.shade400,size: 10),),
+                                              ),
+                                          ],
                                         )
                                       ],
                                     ),
@@ -1002,25 +1031,27 @@ class _CartScreenState extends State<CartScreen> {
             ),
             Flexible(
               child: InkWell(
-                onTap: () {if(isLoadingCustomer==false){
-                  if (sharedPrefs.customer_id.isEmpty) {
-                    GoRouter.of(context)
-                        .go('/' + storeConcat(PageCollection.login));
-                    return;
+                onTap: () {
+                  if (isLoadingCustomer == false) {
+                    if (sharedPrefs.customer_id.isEmpty) {
+                      GoRouter.of(context)
+                          .go('/' + storeConcat(PageCollection.login));
+                      return;
+                    }
+                    if (Provider
+                        .of<CartDataWrapper>(context, listen: false)
+                        .totalItems >
+                        0) {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return PaymentOptions(
+                            address: customerData.customerAddress
+                                .elementAt(addressIndex),
+                          );
+                        },
+                      ),);
+                    }
                   }
-                  if (Provider
-                      .of<CartDataWrapper>(context, listen: false)
-                      .totalItems >
-                      0) {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return PaymentOptions(
-                          address: customerData.customerAddress
-                              .elementAt(addressIndex),
-                        );
-                      },
-                    ));
-                  }}
                 },
                 child: Container(
                   height: 48,

@@ -34,6 +34,14 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     // updateQuantity();
   }
 
+  getColorValue() {
+
+  }
+
+  getSizeValue() {
+
+  }
+
   Future addToCart() async {
     Provider
         .of<CartDataWrapper>(context, listen: false)
@@ -41,7 +49,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         .add(
       NewCartModel(
           productId: widget.productData.productId,
-          productColor: ProductColor(
+          productColor: widget.productData.productVariationColors != null
+              && widget.productData.productVariationColors!.length != 0
+              ? ProductColor(
             colorCode: widget.productData.productVariationColors!.length != 0
                 ? widget.productData.productVariationColors!
                 .elementAt(widget.colorIndex)
@@ -52,7 +62,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 .elementAt(widget.colorIndex)
                 .isActive
                 : false,
-          ),
+          )
+              : null
+          ,
           productImageUrl: widget.productData.productImageUrl,
           productQuantity: 1,
           productMrp: widget.productData.productVariationSizes!.length != 0
@@ -67,7 +79,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               .elementAt(widget.sizeIndex)
               .sellingPrice
               : widget.productData.productSellingPrice,
-          productSize: ProductSize(
+          productSize: widget.productData.productVariationSizes != null
+              && widget.productData.productVariationSizes!.length != 0
+              ? ProductSize(
               size: widget.productData.productVariationSizes!.length != 0
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
@@ -88,7 +102,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
                   .isActive
-                  : false),
+                  : false)
+              : null
+          ,
           isBulk: false,
           rating: widget.productData.productRatingAverage),
     );
@@ -109,38 +125,44 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
   Future deleteCart() async {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(
-        productId: widget.productData.productId, productSize: ProductSize(
-        size: widget.productData.productVariationSizes!.length != 0
-            ? widget.productData.productVariationSizes!
-            .elementAt(widget.sizeIndex)
-            .size
-            : "",
-        mrp: widget.productData.productVariationSizes!.length != 0
-            ? widget.productData.productVariationSizes!
-            .elementAt(widget.sizeIndex)
-            .mrp
-            : widget.productData.productMrp,
-        sellingPrice: widget.productData.productVariationSizes!.length != 0
-            ? widget.productData.productVariationSizes!
-            .elementAt(widget.sizeIndex)
-            .sellingPrice
-            : widget.productData.productSellingPrice,
-        isActive: widget.productData.productVariationSizes!.length != 0
-            ? widget.productData.productVariationSizes!
-            .elementAt(widget.sizeIndex)
-            .isActive
-            : false), productColor: ProductColor(
-      colorCode: widget.productData.productVariationColors!.length != 0
-          ? widget.productData.productVariationColors!
-          .elementAt(widget.colorIndex)
-          .colorCode
-          : 0,
-      isActive: widget.productData.productVariationColors!.length != 0
-          ? widget.productData.productVariationColors!
-          .elementAt(widget.colorIndex)
-          .isActive
-          : false,
-    ));
+        productId: widget.productData.productId,
+        productSize: widget.productData.productVariationSizes != null
+            && widget.productData.productVariationSizes!.length != 0
+            ? ProductSize(
+            size: widget.productData.productVariationSizes!.length != 0
+                ? widget.productData.productVariationSizes!
+                .elementAt(widget.sizeIndex)
+                .size
+                : "",
+            mrp: widget.productData.productVariationSizes!.length != 0
+                ? widget.productData.productVariationSizes!
+                .elementAt(widget.sizeIndex)
+                .mrp
+                : widget.productData.productMrp,
+            sellingPrice: widget.productData.productVariationSizes!.length != 0
+                ? widget.productData.productVariationSizes!
+                .elementAt(widget.sizeIndex)
+                .sellingPrice
+                : widget.productData.productSellingPrice,
+            isActive: widget.productData.productVariationSizes!.length != 0
+                ? widget.productData.productVariationSizes!
+                .elementAt(widget.sizeIndex)
+                .isActive
+                : false) : null,
+        productColor: widget.productData.productVariationColors != null
+            && widget.productData.productVariationColors!.length != 0
+            ? ProductColor(
+          colorCode: widget.productData.productVariationColors!.length != 0
+              ? widget.productData.productVariationColors!
+              .elementAt(widget.colorIndex)
+              .colorCode
+              : 0,
+          isActive: widget.productData.productVariationColors!.length != 0
+              ? widget.productData.productVariationColors!
+              .elementAt(widget.colorIndex)
+              .isActive
+              : false,
+        ) : null);
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
   }
 
@@ -151,7 +173,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         provider.incrementQuantity(
             quantity: quantity,
             productId: widget.productData.productId,
-            productColor: ProductColor(
+            productColor: widget.productData.productVariationColors != null
+                && widget.productData.productVariationColors!.length != 0
+                ? ProductColor(
               colorCode: widget.productData.productVariationColors!.length != 0
                   ? widget.productData.productVariationColors!
                   .elementAt(widget.colorIndex)
@@ -162,8 +186,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                   .elementAt(widget.colorIndex)
                   .isActive
                   : false,
-            ),
-            productSize: ProductSize(
+            ) : null,
+            productSize: widget.productData.productVariationSizes != null
+                && widget.productData.productVariationSizes!.length != 0
+                ? ProductSize(
                 size: widget.productData.productVariationSizes!.length != 0
                     ? widget.productData.productVariationSizes!
                     .elementAt(widget.sizeIndex)
@@ -184,7 +210,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                     ? widget.productData.productVariationSizes!
                     .elementAt(widget.sizeIndex)
                     .isActive
-                    : false));
+                    : false) : null);
       } else {
         Fluttertoast.showToast(
             msg: "No more left in Stock",
@@ -195,7 +221,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       provider.incrementQuantity(
           quantity: quantity,
           productId: widget.productData.productId,
-          productSize: ProductSize(
+          productSize: widget.productData.productVariationSizes != null
+              && widget.productData.productVariationSizes!.length != 0
+              ? ProductSize(
               size: widget.productData.productVariationSizes!.length != 0
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
@@ -216,8 +244,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                   ? widget.productData.productVariationSizes!
                   .elementAt(widget.sizeIndex)
                   .isActive
-                  : false),
-          productColor: ProductColor(
+                  : false) : null,
+          productColor: widget.productData.productVariationColors != null
+              && widget.productData.productVariationColors!.length != 0
+              ? ProductColor(
             colorCode: widget.productData.productVariationColors!.length != 0
                 ? widget.productData.productVariationColors!
                 .elementAt(widget.colorIndex)
@@ -228,7 +258,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 .elementAt(widget.colorIndex)
                 .isActive
                 : false,
-          ));
+          ) : null);
     }
 
     provider.loadCartData();
@@ -285,7 +315,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     //todo pending is request provide link
     return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
       productId: widget.productData.productId,
-      productColor: ProductColor(
+      productColor: widget.productData.productVariationColors != null
+          && widget.productData.productVariationColors!.length != 0
+          ? ProductColor(
         colorCode: widget.productData.productVariationColors!.length != 0
             ? widget.productData.productVariationColors!
             .elementAt(widget.colorIndex)
@@ -296,8 +328,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
             .elementAt(widget.colorIndex)
             .isActive
             : false,
-      ),
-      productSize: ProductSize(
+      ) : null,
+      productSize: widget.productData.productVariationSizes != null
+          && widget.productData.productVariationSizes!.length != 0
+          ? ProductSize(
           size: widget.productData.productVariationSizes!.length != 0
               ? widget.productData.productVariationSizes!
               .elementAt(widget.sizeIndex)
@@ -317,7 +351,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               ? widget.productData.productVariationSizes!
               .elementAt(widget.sizeIndex)
               .isActive
-              : false),
+              : false) : null,
     ) ==
         0
         ? widget.isRounded
@@ -401,7 +435,12 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                           listen: false)
                           .getIndividualQuantity(
                         productId: widget.productData.productId,
-                        productColor: ProductColor(
+                        productColor: widget.productData
+                            .productVariationColors != null
+                            &&
+                            widget.productData.productVariationColors!.length !=
+                                0
+                            ? ProductColor(
                           colorCode: widget.productData.productVariationColors!
                               .length != 0
                               ? widget.productData.productVariationColors!
@@ -414,8 +453,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               .elementAt(widget.colorIndex)
                               .isActive
                               : false,
-                        ),
-                        productSize: ProductSize(
+                        ) : null,
+                        productSize: widget.productData.productVariationSizes !=
+                            null
+                            &&
+                            widget.productData.productVariationSizes!.length !=
+                                0
+                            ? ProductSize(
                             size: widget.productData.productVariationSizes!
                                 .length != 0
                                 ? widget.productData.productVariationSizes!
@@ -439,14 +483,18 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 ? widget.productData.productVariationSizes!
                                 .elementAt(widget.sizeIndex)
                                 .isActive
-                                : false),
+                                : false) : null,
                       ) >
                           1) {
                         updateCart((Provider.of<CartDataWrapper>(context,
                             listen: false)
                             .getIndividualQuantity(
                           productId: widget.productData.productId,
-                          productColor: ProductColor(
+                          productColor: widget.productData
+                              .productVariationColors != null
+                              && widget.productData.productVariationColors!
+                                  .length != 0
+                              ? ProductColor(
                             colorCode: widget.productData
                                 .productVariationColors!.length != 0
                                 ? widget.productData.productVariationColors!
@@ -459,8 +507,12 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 .elementAt(widget.colorIndex)
                                 .isActive
                                 : false,
-                          ),
-                          productSize: ProductSize(
+                          ) : null,
+                          productSize: widget.productData
+                              .productVariationSizes != null
+                              && widget.productData.productVariationSizes!
+                                  .length != 0
+                              ? ProductSize(
                               size: widget.productData.productVariationSizes!
                                   .length != 0
                                   ? widget.productData.productVariationSizes!
@@ -484,14 +536,19 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                   ? widget.productData.productVariationSizes!
                                   .elementAt(widget.sizeIndex)
                                   .isActive
-                                  : false),
+                                  : false) : null,
                         ) -
                             1));
                       } else if (Provider.of<CartDataWrapper>(context,
                           listen: false)
                           .getIndividualQuantity(
                         productId: widget.productData.productId,
-                        productColor: ProductColor(
+                        productColor: widget.productData
+                            .productVariationColors != null
+                            &&
+                            widget.productData.productVariationColors!.length !=
+                                0
+                            ? ProductColor(
                           colorCode: widget.productData.productVariationColors!
                               .length != 0
                               ? widget.productData.productVariationColors!
@@ -504,8 +561,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               .elementAt(widget.colorIndex)
                               .isActive
                               : false,
-                        ),
-                        productSize: ProductSize(
+                        ) : null,
+                        productSize: widget.productData.productVariationSizes !=
+                            null
+                            &&
+                            widget.productData.productVariationSizes!.length !=
+                                0
+                            ? ProductSize(
                             size: widget.productData.productVariationSizes!
                                 .length != 0
                                 ? widget.productData.productVariationSizes!
@@ -529,7 +591,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 ? widget.productData.productVariationSizes!
                                 .elementAt(widget.sizeIndex)
                                 .isActive
-                                : false),
+                                : false) : null,
                       ) ==
                           1) {
                         deleteCart();
@@ -549,7 +611,11 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                       child: Text(
                         "${value.getIndividualQuantity(
                           productId: widget.productData.productId,
-                          productColor: ProductColor(
+                          productColor: widget.productData
+                              .productVariationColors != null
+                              && widget.productData.productVariationColors!
+                                  .length != 0
+                              ? ProductColor(
                             colorCode: widget.productData
                                 .productVariationColors!.length != 0
                                 ? widget.productData.productVariationColors!
@@ -562,8 +628,12 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 .elementAt(widget.colorIndex)
                                 .isActive
                                 : false,
-                          ),
-                          productSize: ProductSize(
+                          ) : null,
+                          productSize: widget.productData
+                              .productVariationSizes != null
+                              && widget.productData.productVariationSizes!
+                                  .length != 0
+                              ? ProductSize(
                               size: widget.productData.productVariationSizes!
                                   .length != 0
                                   ? widget.productData.productVariationSizes!
@@ -587,7 +657,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                   ? widget.productData.productVariationSizes!
                                   .elementAt(widget.sizeIndex)
                                   .isActive
-                                  : false),
+                                  : false) : null,
                         )}",
                         style: TextStyle(
                             color: Colors.white,
@@ -606,7 +676,12 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                           listen: false)
                           .getIndividualQuantity(
                         productId: widget.productData.productId,
-                        productColor: ProductColor(
+                        productColor: widget.productData
+                            .productVariationColors != null
+                            &&
+                            widget.productData.productVariationColors!.length !=
+                                0
+                            ? ProductColor(
                           colorCode: widget.productData.productVariationColors!
                               .length != 0
                               ? widget.productData.productVariationColors!
@@ -619,8 +694,13 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               .elementAt(widget.colorIndex)
                               .isActive
                               : false,
-                        ),
-                        productSize: ProductSize(
+                        ) : null,
+                        productSize: widget.productData.productVariationSizes !=
+                            null
+                            &&
+                            widget.productData.productVariationSizes!.length !=
+                                0
+                            ? ProductSize(
                             size: widget.productData.productVariationSizes!
                                 .length != 0
                                 ? widget.productData.productVariationSizes!
@@ -644,7 +724,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 ? widget.productData.productVariationSizes!
                                 .elementAt(widget.sizeIndex)
                                 .isActive
-                                : false),
+                                : false) : null,
                       ) +
                           1);
                     },
