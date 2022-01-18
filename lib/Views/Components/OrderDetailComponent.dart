@@ -319,32 +319,57 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      widget.orderItem.updatedQuantity != null
+                      Row(mainAxisAlignment: MainAxisAlignment.start,children: [ widget.orderItem.updatedQuantity != null
                           ? Row(
-                              children: [
-                                Text("Qty : ",
-                                    style: FontsTheme.descriptionText(
-                                        fontWeight: FontWeight.w500)),
-                                Text("${widget.orderItem.productQuantity}",
-                                    style: FontsTheme.descriptionText(
-                                            fontWeight: FontWeight.w500)
-                                        .copyWith(
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                            decorationColor:
-                                                Provider.of<CustomColor>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
-                                            decorationThickness: 3)),
-                                Text(" ${widget.orderItem.updatedQuantity}  ",
-                                    style: FontsTheme.descriptionText(
-                                        fontWeight: FontWeight.w500)),
-                                UpdatedLabel(),
-                              ],
-                            )
-                          : Text("Qty : $qty",
+                        children: [
+                          Text("Qty : ",
                               style: FontsTheme.descriptionText(
                                   fontWeight: FontWeight.w500)),
+                          Text("${widget.orderItem.productQuantity}",
+                              style: FontsTheme.descriptionText(
+                                  fontWeight: FontWeight.w500)
+                                  .copyWith(
+                                  decoration:
+                                  TextDecoration.lineThrough,
+                                  decorationColor:
+                                  Provider.of<CustomColor>(
+                                      context)
+                                      .appPrimaryMaterialColor,
+                                  decorationThickness: 3)),
+                          Text(" ${widget.orderItem.updatedQuantity}  ",
+                              style: FontsTheme.descriptionText(
+                                  fontWeight: FontWeight.w500)),
+                          UpdatedLabel(),
+                        ],
+                      )
+                          : Text("Qty : $qty",
+                          style: FontsTheme.descriptionText(
+                              fontWeight: FontWeight.w500)),
+
+                        if(widget.orderItem.productColor!=null)
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            height: 17,
+                            width: 17,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(width: 0.3,color: Colors.grey),
+                                color: Color(widget.orderItem.productColor!.colorCode)
+                            ),
+                          ),
+                        if(widget.orderItem.productSize!=null)
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            height: 20,
+                            padding: EdgeInsets.symmetric(horizontal: 6,vertical: 1),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(width: 1,color: Colors.grey)
+                            ),
+                            child: Text("${widget.orderItem.productSize!.size}",style:  FontsTheme.subTitleStyle(color: Colors
+                                .grey.shade400,size: 10),),
+                          ),],),
+
                       widget.orderItem.isReject == true
                           ? RejectedLabel()
                           : Row(

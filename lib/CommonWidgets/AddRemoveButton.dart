@@ -382,67 +382,112 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         ),
       ),
     )
-        : MeasureSize(
-      onChange: (size) {
-        print(size);
-      },
-      child: SizedBox(
-        height: 35,
-        width: 85,
-        child: InkWell(
-          onTap: () {
-            addToCart();
-          },
-          child: Card(
-            color: Provider
-                .of<CustomColor>(context)
-                .appPrimaryMaterialColor,
-            child: Center(
-              child: Text(
-                "Add to Cart",
-                style: FontsTheme.boldTextStyle(
-                    color: Colors.white, size: 9),
-                maxLines: 1,
+        : SizedBox(
+          height: 35,
+          width: 85,
+          child: InkWell(
+            onTap: () {
+              addToCart();
+            },
+            child: Card(
+              color: Provider
+                  .of<CustomColor>(context)
+                  .appPrimaryMaterialColor,
+              child: Center(
+                child: Text(
+                  "Add to Cart",
+                  style: FontsTheme.boldTextStyle(
+                      color: Colors.white, size: 9),
+                  maxLines: 1,
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    )
+        )
         : SizedBox(
       width: 85,
       height: 35,
-      child: MeasureSize(
-        onChange: (size) {
-          print("+1 $size");
-        },
-        child: Card(
-          elevation: 0,
-          color:
-          Provider
-              .of<CustomColor>(context)
-              .appPrimaryMaterialColor,
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: InkWell(
-                    onTap: () {
-                      if (Provider.of<CartDataWrapper>(context,
+      child: Card(
+        elevation: 0,
+        color:
+        Provider
+            .of<CustomColor>(context)
+            .appPrimaryMaterialColor,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    if (Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                      productId: widget.productData.productId,
+                      productColor: widget.productData
+                          .productVariationColors != null
+                          &&
+                          widget.productData.productVariationColors!.length !=
+                              0
+                          ? ProductColor(
+                        colorCode: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .colorCode
+                            : 0,
+                        isActive: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .isActive
+                            : false,
+                      ) : null,
+                      productSize: widget.productData.productVariationSizes !=
+                          null
+                          &&
+                          widget.productData.productVariationSizes!.length !=
+                              0
+                          ? ProductSize(
+                          size: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .size
+                              : "",
+                          mrp: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .mrp
+                              : widget.productData.productMrp,
+                          sellingPrice: widget.productData
+                              .productVariationSizes!.length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .sellingPrice
+                              : widget.productData.productSellingPrice,
+                          isActive: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .isActive
+                              : false) : null,
+                    ) >
+                        1) {
+                      updateCart((Provider.of<CartDataWrapper>(context,
                           listen: false)
                           .getIndividualQuantity(
                         productId: widget.productData.productId,
                         productColor: widget.productData
                             .productVariationColors != null
-                            &&
-                            widget.productData.productVariationColors!.length !=
-                                0
+                            && widget.productData.productVariationColors!
+                                .length != 0
                             ? ProductColor(
-                          colorCode: widget.productData.productVariationColors!
-                              .length != 0
+                          colorCode: widget.productData
+                              .productVariationColors!.length != 0
                               ? widget.productData.productVariationColors!
                               .elementAt(widget.colorIndex)
                               .colorCode
@@ -454,11 +499,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               .isActive
                               : false,
                         ) : null,
-                        productSize: widget.productData.productVariationSizes !=
-                            null
-                            &&
-                            widget.productData.productVariationSizes!.length !=
-                                0
+                        productSize: widget.productData
+                            .productVariationSizes != null
+                            && widget.productData.productVariationSizes!
+                                .length != 0
                             ? ProductSize(
                             size: widget.productData.productVariationSizes!
                                 .length != 0
@@ -478,212 +522,93 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 .elementAt(widget.sizeIndex)
                                 .sellingPrice
                                 : widget.productData.productSellingPrice,
-                            isActive: widget.productData.productVariationSizes!
-                                .length != 0
-                                ? widget.productData.productVariationSizes!
-                                .elementAt(widget.sizeIndex)
-                                .isActive
-                                : false) : null,
-                      ) >
-                          1) {
-                        updateCart((Provider.of<CartDataWrapper>(context,
-                            listen: false)
-                            .getIndividualQuantity(
-                          productId: widget.productData.productId,
-                          productColor: widget.productData
-                              .productVariationColors != null
-                              && widget.productData.productVariationColors!
-                                  .length != 0
-                              ? ProductColor(
-                            colorCode: widget.productData
-                                .productVariationColors!.length != 0
-                                ? widget.productData.productVariationColors!
-                                .elementAt(widget.colorIndex)
-                                .colorCode
-                                : 0,
-                            isActive: widget.productData.productVariationColors!
-                                .length != 0
-                                ? widget.productData.productVariationColors!
-                                .elementAt(widget.colorIndex)
-                                .isActive
-                                : false,
-                          ) : null,
-                          productSize: widget.productData
-                              .productVariationSizes != null
-                              && widget.productData.productVariationSizes!
-                                  .length != 0
-                              ? ProductSize(
-                              size: widget.productData.productVariationSizes!
-                                  .length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .size
-                                  : "",
-                              mrp: widget.productData.productVariationSizes!
-                                  .length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .mrp
-                                  : widget.productData.productMrp,
-                              sellingPrice: widget.productData
-                                  .productVariationSizes!.length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .sellingPrice
-                                  : widget.productData.productSellingPrice,
-                              isActive: widget.productData
-                                  .productVariationSizes!.length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .isActive
-                                  : false) : null,
-                        ) -
-                            1));
-                      } else if (Provider.of<CartDataWrapper>(context,
-                          listen: false)
-                          .getIndividualQuantity(
-                        productId: widget.productData.productId,
-                        productColor: widget.productData
-                            .productVariationColors != null
-                            &&
-                            widget.productData.productVariationColors!.length !=
-                                0
-                            ? ProductColor(
-                          colorCode: widget.productData.productVariationColors!
-                              .length != 0
-                              ? widget.productData.productVariationColors!
-                              .elementAt(widget.colorIndex)
-                              .colorCode
-                              : 0,
-                          isActive: widget.productData.productVariationColors!
-                              .length != 0
-                              ? widget.productData.productVariationColors!
-                              .elementAt(widget.colorIndex)
-                              .isActive
-                              : false,
-                        ) : null,
-                        productSize: widget.productData.productVariationSizes !=
-                            null
-                            &&
-                            widget.productData.productVariationSizes!.length !=
-                                0
-                            ? ProductSize(
-                            size: widget.productData.productVariationSizes!
-                                .length != 0
-                                ? widget.productData.productVariationSizes!
-                                .elementAt(widget.sizeIndex)
-                                .size
-                                : "",
-                            mrp: widget.productData.productVariationSizes!
-                                .length != 0
-                                ? widget.productData.productVariationSizes!
-                                .elementAt(widget.sizeIndex)
-                                .mrp
-                                : widget.productData.productMrp,
-                            sellingPrice: widget.productData
+                            isActive: widget.productData
                                 .productVariationSizes!.length != 0
                                 ? widget.productData.productVariationSizes!
                                 .elementAt(widget.sizeIndex)
-                                .sellingPrice
-                                : widget.productData.productSellingPrice,
-                            isActive: widget.productData.productVariationSizes!
-                                .length != 0
-                                ? widget.productData.productVariationSizes!
-                                .elementAt(widget.sizeIndex)
                                 .isActive
                                 : false) : null,
-                      ) ==
-                          1) {
-                        deleteCart();
-                      }
-                    },
-                    child: Icon(
-                      Icons.remove,
-                      size: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Consumer<CartDataWrapper>(
-                  builder: (context, CartDataWrapper value, child) {
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "${value.getIndividualQuantity(
-                          productId: widget.productData.productId,
-                          productColor: widget.productData
-                              .productVariationColors != null
-                              && widget.productData.productVariationColors!
-                                  .length != 0
-                              ? ProductColor(
-                            colorCode: widget.productData
-                                .productVariationColors!.length != 0
-                                ? widget.productData.productVariationColors!
-                                .elementAt(widget.colorIndex)
-                                .colorCode
-                                : 0,
-                            isActive: widget.productData.productVariationColors!
-                                .length != 0
-                                ? widget.productData.productVariationColors!
-                                .elementAt(widget.colorIndex)
-                                .isActive
-                                : false,
-                          ) : null,
-                          productSize: widget.productData
-                              .productVariationSizes != null
-                              && widget.productData.productVariationSizes!
-                                  .length != 0
-                              ? ProductSize(
-                              size: widget.productData.productVariationSizes!
-                                  .length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .size
-                                  : "",
-                              mrp: widget.productData.productVariationSizes!
-                                  .length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .mrp
-                                  : widget.productData.productMrp,
-                              sellingPrice: widget.productData
-                                  .productVariationSizes!.length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .sellingPrice
-                                  : widget.productData.productSellingPrice,
-                              isActive: widget.productData
-                                  .productVariationSizes!.length != 0
-                                  ? widget.productData.productVariationSizes!
-                                  .elementAt(widget.sizeIndex)
-                                  .isActive
-                                  : false) : null,
-                        )}",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                            fontFamily: "Poppins"),
-                      ),
-                    );
+                      ) -
+                          1));
+                    } else if (Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                      productId: widget.productData.productId,
+                      productColor: widget.productData
+                          .productVariationColors != null
+                          &&
+                          widget.productData.productVariationColors!.length !=
+                              0
+                          ? ProductColor(
+                        colorCode: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .colorCode
+                            : 0,
+                        isActive: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .isActive
+                            : false,
+                      ) : null,
+                      productSize: widget.productData.productVariationSizes !=
+                          null
+                          &&
+                          widget.productData.productVariationSizes!.length !=
+                              0
+                          ? ProductSize(
+                          size: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .size
+                              : "",
+                          mrp: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .mrp
+                              : widget.productData.productMrp,
+                          sellingPrice: widget.productData
+                              .productVariationSizes!.length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .sellingPrice
+                              : widget.productData.productSellingPrice,
+                          isActive: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .isActive
+                              : false) : null,
+                    ) ==
+                        1) {
+                      deleteCart();
+                    }
                   },
+                  child: Icon(
+                    Icons.remove,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: InkWell(
-                    onTap: () {
-                      updateCart(Provider.of<CartDataWrapper>(context,
-                          listen: false)
-                          .getIndividualQuantity(
+              ),
+              Consumer<CartDataWrapper>(
+                builder: (context, CartDataWrapper value, child) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      "${value.getIndividualQuantity(
                         productId: widget.productData.productId,
                         productColor: widget.productData
                             .productVariationColors != null
-                            &&
-                            widget.productData.productVariationColors!.length !=
-                                0
+                            && widget.productData.productVariationColors!
+                                .length != 0
                             ? ProductColor(
-                          colorCode: widget.productData.productVariationColors!
-                              .length != 0
+                          colorCode: widget.productData
+                              .productVariationColors!.length != 0
                               ? widget.productData.productVariationColors!
                               .elementAt(widget.colorIndex)
                               .colorCode
@@ -695,11 +620,10 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               .isActive
                               : false,
                         ) : null,
-                        productSize: widget.productData.productVariationSizes !=
-                            null
-                            &&
-                            widget.productData.productVariationSizes!.length !=
-                                0
+                        productSize: widget.productData
+                            .productVariationSizes != null
+                            && widget.productData.productVariationSizes!
+                                .length != 0
                             ? ProductSize(
                             size: widget.productData.productVariationSizes!
                                 .length != 0
@@ -719,24 +643,90 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 .elementAt(widget.sizeIndex)
                                 .sellingPrice
                                 : widget.productData.productSellingPrice,
-                            isActive: widget.productData.productVariationSizes!
-                                .length != 0
+                            isActive: widget.productData
+                                .productVariationSizes!.length != 0
                                 ? widget.productData.productVariationSizes!
                                 .elementAt(widget.sizeIndex)
                                 .isActive
                                 : false) : null,
-                      ) +
-                          1);
-                    },
-                    child: Icon(
-                      Icons.add,
-                      size: 18,
-                      color: Colors.white,
+                      )}",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                          fontFamily: "Poppins"),
                     ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: InkWell(
+                  onTap: () {
+                    updateCart(Provider.of<CartDataWrapper>(context,
+                        listen: false)
+                        .getIndividualQuantity(
+                      productId: widget.productData.productId,
+                      productColor: widget.productData
+                          .productVariationColors != null
+                          &&
+                          widget.productData.productVariationColors!.length !=
+                              0
+                          ? ProductColor(
+                        colorCode: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .colorCode
+                            : 0,
+                        isActive: widget.productData.productVariationColors!
+                            .length != 0
+                            ? widget.productData.productVariationColors!
+                            .elementAt(widget.colorIndex)
+                            .isActive
+                            : false,
+                      ) : null,
+                      productSize: widget.productData.productVariationSizes !=
+                          null
+                          &&
+                          widget.productData.productVariationSizes!.length !=
+                              0
+                          ? ProductSize(
+                          size: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .size
+                              : "",
+                          mrp: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .mrp
+                              : widget.productData.productMrp,
+                          sellingPrice: widget.productData
+                              .productVariationSizes!.length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .sellingPrice
+                              : widget.productData.productSellingPrice,
+                          isActive: widget.productData.productVariationSizes!
+                              .length != 0
+                              ? widget.productData.productVariationSizes!
+                              .elementAt(widget.sizeIndex)
+                              .isActive
+                              : false) : null,
+                    ) +
+                        1);
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 18,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

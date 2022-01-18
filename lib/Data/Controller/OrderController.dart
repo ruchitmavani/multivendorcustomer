@@ -56,7 +56,7 @@ class OrderController {
       required List<NewCartModel> orders,
       required double couponAmount,
       required double taxAmount,
-        required double taxPercentage,
+      required double taxPercentage,
       required String couponId,
       required CustomerAddress address}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
@@ -66,17 +66,17 @@ class OrderController {
     List<AddOrder> productList = [];
     for (int i = 0; i < orders.length; i++) {
       print(i);
-      productList.add(orders.elementAt(i).productSize!.size == "" &&
-              orders.elementAt(i).productColor!.colorCode == 0
+      productList.add(orders.elementAt(i).productSize == null &&
+              orders.elementAt(i).productColor == null
           ? AddOrder(
               productId: orders.elementAt(i).productId,
               productQuantity: orders.elementAt(i).productQuantity)
-          : orders.elementAt(i).productSize!.size == ""
+          : orders.elementAt(i).productSize == null
               ? AddOrder(
                   productId: orders.elementAt(i).productId,
                   productColor: orders.elementAt(i).productColor,
                   productQuantity: orders.elementAt(i).productQuantity)
-              : orders.elementAt(i).productColor!.colorCode == 0
+              : orders.elementAt(i).productColor == null
                   ? AddOrder(
                       productId: orders.elementAt(i).productId,
                       productSize: orders.elementAt(i).productSize,
@@ -100,7 +100,7 @@ class OrderController {
             "item_total_amount": totalAmount,
             "delivery_charges": deliveryCharge,
             "tax_amount": taxAmount,
-      "tax_percentage" : taxPercentage,
+            "tax_percentage": taxPercentage,
             "coupon_amount": couponAmount,
             "delivery_address": address.toJson(),
           }
@@ -178,7 +178,8 @@ class OrderController {
   }
 
   /*-----------Reject Order -----------*/
-  static Future<ResponseClass> rejectOrder({required String orderId,required String reason}) async {
+  static Future<ResponseClass> rejectOrder(
+      {required String orderId, required String reason}) async {
     String url = StringConstants.api_url + StringConstants.reject_order;
 
     //body Data
