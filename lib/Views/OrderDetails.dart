@@ -548,7 +548,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text("Accept Order?"),
+                        child: Text("Accept changes?"),
                       ),
                       OutlinedButton(
                         child: Text("No"),
