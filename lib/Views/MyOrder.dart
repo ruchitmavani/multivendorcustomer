@@ -23,8 +23,9 @@ class _MyOrderState extends State<MyOrder> {
     });
     await OrderController.getOrder("${sharedPrefs.customer_id}").then((value) {
       if (value.success) {
+        orderData = value.data!;
+
         setState(() {
-          orderData = value.data!;
           isLoading = false;
         });
       } else {
@@ -110,7 +111,6 @@ class _MyOrderState extends State<MyOrder> {
                 : ListView.builder(
                     itemCount: orderData.length,
                     itemBuilder: (BuildContext context, int index) {
-                      index = orderData.length - 1 - index;
                       return OrderComponent(
                           orderData: orderData.elementAt(index));
                     },

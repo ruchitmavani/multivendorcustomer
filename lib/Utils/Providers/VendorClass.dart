@@ -11,7 +11,7 @@ class VendorModelWrapper with ChangeNotifier {
   bool isLoaded = false;
   String isShopOpen = "";
 
-  Future<bool?> loadVendorData(String vendorId) async {
+  Future<bool> loadVendorData(String vendorId) async {
     bool res = false;
     isLoaded = false;
     await VendorController.getVendorData(vendorId: vendorId).then((value) {
@@ -37,12 +37,15 @@ class VendorModelWrapper with ChangeNotifier {
             vendorModel!.taxDetails.map((e) => e.taxName.toString()).toList();
         isShopOpen = getShopTimingStatus();
         res = true;
+        return res;
       } else {
         res = false;
+        return res;
       }
     }, onError: (e) {
       print(e);
       res = false;
+      return res;
     });
     return res;
   }

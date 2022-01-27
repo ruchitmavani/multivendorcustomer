@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:typed_data';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -258,6 +259,41 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Divider(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Text(
+                              " Approx Delivery Time: ",
+                              style: FontsTheme.valueStyle(
+                                fontWeight: FontWeight.w400,
+                                size: 12,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 6),
+                            padding:
+                                EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                            decoration: BoxDecoration(
+                                color: Colors.black12,
+                                borderRadius: BorderRadius.circular(40)),
+                            child: Text(
+                              "${widget.orderData.deliveryApproxTime}",
+                              style: FontsTheme.valueStyle(
+                                fontWeight: FontWeight.w400,
+                                size: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0, top: 6),
                       child: Text(

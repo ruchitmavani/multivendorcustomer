@@ -89,7 +89,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             Icons.list_sharp,
                           ),
                           onTap: () {
-                            GoRouter.of(context).push(
+                            GoRouter.of(context).go(
                                 '/' + storeConcat(PageCollection.myOrders),);
                           }),
                       ListTile(
