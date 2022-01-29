@@ -259,6 +259,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Divider(),
+                    if(widget.orderData.orderStatus.last.toLowerCase()=="accepted"||widget.orderData.orderStatus.last.toLowerCase()=="ready"||widget.orderData.orderStatus.last.toLowerCase()=="dispatched")
                     Padding(
                       padding: const EdgeInsets.only(top: 6.0),
                       child: Row(
