@@ -18,6 +18,9 @@ import 'package:multi_vendor_customer/Views/LoginScreen.dart';
 import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
+import 'package:multi_vendor_customer/Views/policy_pages/privacy_policy.dart';
+import 'package:multi_vendor_customer/Views/policy_pages/refund_policy.dart';
+import 'package:multi_vendor_customer/Views/policy_pages/terms_of_service.dart';
 import 'package:provider/provider.dart';
 
 import 'Data/Models/OrderDataModel.dart';
@@ -218,6 +221,27 @@ class _MyAppState extends State<MyApp> {
               pageBuilder: (context, state) => MaterialPage<void>(
                 key: state.pageKey,
                 child: MyAccount(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.privacyPolicy,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: PrivacyPolicy(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.refundPolicy,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: RefundPolicy(),
+              ),
+            ),
+            GoRoute(
+              path: PageCollection.termsOfUse,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: TermsOfUse(),
               ),
             ),
           ]),

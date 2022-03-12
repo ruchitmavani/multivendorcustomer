@@ -90,16 +90,57 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           onTap: () {
                             GoRouter.of(context).go(
-                                '/' + storeConcat(PageCollection.myOrders),);
+                              '/' + storeConcat(PageCollection.myOrders),
+                            );
                           }),
                       ListTile(
-                          title: Text("My Account"),
-                          leading: Icon(Icons.account_circle),
-                          enabled: true,
-                          onTap: () {
-                            GoRouter.of(context).push(
-                                '/' + storeConcat(PageCollection.myAccount));
-                          },),
+                        title: Text("My Account"),
+                        leading: Icon(Icons.account_circle),
+                        enabled: true,
+                        onTap: () {
+                          GoRouter.of(context).push(
+                              '/' + storeConcat(PageCollection.myAccount));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Privacy Policy"),
+                        leading: Icon(
+                          Icons.privacy_tip,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context).go(
+                              '/' + storeConcat(PageCollection.privacyPolicy));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Refund Policy"),
+                        leading: Icon(
+                          Icons.settings_backup_restore,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context).go(
+                              '/' + storeConcat(PageCollection.refundPolicy));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Terms of Service"),
+                        leading: Icon(
+                          Icons.description,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context)
+                              .go('/' + storeConcat(PageCollection.termsOfUse));
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -108,14 +149,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   height: 45,
                   child: TextButton.icon(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xFFB14040).withAlpha(30),),),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Color(0xFFB14040).withAlpha(30),
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                       sharedPrefs.logout();
-                      setState(() {
-                        isLoggedin = false;
-                      },);
+                      setState(
+                        () {
+                          isLoggedin = false;
+                        },
+                      );
                       GoRouter.of(context).push('/' + sharedPrefs.storeLink);
                     },
                     label: Text(
@@ -181,6 +226,45 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           }
                           GoRouter.of(context)
                               .go('/' + storeConcat(PageCollection.login));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Privacy Policy"),
+                        leading: Icon(
+                          Icons.privacy_tip,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context).go(
+                              '/' + storeConcat(PageCollection.privacyPolicy));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Refund Policy"),
+                        leading: Icon(
+                          Icons.settings_backup_restore,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context).go(
+                              '/' + storeConcat(PageCollection.refundPolicy));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Terms of Service"),
+                        leading: Icon(
+                          Icons.description,
+                        ),
+                        onTap: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          GoRouter.of(context)
+                              .go('/' + storeConcat(PageCollection.termsOfUse));
                         },
                       ),
                     ],
