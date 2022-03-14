@@ -1,6 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocode/geocode.dart' as geo;
+import 'package:google_geocoding/google_geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart' as loc;
+import 'package:location/location.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
@@ -8,34 +15,85 @@ import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:provider/provider.dart';
 
-class Location extends StatefulWidget {
-  const Location({Key? key}) : super(key: key);
+class LocationScreen extends StatefulWidget {
+  const LocationScreen({Key? key}) : super(key: key);
 
   @override
-  _LocationState createState() => _LocationState();
+  _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _LocationState extends State<Location> {
+class _LocationScreenState extends State<LocationScreen> {
   final GlobalKey<FormState> _addressKey = GlobalKey();
 
-  TextEditingController subAddress = TextEditingController();
+  TextEditingController houseNo = TextEditingController();
   TextEditingController area = TextEditingController();
   TextEditingController city = TextEditingController();
-  TextEditingController pincode = TextEditingController();
+  TextEditingController pinCode = TextEditingController();
 
-  _saveAdress(Address address) async {
+  _saveAddress(Address address) async {
     if (addressList.contains(address)) {
-      Fluttertoast.showToast(msg: "Address Already Exist",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+      Fluttertoast.showToast(
+          msg: "Address Already Exist",
+          webPosition: "center",
+          webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     } else {
       addressList.add(address);
       print("$address");
-      if(Navigator.canPop(context))
-        Navigator.pop(context);
+      if (Navigator.canPop(context)) Navigator.pop(context);
     }
   }
 
   int defaultChoiceIndex = 0;
   List<String> _choicesList = ['Home', 'Work', 'Other'];
+
+  bool isLocationLoaded = false;
+
+  //for showing google map
+  Completer<GoogleMapController> _controller = Completer();
+  late CameraPosition _kGooglePlex;
+
+  var googleGeocoding = GoogleGeocoding("AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc");
+
+  //get users location
+  loc.Location location = new loc.Location();
+
+  _getUsersLoaction() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    print(_locationData);
+
+    setState(() {
+      _kGooglePlex = CameraPosition(
+        target: LatLng(_locationData.latitude!, _locationData.longitude!),
+        zoom: 18,
+      );
+      isLocationLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUsersLoaction();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +107,34 @@ class _LocationState extends State<Location> {
                 Container(
                   color: Colors.grey.shade300,
                   height: MediaQuery.of(context).size.height / 1.6,
-                  child: Image.network(
-                    "https://www.smcrealty.com/images/microsites/location-map/mantri-serenity-251.jpg",
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
+                  child: isLocationLoaded
+                      ? GoogleMap(
+                          mapType: MapType.hybrid,
+                          initialCameraPosition: _kGooglePlex,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                          myLocationEnabled: true,
+                          onTap: (value) async {
+                            var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
+                            print(risult?.results![0].addressComponents![0].shortName);
+                            if (risult.streetNumber != null) {
+                              houseNo.text = risult.streetNumber.toString();
+                            }
+                            if (risult.streetAddress != null) {
+                             area.text  = risult.streetAddress!;
+                            }
+                            if (risult.city != null) {
+                              city.text = risult.city!;
+                            }
+                            if (risult.postal != null) {
+                              pinCode.text = risult. postal!;
+                            }
+                          },
+                        )
+                      : Center(
+                          child: Text("Map is loading"),
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -82,12 +163,15 @@ class _LocationState extends State<Location> {
                                     .textTheme
                                     .bodyText2!
                                     .copyWith(
-                                      color: defaultChoiceIndex == index? Colors.white:Colors.grey.shade600,
+                                      color: defaultChoiceIndex == index
+                                          ? Colors.white
+                                          : Colors.grey.shade600,
                                       fontSize: 12,
                                     ),
                               ),
                               selected: defaultChoiceIndex == index,
-                              selectedColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                              selectedColor: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor,
                               onSelected: (value) {
                                 setState(() {
                                   defaultChoiceIndex =
@@ -106,15 +190,14 @@ class _LocationState extends State<Location> {
                               return "enter flat no. and society name";
                           },
                           maxLines: 1,
-                          controller: subAddress,
+                          controller: houseNo,
                         ),
                         MyTextFormField(
                           hintText: "area",
                           maxLines: 1,
                           controller: area,
-                          validator: (value){
-                            if(value!.isEmpty)
-                              return "enter area";
+                          validator: (value) {
+                            if (value!.isEmpty) return "enter area";
                           },
                         ),
                         Row(
@@ -148,7 +231,7 @@ class _LocationState extends State<Location> {
                                       RegExp(r'[0-9]')),
                                 ],
                                 maxLines: 1,
-                                controller: pincode,
+                                controller: pinCode,
                               ),
                             ),
                           ],
@@ -208,8 +291,6 @@ class _LocationState extends State<Location> {
               elevation: 0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),
-              /* side: BorderSide(
-                    width: 0.8, color: Colors.deepPurpleAccent.shade200),*/
             ),
             child: Text(
               "Save",
@@ -220,19 +301,17 @@ class _LocationState extends State<Location> {
             ),
             onPressed: () {
               if (_addressKey.currentState!.validate()) {
-                _saveAdress(
+                _saveAddress(
                   Address(
                     type: _choicesList.elementAt(defaultChoiceIndex),
-                    subAddress: subAddress.text,
+                    subAddress: houseNo.text,
                     area: area.text,
                     city: city.text,
-                    pinCode: int.parse(pincode.text),
+                    pinCode: int.parse(pinCode.text),
                   ),
                 );
               }
             },
-            /* backgroundColor:
-                    MaterialStateProperty.all(Colors.deepPurpleAccent.shade200),*/
           ),
         ),
       ),

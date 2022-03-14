@@ -89,7 +89,7 @@ class PrivacyPolicy extends StatelessWidget {
                 ),
                 PolicyParagraph(
                   txt:
-                      "If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at we3magicllp@gmail.com or by mail at 451, Mint St, Sowcarpet, Chennai-79\n\n[Re: Privacy Compliance Officer]\n\n[451, Mint St, Sowcarpet, Chennai-79 India]\n\n___",
+                      "If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at we3magicllp@gmail.com or by mail at 451, Mint St, Sowcarpet, Chennai-79\n\n[Re: Privacy Compliance Officer]\n\n451, Mint St, Sowcarpet, Chennai-79 India\n\n___",
                 )
               ],
             ),

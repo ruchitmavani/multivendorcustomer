@@ -33,6 +33,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return isLoggedin
         ? Drawer(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
@@ -102,48 +103,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               '/' + storeConcat(PageCollection.myAccount));
                         },
                       ),
-                      ListTile(
-                        title: Text("Privacy Policy"),
-                        leading: Icon(
-                          Icons.privacy_tip,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context).go(
-                              '/' + storeConcat(PageCollection.privacyPolicy));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Refund Policy"),
-                        leading: Icon(
-                          Icons.settings_backup_restore,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context).go(
-                              '/' + storeConcat(PageCollection.refundPolicy));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Terms of Service"),
-                        leading: Icon(
-                          Icons.description,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context)
-                              .go('/' + storeConcat(PageCollection.termsOfUse));
-                        },
-                      ),
                     ],
                   ),
                 ),
+                Spacer(),
+                PolicyButton(
+                    name: "Privacy Policy",
+                    navigatePage: PageCollection.privacyPolicy),
+                PolicyButton(
+                    name: "Refund Policy",
+                    navigatePage: PageCollection.refundPolicy),
+                PolicyButton(
+                    name: "Terms and Conditions",
+                    navigatePage: PageCollection.termsAndCondition),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 45,
@@ -181,6 +153,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           )
         : Drawer(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
@@ -228,50 +201,51 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               .go('/' + storeConcat(PageCollection.login));
                         },
                       ),
-                      ListTile(
-                        title: Text("Privacy Policy"),
-                        leading: Icon(
-                          Icons.privacy_tip,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context).go(
-                              '/' + storeConcat(PageCollection.privacyPolicy));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Refund Policy"),
-                        leading: Icon(
-                          Icons.settings_backup_restore,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context).go(
-                              '/' + storeConcat(PageCollection.refundPolicy));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Terms of Service"),
-                        leading: Icon(
-                          Icons.description,
-                        ),
-                        onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          GoRouter.of(context)
-                              .go('/' + storeConcat(PageCollection.termsOfUse));
-                        },
-                      ),
                     ],
                   ),
                 ),
+                Spacer(),
+                PolicyButton(
+                    name: "Privacy Policy",
+                    navigatePage: PageCollection.privacyPolicy),
+                PolicyButton(
+                    name: "Refund Policy",
+                    navigatePage: PageCollection.refundPolicy),
+                PolicyButton(
+                    name: "Terms and Conditions",
+                    navigatePage: PageCollection.termsAndCondition),
               ],
             ),
           );
+  }
+}
+
+class PolicyButton extends StatelessWidget {
+  const PolicyButton({
+    required this.name,
+    required this.navigatePage,
+    Key? key,
+  }) : super(key: key);
+
+  final String name;
+  final String navigatePage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10,bottom: 10),
+      child: InkWell(
+        child: Text(
+          name,
+          style: TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+        onTap: () {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          GoRouter.of(context).go('/' + storeConcat(navigatePage));
+        },
+      ),
+    );
   }
 }

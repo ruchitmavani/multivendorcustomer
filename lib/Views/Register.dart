@@ -288,7 +288,7 @@ class _RegisterState extends State<Register> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Location(),
+                            builder: (context) => LocationScreen(),
                           ),
                         ).then((value) {
                           setState(() {});

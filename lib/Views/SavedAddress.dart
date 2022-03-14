@@ -116,7 +116,7 @@ class _SavedAddressState extends State<SavedAddress> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Location(),
+              builder: (context) => LocationScreen(),
             ),
           ).then((value) {
             setState(() {});

@@ -238,7 +238,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             GoRoute(
-              path: PageCollection.termsOfUse,
+              path: PageCollection.termsAndCondition,
               pageBuilder: (context, state) => MaterialPage<void>(
                 key: state.pageKey,
                 child: TermsOfUse(),
