@@ -161,6 +161,7 @@ class _RegisterState extends State<Register> {
                     if (value!.isEmpty) {
                       return "Enter Name";
                     }
+                    return null;
                   },
                 ),
                 Padding(
@@ -204,6 +205,7 @@ class _RegisterState extends State<Register> {
                             if (value!.isEmpty) {
                               return "Select Birthdate";
                             }
+                            return null;
                           },
                           onChanged: (String? val) {
                             print(val);

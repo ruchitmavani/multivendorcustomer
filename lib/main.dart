@@ -12,7 +12,6 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/AboutUs.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
-import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:multi_vendor_customer/Views/LoadScreen.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
 import 'package:multi_vendor_customer/Views/MyAccount.dart';

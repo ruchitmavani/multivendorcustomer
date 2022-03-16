@@ -10,7 +10,7 @@ class PolicyParagraph extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "${txt}",
+          "$txt",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
           textAlign: TextAlign.justify,
         ),

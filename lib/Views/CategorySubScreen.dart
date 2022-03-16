@@ -13,7 +13,6 @@ import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart'
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';

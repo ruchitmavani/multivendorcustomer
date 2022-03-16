@@ -63,7 +63,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       });
     }
     status = widget.orderData.paymentType.toUpperCase() == "TAKEAWAY"
-        ? ["Pending", "Ready", "Delivered"]
+        ? ["Pending", "Pickup", "Delivered"]
         : ["Pending", "Dispatched", "Delivered"];
     for (int i = 0; i < widget.orderData.orderItems.length; i++) {
       if ((widget.orderData.orderItems.elementAt(i).updatedQuantity != 0 &&

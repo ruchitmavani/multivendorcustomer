@@ -355,8 +355,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         0
         ? widget.isRounded
         ? SizedBox(
-      width: 35,
-      height: 35,
+      width: 37,
+      height: 37,
       child: Card(
         shape: CircleBorder(),
         elevation: 0,
@@ -382,8 +382,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       ),
     )
         : SizedBox(
-          height: 35,
-          width: 85,
+          height: 37,
+          width: 87,
           child: InkWell(
             onTap: () {
               addToCart();
@@ -404,8 +404,8 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
           ),
         )
         : SizedBox(
-      width: 85,
-      height: 35,
+      height: 37,
+      width: 87,
       child: Card(
         elevation: 0,
         color:

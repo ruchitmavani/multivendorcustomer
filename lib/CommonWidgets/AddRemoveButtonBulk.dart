@@ -184,8 +184,8 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
             0
         ? widget.isRounded
             ? SizedBox(
-                width: 35,
-                height: 35,
+                width: 37,
+                height: 37,
                 child: Card(
                   shape: CircleBorder(),
                   elevation: 0,
@@ -230,8 +230,8 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                 ),
               )
         : SizedBox(
-            width: 85,
-            height: 35,
+            width: 87,
+            height: 37,
             child: Card(
               elevation: 0,
               color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/PolicyWidgets.dart';
-import 'package:provider/provider.dart';
-
-import '../../Utils/Providers/ColorProvider.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   @override

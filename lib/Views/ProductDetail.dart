@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'dart:html';
+
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +113,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(isLoading ? "" : "${productData.productName}"),
           actions: [
             IconButton(
               icon: Icon(CupertinoIcons.search,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/PolicyWidgets.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:provider/provider.dart';
 
 class RefundPolicy extends StatelessWidget {
   @override

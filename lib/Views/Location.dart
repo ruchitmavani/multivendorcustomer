@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocode/geocode.dart' as geo;
 import 'package:google_geocoding/google_geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
-import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:provider/provider.dart';
@@ -28,9 +26,13 @@ class _LocationScreenState extends State<LocationScreen> {
   final GlobalKey<FormState> _addressKey = GlobalKey();
 
   TextEditingController houseNo = TextEditingController();
-  TextEditingController area = TextEditingController();
-  TextEditingController city = TextEditingController();
+  TextEditingController areaTxt = TextEditingController();
+  TextEditingController cityTxt = TextEditingController();
   TextEditingController pinCode = TextEditingController();
+
+  bool _serviceEnabled = false;
+  late PermissionStatus _permissionGranted;
+  LocationData _locationData = loc.LocationData.fromMap({});
 
   _saveAddress(Address address) async {
     if (addressList.contains(address)) {
@@ -51,18 +53,36 @@ class _LocationScreenState extends State<LocationScreen> {
   bool isLocationLoaded = false;
 
   //for showing google map
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? _controller;
+
   late CameraPosition _kGooglePlex;
 
-  var googleGeocoding = GoogleGeocoding("AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc");
+  var googleGeocoding =
+      GoogleGeocoding("AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc");
 
   //get users location
   loc.Location location = new loc.Location();
 
+  setData({
+    // required String flat,
+    required String area,
+    required String city,
+    // required String pincode,
+  }) {
+    print("okay");
+    // houseNo.text=flat;
+    areaTxt.text = area;
+    cityTxt.text = city;
+    // pinCode.text=pincode;
+  }
+
+  setLocation() {
+    if (_controller != null) {
+      // _controller!.moveCamera(CameraUpdate.newLatLng(latLng))
+    }
+  }
+
   _getUsersLoaction() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -91,6 +111,22 @@ class _LocationScreenState extends State<LocationScreen> {
     });
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+
+      builder: (BuildContext context) {
+        return Dialog(
+          child: LocationSearchBar(
+              lat: _locationData.latitude,
+              long: _locationData.longitude,
+              setData: setData),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,7 +150,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           mapType: MapType.hybrid,
                           initialCameraPosition: _kGooglePlex,
                           onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
+                            _controller = controller;
                           },
                           myLocationEnabled: true,
                           onTap: (value) async {
@@ -191,6 +227,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           validator: (value) {
                             if (value!.isEmpty)
                               return "enter flat no. and society name";
+                            return null;
                           },
                           maxLines: 1,
                           controller: houseNo,
@@ -198,9 +235,10 @@ class _LocationScreenState extends State<LocationScreen> {
                         MyTextFormField(
                           hintText: "area",
                           maxLines: 1,
-                          controller: area,
+                          controller: areaTxt,
                           validator: (value) {
                             if (value!.isEmpty) return "enter area";
+                            return null;
                           },
                         ),
                         Row(
@@ -212,8 +250,9 @@ class _LocationScreenState extends State<LocationScreen> {
                                 maxLines: 1,
                                 validator: (value) {
                                   if (value!.isEmpty) return "enter city";
+                                  return null;
                                 },
-                                controller: city,
+                                controller: cityTxt,
                               ),
                             ),
                             Space(
@@ -228,6 +267,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 validator: (value) {
                                   if (value!.length < 6)
                                     return "enter valid pincode";
+                                  return null;
                                 },
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
@@ -246,15 +286,47 @@ class _LocationScreenState extends State<LocationScreen> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
-            child: SizedBox(
-              height: 95,
-              width: MediaQuery.of(context).size.width / 1,
-              child: Card(
-                color: Colors.white,
-                elevation: 2,
-                child: LocationSearchBar(),
+          Container(
+            height: 52,
+            margin: EdgeInsets.only(top: 40, right: 20, left: 20),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(60)),
+            child: TextFormField(
+              onTap: () {
+                _showMyDialog();
+              },
+              readOnly: true,
+              keyboardType: TextInputType.text,
+              style: TextStyle(fontSize: 13),
+              maxLines: 1,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hoverColor: Colors.white,
+                hintText: "Search here...",
+                hintStyle: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding:
+                    EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                suffixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Provider.of<CustomColor>(context)
+                          .appPrimaryMaterialColor,
+                      width: 0.7),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
+                    style: BorderStyle.solid,
+                  ),
+                ),
               ),
             ),
           ),
@@ -268,7 +340,6 @@ class _LocationScreenState extends State<LocationScreen> {
           width: MediaQuery.of(context).size.width,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              //primary: Colors.deepPurpleAccent.shade100,
               elevation: 0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),
@@ -286,8 +357,8 @@ class _LocationScreenState extends State<LocationScreen> {
                   Address(
                     type: _choicesList.elementAt(defaultChoiceIndex),
                     subAddress: houseNo.text,
-                    area: area.text,
-                    city: city.text,
+                    area: areaTxt.text,
+                    city: cityTxt.text,
                     pinCode: int.parse(pinCode.text),
                   ),
                 );

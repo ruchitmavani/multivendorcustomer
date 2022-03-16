@@ -117,6 +117,7 @@ class _LocationState extends State<EditLocation> {
                           validator: (value) {
                             if (value!.isEmpty)
                               return "enter flat no. and society name";
+                            return null;
                           },
                           maxLines: 1,
                           controller: subAddress,
@@ -127,6 +128,7 @@ class _LocationState extends State<EditLocation> {
                           controller: area,
                           validator: (value) {
                             if (value!.isEmpty) return "enter area";
+                            return null;
                           },
                         ),
                         Row(
@@ -138,6 +140,7 @@ class _LocationState extends State<EditLocation> {
                                 maxLines: 1,
                                 validator: (value) {
                                   if (value!.isEmpty) return "enter city";
+                                  return null;
                                 },
                                 controller: city,
                               ),
@@ -154,6 +157,7 @@ class _LocationState extends State<EditLocation> {
                                 validator: (value) {
                                   if (value!.length < 6)
                                     return "enter valid pincode";
+                                  return null;
                                 },
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(

@@ -14,11 +14,19 @@ bool isProductAvailable({required List<String> liveTimings}) {
 
   if (liveTimings.contains("All Time")) {
     return true;
+  } else if (liveTimings.contains("All")) {
   } else {
     for (int i = 0; i < liveTimings.length; i++) {
       List<String> timeList = liveTimings[i].split("-");
-      DateTime fromTime = DateFormat("hh:mm aaa").parse(timeList[0].trim());
-      DateTime toTime = DateFormat("hh:mm aaa").parse(timeList[1].trim());
+      DateTime fromTime;
+      DateTime toTime;
+      if (timeList[0].trim().length == 5) {
+        fromTime = DateFormat("hh:mm").parse(timeList[0].trim());
+        toTime = DateFormat("hh:mm").parse(timeList[1].trim());
+      } else {
+        fromTime = DateFormat("hh:mm aaa").parse(timeList[0].trim());
+        toTime = DateFormat("hh:mm aaa").parse(timeList[1].trim());
+      }
 
       String currentTimeString = DateFormat("hh:mm aaa").format(DateTime.now());
       DateTime currentTime = DateFormat("hh:mm aaa").parse(currentTimeString);
@@ -44,7 +52,7 @@ Widget cartIconWidget(BuildContext context) {
     child: IconButton(
       iconSize: 30,
       onPressed: () {
-        GoRouter.of(context).push('/'+storeConcat(PageCollection.cart));
+        GoRouter.of(context).push('/' + storeConcat(PageCollection.cart));
       },
       icon: Image.asset("images/cart_icon.png",
           width: 35,
