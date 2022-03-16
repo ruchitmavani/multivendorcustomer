@@ -80,7 +80,7 @@ class VendorModelWrapper with ChangeNotifier {
       //     return "Closed";
       //   }
       // }
-      return "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      return (list.isEmpty)?"-": "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
     } else {
       return "Offline";
     }

@@ -183,70 +183,70 @@ class _AboutUsState extends State<AboutUs> {
             Space(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15),
-              child: Text(
-                "Gallery",
-                style: FontsTheme.subTitleStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w700,
-                    size: 14),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0, left: 10, right: 10),
-              child: SizedBox(
-                height: 140,
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        controller.previousPage(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.easeIn);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 20,
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 3.0, right: 3),
-                        child: PageView(
-                            scrollDirection: Axis.horizontal,
-                            controller: controller,
-                            children: Provider.of<VendorModelWrapper>(context,
-                                    listen: false)
-                                .vendorModel!
-                                .awordImageUrl
-                                .map<Widget>((e) {
-                              return Image.network(
-                                "${StringConstants.api_url}$e",
-                                fit: BoxFit.fill,
-                                width: MediaQuery.of(context).size.width,
-                              );
-                            }).toList()),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        controller.nextPage(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.easeIn);
-                      },
-                      child: Icon(
-                        Icons.arrow_forward,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Space(
-              height: 20,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 15.0, right: 15),
+            //   child: Text(
+            //     "Gallery",
+            //     style: FontsTheme.subTitleStyle(
+            //         color: Colors.black54,
+            //         fontWeight: FontWeight.w700,
+            //         size: 14),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 12.0, left: 10, right: 10),
+            //   child: SizedBox(
+            //     height: 140,
+            //     child: Row(
+            //       children: [
+            //         GestureDetector(
+            //           onTap: () {
+            //             controller.previousPage(
+            //                 duration: Duration(milliseconds: 200),
+            //                 curve: Curves.easeIn);
+            //           },
+            //           child: Icon(
+            //             Icons.arrow_back,
+            //             size: 20,
+            //           ),
+            //         ),
+            //         Expanded(
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(left: 3.0, right: 3),
+            //             child: PageView(
+            //                 scrollDirection: Axis.horizontal,
+            //                 controller: controller,
+            //                 children: Provider.of<VendorModelWrapper>(context,
+            //                         listen: false)
+            //                     .vendorModel!
+            //                     .awordImageUrl
+            //                     .map<Widget>((e) {
+            //                   return Image.network(
+            //                     "${StringConstants.api_url}$e",
+            //                     fit: BoxFit.fill,
+            //                     width: MediaQuery.of(context).size.width,
+            //                   );
+            //                 }).toList()),
+            //           ),
+            //         ),
+            //         GestureDetector(
+            //           onTap: () {
+            //             controller.nextPage(
+            //                 duration: Duration(milliseconds: 200),
+            //                 curve: Curves.easeIn);
+            //           },
+            //           child: Icon(
+            //             Icons.arrow_forward,
+            //             size: 20,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // Space(
+            //   height: 20,
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15),
               child: Text(

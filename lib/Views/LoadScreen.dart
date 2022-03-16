@@ -6,6 +6,8 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Views/HomeScreen.dart';
 import 'package:provider/provider.dart';
 
+import 'LandingScreen.dart';
+
 class Loading extends StatefulWidget {
   @override
   State<Loading> createState() => _LoadingState();
@@ -63,12 +65,14 @@ class _LoadingState extends State<Loading> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset("assets/wellsel.png",
+                      width: 150, fit: BoxFit.fitWidth),
                   CircularProgressIndicator(),
                 ],
               )
             : isStoreExist
                 ? HomeScreen()
-                : Text("Store not found"),
+                : LandingScreen(),
       ),
     );
   }

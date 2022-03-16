@@ -94,7 +94,7 @@ class _SavedAddressState extends State<SavedAddress> {
                               child: Text(
                                 "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.grey.shade400),
+                                    fontSize: 12,color: Color(0xff383838),),
                               ),
                             ),
                           ],

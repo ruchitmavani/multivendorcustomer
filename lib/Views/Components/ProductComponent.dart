@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor_customer/CommonWidgets/AddRemoveButton.dart';
@@ -73,7 +74,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     height: 110,
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
-                        ? Image.network(
+                        ?CachedNetworkImage(
+                      imageUrl:
                             StringConstants.api_url +
                                 widget.productData.productImageUrl.first,
                             fit: BoxFit.contain)
@@ -345,7 +347,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
               height: 110,
               width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
-                  ? Image.network(StringConstants.api_url +
+                  ? CachedNetworkImage(imageUrl: StringConstants.api_url +
                       widget.productData.productImageUrl.first)
                   : Image.asset("images/placeholder.png"),
             ),

@@ -340,7 +340,7 @@ class _MyAccountState extends State<MyAccount> {
                                 .elementAt(index)
                                 .pinCode}",
                             style: TextStyle(
-                                fontSize: 12, color: Colors.grey.shade400),
+                                fontSize: 12, color: Color(0xff383838)),
                           ),
                         ],
                       ),

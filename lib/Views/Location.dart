@@ -15,6 +15,8 @@ import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'map/search.dart';
+
 class LocationScreen extends StatefulWidget {
   const LocationScreen({Key? key}) : super(key: key);
 
@@ -116,20 +118,21 @@ class _LocationScreenState extends State<LocationScreen> {
                           },
                           myLocationEnabled: true,
                           onTap: (value) async {
-                            var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
-                            print(risult?.results![0].addressComponents![0].shortName);
-                            if (risult.streetNumber != null) {
-                              houseNo.text = risult.streetNumber.toString();
-                            }
-                            if (risult.streetAddress != null) {
-                             area.text  = risult.streetAddress!;
-                            }
-                            if (risult.city != null) {
-                              city.text = risult.city!;
-                            }
-                            if (risult.postal != null) {
-                              pinCode.text = risult. postal!;
-                            }
+                            //todo location implementation
+                            // var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
+                            // print(risult?.results![0].addressComponents![0].shortName);
+                            // if (risult.streetNumber != null) {
+                            //   houseNo.text = risult.streetNumber.toString();
+                            // }
+                            // if (risult.streetAddress != null) {
+                            //  area.text  = risult.streetAddress!;
+                            // }
+                            // if (risult.city != null) {
+                            //   city.text = risult.city!;
+                            // }
+                            // if (risult.postal != null) {
+                            //   pinCode.text = risult. postal!;
+                            // }
                           },
                         )
                       : Center(
@@ -251,29 +254,7 @@ class _LocationScreenState extends State<LocationScreen> {
               child: Card(
                 color: Colors.white,
                 elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Location",
-                          style: FontsTheme.subTitleStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w700,
-                              size: 15)),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 1.0),
-                        child: Text(
-                            "Mini street, Flower Bazzar, Sowcarpet - 600001",
-                            style: FontsTheme.descriptionText(
-                                fontWeight: FontWeight.w500,
-                                size: 12,
-                                color: Colors.black87)),
-                      ),
-                    ],
-                  ),
-                ),
+                child: LocationSearchBar(),
               ),
             ),
           ),
