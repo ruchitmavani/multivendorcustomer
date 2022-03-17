@@ -70,15 +70,48 @@ class _LocationScreenState extends State<LocationScreen> {
     // required String pincode,
   }) {
     print("okay");
-    // houseNo.text=flat;
-    areaTxt.text = area;
-    cityTxt.text = city;
+    houseNo.text=area;
+    List<String> temp=city.split(",");
+    areaTxt.text = List.generate(temp.length-3, (index) => "${temp[index]} ", ).toString().replaceAll("[", "").replaceAll("]", "");
+    cityTxt.text = "${temp[temp.length-3]}, ${temp[temp.length-2]}, ${temp[temp.length-1]}, ";
     // pinCode.text=pincode;
   }
 
-  setLocation() {
-    if (_controller != null) {
-      // _controller!.moveCamera(CameraUpdate.newLatLng(latLng))
+  Marker temp=Marker(markerId: MarkerId("abcd"));
+    setLocation(double lat,double long,String placeID) {
+    if (_controller != null &&
+        _locationData.longitude != null &&
+        _locationData.latitude != null) {
+      _controller!.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(lat,long),
+        ),
+      );
+      _controller!.animateCamera(
+        CameraUpdate.zoomTo(19),
+      );
+      temp=Marker(markerId: MarkerId(placeID),position: LatLng(lat, long));
+
+      setState(() {
+
+      });
+      // _controller!.showMarkerInfoWindow(temp.markerId);
+
+    }
+  }
+
+  setLiveLocation() {
+    if (_controller != null &&
+        _locationData.longitude != null &&
+        _locationData.latitude != null) {
+      _controller!.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(_locationData.latitude!, _locationData.longitude!),
+        ),
+      );
+      _controller!.animateCamera(
+        CameraUpdate.zoomTo(19),
+      );
     }
   }
 
@@ -115,13 +148,12 @@ class _LocationScreenState extends State<LocationScreen> {
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
-
       builder: (BuildContext context) {
         return Dialog(
           child: LocationSearchBar(
               lat: _locationData.latitude,
               long: _locationData.longitude,
-              setData: setData),
+              setData: setData,setLocation: setLocation),
         );
       },
     );
@@ -142,38 +174,55 @@ class _LocationScreenState extends State<LocationScreen> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: Colors.grey.shade300,
-                  height: MediaQuery.of(context).size.height / 1.6,
-                  child: isLocationLoaded
-                      ? GoogleMap(
-                          mapType: MapType.hybrid,
-                          initialCameraPosition: _kGooglePlex,
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller = controller;
+                Stack(
+                  children: [
+                    Container(
+                      color: Colors.grey.shade300,
+                      height: MediaQuery.of(context).size.height / 1.6,
+                      child: isLocationLoaded
+                          ? GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: _kGooglePlex,
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller = controller;
+                              },
+                        markers: {
+temp,
+                        },
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              onTap: (value) async {
+                                //todo location implementation
+                                // var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
+                                // print(risult?.results![0].addressComponents![0].shortName);
+                                // if (risult.streetNumber != null) {
+                                //   houseNo.text = risult.streetNumber.toString();
+                                // }
+                                // if (risult.streetAddress != null) {
+                                //  area.text  = risult.streetAddress!;
+                                // }
+                                // if (risult.city != null) {
+                                //   city.text = risult.city!;
+                                // }
+                                // if (risult.postal != null) {
+                                //   pinCode.text = risult. postal!;
+                                // }
+                              },
+                            )
+                          : Center(
+                              child: Text("Map is loading"),
+                            ),
+                    ),
+                    Positioned(
+                        left: 20,
+                        top: MediaQuery.of(context).size.height / 1.6 - 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setLiveLocation();
                           },
-                          myLocationEnabled: true,
-                          onTap: (value) async {
-                            //todo location implementation
-                            // var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
-                            // print(risult?.results![0].addressComponents![0].shortName);
-                            // if (risult.streetNumber != null) {
-                            //   houseNo.text = risult.streetNumber.toString();
-                            // }
-                            // if (risult.streetAddress != null) {
-                            //  area.text  = risult.streetAddress!;
-                            // }
-                            // if (risult.city != null) {
-                            //   city.text = risult.city!;
-                            // }
-                            // if (risult.postal != null) {
-                            //   pinCode.text = risult. postal!;
-                            // }
-                          },
-                        )
-                      : Center(
-                          child: Text("Map is loading"),
-                        ),
+                          child: Icon(Icons.my_location),
+                        ))
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -287,44 +336,44 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
           ),
           Container(
-            height: 52,
-            margin: EdgeInsets.only(top: 40, right: 20, left: 20),
+            height: 40,
+            margin: EdgeInsets.only(top: 30, right: 50, left: 50),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(60)),
-            child: TextFormField(
-              onTap: () {
-                _showMyDialog();
-              },
-              readOnly: true,
-              keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: 13),
-              maxLines: 1,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hoverColor: Colors.white,
-                hintText: "Search here...",
-                hintStyle: TextStyle(fontSize: 12, color: Colors.grey.shade400),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                contentPadding:
-                    EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
-                suffixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      width: 0.7),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: Provider.of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    style: BorderStyle.solid,
+            child: SizedBox(
+              height: 40,
+              child: TextFormField(
+                onTap: () {
+                  _showMyDialog();
+                },
+                readOnly: true,
+                keyboardType: TextInputType.text,
+                style: TextStyle(fontSize: 13),
+                maxLines: 1,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  hintText: "Search here...",
+                  hintStyle:
+                      TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  contentPadding:
+                      EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.7),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.grey,
+                      style: BorderStyle.solid,
+                    ),
                   ),
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButtonBulk extends StatefulWidget {
@@ -50,7 +51,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
         Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
               NewCartModel(
                   productId: widget.productData.productId,
-                  productColor:null,
+                  productColor: null,
                   productImageUrl: widget.productData.productImageUrl,
                   productQuantity: widget.qty,
                   productMrp: widget.price,
@@ -208,67 +209,72 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   ),
                 ),
               )
-            : ElevatedButton(
-                onPressed: () {
-                  if (widget.qty > 0) addToCart();
-                  if (widget.qty == 0)
-                    Fluttertoast.showToast(
-                        msg: "quantity should be greater than 0",
-                        webPosition: "center",
-                        webBgColor:
-                            "linear-gradient(to right, #5A5A5A, #5A5A5A)");
-                },
-                child: Text("Add to Cart",
-                    style: FontsTheme.boldTextStyle(color: Colors.white)),
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Provider.of<CustomColor>(context)
-                          .appPrimaryMaterialColor),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
+            : SizedBox(
+                height: 37,
+                width: 87,
+                child: InkWell(
+                  onTap: (){
+                    if (widget.qty > 0) addToCart();
+                    if (widget.qty == 0)
+                      Fluttertoast.showToast(
+                          msg: "quantity should be greater than 0",
+                          webPosition: "center",
+                          webBgColor:
+                          "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                  },
+                  child: Card(
+                    elevation: 0,
+                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    child: Center(
+                      child: Text("Add to Cart",
+                          style: FontsTheme.boldTextStyle(
+                              color: Colors.white, size: 9)),
+                    ),
+                  ),
                 ),
               )
-        : SizedBox(
-            width: 87,
-            height: 37,
-            child: Card(
-              elevation: 0,
-              color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Consumer<CartDataWrapper>(
-                      builder: (context, CartDataWrapper value, child) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "${value.getIndividualQuantity(productId: widget.productData.productId)}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11,
-                                fontFamily: "Poppins"),
-                          ),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () {
-                          deleteCart();
-                        },
-                        child: Icon(
-                          Icons.delete,
-                          size: 18,
-                          color: Colors.white,
+        : MeasureSize(
+            onChange: (size) => print("Bulk button $size"),
+            child: SizedBox(
+              height: 37,
+              width: 87,
+              child: InkWell(
+                onTap: () => deleteCart(),
+                child: Card(
+                  elevation: 0,
+                  color:
+                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Consumer<CartDataWrapper>(
+                          builder: (context, CartDataWrapper value, child) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                "${value.getIndividualQuantity(productId: widget.productData.productId)}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11,
+                                    fontFamily: "Poppins"),
+                              ),
+                            );
+                          },
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Icon(
+                            Icons.delete,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

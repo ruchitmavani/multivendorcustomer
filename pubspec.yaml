@@ -54,6 +54,8 @@ dependencies:
   geocode: ^1.0.1
   google_place: ^0.4.7
   flutter_google_places_sdk: ^0.3.2+1
+  uuid: ^3.0.6
+  http: ^0.13.4
 
   #video_player
   video_player: ^2.2.5

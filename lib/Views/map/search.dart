@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class LocationSearchBar extends StatefulWidget {
-  LocationSearchBar({this.lat, this.long, required this.setData});
+  LocationSearchBar(
+      {this.lat, this.long, required this.setData, required this.setLocation});
 
   final double? lat;
   final double? long;
   final Function setData;
+  final Function setLocation;
 
   @override
   _LocationSearchBarState createState() => _LocationSearchBarState();
@@ -17,6 +18,8 @@ class LocationSearchBar extends StatefulWidget {
 class _LocationSearchBarState extends State<LocationSearchBar> {
   TextEditingController _search = TextEditingController();
   List<AutocompletePrediction> predictions = [];
+  var uuid = Uuid();
+  String _sessionToken = "";
 
   @override
   void initState() {
@@ -34,54 +37,63 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TextFormField(
-              controller: _search,
-              autofocus: true,
-              keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: 13),
-              onChanged: (text) {
-                if (text.isNotEmpty) {
-                  autoCompleteSearch(text);
-                } else {
-                  if (predictions.length > 0 && mounted) {
-                    setState(() {
-                      predictions = [];
-                    });
+            SizedBox(
+              height: 40,
+              child: TextFormField(
+                controller: _search,
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                style: TextStyle(fontSize: 13),
+                onChanged: (text) {
+                  if (text.isNotEmpty) {
+                    autoCompleteSearch(text);
+                  } else {
+                    if (predictions.length > 0 && mounted) {
+                      setState(() {
+                        predictions = [];
+                      });
+                    }
                   }
-                }
-              },
-              maxLines: 1,
-              decoration: InputDecoration(
-                // filled: true,
-                fillColor: Colors.white,
-                hoverColor: Colors.white,
-                hintText: "Search here...",
-                hintStyle: TextStyle(fontSize: 12, color: Colors.grey.shade400),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                contentPadding: EdgeInsets.only(
-                  left: 15,
-                  right: 8,
-                ),
-                suffixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Provider
-                          .of<CustomColor>(context)
-                          .appPrimaryMaterialColor,
-                      width: 0.7),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: Provider
-                        .of<CustomColor>(context)
-                        .appPrimaryMaterialColor,
-                    style: BorderStyle.solid,
+                },
+                maxLines: 1,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  hintText: "Search here...",
+                  hintStyle:
+                      TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  prefixIcon: InkWell(
+                      onTap: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.grey,
+                        size: 20,
+                      )),
+                  contentPadding: EdgeInsets.only(
+                    left: 15,
+                    right: 8,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.7),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.grey,
+                      style: BorderStyle.solid,
+                    ),
                   ),
                 ),
               ),
@@ -102,12 +114,13 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
                       ),
                     ),
                     title: Text(predictions[index].fullText),
-                    onTap: () {
+                    onTap: ()async {
+                      await getLatLong(predictions[index].placeId);
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
                       }
-                      debugPrint(predictions[index].placeId);
-                      widget.setData(area: predictions[index].primaryText,
+                      widget.setData(
+                          area: predictions[index].primaryText,
                           city: predictions[index].secondaryText);
                     },
                   );
@@ -122,7 +135,7 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
 
   void autoCompleteSearch(String value) async {
     final places =
-    FlutterGooglePlacesSdk('AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc');
+        FlutterGooglePlacesSdk('AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc');
     print("${widget.lat} lat ${widget.long}");
     final result = await places.findAutocompletePredictions(
       value,
@@ -135,6 +148,23 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
     if (mounted) {
       setState(() {
         predictions = result.predictions;
+      });
+    }
+  }
+
+  Future getLatLong(String placeId) async {
+    final places =
+        FlutterGooglePlacesSdk('AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc');
+    print("${widget.lat} lat ${widget.long}");
+    final result = await places.fetchPlace(placeId);
+    print('Result: $predictions');
+    print(result.place);
+    // return result.place?.latLng;
+
+    if (mounted && result.place != null && result.place?.latLng !=null ) {
+      setState(() {
+        print("seting camera");
+        widget.setLocation(result.place?.latLng?.lat, result.place?.latLng?.lng,placeId);
       });
     }
   }
