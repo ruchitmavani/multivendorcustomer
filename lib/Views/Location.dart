@@ -29,6 +29,7 @@ class _LocationScreenState extends State<LocationScreen> {
   TextEditingController areaTxt = TextEditingController();
   TextEditingController cityTxt = TextEditingController();
   TextEditingController pinCode = TextEditingController();
+  TextEditingController addressType = TextEditingController();
 
   bool _serviceEnabled = false;
   late PermissionStatus _permissionGranted;
@@ -70,31 +71,34 @@ class _LocationScreenState extends State<LocationScreen> {
     // required String pincode,
   }) {
     print("okay");
-    houseNo.text=area;
-    List<String> temp=city.split(",");
-    areaTxt.text = List.generate(temp.length-3, (index) => "${temp[index]} ", ).toString().replaceAll("[", "").replaceAll("]", "");
-    cityTxt.text = "${temp[temp.length-3]}, ${temp[temp.length-2]}, ${temp[temp.length-1]}, ";
+    houseNo.text = area;
+    List<String> temp = city.split(",");
+    areaTxt.text = List.generate(
+      temp.length - 3,
+      (index) => "${temp[index]} ",
+    ).toString().replaceAll("[", "").replaceAll("]", "");
+    cityTxt.text =
+        "${temp[temp.length - 3]}, ${temp[temp.length - 2]}, ${temp[temp.length - 1]}, ";
     // pinCode.text=pincode;
   }
 
-  Marker temp=Marker(markerId: MarkerId("abcd"));
-    setLocation(double lat,double long,String placeID) {
+  Marker temp = Marker(markerId: MarkerId("abcd"));
+
+  setLocation(double lat, double long, String placeID) {
     if (_controller != null &&
         _locationData.longitude != null &&
         _locationData.latitude != null) {
       _controller!.animateCamera(
         CameraUpdate.newLatLng(
-          LatLng(lat,long),
+          LatLng(lat, long),
         ),
       );
       _controller!.animateCamera(
         CameraUpdate.zoomTo(19),
       );
-      temp=Marker(markerId: MarkerId(placeID),position: LatLng(lat, long));
+      temp = Marker(markerId: MarkerId(placeID), position: LatLng(lat, long));
 
-      setState(() {
-
-      });
+      setState(() {});
       // _controller!.showMarkerInfoWindow(temp.markerId);
 
     }
@@ -153,7 +157,8 @@ class _LocationScreenState extends State<LocationScreen> {
           child: LocationSearchBar(
               lat: _locationData.latitude,
               long: _locationData.longitude,
-              setData: setData,setLocation: setLocation),
+              setData: setData,
+              setLocation: setLocation),
         );
       },
     );
@@ -168,67 +173,51 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      color: Colors.grey.shade300,
-                      height: MediaQuery.of(context).size.height / 1.6,
-                      child: isLocationLoaded
-                          ? GoogleMap(
-                              mapType: MapType.hybrid,
-                              initialCameraPosition: _kGooglePlex,
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller = controller;
-                              },
-                        markers: {
-temp,
-                        },
-                              myLocationEnabled: true,
-                              myLocationButtonEnabled: true,
-                              onTap: (value) async {
-                                //todo location implementation
-                                // var risult = await googleGeocoding.geocoding.getReverse(LatLon(value.latitude, value.longitude));
-                                // print(risult?.results![0].addressComponents![0].shortName);
-                                // if (risult.streetNumber != null) {
-                                //   houseNo.text = risult.streetNumber.toString();
-                                // }
-                                // if (risult.streetAddress != null) {
-                                //  area.text  = risult.streetAddress!;
-                                // }
-                                // if (risult.city != null) {
-                                //   city.text = risult.city!;
-                                // }
-                                // if (risult.postal != null) {
-                                //   pinCode.text = risult. postal!;
-                                // }
-                              },
-                            )
-                          : Center(
-                              child: Text("Map is loading"),
-                            ),
-                    ),
-                    Positioned(
-                        left: 20,
-                        top: MediaQuery.of(context).size.height / 1.6 - 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setLiveLocation();
-                          },
-                          child: Icon(Icons.my_location),
-                        ))
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 17.0, right: 17, top: 30, bottom: 10),
-                  child: Form(
-                    key: _addressKey,
+      body: Form(
+        key: _addressKey,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        color: Colors.grey.shade300,
+                        height: MediaQuery.of(context).size.height / 1.6,
+                        child: isLocationLoaded
+                            ? GoogleMap(
+                                mapType: MapType.hybrid,
+                                initialCameraPosition: _kGooglePlex,
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller = controller;
+                                },
+                                markers: {
+                                  temp,
+                                },
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: true,
+
+                              )
+                            : Center(
+                                child: Text("Map is loading"),
+                              ),
+                      ),
+                      Positioned(
+                          left: 20,
+                          top: MediaQuery.of(context).size.height / 1.6 - 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setLiveLocation();
+                            },
+                            child: Icon(Icons.my_location),
+                          ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 17.0, right: 17, top: 30, bottom: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -240,37 +229,102 @@ temp,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
                         ),
-                        Wrap(
-                          spacing: 8,
-                          children: List.generate(_choicesList.length, (index) {
-                            return ChoiceChip(
-                              labelPadding: EdgeInsets.all(2.0),
-                              label: Text(
-                                _choicesList[index],
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .copyWith(
-                                      color: defaultChoiceIndex == index
-                                          ? Colors.white
-                                          : Colors.grey.shade600,
-                                      fontSize: 12,
+                        (defaultChoiceIndex == 2)
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: TextFormField(
+                                  controller: addressType,
+                                  autofocus: true,
+                                  keyboardType: TextInputType.text,
+                                  style: TextStyle(fontSize: 13),
+                                  maxLines: 1,
+                                  validator: (value) {
+                                    if (value!.isEmpty) return "Enter city";
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hoverColor: Colors.white,
+                                    hintText: "Enter city",
+                                    constraints: BoxConstraints(maxHeight: 30,),
+                                    hintStyle: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade400),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    prefixIcon: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            defaultChoiceIndex = 0;
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_back,
+                                          color: Colors.grey,
+                                          size: 20,
+                                        )),
+                                    contentPadding: EdgeInsets.only(
+                                      left: 15,
+                                      right: 8,
                                     ),
+                                    errorBorder:  UnderlineInputBorder(
+
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 0.7),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 0.7),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        color: Colors.grey,
+                                        style: BorderStyle.solid,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Wrap(
+                                spacing: 8,
+                                children:
+                                    List.generate(_choicesList.length, (index) {
+                                  return ChoiceChip(
+                                    labelPadding: EdgeInsets.all(2.0),
+                                    label: Text(
+                                      _choicesList[index],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                            color: defaultChoiceIndex == index
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                            fontSize: 12,
+                                          ),
+                                    ),
+                                    selected: defaultChoiceIndex == index,
+                                    selectedColor:
+                                        Provider.of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
+                                    onSelected: (value) {
+                                      setState(() {
+                                        defaultChoiceIndex =
+                                            value ? index : defaultChoiceIndex;
+                                      });
+                                    },
+                                    elevation: 1,
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                  );
+                                }),
                               ),
-                              selected: defaultChoiceIndex == index,
-                              selectedColor: Provider.of<CustomColor>(context)
-                                  .appPrimaryMaterialColor,
-                              onSelected: (value) {
-                                setState(() {
-                                  defaultChoiceIndex =
-                                      value ? index : defaultChoiceIndex;
-                                });
-                              },
-                              elevation: 1,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                            );
-                          }),
-                        ),
                         MyTextFormField(
                           hintText: "flat no, society name",
                           validator: (value) {
@@ -331,55 +385,56 @@ temp,
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: 40,
-            margin: EdgeInsets.only(top: 30, right: 50, left: 50),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(60)),
-            child: SizedBox(
+            Container(
               height: 40,
-              child: TextFormField(
-                onTap: () {
-                  _showMyDialog();
-                },
-                readOnly: true,
-                keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: 13),
-                maxLines: 1,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hoverColor: Colors.white,
-                  hintText: "Search here...",
-                  hintStyle:
-                      TextStyle(fontSize: 12, color: Colors.grey.shade400),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding:
-                      EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey, width: 0.7),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(
-                      width: 1,
+              margin: EdgeInsets.only(top: 30, right: 50, left: 50),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(60)),
+              child: SizedBox(
+                height: 40,
+                child: TextFormField(
+                  onTap: () {
+                    _showMyDialog();
+                  },
+                  readOnly: true,
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(fontSize: 13),
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hoverColor: Colors.white,
+                    hintText: "Enter Address type",
+                    hintStyle:
+                        TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    contentPadding:
+                        EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                    suffixIcon: Icon(
+                      Icons.search,
                       color: Colors.grey,
-                      style: BorderStyle.solid,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 0.7),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                        style: BorderStyle.solid,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Padding(
         padding:
@@ -404,7 +459,9 @@ temp,
               if (_addressKey.currentState!.validate()) {
                 _saveAddress(
                   Address(
-                    type: _choicesList.elementAt(defaultChoiceIndex),
+                    type: defaultChoiceIndex == 2
+                        ? addressType.text
+                        : _choicesList.elementAt(defaultChoiceIndex),
                     subAddress: houseNo.text,
                     area: areaTxt.text,
                     city: cityTxt.text,

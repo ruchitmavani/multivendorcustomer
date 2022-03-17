@@ -72,7 +72,7 @@ class _LoadingState extends State<Loading> {
               )
             : isStoreExist
                 ? HomeScreen()
-                : Text("Store not found"),
+                : LandingScreen(),
       ),
     );
   }
