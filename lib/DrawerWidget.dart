@@ -80,10 +80,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Expanded(
                   child: Column(
                     children: [
-                      ListTile(
-                          title: Text("Home"),
-                          leading: Icon(Icons.home),
-                          onTap: () {}),
+                      // ListTile(
+                      //     title: Text("Home"),
+                      //     leading: Icon(Icons.home),
+                      //     onTap: () {}),
                       ListTile(
                           title: Text("My Orders"),
                           leading: Icon(
@@ -183,11 +183,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Expanded(
                   child: Column(
                     children: [
-                      ListTile(
-                        title: Text("Home"),
-                        leading: Icon(Icons.home),
-                        onTap: () {},
-                      ),
+                      // ListTile(
+                      //   title: Text("Home"),
+                      //   leading: Icon(Icons.home),
+                      //   onTap: () {},
+                      // ),
                       ListTile(
                         title: Text("Log in"),
                         leading: Icon(

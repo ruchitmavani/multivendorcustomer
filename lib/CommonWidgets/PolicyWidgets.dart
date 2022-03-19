@@ -11,7 +11,7 @@ class PolicyParagraph extends StatelessWidget {
       children: [
         Text(
           "$txt",
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
           textAlign: TextAlign.justify,
         ),
         SizedBox(
@@ -36,7 +36,7 @@ class PolicyTitle extends StatelessWidget {
         ),
         Text(
           txt,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
         ),
         SizedBox(
           height: 20,

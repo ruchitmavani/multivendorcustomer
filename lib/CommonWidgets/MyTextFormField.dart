@@ -23,6 +23,7 @@ class MyTextFormField extends StatefulWidget {
   late bool readOnly = false;
   bool? isenableInteractiveSelection;
   late bool isenable = true;
+  bool showLight=false;
   late Widget? icon;
   late int? maxLines;
   late int? minLines;
@@ -51,7 +52,7 @@ class MyTextFormField extends StatefulWidget {
       this.contentPadding,
       this.inputFormatters,
       this.isenable = true,
-      this.autofocus = false});
+      this.autofocus = false,this.showLight=false,});
 
   @override
   _MyTextFormFieldState createState() => _MyTextFormFieldState();
@@ -110,7 +111,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
               textCapitalization:
                   widget.textCapitalization ?? TextCapitalization.sentences,
               keyboardType: widget.keyboardType,
-              style: TextStyle(fontSize: 12),
+              style: widget.showLight?TextStyle(fontSize: 12,color: Colors.grey):TextStyle(fontSize: 12,),
               maxLength: widget.maxLength,
               maxLines: widget.maxLines ?? 1,
               minLines: widget.minLines,

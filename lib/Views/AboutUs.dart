@@ -17,7 +17,6 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-  final PageController controller = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +24,15 @@ class _AboutUsState extends State<AboutUs> {
       appBar: AppBar(
         leading: IconButton(
           splashColor: Colors.transparent,
-          icon: Icon(AppIcons.drawer, color: Colors.black87, size: 15),
-          onPressed: () {},
+          icon: Icon(Icons.chevron_left, color: Colors.black87,),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
         ),
       ),
-      body: SingleChildScrollView(
+      body:Provider.of<VendorModelWrapper>(context).vendorModel==null?Center(child: SizedBox(height: 20,width: 20,child: CircularProgressIndicator()),) :SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,53 +40,49 @@ class _AboutUsState extends State<AboutUs> {
               padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => AboutUs()));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CachedNetworkImage(
-                            height: 60,
-                            width: 60,
-                            imageUrl:
-                                "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => SizedBox(
-                              width: 12,
-                              height: 12,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: CircularProgressIndicator(),
-                              ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CachedNetworkImage(
+                          height: 60,
+                          width: 60,
+                          imageUrl:
+                              "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: CircularProgressIndicator(),
                             ),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.map),
                           ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.map),
+                        ),
 
-                          Space(width: 8.0),
-                          // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
-                          //     style: FontsTheme.boldTextStyle(size: 17))
-                        ],
-                      ),
+                        Space(width: 8.0),
+                        // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
+                        //     style: FontsTheme.boldTextStyle(size: 17))
+                      ],
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
-                        onTap: () async {
-                          await launch(
-                              'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
-                        },
-                        child: Icon(Icons.call,
-                            color: Provider.of<CustomColor>(context)
-                                .appPrimaryMaterialColor),
+                      FittedBox(
+                        child: InkWell(
+                          onTap: () async {
+                            await launch(
+                                'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
+                          },
+                          child: Icon(Icons.call,
+                              color: Provider.of<CustomColor>(context)
+                                  .appPrimaryMaterialColor),
+                        ),
                       ),
                       Provider.of<VendorModelWrapper>(context, listen: false)
                               .vendorModel!
@@ -104,19 +103,21 @@ class _AboutUsState extends State<AboutUs> {
                       Provider.of<VendorModelWrapper>(context, listen: false)
                               .vendorModel!
                               .isWhatsappChatSupport
-                          ? InkWell(
-                              onTap: () async {
-                                await launch(
-                                    "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
-                              },
-                              child: Image.asset(
-                                "images/whatsapp.png.",
-                                height: 22,
-                                width: 22,
-                                color: Provider.of<CustomColor>(context)
-                                    .appPrimaryMaterialColor,
+                          ? FittedBox(
+                            child: InkWell(
+                                onTap: () async {
+                                  await launch(
+                                      "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                                },
+                                child: Image.asset(
+                                  "images/whatsapp.png.",
+                                  height: 22,
+                                  width: 22,
+                                  color: Provider.of<CustomColor>(context)
+                                      .appPrimaryMaterialColor,
+                                ),
                               ),
-                            )
+                          )
                           : Container(),
                       Space(width: 10)
                     ],
@@ -144,9 +145,7 @@ class _AboutUsState extends State<AboutUs> {
             Center(
               child: Text(
                 "${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
-                style: FontsTheme.gilroyText(
-                    color: Colors.black,
-                    size: 15),
+                style: FontsTheme.gilroyText(color: Colors.black, size: 15),
               ),
             ),
             Center(
@@ -250,7 +249,7 @@ class _AboutUsState extends State<AboutUs> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15),
               child: Text(
-                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address}",
+                "Address",
                 style: FontsTheme.subTitleStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w700,
@@ -266,14 +265,6 @@ class _AboutUsState extends State<AboutUs> {
                     fontWeight: FontWeight.w500, size: 12),
               ),
             ),
-            Space(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 15),
-              child: Image.network(
-                  "https://www.smcrealty.com/images/microsites/location-map/mantri-serenity-251.jpg"),
-            )
           ],
         ),
       ),

@@ -43,7 +43,6 @@ class _LocationScreenState extends State<LocationScreen> {
           webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     } else {
       addressList.add(address);
-      print("$address");
       if (Navigator.canPop(context)) Navigator.pop(context);
     }
   }
@@ -70,7 +69,6 @@ class _LocationScreenState extends State<LocationScreen> {
     required String city,
     // required String pincode,
   }) {
-    print("okay");
     houseNo.text = area;
     List<String> temp = city.split(",");
     areaTxt.text = List.generate(
@@ -137,7 +135,6 @@ class _LocationScreenState extends State<LocationScreen> {
     }
 
     _locationData = await location.getLocation();
-    print(_locationData);
 
     setState(() {
       _kGooglePlex = CameraPosition(
@@ -188,7 +185,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         height: MediaQuery.of(context).size.height / 1.6,
                         child: isLocationLoaded
                             ? GoogleMap(
-                                mapType: MapType.hybrid,
+                                mapType: MapType.normal,
                                 initialCameraPosition: _kGooglePlex,
                                 onMapCreated: (GoogleMapController controller) {
                                   _controller = controller;
@@ -198,20 +195,29 @@ class _LocationScreenState extends State<LocationScreen> {
                                 },
                                 myLocationEnabled: true,
                                 myLocationButtonEnabled: true,
-
                               )
                             : Center(
                                 child: Text("Map is loading"),
                               ),
                       ),
                       Positioned(
-                          left: 20,
-                          top: MediaQuery.of(context).size.height / 1.6 - 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setLiveLocation();
-                            },
-                            child: Icon(Icons.my_location),
+                          right: 9,
+                          top: MediaQuery.of(context).size.height / 1.6 - 155,
+                          child: SizedBox(
+                            height: 41,
+                            width: 41,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all(
+                                  EdgeInsets.zero
+                                ),
+                                backgroundColor: MaterialStateProperty.all(Colors.white),
+                              ),
+                              onPressed: () {
+                                setLiveLocation();
+                              },
+                              child: Icon(Icons.my_location,color: Color(0xff333333)),
+                            ),
                           ))
                     ],
                   ),
@@ -240,15 +246,17 @@ class _LocationScreenState extends State<LocationScreen> {
                                   style: TextStyle(fontSize: 13),
                                   maxLines: 1,
                                   validator: (value) {
-                                    if (value!.isEmpty) return "Enter city";
+                                    if (value!.isEmpty) return "Enter type";
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
                                     hoverColor: Colors.white,
-                                    hintText: "Enter city",
-                                    constraints: BoxConstraints(maxHeight: 30,),
+                                    hintText: "Enter type",
+                                    constraints: BoxConstraints(
+                                      maxHeight: 30,
+                                    ),
                                     hintStyle: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade400),
@@ -269,8 +277,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       left: 15,
                                       right: 8,
                                     ),
-                                    errorBorder:  UnderlineInputBorder(
-
+                                    errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 0.7),
                                       borderRadius: BorderRadius.circular(50),
@@ -349,10 +356,10 @@ class _LocationScreenState extends State<LocationScreen> {
                             Expanded(
                               flex: 1,
                               child: MyTextFormField(
-                                hintText: "city",
+                                hintText: "city, state, country",
                                 maxLines: 1,
                                 validator: (value) {
-                                  if (value!.isEmpty) return "enter city";
+                                  if (value!.isEmpty) return "enter city, state, country";
                                   return null;
                                 },
                                 controller: cityTxt,
@@ -385,92 +392,108 @@ class _LocationScreenState extends State<LocationScreen> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.only(left: 17.0, right: 17, bottom: 12, top: 5),
+                    child: SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        onPressed: () {
+                          if (_addressKey.currentState!.validate()) {
+                            _saveAddress(
+                              Address(
+                                type: defaultChoiceIndex == 2
+                                    ? addressType.text
+                                    : _choicesList.elementAt(defaultChoiceIndex),
+                                subAddress: houseNo.text,
+                                area: areaTxt.text,
+                                city: cityTxt.text,
+                                pinCode: int.parse(pinCode.text),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             Container(
               height: 40,
-              margin: EdgeInsets.only(top: 30, right: 50, left: 50),
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.only(top: 30, right: 17, left: 17),
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(60)),
-              child: SizedBox(
-                height: 40,
-                child: TextFormField(
-                  onTap: () {
-                    _showMyDialog();
-                  },
-                  readOnly: true,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(fontSize: 13),
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hoverColor: Colors.white,
-                    hintText: "Enter Address type",
-                    hintStyle:
-                        TextStyle(fontSize: 12, color: Colors.grey.shade400),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    contentPadding:
-                        EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
-                    suffixIcon: Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 0.7),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: Colors.grey,
-                        style: BorderStyle.solid,
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(onPressed: (){
+                      if(Navigator.canPop(context)){
+                        Navigator.pop(context);
+                      }
+                    }, backgroundColor: Colors.white,foregroundColor: Colors.black,child: Icon(Icons.chevron_left,),),
+                  ),
+                  SizedBox(width: 10,),
+                  SizedBox(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width-85,
+                    child: TextFormField(
+                      onTap: () {
+                        _showMyDialog();
+                      },
+                      readOnly: true,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(fontSize: 13),
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hoverColor: Colors.white,
+                        hintText: "Search here",
+                        hintStyle:
+                            TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        contentPadding:
+                            EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 0.7),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding:
-            const EdgeInsets.only(left: 17.0, right: 17, bottom: 12, top: 5),
-        child: SizedBox(
-          height: 45,
-          width: MediaQuery.of(context).size.width,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            child: Text(
-              "Save",
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {
-              if (_addressKey.currentState!.validate()) {
-                _saveAddress(
-                  Address(
-                    type: defaultChoiceIndex == 2
-                        ? addressType.text
-                        : _choicesList.elementAt(defaultChoiceIndex),
-                    subAddress: houseNo.text,
-                    area: areaTxt.text,
-                    city: cityTxt.text,
-                    pinCode: int.parse(pinCode.text),
-                  ),
-                );
-              }
-            },
-          ),
         ),
       ),
     );

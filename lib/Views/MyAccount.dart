@@ -257,6 +257,7 @@ class _MyAccountState extends State<MyAccount> {
                     maxLength: 10,
                     isenable: false,
                     keyboardType: TextInputType.number,
+                    showLight: true,
                     validator: (value) {
                       if (value!.length != 10)
                         return 'Mobile Number must be of 10 digit';

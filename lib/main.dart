@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:developer';
 import 'dart:html';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,7 @@ import 'package:multi_vendor_customer/Views/LoadScreen.dart';
 import 'package:multi_vendor_customer/Views/LoginScreen.dart';
 import 'package:multi_vendor_customer/Views/MyAccount.dart';
 import 'package:multi_vendor_customer/Views/MyOrder.dart';
+import 'package:multi_vendor_customer/Views/NotFound.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:multi_vendor_customer/Views/policy_pages/privacy_policy.dart';
 import 'package:multi_vendor_customer/Views/policy_pages/refund_policy.dart';
@@ -201,18 +203,18 @@ class _MyAppState extends State<MyApp> {
                     ),
                 routes: [
                   GoRoute(
-                      path: PageCollection.order,
-                      pageBuilder:(context, state) {
-                        OrderDataModel? serviceDetail = state.extra != null
-                            ? state.extra as OrderDataModel
-                            : null;
-                        return MaterialPage<void>(
-                          key: state.pageKey,
-                          child: OrderDetails(
-                              orderData: serviceDetail!,
-                          ),
-                        );
-                      },
+                    path: PageCollection.order,
+                    pageBuilder: (context, state) {
+                      OrderDataModel? serviceDetail = state.extra != null
+                          ? state.extra as OrderDataModel
+                          : null;
+                      return MaterialPage<void>(
+                        key: state.pageKey,
+                        child: OrderDetails(
+                          orderData: serviceDetail!,
+                        ),
+                      );
+                    },
                   ),
                 ]),
             GoRoute(
@@ -245,9 +247,12 @@ class _MyAppState extends State<MyApp> {
             ),
           ]),
     ],
-    errorPageBuilder: (context, state) => MaterialPage<void>(
-      key: state.pageKey,
-      child: Loading(),
-    ),
+    errorPageBuilder: (context, state) {
+      log("error builder path :- ${state.path}");
+      return MaterialPage<void>(
+        key: state.pageKey,
+        child: NotFound(),
+      );
+    },
   );
 }

@@ -136,15 +136,12 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
   void autoCompleteSearch(String value) async {
     final places =
         FlutterGooglePlacesSdk('AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc');
-    print("${widget.lat} lat ${widget.long}");
     final result = await places.findAutocompletePredictions(
       value,
       origin: (widget.lat == null || widget.long == null)
           ? null
           : LatLng(lat: widget.lat!, lng: widget.long!),
     );
-    print('Result: $predictions');
-    print(result);
     if (mounted) {
       setState(() {
         predictions = result.predictions;
@@ -155,15 +152,11 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
   Future getLatLong(String placeId) async {
     final places =
         FlutterGooglePlacesSdk('AIzaSyBGVURpKj-7hA1Nra-MthetW7qOyjyX8Sc');
-    print("${widget.lat} lat ${widget.long}");
     final result = await places.fetchPlace(placeId);
-    print('Result: $predictions');
-    print(result.place);
     // return result.place?.latLng;
 
     if (mounted && result.place != null && result.place?.latLng !=null ) {
       setState(() {
-        print("seting camera");
         widget.setLocation(result.place?.latLng?.lat, result.place?.latLng?.lng,placeId);
       });
     }
