@@ -818,6 +818,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             color: Colors.white,
                                                             fontSize: 12,
                                                           ),
+                                                          maxLines: 3,
+                                                          overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ),
                                                     ],
