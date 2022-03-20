@@ -195,7 +195,9 @@ class _MyAppState extends State<MyApp> {
                 child: LoginScreen(),
               ),
             ),
-            GoRoute(
+            //todo make redirection
+            if(sharedPrefs.customer_id.isNotEmpty)
+              GoRoute(
                 path: PageCollection.myOrders,
                 pageBuilder: (context, state) => MaterialPage<void>(
                       key: state.pageKey,
@@ -217,12 +219,16 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                 ]),
+            //todo make a redirection
+            if(sharedPrefs.customer_id.isNotEmpty)
             GoRoute(
               path: PageCollection.myAccount,
-              pageBuilder: (context, state) => MaterialPage<void>(
-                key: state.pageKey,
-                child: MyAccount(),
-              ),
+              pageBuilder: (context, state) {
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: MyAccount(),
+                );
+              },
             ),
             GoRoute(
               path: PageCollection.privacyPolicy,
