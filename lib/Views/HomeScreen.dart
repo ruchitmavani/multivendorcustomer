@@ -221,7 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
       //   }
       // }
 
-      return list.isEmpty?"-":"${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      return list.isEmpty
+          ? "-"
+          : "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
     } else {
       return "Offline";
     }
@@ -572,10 +574,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context)
                                                     .appPrimaryMaterialColor),
                                             InkWell(
-                                              onTap: () {
+                                              onTap: () {    if (Provider.of<VendorModelWrapper>(
+    context,
+    listen: false)
+        .vendorModel!
+        .latitude !=
+    0 &&
+    Provider.of<VendorModelWrapper>(
+    context,
+    listen: false)
+        .vendorModel!
+        .longitude !=
+    0) {
                                                 launch(
-                                                    "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                                              },
+                                                    "https://maps.google.com/?q=${Provider
+                                                        .of<VendorModelWrapper>(
+                                                        context, listen: false)
+                                                        .vendorModel!
+                                                        .latitude
+                                                        .toString()},${Provider
+                                                        .of<VendorModelWrapper>(
+                                                        context, listen: false)
+                                                        .vendorModel!
+                                                        .longitude
+                                                        .toString()}");
+                                              }else{
+                                                Fluttertoast.showToast(msg: "No Location Added",  webPosition: "center",
+                                                    webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                                              }   },
                                               child: AutoSizeText(" Direction",
                                                   minFontSize: 8,
                                                   style: FontsTheme.gilroyText(
@@ -819,7 +845,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             fontSize: 12,
                                                           ),
                                                           maxLines: 3,
-                                                          overflow: TextOverflow.ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                       ),
                                                     ],
@@ -1139,9 +1166,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                           FittedBox(
                                             child: InkWell(
                                               onTap: () {
-                                                launch(
-                                                    "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                                              },
+                                                if (Provider.of<VendorModelWrapper>(
+                                                                context,
+                                                                listen: false)
+                                                            .vendorModel!
+                                                            .latitude !=
+                                                        0 &&
+                                                    Provider.of<VendorModelWrapper>(
+                                                                context,
+                                                                listen: false)
+                                                            .vendorModel!
+                                                            .longitude !=
+                                                        0) {
+                                                  launch(
+                                                      "https://maps.google.com/?q=${Provider
+                                                          .of<
+                                                          VendorModelWrapper>(
+                                                          context,
+                                                          listen: false)
+                                                          .vendorModel!
+                                                          .latitude
+                                                          .toString()},${Provider
+                                                          .of<
+                                                          VendorModelWrapper>(
+                                                          context,
+                                                          listen: false)
+                                                          .vendorModel!
+                                                          .longitude
+                                                          .toString()}");
+                                                }else {
+                                                  Fluttertoast.showToast(msg: "No Location Added",  webPosition: "center",
+                                                      webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                                                } },
                                               child: Text(
                                                 " Direction",
                                                 style: TextStyle(
