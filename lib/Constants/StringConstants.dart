@@ -72,11 +72,11 @@ class StringConstants {
 class PageCollection {
   static const String login = 'login';
   static const String cart = 'cart';
-  static const String about_us = 'about_us';
-  static const String myAccount = 'myAccount';
+  static const String about_us = 'about-us';
+  static const String myAccount = 'account';
   static const String categories = 'categories';
   static const String order = 'order';
-  static const String myOrders = 'myOrders';
+  static const String myOrders = 'orders';
   static const String register = '/register';
   static const String savedAddress = '/savedAddress';
   static const String location = '/location';

@@ -17,7 +17,8 @@ class ProductController {
       required int limit,
       required int page,
       required String sortKey}) async {
-    String url = StringConstants.api_url + StringConstants.customer_find_product;
+    String url =
+        StringConstants.api_url + StringConstants.customer_find_product;
 
     //body Data
     var data = sharedPrefs.customer_id.isEmpty
@@ -149,7 +150,6 @@ class ProductController {
             "customer_uniq_id": "${sharedPrefs.customer_id}"
           };
 
-    print(data);
     ResponseClass<ProductData> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
@@ -160,7 +160,6 @@ class ProductController {
 
       log("find product response -> ${response.data}");
       if (response.statusCode == 200) {
-        log("findProduct ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         responseClass.data = ProductData.fromJson(response.data["data"]);
@@ -174,14 +173,14 @@ class ProductController {
 
   /*-----------Recently Bought Product Data-----------*/
   static Future<ResponseClass<List<ProductData>>> recentlyBought(
-      {required String customerId,required String vendorId}) async {
+      {required String customerId, required String vendorId}) async {
     String url =
         StringConstants.api_url + StringConstants.recently_bought_product;
 
     //body Data
     var data = {
-      "vendor_uniq_id" : "$vendorId",
-      "customer_uniq_id" : "$customerId"
+      "vendor_uniq_id": "$vendorId",
+      "customer_uniq_id": "$customerId"
     };
 
     ResponseClass<List<ProductData>> responseClass =

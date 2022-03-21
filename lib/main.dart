@@ -108,6 +108,15 @@ class _MyAppState extends State<MyApp> {
 
   var _router = GoRouter(
     urlPathStrategy: UrlPathStrategy.path,
+    redirect: (state){
+      if(sharedPrefs.customer_id.isEmpty && state.location.contains("/account")){
+        return "/${sharedPrefs.storeLink}/login";
+      }
+      if(sharedPrefs.customer_id.isEmpty && state.location.contains("/orders")){
+        return "/${sharedPrefs.storeLink}/login";
+      }
+      return null;
+    },
     routes: [
       GoRoute(
           // path: '/' + window.localStorage["storeId"]!,
@@ -196,40 +205,40 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             //todo make redirection
-            if(sharedPrefs.customer_id.isNotEmpty)
+            if (sharedPrefs.customer_id.isNotEmpty)
               GoRoute(
-                path: PageCollection.myOrders,
-                pageBuilder: (context, state) => MaterialPage<void>(
-                      key: state.pageKey,
-                      child: MyOrder(),
-                    ),
-                routes: [
-                  GoRoute(
-                    path: PageCollection.order,
-                    pageBuilder: (context, state) {
-                      OrderDataModel? serviceDetail = state.extra != null
-                          ? state.extra as OrderDataModel
-                          : null;
-                      return MaterialPage<void>(
+                  path: PageCollection.myOrders,
+                  pageBuilder: (context, state) => MaterialPage<void>(
                         key: state.pageKey,
-                        child: OrderDetails(
-                          orderData: serviceDetail!,
-                        ),
-                      );
-                    },
-                  ),
-                ]),
+                        child: MyOrder(),
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: PageCollection.order,
+                      pageBuilder: (context, state) {
+                        OrderDataModel? serviceDetail = state.extra != null
+                            ? state.extra as OrderDataModel
+                            : null;
+                        return MaterialPage<void>(
+                          key: state.pageKey,
+                          child: OrderDetails(
+                            orderData: serviceDetail!,
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
             //todo make a redirection
-            if(sharedPrefs.customer_id.isNotEmpty)
-            GoRoute(
-              path: PageCollection.myAccount,
-              pageBuilder: (context, state) {
-                return MaterialPage<void>(
-                  key: state.pageKey,
-                  child: MyAccount(),
-                );
-              },
-            ),
+            if (sharedPrefs.customer_id.isNotEmpty)
+              GoRoute(
+                path: PageCollection.myAccount,
+                pageBuilder: (context, state) {
+                  return MaterialPage<void>(
+                    key: state.pageKey,
+                    child: MyAccount(),
+                  );
+                },
+              ),
             GoRoute(
               path: PageCollection.privacyPolicy,
               pageBuilder: (context, state) => MaterialPage<void>(

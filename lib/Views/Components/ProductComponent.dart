@@ -74,11 +74,18 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                     height: 110,
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
-                        ?CachedNetworkImage(
-                      imageUrl:
-                            StringConstants.api_url +
+                        ? CachedNetworkImage(
+                            imageUrl: StringConstants.api_url +
                                 widget.productData.productImageUrl.first,
-                            fit: BoxFit.contain)
+                            fit: BoxFit.contain,
+                            width: 110,
+                            height: 110,
+                            maxWidthDiskCache: 110,
+                            maxHeightDiskCache: 110,
+                            memCacheHeight: 110,
+                            memCacheWidth: 110,
+                            repeat: ImageRepeat.repeat,
+                          )
                         : Image.asset("images/placeholder.png"),
                   ),
                 ),
@@ -347,8 +354,14 @@ class _ProductComponentListState extends State<ProductComponentList> {
               height: 110,
               width: MediaQuery.of(context).size.width * 0.2,
               child: widget.productData.productImageUrl.length > 0
-                  ? CachedNetworkImage(imageUrl: StringConstants.api_url +
-                      widget.productData.productImageUrl.first)
+                  ? CachedNetworkImage(
+                      imageUrl: StringConstants.api_url +
+                          widget.productData.productImageUrl.first,
+                      maxHeightDiskCache: 110,
+                      memCacheHeight: 110,
+                      height: 110,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                    )
                   : Image.asset("images/placeholder.png"),
             ),
             Space(width: 10),

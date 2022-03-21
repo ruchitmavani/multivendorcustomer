@@ -47,6 +47,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   int finalColor = 0;
   bool isLoading = false;
   bool isVideo = false;
+  bool isExist = true;
   int finalQuantity = 0;
 
   int? selectedQtyIndex;
@@ -73,17 +74,19 @@ class _ProductDescriptionState extends State<ProductDescription> {
           }
           finalPrice = productData.productSellingPrice;
           if (productData.productVariationColors!.length != 0) {
-               finalColor = productData.productVariationColors!.first.colorCode;
+            finalColor = productData.productVariationColors!.first.colorCode;
           }
         });
       } else {
         setState(() {
           isLoading = false;
+          isExist = false;
         });
       }
     }, onError: (e) {
       setState(() {
         isLoading = false;
+        isExist = false;
       });
     });
   }
@@ -134,705 +137,731 @@ class _ProductDescriptionState extends State<ProductDescription> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : SizedBox(
-                height: MediaQuery.of(context).size.height / 1.2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: ListView(
-                          children: [
-                            Space(
-                              height: 20,
-                            ),
-                            productData.productImageUrl.length == 0 &&
-                                    productData.productVideoUrl.isEmpty &&
-                                    productData.productYoutubeUrl.isEmpty
-                                ? SizedBox(
-                                    height: 230,
-                                    child:
-                                        Image.asset("images/placeholder.png"),
-                                  )
-                                : SizedBox(
-                                    height: 230,
-                                    child: displayImage ==
-                                            productData.productImageUrl.length
-                                        ? productData.isYoutubeUrl
-                                            ? YoutubePlayerIFrame(
-                                                controller:
-                                                    YoutubePlayerController(
-                                                  initialVideoId:
-                                                      "${productData.productYoutubeUrl}",
-                                                  params: YoutubePlayerParams(
-                                                    showControls: false,
-                                                    mute: true,
-                                                    showFullscreenButton: false,
-                                                  ),
-                                                ),
-                                                aspectRatio: 16 / 9,
-                                              )
-                                            : VideoPlayer(
-                                                VideoPlayerController.network(
-                                                    "${StringConstants.api_url + productData.productVideoUrl}")
-                                                  ..initialize()
-                                                  ..play()
-                                                  ..setVolume(0))
-                                        : Image.network(
-                                            "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
-                            Space(height: 20),
-                            Container(
-                              height: 50,
-                              alignment: Alignment.center,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: productData
-                                            .productVideoUrl.isEmpty &&
-                                        productData.productYoutubeUrl.isEmpty
-                                    ? productData.productImageUrl.length
-                                    : productData.productImageUrl.length + 1,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      margin: EdgeInsets.only(right: 6),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color: Colors.grey.shade400),
-                                          borderRadius:
-                                              BorderRadius.circular(4.0)),
-                                      width: 50,
-                                      height: 50,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              displayImage = index;
-                                              if ((productData.productVideoUrl
-                                                          .isNotEmpty ||
-                                                      productData
-                                                          .productYoutubeUrl
-                                                          .isNotEmpty) &&
-                                                  index ==
-                                                      productData
-                                                          .productImageUrl
-                                                          .length) {
-                                                isVideo = true;
-                                              } else {
-                                                isVideo = false;
-                                              }
-                                            });
-                                          },
-                                          child: (productData.productVideoUrl
-                                                          .isNotEmpty ||
-                                                      productData
-                                                          .productYoutubeUrl
-                                                          .isNotEmpty) &&
-                                                  index ==
-                                                      productData
-                                                          .productImageUrl
-                                                          .length
-                                              ? Icon(
-                                                  Icons.play_circle_outline,
-                                                  color: Colors.grey,
-                                                  size: 32,
-                                                )
-                                              : Image.network(
-                                                  "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
-                                        ),
-                                      ));
-                                },
-                              ),
-                            ),
-                            Space(height: 30),
-                            Row(
+            : isExist
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: ListView(
                               children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 30.0, right: 30, bottom: 20),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${productData.productName}",
-                                            style: FontsTheme.boldTextStyle(
-                                                size: 16)),
-                                        if (productData.productMrp >
-                                            productData.productSellingPrice)
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 8.0,),
-                                            child: SizedBox(
-                                                width: 48,
-                                                child: DiscountTag(
-                                                    mrp: productData.productMrp,
-                                                    selling: productData
-                                                        .productSellingPrice)),
-                                          ),
-                                        Space(height: 8),
-                                        ProductRating(
-                                            productData.productRatingAverage),
-                                        Space(height: 8),
-                                        Text(
-                                            "${productData.productDescription}",
-                                            style: FontsTheme.descriptionText(
-                                                fontWeight: FontWeight.w400),
-                                            textAlign: TextAlign.justify),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        if (productData.isStock)
-                                          if (productData.stockLeft <= 20)
-                                            Text(
-                                              productData.stockLeft == 0
-                                                  ? "Out of stock"
-                                                  : "${productData.stockLeft}  left in Stock",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w400,
-                                                  color: productData.stockLeft <
-                                                          10
-                                                      ? Colors.red
-                                                      : Provider.of<
-                                                                  CustomColor>(
-                                                              context)
-                                                          .appPrimaryMaterialColor),
-                                            ),
-                                        Divider(
-                                          height: 15,
-                                        ),
-                                        productData.productLiveTiming.length > 0
-                                            ? productData.productLiveTiming
-                                                    .contains("All Time")
-                                                ? SizedBox()
-                                                : Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Space(
-                                                        height: 1,
+                                Space(
+                                  height: 20,
+                                ),
+                                productData.productImageUrl.length == 0 &&
+                                        productData.productVideoUrl.isEmpty &&
+                                        productData.productYoutubeUrl.isEmpty
+                                    ? SizedBox(
+                                        height: 230,
+                                        child: Image.asset(
+                                            "images/placeholder.png"),
+                                      )
+                                    : SizedBox(
+                                        height: 230,
+                                        child: displayImage ==
+                                                productData
+                                                    .productImageUrl.length
+                                            ? productData.isYoutubeUrl
+                                                ? YoutubePlayerIFrame(
+                                                    controller:
+                                                        YoutubePlayerController(
+                                                      initialVideoId:
+                                                          "${productData.productYoutubeUrl}",
+                                                      params:
+                                                          YoutubePlayerParams(
+                                                        showControls: false,
+                                                        mute: true,
+                                                        showFullscreenButton:
+                                                            false,
                                                       ),
-                                                      Text(
-                                                        "Available Time",
-                                                        style: label,
-                                                      ),
-                                                      Space(height: 4),
-                                                      for (int i = 0;
-                                                          i <
-                                                              productData
-                                                                  .productLiveTiming
-                                                                  .length;
-                                                          i++) ...[
-                                                        Text(
-                                                          "${productData.productLiveTiming[i]}",
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            // fontWeight:
-                                                            //     FontWeight.w600,
-                                                            color: Colors
-                                                                .grey[800],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                      Space(height: 15),
-                                                    ],
+                                                    ),
+                                                    aspectRatio: 16 / 9,
                                                   )
-                                            : SizedBox(),
-                                        // Color Option
-                                        if (colorList.length > 0)
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Color option",
-                                                style: label,
+                                                : VideoPlayer(
+                                                    VideoPlayerController.network(
+                                                        "${StringConstants.api_url + productData.productVideoUrl}")
+                                                      ..initialize()
+                                                      ..play()
+                                                      ..setVolume(0))
+                                            : Image.network(
+                                                "${StringConstants.api_url + productData.productImageUrl.elementAt(displayImage)}")),
+                                Space(height: 20),
+                                Container(
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: productData
+                                                .productVideoUrl.isEmpty &&
+                                            productData
+                                                .productYoutubeUrl.isEmpty
+                                        ? productData.productImageUrl.length
+                                        : productData.productImageUrl.length +
+                                            1,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                          margin: EdgeInsets.only(right: 6),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.grey.shade400),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0)),
+                                          width: 50,
+                                          height: 50,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(6.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  displayImage = index;
+                                                  if ((productData
+                                                              .productVideoUrl
+                                                              .isNotEmpty ||
+                                                          productData
+                                                              .productYoutubeUrl
+                                                              .isNotEmpty) &&
+                                                      index ==
+                                                          productData
+                                                              .productImageUrl
+                                                              .length) {
+                                                    isVideo = true;
+                                                  } else {
+                                                    isVideo = false;
+                                                  }
+                                                });
+                                              },
+                                              child: (productData
+                                                              .productVideoUrl
+                                                              .isNotEmpty ||
+                                                          productData
+                                                              .productYoutubeUrl
+                                                              .isNotEmpty) &&
+                                                      index ==
+                                                          productData
+                                                              .productImageUrl
+                                                              .length
+                                                  ? Icon(
+                                                      Icons.play_circle_outline,
+                                                      color: Colors.grey,
+                                                      size: 32,
+                                                    )
+                                                  : Image.network(
+                                                      "${StringConstants.api_url + productData.productImageUrl.elementAt(index)}"),
+                                            ),
+                                          ));
+                                    },
+                                  ),
+                                ),
+                                Space(height: 30),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 30.0, right: 30, bottom: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${productData.productName}",
+                                                style: FontsTheme.boldTextStyle(
+                                                    size: 16)),
+                                            if (productData.productMrp >
+                                                productData.productSellingPrice)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                ),
+                                                child: SizedBox(
+                                                    width: 48,
+                                                    child: DiscountTag(
+                                                        mrp: productData
+                                                            .productMrp,
+                                                        selling: productData
+                                                            .productSellingPrice)),
                                               ),
-                                              Space(height: 8),
-                                              SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                  children: colorList
-                                                      .map<Widget>((e) {
-                                                    int index =
-                                                        colorList.indexOf(e);
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          currentIndex = index;
-                                                        });
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
-                                                        child: Container(
-                                                          decoration: currentIndex ==
-                                                                  index
-                                                              ? BoxDecoration(
-                                                                  border: Border.all(
-                                                                      width: 2,
-                                                                      color: Provider.of<CustomColor>(
-                                                                              context)
-                                                                          .appPrimaryMaterialColor),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50.0))
-                                                              : null,
+                                            Space(height: 8),
+                                            ProductRating(productData
+                                                .productRatingAverage),
+                                            Space(height: 8),
+                                            Text(
+                                                "${productData.productDescription}",
+                                                style:
+                                                    FontsTheme.descriptionText(
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                textAlign: TextAlign.justify),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            if (productData.isStock)
+                                              if (productData.stockLeft <= 20)
+                                                Text(
+                                                  productData.stockLeft == 0
+                                                      ? "Out of stock"
+                                                      : "${productData.stockLeft}  left in Stock",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: productData
+                                                                  .stockLeft <
+                                                              10
+                                                          ? Colors.red
+                                                          : Provider.of<
+                                                                      CustomColor>(
+                                                                  context)
+                                                              .appPrimaryMaterialColor),
+                                                ),
+                                            Divider(
+                                              height: 15,
+                                            ),
+                                            productData.productLiveTiming
+                                                        .length >
+                                                    0
+                                                ? productData.productLiveTiming
+                                                        .contains("All Time")
+                                                    ? SizedBox()
+                                                    : Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Space(
+                                                            height: 1,
+                                                          ),
+                                                          Text(
+                                                            "Available Time",
+                                                            style: label,
+                                                          ),
+                                                          Space(height: 4),
+                                                          for (int i = 0;
+                                                              i <
+                                                                  productData
+                                                                      .productLiveTiming
+                                                                      .length;
+                                                              i++) ...[
+                                                            Text(
+                                                              "${productData.productLiveTiming[i]}",
+                                                              style: TextStyle(
+                                                                fontSize: 13,
+                                                                // fontWeight:
+                                                                //     FontWeight.w600,
+                                                                color: Colors
+                                                                    .grey[800],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          Space(height: 15),
+                                                        ],
+                                                      )
+                                                : SizedBox(),
+                                            // Color Option
+                                            if (colorList.length > 0)
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Color option",
+                                                    style: label,
+                                                  ),
+                                                  Space(height: 8),
+                                                  SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                      children: colorList
+                                                          .map<Widget>((e) {
+                                                        int index = colorList
+                                                            .indexOf(e);
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              currentIndex =
+                                                                  index;
+                                                            });
+                                                          },
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .all(4.0),
-                                                            child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.0),
-                                                                child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      color: Color(
-                                                                          e.colorCode),
-                                                                      border: Border.all(color: Colors.grey,width: 0.3),
+                                                                        .only(
+                                                                    right: 8.0),
+                                                            child: Container(
+                                                              decoration: currentIndex ==
+                                                                      index
+                                                                  ? BoxDecoration(
+                                                                      border: Border.all(
+                                                                          width:
+                                                                              2,
+                                                                          color: Provider.of<CustomColor>(context)
+                                                                              .appPrimaryMaterialColor),
                                                                       borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          50.0),
-                                                                    ),
-                                                                    height: 25,
-                                                                    width: 25)),
+                                                                          BorderRadius.circular(
+                                                                              50.0))
+                                                                  : null,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        4.0),
+                                                                child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(50.0),
+                                                                    child: Container(
+                                                                        decoration: BoxDecoration(
+                                                                          color:
+                                                                              Color(e.colorCode),
+                                                                          border: Border.all(
+                                                                              color: Colors.grey,
+                                                                              width: 0.3),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(50.0),
+                                                                        ),
+                                                                        height: 25,
+                                                                        width: 25)),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                ),
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        if (sizeList.length > 0)
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Space(height: 15),
-                                              Text(
-                                                "Size Option",
-                                                style: label,
-                                              ),
-                                              Space(height: 8),
-                                              SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                  children:
-                                                      sizeList.map<Widget>(
-                                                    (e) {
-                                                      int index =
-                                                          sizeList.indexOf(e);
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            currentSizeIndex =
-                                                                index;
-                                                            finalPrice = sizeList
-                                                                .elementAt(
-                                                                    index)
-                                                                .sellingPrice;
-                                                          });
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 8.0),
-                                                          child: Container(
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    width: 1,
-                                                                    color: currentSizeIndex ==
-                                                                            index
-                                                                        ? Provider.of<CustomColor>(context)
-                                                                            .appPrimaryMaterialColor
-                                                                        : Colors
-                                                                            .grey
-                                                                            .shade400),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0)),
+                                            if (sizeList.length > 0)
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Space(height: 15),
+                                                  Text(
+                                                    "Size Option",
+                                                    style: label,
+                                                  ),
+                                                  Space(height: 8),
+                                                  SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                      children:
+                                                          sizeList.map<Widget>(
+                                                        (e) {
+                                                          int index = sizeList
+                                                              .indexOf(e);
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                currentSizeIndex =
+                                                                    index;
+                                                                finalPrice = sizeList
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .sellingPrice;
+                                                              });
+                                                            },
                                                             child: Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(2.0),
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.0),
-                                                                child:
-                                                                    Container(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                    horizontal:
-                                                                        4,
-                                                                  ),
-                                                                  child: Text(
-                                                                    "${e.size}  \u{20B9}${e.sellingPrice}",
-                                                                    style: FontsTheme.subTitleStyle(
+                                                                          .only(
+                                                                      right:
+                                                                          8.0),
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        width:
+                                                                            1,
                                                                         color: currentSizeIndex ==
                                                                                 index
                                                                             ? Provider.of<CustomColor>(context)
                                                                                 .appPrimaryMaterialColor
                                                                             : Colors
-                                                                                .grey.shade400,
-                                                                        size:
-                                                                            12),
+                                                                                .grey.shade400),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5.0)),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          2.0),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            50.0),
+                                                                    child:
+                                                                        Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      margin: EdgeInsets
+                                                                          .symmetric(
+                                                                        horizontal:
+                                                                            4,
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        "${e.size}  \u{20B9}${e.sellingPrice}",
+                                                                        style: FontsTheme.subTitleStyle(
+                                                                            color: currentSizeIndex == index
+                                                                                ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
+                                                                                : Colors.grey.shade400,
+                                                                            size: 12),
+                                                                      ),
+                                                                      height:
+                                                                          20,
+                                                                    ),
                                                                   ),
-                                                                  height: 20,
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).toList(),
-                                                ),
+                                                          );
+                                                        },
+                                                      ).toList(),
+                                                    ),
+                                                  ),
+                                                  Space(height: 4),
+                                                ],
                                               ),
-                                              Space(height: 4),
-                                            ],
-                                          ),
 
-                                        // if (productData.bulkPriceList!.length !=
-                                        //     0)
-                                        //   Space(height: 15),
-                                        if (productData.bulkPriceList!.length !=
-                                            0)
-                                          Text(
-                                            "Bulk Prices",
-                                            style: label,
-                                          ),
-                                        Space(height: 2),
-                                        if (productData.bulkPriceList!.length !=
-                                            0)
-                                          ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: bulkPrice.length,
-                                            itemBuilder: (context, i) {
-                                              List<int> _numbers = [];
-                                              for (int index =
-                                                      bulkPrice[i].fromQty;
-                                                  index <= bulkPrice[i].toQty;
-                                                  index++) {
-                                                _numbers.add(index);
-                                              }
-                                              return Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    padding: EdgeInsets.all(6),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Row(
+                                            // if (productData.bulkPriceList!.length !=
+                                            //     0)
+                                            //   Space(height: 15),
+                                            if (productData
+                                                    .bulkPriceList!.length !=
+                                                0)
+                                              Text(
+                                                "Bulk Prices",
+                                                style: label,
+                                              ),
+                                            Space(height: 2),
+                                            if (productData
+                                                    .bulkPriceList!.length !=
+                                                0)
+                                              ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: bulkPrice.length,
+                                                itemBuilder: (context, i) {
+                                                  List<int> _numbers = [];
+                                                  for (int index =
+                                                          bulkPrice[i].fromQty;
+                                                      index <=
+                                                          bulkPrice[i].toQty;
+                                                      index++) {
+                                                    _numbers.add(index);
+                                                  }
+                                                  return Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.all(6),
+                                                        child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .start,
+                                                                  .spaceEvenly,
                                                           children: [
-                                                            Text("From: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text(
-                                                                "${bulkPrice[i].fromQty}",
-                                                                style: FontsTheme
-                                                                    .subTitleStyle(
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text("From: ",
+                                                                    style: FontsTheme.subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade400,
+                                                                        size:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w400)),
+                                                                Text(
+                                                                    "${bulkPrice[i].fromQty}",
+                                                                    style: FontsTheme.subTitleStyle(
                                                                         color: Colors
                                                                             .grey
                                                                             .shade600,
                                                                         size:
                                                                             12))
-                                                          ],
-                                                        ),
-                                                        Space(
-                                                          width: 6,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text("To: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text(
-                                                                "${bulkPrice[i].toQty}",
-                                                                style: FontsTheme
-                                                                    .subTitleStyle(
+                                                              ],
+                                                            ),
+                                                            Space(
+                                                              width: 6,
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text("To: ",
+                                                                    style: FontsTheme.subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade400,
+                                                                        size:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w400)),
+                                                                Text(
+                                                                    "${bulkPrice[i].toQty}",
+                                                                    style: FontsTheme.subTitleStyle(
                                                                         color: Colors
                                                                             .grey
                                                                             .shade600,
                                                                         size:
                                                                             12))
-                                                          ],
-                                                        ),
-                                                        Space(
-                                                          width: 6,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Text("Price: ",
-                                                                style: FontsTheme.subTitleStyle(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                    size: 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
-                                                            Text(
-                                                              "₹",
-                                                              style: FontsTheme
-                                                                  .digitStyle(
+                                                              ],
+                                                            ),
+                                                            Space(
+                                                              width: 6,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Text("Price: ",
+                                                                    style: FontsTheme.subTitleStyle(
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade400,
+                                                                        size:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w400)),
+                                                                Text(
+                                                                  "₹",
+                                                                  style: FontsTheme.digitStyle(
                                                                       fontSize:
                                                                           12,
                                                                       color: Colors
                                                                           .grey
                                                                           .shade600),
-                                                            ),
-                                                            Text(
-                                                                "${bulkPrice[i].pricePerUnit}",
-                                                                style: FontsTheme
-                                                                    .digitStyle(
+                                                                ),
+                                                                Text(
+                                                                    "${bulkPrice[i].pricePerUnit}",
+                                                                    style: FontsTheme.digitStyle(
                                                                         color: Colors
                                                                             .grey
                                                                             .shade600,
                                                                         fontSize:
                                                                             12)),
+                                                              ],
+                                                            ),
                                                           ],
                                                         ),
-                                                      ],
+                                                      ),
+                                                      QuantitySelect(
+                                                        price: bulkPrice[i]
+                                                            .pricePerUnit,
+                                                        numbers: _numbers,
+                                                        setPrice: setPrice,
+                                                        index: i,
+                                                        isSelected: i !=
+                                                            selectedQtyIndex,
+                                                        productId:
+                                                            widget.productId,
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            if (productData
+                                                    .bulkPriceList!.length !=
+                                                0)
+                                              Column(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 4),
+                                                    child: SizedBox(
+                                                      height: 25,
+                                                      child: ListTile(
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        dense: true,
+                                                        title: Text(
+                                                          "Price",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        trailing: Text(
+                                                            finalQuantity != 0
+                                                                ? "\u{20B9} ${finalPrice / finalQuantity}"
+                                                                : "0"),
+                                                      ),
                                                     ),
                                                   ),
-                                                  QuantitySelect(
-                                                    price: bulkPrice[i]
-                                                        .pricePerUnit,
-                                                    numbers: _numbers,
-                                                    setPrice: setPrice,
-                                                    index: i,
-                                                    isSelected:
-                                                        i != selectedQtyIndex,
-                                                    productId: widget.productId,
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 4),
+                                                    child: SizedBox(
+                                                      height: 25,
+                                                      child: ListTile(
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        dense: true,
+                                                        title: Text(
+                                                          "Qty",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        trailing: Text(
+                                                            "$finalQuantity"),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Space(
+                                                    height: 10,
                                                   ),
                                                 ],
-                                              );
-                                            },
-                                          ),
-                                        if (productData.bulkPriceList!.length !=
-                                            0)
-                                          Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 2,
-                                                        horizontal: 4),
-                                                child: SizedBox(
-                                                  height: 25,
-                                                  child: ListTile(
-                                                    contentPadding:
-                                                        EdgeInsets.zero,
-                                                    dense: true,
-                                                    title: Text(
-                                                      "Price",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    trailing: Text(finalQuantity !=
-                                                            0
-                                                        ? "\u{20B9} ${finalPrice / finalQuantity}"
-                                                        : "0"),
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 2,
-                                                        horizontal: 4),
-                                                child: SizedBox(
-                                                  height: 25,
-                                                  child: ListTile(
-                                                    contentPadding:
-                                                        EdgeInsets.zero,
-                                                    dense: true,
-                                                    title: Text(
-                                                      "Qty",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    trailing:
-                                                        Text("$finalQuantity"),
-                                                  ),
-                                                ),
-                                              ),
-                                              Space(
-                                                height: 10,
-                                              ),
-                                            ],
-                                          )
-                                      ],
+                                              )
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  )
+                : Center(child: Text("Product does not exist")),
         bottomSheet: isLoading
             ? Center(child: CircularProgressIndicator())
-            : Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: Offset(2, 1), // changes position of shadow
+            : isExist
+                ? Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(2, 1), // changes position of shadow
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                            text: "₹",
-                            style: FontsTheme.digitStyle(fontSize: 15),
-                            children: [
-                              TextSpan(
-                                text: productData.bulkPriceList!.length == 0 &&
-                                        Provider.of<CartDataWrapper>(context)
-                                                .getIndividualQuantity(
-                                                    productId:
-                                                        productData.productId) >
-                                            0
-                                    ? " ${Provider.of<CartDataWrapper>(context).getIndividualQuantity(productId: productData.productId) * finalPrice}"
-                                    : " $finalPrice",
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                                text: "₹",
+                                style: FontsTheme.digitStyle(fontSize: 15),
+                                children: [
+                                  TextSpan(
+                                    text: productData.bulkPriceList!.length ==
+                                                0 &&
+                                            Provider.of<CartDataWrapper>(
+                                                        context)
+                                                    .getIndividualQuantity(
+                                                        productId: productData
+                                                            .productId) >
+                                                0
+                                        ? " ${Provider.of<CartDataWrapper>(context).getIndividualQuantity(productId: productData.productId) * finalPrice}"
+                                        : " $finalPrice",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins', fontSize: 15),
+                                  ),
+                                ]),
+                          ),
+                          if (Provider.of<VendorModelWrapper>(context)
+                                      .isShopOpen !=
+                                  "" &&
+                              Provider.of<VendorModelWrapper>(context)
+                                      .isShopOpen !=
+                                  "Offline")
+                            if (isProductAvailable(
+                                liveTimings: productData.productLiveTiming))
+                              if (productData.isRequestPrice)
+                                ElevatedButton(
+                                  onPressed: () {
+                                    launch(
+                                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                                  },
+                                  child: Text("Request Price",
+                                      style: FontsTheme.boldTextStyle(
+                                          color: Colors.white)),
+                                  style: ButtonStyle(
+                                    elevation:
+                                        MaterialStateProperty.all<double>(0),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Provider.of<CustomColor>(context)
+                                                .appPrimaryMaterialColor),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
+                                )
+                              else if (productData.isStock &&
+                                  productData.stockLeft <= 0)
+                                Text(
+                                  "Out of stock",
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 11,
+                                      color: Colors.red),
+                                )
+                              else if (productData.bulkPriceList!.length != 0)
+                                AddRemoveButtonBulk(
+                                  productData: productData,
+                                  isRounded: false,
+                                  price: finalPrice / finalQuantity,
+                                  qty: finalQuantity,
+                                )
+                              else
+                                AddRemoveButton(
+                                  productData: productData,
+                                  isRounded: false,
+                                  colorIndex: currentIndex,
+                                  sizeIndex: currentSizeIndex,
+                                )
+                            else
+                              Text(
+                                "Unavailable at this time",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins', fontSize: 15),
-                              ),
-                            ]),
-                      ),
-                      if (Provider.of<VendorModelWrapper>(context).isShopOpen !=
-                              "" &&
-                          Provider.of<VendorModelWrapper>(context).isShopOpen !=
-                              "Offline")
-                        if (isProductAvailable(
-                            liveTimings: productData.productLiveTiming))
-                          if (productData.isRequestPrice)
-                            ElevatedButton(
-                              onPressed: () {
-                                launch(
-                                    "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
-                              },
-                              child: Text("Request Price",
-                                  style: FontsTheme.boldTextStyle(
-                                      color: Colors.white)),
-                              style: ButtonStyle(
-                                elevation: MaterialStateProperty.all<double>(0),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Provider.of<CustomColor>(context)
-                                            .appPrimaryMaterialColor),
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                              ),
-                            )
-                          else if (productData.isStock &&
-                              productData.stockLeft <= 0)
+                                    fontFamily: 'Poppins',
+                                    fontSize: 13,
+                                    color: Colors.red),
+                                textAlign: TextAlign.justify,
+                              )
+                          else
                             Text(
-                              "Out of stock",
+                              "Shop is Offline",
                               style: TextStyle(
                                   fontFamily: 'Poppins',
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   color: Colors.red),
                             )
-                          else if (productData.bulkPriceList!.length != 0)
-                            AddRemoveButtonBulk(
-                              productData: productData,
-                              isRounded: false,
-                              price: finalPrice / finalQuantity,
-                              qty: finalQuantity,
-                            )
-                          else
-                            AddRemoveButton(
-                              productData: productData,
-                              isRounded: false,
-                              colorIndex: currentIndex,
-                              sizeIndex: currentSizeIndex,
-                            )
-                        else
-                          Text(
-                            "Unavailable at this time",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 13,
-                                color: Colors.red),
-                            textAlign: TextAlign.justify,
-                          )
-                      else
-                        Text(
-                          "Shop is Offline",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              color: Colors.red),
-                        )
-                    ],
-                  ),
-                ),
-              ),
+                        ],
+                      ),
+                    ),
+                  )
+                : null,
       ),
     );
   }
