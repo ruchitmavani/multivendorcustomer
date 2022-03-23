@@ -15,6 +15,7 @@ import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -112,6 +113,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider
+        .of<CategoryName>(context)
+        .categoryName;
+
     return DirectSelectContainer(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -800,7 +805,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 ElevatedButton(
                                   onPressed: () {
                                     launch(
-                                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${productData.productName} (${provider.indexWhere((element) => element.categoryId == productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == productData.categoryId)).categoryName}"})*.")}");
                                   },
                                   child: Text("Request Price",
                                       style: FontsTheme.boldTextStyle(

@@ -61,3 +61,8 @@ Widget cartIconWidget(BuildContext context) {
     ),
   );
 }
+
+
+String whatsAppParser(String message){
+  return message.replaceAll(" ", "%20");
+}

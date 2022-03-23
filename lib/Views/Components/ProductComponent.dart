@@ -9,6 +9,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -230,6 +231,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
+    var provider = Provider
+        .of<CategoryName>(context)
+        .categoryName;
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
@@ -258,7 +262,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                 child: InkWell(
                   onTap: () {
                     launch(
-                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
                   },
                   child: Icon(
                     Icons.link,
@@ -512,6 +516,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
+    var provider = Provider
+        .of<CategoryName>(context)
+        .categoryName;
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
@@ -540,7 +547,8 @@ class _ProductComponentListState extends State<ProductComponentList> {
                 child: InkWell(
                   onTap: () {
                     launch(
-                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
+
                   },
                   child: Icon(
                     Icons.link,

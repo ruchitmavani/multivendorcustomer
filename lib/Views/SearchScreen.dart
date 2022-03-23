@@ -5,6 +5,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
+import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
@@ -34,9 +35,12 @@ class _SearchState extends State<Search> {
       isLoading = true;
     });
     await ProductController.searchProduct(
-            vendorId:
-                "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}",
-            searchString: searchString)
+        vendorId:
+        "${Provider
+            .of<VendorModelWrapper>(context, listen: false)
+            .vendorModel!
+            .vendorUniqId}",
+        searchString: searchString)
         .then((value) {
       setState(() {
         isLoading = false;
@@ -61,7 +65,9 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -85,17 +91,18 @@ class _SearchState extends State<Search> {
                   hoverColor: Colors.white,
                   hintText: "Search here...",
                   hintStyle:
-                      TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                  TextStyle(fontSize: 12, color: Colors.grey.shade400),
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   contentPadding:
-                      EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                  EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
                   suffixIcon: Icon(
                     Icons.search,
                     color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: Provider.of<CustomColor>(context)
+                        color: Provider
+                            .of<CustomColor>(context)
                             .appPrimaryMaterialColor,
                         width: 0.7),
                     borderRadius: BorderRadius.circular(8.0),
@@ -104,7 +111,8 @@ class _SearchState extends State<Search> {
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       width: 1,
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider
+                          .of<CustomColor>(context)
                           .appPrimaryMaterialColor,
                       style: BorderStyle.solid,
                     ),
@@ -116,80 +124,83 @@ class _SearchState extends State<Search> {
           SliverToBoxAdapter(
             child: isLoading
                 ? Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: 14,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 180,
-                          mainAxisExtent: 245,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8),
-                      itemBuilder: (context, index) {
-                        return Shimmer.fromColors(
-                          baseColor: Colors.white,
-                          highlightColor: Colors.grey[300]!,
-                          period: Duration(seconds: 2),
-                          child: Container(
-                            width: 180,
-                            height: 100,
-                            decoration: ShapeDecoration(
-                              color: Colors.grey[300]!,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 4.0, vertical: 4),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        // maxCrossAxisExtent: 220,
-                        crossAxisCount: (size.width / 220).floor(),
-                        mainAxisExtent: 245,
-                        // childAspectRatio: 0.89
+              padding: const EdgeInsets.all(8),
+              child: GridView.builder(
+                shrinkWrap: true,
+                itemCount: 14,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 180,
+                    mainAxisExtent: 245,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8),
+                itemBuilder: (context, index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.white,
+                    highlightColor: Colors.grey[300]!,
+                    period: Duration(seconds: 2),
+                    child: Container(
+                      width: 180,
+                      height: 100,
+                      decoration: ShapeDecoration(
+                        color: Colors.grey[300]!,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: productList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductDescription(
-                                    productId:
-                                        productList.elementAt(index).productId,
-                                  ),
-                                ));
-                          },
-                          child: ProductComponentGrid(
-                              productData: productList.elementAt(index)),
-                        );
-                      },
-
-                      // children: productList
-                      //     .map((e) => GestureDetector(
-                      //           onTap: () {
-                      //             Navigator.push(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                   builder: (context) =>
-                      //                       ProductDescription(
-                      //                     productId: e.productId,
-                      //                   ),
-                      //                 ));
-                      //           },
-                      //           child: SearchGrid(productData: e),
-                      //         ))
-                      //     .toList(),
                     ),
-                  ),
+                  );
+                },
+              ),
+            )
+                : Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 4.0, vertical: 4),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  // maxCrossAxisExtent: 220,
+                  crossAxisCount: (size.width / 220).floor(),
+                  mainAxisExtent: 245,
+                  // childAspectRatio: 0.89
+                ),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: productList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ProductDescription(
+                                  productId:
+                                  productList
+                                      .elementAt(index)
+                                      .productId,
+                                ),
+                          ));
+                    },
+                    child: ProductComponentGrid(
+                        productData: productList.elementAt(index)),
+                  );
+                },
+
+                // children: productList
+                //     .map((e) => GestureDetector(
+                //           onTap: () {
+                //             Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                   builder: (context) =>
+                //                       ProductDescription(
+                //                     productId: e.productId,
+                //                   ),
+                //                 ));
+                //           },
+                //           child: SearchGrid(productData: e),
+                //         ))
+                //     .toList(),
+              ),
+            ),
           ),
         ],
       ),
@@ -209,7 +220,9 @@ class SearchGrid extends StatefulWidget {
 class _SearchGridState extends State<SearchGrid> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
@@ -243,9 +256,9 @@ class _SearchGridState extends State<SearchGrid> {
                     width: 110,
                     child: widget.productData.productImageUrl.length > 0
                         ? Image.network(
-                            StringConstants.api_url +
-                                widget.productData.productImageUrl.first,
-                            fit: BoxFit.contain)
+                        StringConstants.api_url +
+                            widget.productData.productImageUrl.first,
+                        fit: BoxFit.contain)
                         : Image.asset("images/placeholder.png"),
                   ),
                 ),
@@ -289,8 +302,9 @@ class _SearchGridState extends State<SearchGrid> {
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
                                         decorationColor:
-                                            Provider.of<CustomColor>(context)
-                                                .appPrimaryMaterialColor,
+                                        Provider
+                                            .of<CustomColor>(context)
+                                            .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade700,
@@ -308,7 +322,8 @@ class _SearchGridState extends State<SearchGrid> {
                                           color: Colors.black87),
                                     ),
                                     Text(
-                                      "${widget.productData.productSellingPrice} ",
+                                      "${widget.productData
+                                          .productSellingPrice} ",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.black87,
@@ -326,7 +341,8 @@ class _SearchGridState extends State<SearchGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<CustomColor>(context)
+                                      color: Provider
+                                          .of<CustomColor>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -336,7 +352,8 @@ class _SearchGridState extends State<SearchGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<CustomColor>(context)
+                                      color: Provider
+                                          .of<CustomColor>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -352,7 +369,8 @@ class _SearchGridState extends State<SearchGrid> {
                                           color: Colors.black87),
                                     ),
                                     Text(
-                                      "${widget.productData.bulkPriceList!.first.pricePerUnit}",
+                                      "${widget.productData.bulkPriceList!.first
+                                          .pricePerUnit}",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.black87,
@@ -378,8 +396,15 @@ class _SearchGridState extends State<SearchGrid> {
   }
 
   Widget cartButton() {
-    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+    var provider = Provider
+        .of<CategoryName>(context)
+        .categoryName;
+    if (Provider
+        .of<VendorModelWrapper>(context)
+        .isShopOpen != "" &&
+        Provider
+            .of<VendorModelWrapper>(context)
+            .isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(
@@ -399,14 +424,31 @@ class _SearchGridState extends State<SearchGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            color: Provider
+                .of<CustomColor>(context)
+                .appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
                     launch(
-                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}");
+                        "https://wa.me/+91${sharedPrefs
+                            .vendorMobileNumber}?text=${whatsAppParser(
+                            "Hi, I${sharedPrefs.customer_name.isNotEmpty
+                                ? "'m *${sharedPrefs.customer_name}* and"
+                                : ""} would like to know more about *${widget
+                                .productData.productName} (${provider
+                                .indexWhere((element) =>
+                            element.categoryId ==
+                                widget.productData.categoryId) == -1
+                                ? ""
+                                : "${provider
+                                .elementAt(
+                                provider.indexWhere((element) => element
+                                    .categoryId ==
+                                    widget.productData.categoryId))
+                                .categoryName}"})*.")}");
                   },
                   child: Icon(
                     Icons.link,
@@ -447,7 +489,7 @@ class _SearchGridState extends State<SearchGrid> {
       return Text(
         "Offline",
         style:
-            TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
+        TextStyle(fontFamily: 'Poppins', fontSize: 10, color: Colors.red),
       );
     }
   }
