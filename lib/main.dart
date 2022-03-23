@@ -204,7 +204,6 @@ class _MyAppState extends State<MyApp> {
                 child: LoginScreen(),
               ),
             ),
-            //todo make redirection
             if (sharedPrefs.customer_id.isNotEmpty)
               GoRoute(
                   path: PageCollection.myOrders,
@@ -228,7 +227,6 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                   ]),
-            //todo make a redirection
             if (sharedPrefs.customer_id.isNotEmpty)
               GoRoute(
                 path: PageCollection.myAccount,

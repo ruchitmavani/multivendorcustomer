@@ -62,7 +62,6 @@ class NewCartModel extends Equatable {
       };
 
   @override
-  // TODO: implement props
   List<Object?> get props => [productId,productQuantity,productSize,productColor,productImageUrl,productName,productMrp,productSellingPrice,isBulk];
 
 }

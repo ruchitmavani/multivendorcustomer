@@ -56,10 +56,7 @@ class _MyAccountState extends State<MyAccount> {
     await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
             (value) {
           if (value.success) {
-            print(value.success);
-            print(sharedPrefs.customer_id);
             customerData = value.data;
-            print(customerData);
             addressList.clear();
             for (int i = 0; i < customerData.customerAddress.length; i++) {
               addressList.add(Address(
@@ -132,7 +129,6 @@ class _MyAccountState extends State<MyAccount> {
         dob: dob.text)
         .then((value) {
       if (value.success) {
-        print(value.success);
         sharedPrefs.customer_email = value.data!.customerEmailAddress;
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
@@ -283,9 +279,6 @@ class _MyAccountState extends State<MyAccount> {
                           lable: "DOB",
                           controller: dob,
                           isenable: false,
-                          onChanged: (String? val) {
-                            print(val);
-                          },
                         ),
                       ),
                     ],

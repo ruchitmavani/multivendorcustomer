@@ -100,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
             sortKey.split(".").last)
         .then((value) {
       if (value.success) {
-        print(value.data);
         setState(() {
           productDataList = value.data;
           isLoadingCate = false;
