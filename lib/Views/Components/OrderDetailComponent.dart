@@ -94,7 +94,6 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
             productId: "${widget.productDetail.productId}")
         .then((value) {
       if (value.success) {
-        print(value.success);
         rating = value.data!.productRatingCount as double;
         setState(() {
           isLoading = false;

@@ -63,7 +63,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
         setState(() {
           isLoading = false;
           productData = value.data!;
-          print(window.location.href);
           if (productData.productVariationColors!.length != 0) {
             colorList = productData.productVariationColors!;
           }
@@ -959,7 +958,6 @@ class _QuantitySelectState extends State<QuantitySelect> {
                                 _quantity = widget.numbers.elementAt(index);
                               });
                               Navigator.pop(context);
-                              print("${_quantity * widget.price}");
                               widget.setPrice(_quantity * widget.price,
                                   _quantity, widget.index);
                               Provider.of<CartDataWrapper>(context,

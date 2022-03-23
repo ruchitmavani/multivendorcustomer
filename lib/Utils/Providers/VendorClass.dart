@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_vendor_customer/Data/Controller/ProductController.dart';
@@ -43,7 +45,7 @@ class VendorModelWrapper with ChangeNotifier {
         return res;
       }
     }, onError: (e) {
-      print(e);
+      log(e.toString());
       res = false;
       return res;
     });
@@ -91,7 +93,6 @@ class IpInfoApi {
   static Future<String> getIPAddress() async {
     try {
       final response = await dio.get('https://api.ipify.org');
-      print(response.data);
       return response.statusCode == 200 ? response.data : "";
     } catch (e) {
       return "";

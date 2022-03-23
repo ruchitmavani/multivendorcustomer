@@ -111,7 +111,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         .of<CartDataWrapper>(context, listen: false)
         .cartData
         .forEach((element) {
-      print(element.toJson());
     });
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Fluttertoast.showToast(

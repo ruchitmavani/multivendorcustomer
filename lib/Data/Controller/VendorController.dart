@@ -17,7 +17,6 @@ class VendorController {
     //body Data
     var data = {"store_link": "$vendorId", "customer_ip": "$ip"};
 
-    print(data);
     ResponseClass<VendorDataModel> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
@@ -26,7 +25,6 @@ class VendorController {
         data: data,
       );
 
-      print("vendor response -> ${response.data}");
       if (response.statusCode == 200) {
         log("getVendorData ${response.data}");
         responseClass.success = response.data["is_success"];
@@ -37,7 +35,7 @@ class VendorController {
       }
       return responseClass;
     } catch (e) {
-      print("getVendorData ->>>" + e.toString());
+      log("getVendorData ->>>" + e.toString());
       return responseClass;
     }
   }

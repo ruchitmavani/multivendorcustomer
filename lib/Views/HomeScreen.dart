@@ -75,8 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
         await Provider.of<VendorModelWrapper>(context, listen: false)
             .loadVendorData(sharedPrefs.storeLink);
     setState(() {});
-    print(
-        "vendor id in home provider ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.vendorUniqId}");
     _getCategoryWiseProduct(sortKeyList.first);
     _getBannerData();
     _getTrendingData();
@@ -84,9 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
     Provider.of<CustomColor>(context, listen: false).updateColor();
-    print(Provider.of<VendorModelWrapper>(context, listen: false)
-        .vendorModel!
-        .toJson());
     if (Provider.of<VendorModelWrapper>(context, listen: false).vendorModel !=
         null) if (getShopTimingStatus(
             Provider.of<VendorModelWrapper>(context, listen: false)

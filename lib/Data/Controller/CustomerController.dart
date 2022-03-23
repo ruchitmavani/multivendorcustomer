@@ -25,14 +25,13 @@ class CustomerController {
 
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
-        print("getCustomerData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         responseClass.data = CustomerDataModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
-      print("getCustomerData ->>>" + e.toString());
+      log("getCustomerData ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -65,14 +64,13 @@ class CustomerController {
 
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
-        print("updateCustomerData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         responseClass.data = CustomerDataModel.fromJson(response.data["data"]);
       }
       return responseClass;
     } catch (e) {
-      print("updateCustomerData ->>>" + e.toString());
+      log("updateCustomerData ->>>" + e.toString());
       return responseClass;
     }
   }

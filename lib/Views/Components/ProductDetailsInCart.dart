@@ -76,7 +76,6 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
             currentSizeIndex = productData.productVariationSizes!
                 .indexWhere((element) => element.size == widget.size!.size);
           }
-          print(currentIndex);
         });
       } else {
         setState(() {
@@ -114,7 +113,6 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     int index = Provider.of<CartDataWrapper>(context, listen: false)
         .cartData
         .indexWhere((element) => element.productId == productData.productId);
-    print("cart index $index");
     Provider.of<CartDataWrapper>(context, listen: false).cartData[index] =
         NewCartModel(
             productId: productData.productId,

@@ -34,11 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     await AuthController.sendOtp(mobileNo.text).then((value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           isLoading = false;
         });
-        print(value.data);
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -37,7 +37,6 @@ class ProductController {
             "limit": limit,
             "page": page
           };
-    print(data);
 
     ResponseClass responseClass =
         ResponseClass(success: false, message: "Something went wrong");
@@ -60,7 +59,7 @@ class ProductController {
       }
       return responseClass;
     } catch (e) {
-      print("getProductData ->>>" + e.toString());
+      log("getProductData ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -93,7 +92,7 @@ class ProductController {
       }
       return responseClass;
     } catch (e) {
-      print("getTrendingProductData ->>>" + e.toString());
+      log("getTrendingProductData ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -132,7 +131,7 @@ class ProductController {
       }
       return responseClass;
     } catch (e) {
-      print("searchProduct ->>>" + e.toString());
+      log("searchProduct ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -166,7 +165,7 @@ class ProductController {
       }
       return responseClass;
     } catch (e) {
-      print("findProduct ->>>" + e.toString());
+      log("findProduct ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -203,7 +202,7 @@ class ProductController {
       }
       return responseClass;
     } catch (e) {
-      print("recently bought ->>>" + e.toString());
+      log("recently bought ->>>" + e.toString());
       return responseClass;
     }
   }

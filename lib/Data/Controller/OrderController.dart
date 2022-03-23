@@ -61,11 +61,9 @@ class OrderController {
       required CustomerAddress address}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
 
-    print(window.localStorage);
     //body Data
     List<AddOrder> productList = [];
     for (int i = 0; i < orders.length; i++) {
-      print(i);
       productList.add(orders.elementAt(i).productSize == null &&
               orders.elementAt(i).productColor == null
           ? AddOrder(
@@ -120,8 +118,6 @@ class OrderController {
             "coupon_id": "$couponId",
             "delivery_address": address.toJson(),
           };
-
-    print("addOrder $data");
 
     ResponseClass<List<OrderDataModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");

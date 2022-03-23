@@ -37,7 +37,7 @@ class CouponController{
       }
       return responseClass;
     } catch (e) {
-      print("couponData ->>>" + e.toString());
+      log("couponData ->>>" + e.toString());
       return responseClass;
     }
   }

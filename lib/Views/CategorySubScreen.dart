@@ -61,8 +61,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
         page: page)
         .then((value) {
       if (value.success) {
-        print(value.pagination.last.toJson());
-        print(value.pagination.last.page);
         maxPages = value.pagination.last.page;
         setState(() {
           productDataList.clear();
@@ -91,8 +89,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
         sortKey: sortKeyList[0])
         .then((value) {
       if (value.success) {
-        print(value.pagination.last.toJson());
-        print(value.pagination.last.page);
         maxPages = value.pagination.last.page;
         setState(() {
           value.data!.forEach((element) {
@@ -170,7 +166,6 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
               setState(() {
                 isGrid = value;
               });
-              print(value);
             }, onClick: (value) {
               _getProduct(value);
             }),

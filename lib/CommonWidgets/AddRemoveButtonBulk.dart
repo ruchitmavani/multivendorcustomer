@@ -34,14 +34,6 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   @override
   void initState() {
     super.initState();
-
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   setState(() {
-    //     q = widget.productData.cartDetails == null
-    //         ? 0
-    //         : widget.productData.cartDetails!.productQuantity;
-    //   });
-    // });
     updateQuantity();
   }
 
@@ -84,83 +76,9 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
     }
 
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-
-    // await CartController.addToCart(
-    //         customerId: "${sharedPrefs.customer_id}",
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId,
-    //         productId: widget.productData.productId,
-    //         quantity: 1,
-    //         mrp: widget.productData.productMrp,
-    //         isActive: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .isActive
-    //             : false,
-    //         size: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .size
-    //             : "",
-    //         colorCode: widget.productData.productVariationColors!.length != 0
-    //             ? widget.productData.productVariationColors!
-    //                 .elementAt(widget.colorIndex)
-    //                 .colorCode
-    //             : "3242161711",
-    //         sellingPrice: widget.productData.productVariationSizes!.length != 0
-    //             ? widget.productData.productVariationSizes!
-    //                 .elementAt(widget.sizeIndex)
-    //                 .sellingPrice
-    //             : 0,
-    //         isColorActive:
-    //             widget.productData.productVariationColors!.length != 0
-    //                 ? widget.productData.productVariationColors!
-    //                     .elementAt(widget.colorIndex)
-    //                     .isActive
-    //                 : false,
-    //         isVarientAvailable:
-    //             widget.productData.productVariationColors!.length != 0
-    //                 ? true
-    //                 : false)
-    //     .then((value) {
-    //   if (value.success) {
-    //     setState(() {
-    //       q++;
-    //       cartId = value.data!.cartId;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
   }
 
   Future deleteCart() async {
-    // log("--cart id $cartId");
-    //
-    // await CartController.deleteCart(
-    //         cartId: cartId != null
-    //             ? "$cartId"
-    //             : "${widget.productData.cartDetails!.cartId}")
-    //     .then((value) {
-    //   if (value.success) {
-    //     print(value.success);
-    //     print(value.data);
-    //     setState(() {
-    //       q = 0;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(productId: widget.productData.productId);
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
@@ -213,18 +131,19 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                 height: 37,
                 width: 87,
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     if (widget.qty > 0) addToCart();
                     if (widget.qty == 0)
                       Fluttertoast.showToast(
                           msg: "quantity should be greater than 0",
                           webPosition: "center",
                           webBgColor:
-                          "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                              "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                   },
                   child: Card(
                     elevation: 0,
-                    color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    color: Provider.of<CustomColor>(context)
+                        .appPrimaryMaterialColor,
                     child: Center(
                       child: Text("Add to Cart",
                           style: FontsTheme.boldTextStyle(
@@ -233,51 +152,48 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   ),
                 ),
               )
-        : MeasureSize(
-            onChange: (size) => print("Bulk button $size"),
-            child: SizedBox(
-              height: 37,
-              width: 87,
-              child: InkWell(
-                onTap: () => deleteCart(),
-                child: Card(
-                  elevation: 0,
-                  color:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Consumer<CartDataWrapper>(
-                          builder: (context, CartDataWrapper value, child) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                "${value.getIndividualQuantity(productId: widget.productData.productId)}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                    fontFamily: "Poppins"),
-                              ),
-                            );
-                          },
-                        ),
-                        Padding(
+        : SizedBox(
+          height: 37,
+          width: 87,
+          child: InkWell(
+            onTap: () => deleteCart(),
+            child: Card(
+              elevation: 0,
+              color:
+                  Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Consumer<CartDataWrapper>(
+                      builder: (context, CartDataWrapper value, child) {
+                        return Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.delete,
-                            size: 18,
-                            color: Colors.white,
+                          child: Text(
+                            "${value.getIndividualQuantity(productId: widget.productData.productId)}",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11,
+                                fontFamily: "Poppins"),
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.delete,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
+          ),
+        );
   }
 }

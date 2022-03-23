@@ -91,7 +91,6 @@ class _OrderDetailsState extends State<OrderDetails> {
     });
     await OrderController.acceptOrder(widget.orderData.orderId).then((value) {
       if (value.success) {
-        print(value.data);
         setState(() {
           GoRouter.of(context).push('/' + storeConcat(PageCollection.myOrders));
           Fluttertoast.showToast(
@@ -624,12 +623,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     // Add one page with centered text "Hello World"
     ByteData? imageData;
     await rootBundle.load('Gilroy-Bold.ttf').then((data) => imageData = data);
-    // final image = PdfImage.jpeg(
-    //     doc.document,
-    //     image: imageData.buffer.asUint8List()
-    // );
-    print(imageData);
-    final Uint8List logoByteList1 = imageData!.buffer.asUint8List();
+
     doc.addPage(
       pw.Page(
         theme: pw.ThemeData.withFont(

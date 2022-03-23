@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:html';
 
 import 'package:flutter/material.dart';
@@ -59,7 +60,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .toInt())
         .then((value) {
       if (value.success) {
-        print(value.data);
         setState(() {
           isLoadingOrderId = false;
           if (value.data == null) {
@@ -81,7 +81,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       setState(() {
         isLoadingOrderId = false;
       });
-      print(e);
+      log(e.toString());
     });
   }
 
@@ -178,9 +178,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
           );
 
-          print("payment id  ${window.localStorage["payment_id"]}");
-          print("order id  ${window.localStorage["order_Id"]}");
-          print("signature ${window.localStorage["signature"]}");
           _verifyPayment();
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => OrderSuccess()));
@@ -196,14 +193,13 @@ class _PaymentOptionsState extends State<PaymentOptions> {
       setState(() {
         isLoadingOrderId = false;
       });
-      print(e);
+      log(e.toString());
     });
   }
 
   _verifyPayment() async {
     await PaymentController.paymentVerify().then((value) {
       if (value.success) {
-        print(value.data);
 
         isLoadingOrderId = false;
         Fluttertoast.showToast(msg: "${value.data!.orderId}",
@@ -213,7 +209,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         window.localStorage["orderId"] = orderId!;
       } else {}
     }, onError: (e) {
-      print(e);
+      log(e.toString());
     });
   }
 
@@ -270,7 +266,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           onChanged: (paymentMethods? value) {
                             setState(() {
                               _selection = value!;
-                              print(value);
                             },);
                           },
                         ),
@@ -312,7 +307,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             onChanged: (paymentMethods? value) {
                               setState(() {
                                 _selection = value!;
-                                print(value);
                               });
                             },
                           ),
@@ -356,7 +350,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             onChanged: (paymentMethods? value) {
                               setState(() {
                                 _selection = value!;
-                                print(value);
                               });
                             },
                           ),

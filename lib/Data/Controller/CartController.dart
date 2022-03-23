@@ -105,7 +105,7 @@ class CartController {
       }
       return responseClass;
     } catch (e) {
-      print("addToCart ->>>" + e.toString());
+      log("addToCart ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -116,7 +116,6 @@ class CartController {
   }) async {
     String url = StringConstants.api_url + StringConstants.cart_details_update;
 
-    print(jsonMap);
     //body Data
     var data = jsonMap;
 
@@ -137,7 +136,7 @@ class CartController {
       }
       return responseClass;
     } catch (e) {
-      print("update Cart ->>>" + e.toString());
+      log("update Cart ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -169,7 +168,7 @@ class CartController {
       }
       return responseClass;
     } catch (e) {
-      print("deleteCart ->>>" + e.toString());
+      log("deleteCart ->>>" + e.toString());
       return responseClass;
     }
   }

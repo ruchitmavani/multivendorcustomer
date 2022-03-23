@@ -30,7 +30,6 @@ class _RejectOrderState extends State<RejectOrder> {
             orderId: widget.oderIdData, reason: txtReason.text)
         .then((value) {
       if (value.success) {
-        print(value.data);
         setState(() {
           GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
           Fluttertoast.showToast(msg: "Order Rejected",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");

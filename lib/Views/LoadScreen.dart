@@ -26,7 +26,6 @@ class _LoadingState extends State<Loading> {
   loadData() async {
     Uri url = Uri.parse(window.location.href);
     String id = url.path.substring(1).split('/').first;
-    print("path $id");
     window.localStorage["storeId"] = id;
     if (id != "") {
       await Provider.of<VendorModelWrapper>(context, listen: false)
@@ -36,7 +35,7 @@ class _LoadingState extends State<Loading> {
         log("vendor exist : $value");
         if (value == true) {
           String? path = window.location.pathname;
-          print("load path ------- ${window.location.pathname}");
+          log("load path ------- ${window.location.pathname}");
           // if (!path!.contains("/home")) {
           //   GoRouter.of(context).go('/' + storeConcat(PageCollection.home));
           // }

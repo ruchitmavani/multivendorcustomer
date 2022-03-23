@@ -33,7 +33,7 @@ class AuthController {
       }
       return responseClass;
     } catch (e) {
-      print("otp ->>>" + e.toString());
+      log("otp ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -75,7 +75,7 @@ class AuthController {
       }
       return responseClass;
     } catch (e) {
-      print("register ->>>" + e.toString());
+      log("register ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -108,7 +108,7 @@ class AuthController {
       }
       return responseClass;
     } catch (e) {
-      print("login ->>>" + e.toString());
+      log("login ->>>" + e.toString());
       return responseClass;
     }
   }

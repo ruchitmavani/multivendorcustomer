@@ -24,8 +24,6 @@ class CategoryController {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
             "sort": "$sortKey"
           };
-    print("customer --> $data");
-    print("all product $data");
     ResponseClass<List<AllCategoryModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
@@ -34,7 +32,6 @@ class CategoryController {
         data: data,
       );
 
-      print("getCategoryWiseProduct response -> ${response.data}");
       if (response.statusCode == 200) {
         log("getCategoryWiseProduct ${response.data}");
         responseClass.success = response.data["is_success"];
@@ -46,7 +43,7 @@ class CategoryController {
       }
       return responseClass;
     } catch (e) {
-      print("getCategoryWiseProduct ->>>" + e.toString());
+      log("getCategoryWiseProduct ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -58,9 +55,7 @@ class CategoryController {
 
     //body Data
     var data = {"vendor_uniq_id": "${sharedPrefs.vendor_uniq_id}"};
-    print(data);
 
-    print("all product $data");
     ResponseClass<List<CategoryNameModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
@@ -69,7 +64,6 @@ class CategoryController {
         data: data,
       );
 
-      print("getCategoryName response -> ${response.data}");
       if (response.statusCode == 200) {
         log("getCategoryNAme ${response.data}");
         responseClass.success = response.data["is_success"];
@@ -81,7 +75,7 @@ class CategoryController {
       }
       return responseClass;
     } catch (e) {
-      print("getCategoryName ->>>" + e.toString());
+      log("getCategoryName ->>>" + e.toString());
       return responseClass;
     }
   }

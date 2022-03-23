@@ -11,7 +11,6 @@ class CategoryName extends ChangeNotifier {
 
     await CategoryController.getCategoryName().then((value) {
       if (value.success) {
-        print(value.data);
         categoryName = value.data;
         _isLoading = false;
       } else {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -77,7 +79,6 @@ class _RegisterState extends State<Register> {
         dob: dob.text)
         .then((value) {
       if (value.success) {
-        print(value.success);
         sharedPrefs.customer_email = value.data!.customerEmailAddress;
         sharedPrefs.customer_name = value.data!.customerName;
         sharedPrefs.customer_id = value.data!.customerUniqId;
@@ -101,7 +102,7 @@ class _RegisterState extends State<Register> {
         });
       }
     }, onError: (e) {
-      print(e);
+      log(e.toString());
       setState(() {
         isLoading = false;
       });
@@ -206,9 +207,6 @@ class _RegisterState extends State<Register> {
                               return "Select Birthdate";
                             }
                             return null;
-                          },
-                          onChanged: (String? val) {
-                            print(val);
                           },
                         ),
                       ),

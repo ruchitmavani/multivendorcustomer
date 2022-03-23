@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -51,7 +53,6 @@ class _MyAccountState extends State<MyAccount> {
     setState(() {
       isLoadingCustomer = true;
     });
-    print(sharedPrefs.customer_id);
     await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
             (value) {
           if (value.success) {
@@ -155,7 +156,7 @@ class _MyAccountState extends State<MyAccount> {
         });
       }
     }, onError: (e) {
-      print(e);
+      log(e.toString());
       setState(() {
         isLoading = false;
       });

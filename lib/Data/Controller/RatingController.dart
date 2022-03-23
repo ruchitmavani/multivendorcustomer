@@ -44,7 +44,7 @@ class RatingController {
       }
       return responseClass;
     } catch (e) {
-      print("rating ->>>" + e.toString());
+      log("rating ->>>" + e.toString());
       return responseClass;
     }
   }
@@ -77,7 +77,7 @@ class RatingController {
       }
       return responseClass;
     } catch (e) {
-      print("rating ->>>" + e.toString());
+      log("rating ->>>" + e.toString());
       return responseClass;
     }
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, avoid_web_libraries_in_flutter
 
+import 'dart:developer';
 import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
@@ -30,7 +31,7 @@ class WebPayment extends StatelessWidget {
       IFrameElement element = IFrameElement();
 
       window.onMessage.forEach((value) {
-        print('Event Received in callback: ${value.data}');
+        log('Event Received in callback: ${value.data}');
         if (value.data == 'MODAL_CLOSED') {
           Navigator.pop(context);
         } else if (value.data == 'SUCCESS') {

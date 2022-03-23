@@ -73,7 +73,6 @@ class _CartScreenState extends State<CartScreen> {
     await CustomerController.getCustomerData("${sharedPrefs.customer_id}").then(
         (value) {
       if (value.success) {
-        print(value.success);
         setState(() {
           customerData = value.data;
           isLoadingCustomer = false;

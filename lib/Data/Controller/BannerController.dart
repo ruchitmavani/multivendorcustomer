@@ -26,7 +26,6 @@ class BannerController {
 
       log("response -> ${response.data}");
       if (response.statusCode == 200) {
-        print("getBannerData ${response.data}");
         responseClass.success = response.data["is_success"];
         responseClass.message = response.data["message"];
         List asList = response.data["data"];
@@ -36,7 +35,7 @@ class BannerController {
       }
       return responseClass;
     } catch (e) {
-      print("getBannerData ->>>" + e.toString());
+      log("getBannerData ->>>" + e.toString());
       return responseClass;
     }
   }

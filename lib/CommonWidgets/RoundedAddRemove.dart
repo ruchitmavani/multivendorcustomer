@@ -32,41 +32,9 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
       productColor: widget.productData.productColor,
     );
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
-    // await CartController.deleteCart(cartId: "${widget.cartData.cartId}").then(
-    //     (value) {
-    //   if (value.success) {
-    //     print(value.success);
-    //     print(value.data);
-    //     setState(() {});
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
   }
 
   Future updateCart(int quantity) async {
-    // await CartController.update(jsonMap: {
-    //   "cart_id": widget.cartData.cartId,
-    //   "product_quantity": quantity
-    // }).then((value) {
-    //   if (value.success) {
-    //     setState(() {
-    //       q=quantity;
-    //     });
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //
-    //   } else {}
-    // }, onError: (e) {
-    //   print(e);
-    // });
-
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
 
     provider.incrementQuantity(
