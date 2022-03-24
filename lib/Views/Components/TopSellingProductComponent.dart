@@ -103,7 +103,7 @@ class _TopSellingProductComponentState
                           '/${widget.productData.productId}'));
                     },
                     child: Card(
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider.of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor,
                       elevation: 0,
                       child: Padding(

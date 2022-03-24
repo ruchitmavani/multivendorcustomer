@@ -130,7 +130,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
                                         decorationColor:
-                                            Provider.of<CustomColor>(context)
+                                            Provider.of<ThemeColorProvider>(context)
                                                 .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
@@ -169,7 +169,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<CustomColor>(context)
+                                      color: Provider.of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -179,7 +179,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<CustomColor>(context)
+                                      color: Provider.of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -189,7 +189,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<CustomColor>(context)
+                                      color: Provider.of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -255,7 +255,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -429,7 +429,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                                   decoration: TextDecoration.lineThrough,
                                   decorationThickness: 3,
                                   decorationColor:
-                                      Provider.of<CustomColor>(context)
+                                      Provider.of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
@@ -466,7 +466,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider.of<ThemeColorProvider>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
@@ -476,7 +476,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<CustomColor>(context)
+                                  color: Provider.of<ThemeColorProvider>(context)
                                       .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
@@ -540,7 +540,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),

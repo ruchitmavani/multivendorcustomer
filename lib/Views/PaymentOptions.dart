@@ -7,6 +7,7 @@ import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
+import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
 import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
@@ -18,7 +19,7 @@ import 'package:multi_vendor_customer/Views/OrderSuccess.dart';
 import 'package:provider/provider.dart';
 
 class PaymentOptions extends StatefulWidget {
-  final CustomerAddress address;
+  final Address address;
 
   PaymentOptions({
     required this.address,
@@ -259,7 +260,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
                         child: Radio<paymentMethods>(
                           activeColor: Provider
-                              .of<CustomColor>(context)
+                              .of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                           value: paymentMethods.COD,
                           groupValue: _selection,
@@ -301,7 +302,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           child: Radio<paymentMethods>(
                             value: paymentMethods.PAY_ONLINE,
                             activeColor: Provider
-                                .of<CustomColor>(context)
+                                .of<ThemeColorProvider>(context)
                                 .appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
@@ -344,7 +345,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           child: Radio<paymentMethods>(
                             value: paymentMethods.TAKEAWAY,
                             activeColor: Provider
-                                .of<CustomColor>(context)
+                                .of<ThemeColorProvider>(context)
                                 .appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
@@ -422,7 +423,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 child: Container(
                   height: 48,
                   color: Provider
-                      .of<CustomColor>(context)
+                      .of<ThemeColorProvider>(context)
                       .appPrimaryMaterialColor,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 3.0),

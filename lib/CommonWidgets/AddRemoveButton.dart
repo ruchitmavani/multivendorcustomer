@@ -110,8 +110,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
     Provider
         .of<CartDataWrapper>(context, listen: false)
         .cartData
-        .forEach((element) {
-    });
+        .forEach((element) {});
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Fluttertoast.showToast(
       msg: "Added to Cart",
@@ -264,7 +263,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   @override
   void didUpdateWidget(oldWidget) {
-    // updateQuantity();
   }
 
   updateQuantity() {
@@ -353,14 +351,14 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
         0
         ? widget.isRounded
         ? SizedBox(
-      width: 37,
-      height: 37,
+      width: 40,
+      height: 40,
       child: Card(
         shape: CircleBorder(),
         elevation: 0,
         color:
         Provider
-            .of<CustomColor>(context)
+            .of<ThemeColorProvider>(context)
             .appPrimaryMaterialColor,
         child: Center(
           child: Padding(
@@ -380,35 +378,35 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
       ),
     )
         : SizedBox(
-          height: 37,
-          width: 87,
-          child: InkWell(
-            onTap: () {
-              addToCart();
-            },
-            child: Card(
-              color: Provider
-                  .of<CustomColor>(context)
-                  .appPrimaryMaterialColor,
-              child: Center(
-                child: Text(
-                  "Add to Cart",
-                  style: FontsTheme.boldTextStyle(
-                      color: Colors.white, size: 9),
-                  maxLines: 1,
-                ),
-              ),
+      height: 40,
+      width: 93,
+      child: InkWell(
+        onTap: () {
+          addToCart();
+        },
+        child: Card(
+          color: Provider
+              .of<ThemeColorProvider>(context)
+              .appPrimaryMaterialColor,
+          child: Center(
+            child: Text(
+              "Add to Cart",
+              style: FontsTheme.boldTextStyle(
+                  color: Colors.white, size: 10),
+              maxLines: 1,
             ),
           ),
-        )
+        ),
+      ),
+    )
         : SizedBox(
-      height: 37,
-      width: 87,
+      height: 40,
+      width: 93,
       child: Card(
         elevation: 0,
         color:
         Provider
-            .of<CustomColor>(context)
+            .of<ThemeColorProvider>(context)
             .appPrimaryMaterialColor,
         child: Center(
           child: Row(

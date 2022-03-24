@@ -192,7 +192,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               'tel: ${widget.orderData.vendorDetails.mobileNumber}');
                         },
                         child: Icon(Icons.call,
-                            color: Provider.of<CustomColor>(context)
+                            color: Provider.of<ThemeColorProvider>(context)
                                 .appPrimaryMaterialColor),
                       ),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
@@ -215,7 +215,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 "images/whatsapp.png.",
                                 height: 22,
                                 width: 22,
-                                color: Provider.of<CustomColor>(context)
+                                color: Provider.of<ThemeColorProvider>(context)
                                     .appPrimaryMaterialColor,
                               ),
                             )
@@ -347,9 +347,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         2
                                     ? i == 1 || i == 2
                                         ? Colors.grey
-                                        : Provider.of<CustomColor>(context)
+                                        : Provider.of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor
-                                    : Provider.of<CustomColor>(context)
+                                    : Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
                                 child: Icon(
                                   Icons.check,
@@ -368,9 +368,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           2
                                       ? i == 1 || i == 2
                                           ? Colors.grey
-                                          : Provider.of<CustomColor>(context)
+                                          : Provider.of<ThemeColorProvider>(context)
                                               .appPrimaryMaterialColor
-                                      : Provider.of<CustomColor>(context)
+                                      : Provider.of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                             ),
                           ),
@@ -471,7 +471,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                         .lineThrough,
                                                     decorationThickness: 3,
                                                     decorationColor: Provider
-                                                            .of<CustomColor>(
+                                                            .of<ThemeColorProvider>(
                                                                 context)
                                                         .appPrimaryMaterialColor)
                                             : FontsTheme.valueStyle(

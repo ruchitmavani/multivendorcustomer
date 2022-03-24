@@ -125,7 +125,7 @@ class _TopButtonsState extends State<TopButtons> {
                                             groupValue: _selection,
                                             splashRadius: 10,
                                             activeColor:
-                                                Provider.of<CustomColor>(
+                                                Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
@@ -171,7 +171,7 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.OtoN,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<CustomColor>(
+                                                Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
@@ -218,7 +218,7 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.spHtoL,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<CustomColor>(
+                                                Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
@@ -265,7 +265,7 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.spLtoH,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<CustomColor>(
+                                                Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {

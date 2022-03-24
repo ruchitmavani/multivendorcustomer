@@ -148,7 +148,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider.of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor,
                       width: 0.7),
                   borderRadius: BorderRadius.circular(8.0),

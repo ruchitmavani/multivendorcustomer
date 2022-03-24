@@ -67,9 +67,9 @@ class _OrderSuccessState extends State<OrderSuccess> {
               child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   primary:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                      Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
                   side: BorderSide(
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider.of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor),
                 ),
                 onPressed: () {

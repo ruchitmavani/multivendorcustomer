@@ -25,7 +25,10 @@ class _LoadingState extends State<Loading> {
 
   loadData() async {
     Uri url = Uri.parse(window.location.href);
-    String id = url.path.substring(1).split('/').first;
+    String id = url.path
+        .substring(1)
+        .split('/')
+        .first;
     window.localStorage["storeId"] = id;
     if (id != "") {
       await Provider.of<VendorModelWrapper>(context, listen: false)
@@ -61,17 +64,13 @@ class _LoadingState extends State<Loading> {
     return Scaffold(
       body: Center(
         child: isLoading
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/wellsel.png",
-                      width: 150, fit: BoxFit.fitWidth),
-                  CircularProgressIndicator(),
-                ],
-              )
+            ? CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(
+            Colors.grey.shade400,
+          ),)
             : isStoreExist
-                ? HomeScreen()
-                : LandingScreen(),
+            ? HomeScreen()
+            : LandingScreen(),
       ),
     );
   }

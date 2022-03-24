@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _recentlyBought();
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Provider.of<CategoryName>(context, listen: false).loadCategoryName();
-    Provider.of<CustomColor>(context, listen: false).updateColor();
+    Provider.of<ThemeColorProvider>(context, listen: false).updateColor();
     if (Provider.of<VendorModelWrapper>(context, listen: false).vendorModel !=
         null) if (getShopTimingStatus(
             Provider.of<VendorModelWrapper>(context, listen: false)
@@ -250,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                     icon: Icon(CupertinoIcons.search,
                         size: 25,
-                        color: Provider.of<CustomColor>(context)
+                        color: Provider.of<ThemeColorProvider>(context)
                             .appPrimaryMaterialColor),
                     onPressed: () {
                       GoRouter.of(context)
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Icon(
                                           Icons.chevron_right,
                                           color:
-                                              Provider.of<CustomColor>(context)
+                                              Provider.of<ThemeColorProvider>(context)
                                                   .appPrimaryMaterialColor,
                                         ),
                                       ],
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                 ),
                 backgroundColor:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
               )
             : FloatingActionButton(
                 onPressed: () {
@@ -344,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                 ),
                 backgroundColor:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                    Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
               ),
         body: isShopOpen
             ? vendorProvider != null
@@ -425,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               },
                                               child: Icon(Icons.call,
                                                   color: Provider.of<
-                                                          CustomColor>(context)
+                                                          ThemeColorProvider>(context)
                                                       .appPrimaryMaterialColor),
                                             ),
                                           ),
@@ -457,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         height: 22,
                                                         width: 22,
                                                         color: Provider.of<
-                                                                    CustomColor>(
+                                                                    ThemeColorProvider>(
                                                                 context)
                                                             .appPrimaryMaterialColor,
                                                       ),
@@ -564,7 +564,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             Icon(Icons.directions,
                                                 size: 18,
-                                                color: Provider.of<CustomColor>(
+                                                color: Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor),
                                             InkWell(
@@ -601,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   style: FontsTheme.gilroyText(
                                                     size: 12,
                                                     color: Provider.of<
-                                                                CustomColor>(
+                                                                ThemeColorProvider>(
                                                             context)
                                                         .appPrimaryMaterialColor,
                                                   )),
@@ -1013,7 +1013,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'tel: ${vendorProvider.mobileNumber}');
                                             },
                                             child: Icon(Icons.call,
-                                                color: Provider.of<CustomColor>(
+                                                color: Provider.of<ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor),
                                           ),
@@ -1046,7 +1046,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       height: 22,
                                                       width: 22,
                                                       color: Provider.of<
-                                                                  CustomColor>(
+                                                                  ThemeColorProvider>(
                                                               context)
                                                           .appPrimaryMaterialColor,
                                                     ),
@@ -1154,7 +1154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           Icon(Icons.directions,
                                               size: 18,
-                                              color: Provider.of<CustomColor>(
+                                              color: Provider.of<ThemeColorProvider>(
                                                       context)
                                                   .appPrimaryMaterialColor),
                                           FittedBox(
@@ -1197,7 +1197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 style: TextStyle(
                                                     fontSize: 11,
                                                     color: Provider.of<
-                                                                CustomColor>(
+                                                                ThemeColorProvider>(
                                                             context)
                                                         .appPrimaryMaterialColor,
                                                     fontWeight:
@@ -1264,7 +1264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SvgPicture.asset(
                   "images/error.svg",
                   color:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                      Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
                   width: 30,
                   height: 30,
                 ),

@@ -124,7 +124,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
             IconButton(
               icon: Icon(CupertinoIcons.search,
                   size: 25,
-                  color: Provider.of<CustomColor>(context)
+                  color: Provider.of<ThemeColorProvider>(context)
                       .appPrimaryMaterialColor),
               onPressed: () {
                 GoRouter.of(context)
@@ -320,7 +320,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                               10
                                                           ? Colors.red
                                                           : Provider.of<
-                                                                      CustomColor>(
+                                                                      ThemeColorProvider>(
                                                                   context)
                                                               .appPrimaryMaterialColor),
                                                 ),
@@ -405,7 +405,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                       border: Border.all(
                                                                           width:
                                                                               2,
-                                                                          color: Provider.of<CustomColor>(context)
+                                                                          color: Provider.of<ThemeColorProvider>(context)
                                                                               .appPrimaryMaterialColor),
                                                                       borderRadius:
                                                                           BorderRadius.circular(
@@ -483,7 +483,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                             1,
                                                                         color: currentSizeIndex ==
                                                                                 index
-                                                                            ? Provider.of<CustomColor>(context)
+                                                                            ? Provider.of<ThemeColorProvider>(context)
                                                                                 .appPrimaryMaterialColor
                                                                             : Colors
                                                                                 .grey.shade400),
@@ -515,7 +515,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                         "${e.size}  \u{20B9}${e.sellingPrice}",
                                                                         style: FontsTheme.subTitleStyle(
                                                                             color: currentSizeIndex == index
-                                                                                ? Provider.of<CustomColor>(context).appPrimaryMaterialColor
+                                                                                ? Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor
                                                                                 : Colors.grey.shade400,
                                                                             size: 12),
                                                                       ),
@@ -814,7 +814,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         MaterialStateProperty.all<double>(0),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                            Provider.of<CustomColor>(context)
+                                            Provider.of<ThemeColorProvider>(context)
                                                 .appPrimaryMaterialColor),
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(

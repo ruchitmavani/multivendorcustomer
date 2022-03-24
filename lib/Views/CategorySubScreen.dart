@@ -11,7 +11,6 @@ import 'package:multi_vendor_customer/Routes/Helper.dart';
 import 'package:multi_vendor_customer/Utils/HelperFunctions.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductComponent.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +129,8 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
               -1
               ? ""
               : "${provider
-              .elementAt(provider.indexWhere((element) => element.categoryId ==
+              .elementAt(provider.indexWhere((element) =>
+          element.categoryId ==
               widget.categoryId))
               .categoryName}",
           style: TextStyle(
@@ -145,7 +145,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                 size: 25,
                 color:
                 Provider
-                    .of<CustomColor>(context)
+                    .of<ThemeColorProvider>(context)
                     .appPrimaryMaterialColor),
             onPressed: () {
               GoRouter.of(context)
@@ -179,7 +179,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent:
                     220,
-                    mainAxisExtent: 245,
+                    mainAxisExtent: 250,
                     childAspectRatio: 0.75,
 
                     mainAxisSpacing: 8,
@@ -221,7 +221,7 @@ class _CategorySubScreenState extends State<CategorySubScreen> {
                       .of(context)
                       .size
                       .width,
-                  mainAxisExtent: isGrid ? 245 : 120,
+                  mainAxisExtent: isGrid ? 250 : 120,
                   childAspectRatio: isGrid ? 0.75 : 3.5,
                   crossAxisSpacing: 3,
                   mainAxisSpacing: 3,

@@ -102,7 +102,7 @@ class _SearchState extends State<Search> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: Provider
-                            .of<CustomColor>(context)
+                            .of<ThemeColorProvider>(context)
                             .appPrimaryMaterialColor,
                         width: 0.7),
                     borderRadius: BorderRadius.circular(8.0),
@@ -112,7 +112,7 @@ class _SearchState extends State<Search> {
                     borderSide: BorderSide(
                       width: 1,
                       color: Provider
-                          .of<CustomColor>(context)
+                          .of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor,
                       style: BorderStyle.solid,
                     ),
@@ -303,7 +303,7 @@ class _SearchGridState extends State<SearchGrid> {
                                         decorationThickness: 3,
                                         decorationColor:
                                         Provider
-                                            .of<CustomColor>(context)
+                                            .of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
@@ -342,7 +342,7 @@ class _SearchGridState extends State<SearchGrid> {
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Provider
-                                          .of<CustomColor>(context)
+                                          .of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -353,7 +353,7 @@ class _SearchGridState extends State<SearchGrid> {
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Provider
-                                          .of<CustomColor>(context)
+                                          .of<ThemeColorProvider>(context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -425,7 +425,7 @@ class _SearchGridState extends State<SearchGrid> {
             shape: CircleBorder(),
             elevation: 0,
             color: Provider
-                .of<CustomColor>(context)
+                .of<ThemeColorProvider>(context)
                 .appPrimaryMaterialColor,
             child: Center(
               child: Padding(

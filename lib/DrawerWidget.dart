@@ -49,7 +49,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         child: Container(
                           width: 50,
                           height: 50,
-                          color: Provider.of<CustomColor>(context)
+                          color: Provider.of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                           alignment: Alignment.center,
                           child: Text(

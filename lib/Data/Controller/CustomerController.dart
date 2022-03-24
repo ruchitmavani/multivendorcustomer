@@ -74,4 +74,38 @@ class CustomerController {
       return responseClass;
     }
   }
+
+  /*-----------Update Customer address-----------*/
+  static Future<ResponseClass> updateCustomerAddress({required String customerId,
+
+    required List<Map<String,dynamic>> address,
+    }) async {
+    String url = StringConstants.api_url + StringConstants.customer_update;
+
+    //body Data
+    var data = {
+      "customer_uniq_id": "$customerId",
+      "customer_address": address
+    };
+
+    ResponseClass<CustomerDataModel> responseClass =
+    ResponseClass(success: false, message: "Something went wrong");
+    try {
+      Response response = await dio.post(
+        url,
+        data: data,
+      );
+
+      log("response -> ${response.data}");
+      if (response.statusCode == 200) {
+        responseClass.success = response.data["is_success"];
+        responseClass.message = response.data["message"];
+        responseClass.data = CustomerDataModel.fromJson(response.data["data"]);
+      }
+      return responseClass;
+    } catch (e) {
+      log("updateCustomerAddress ->>>" + e.toString());
+      return responseClass;
+    }
+  }
 }

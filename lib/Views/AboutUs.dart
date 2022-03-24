@@ -88,7 +88,7 @@ class _AboutUsState extends State<AboutUs> {
                                       'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
                                 },
                                 child: Icon(Icons.call,
-                                    color: Provider.of<CustomColor>(context)
+                                    color: Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor),
                               ),
                             ),
@@ -125,7 +125,7 @@ class _AboutUsState extends State<AboutUs> {
                                         "images/whatsapp.png.",
                                         height: 22,
                                         width: 22,
-                                        color: Provider.of<CustomColor>(context)
+                                        color: Provider.of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor,
                                       ),
                                     ),
@@ -186,7 +186,7 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                           Icon(Icons.directions,
                               size: 18,
-                              color: Provider.of<CustomColor>(context)
+                              color: Provider.of<ThemeColorProvider>(context)
                                   .appPrimaryMaterialColor),
 
                         ],

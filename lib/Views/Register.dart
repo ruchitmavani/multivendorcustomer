@@ -288,7 +288,15 @@ class _RegisterState extends State<Register> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LocationScreen(),
+                            builder: (context) => LocationScreen(
+                              subAddress: "",
+                              pincode: "",
+                              isEditing: false,
+                              city: "",
+                              area: "",
+                              index: 0,
+                              type: "",
+                            ),
                           ),
                         ).then((value) {
                           setState(() {});

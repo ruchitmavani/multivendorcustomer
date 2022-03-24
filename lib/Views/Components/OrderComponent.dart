@@ -200,7 +200,7 @@ class _OrderComponentState extends State<OrderComponent> {
                           height: 28,
                           width: 85,
                           decoration: BoxDecoration(
-                            color: Provider.of<CustomColor>(context)
+                            color: Provider.of<ThemeColorProvider>(context)
                                 .appPrimaryMaterialColor
                                 .withOpacity(0.1),
                             borderRadius:
@@ -214,7 +214,7 @@ class _OrderComponentState extends State<OrderComponent> {
                                     ? "${widget.orderData.orderStatus.last}"
                                     : "",
                                 style: FontsTheme.boldTextStyle(
-                                    color: Provider.of<CustomColor>(context)
+                                    color: Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
                                     size: 11),
                               ),

@@ -100,7 +100,7 @@ class _LocationState extends State<EditLocation> {
                                     ),
                               ),
                               selected: defaultChoiceIndex == index,
-                              selectedColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                              selectedColor: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
                               onSelected: (value) {
                                 setState(() {
                                   defaultChoiceIndex =

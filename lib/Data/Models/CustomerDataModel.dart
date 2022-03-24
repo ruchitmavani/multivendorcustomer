@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'AddressModel.dart';
+
 CustomerDataModel customerDataModelFromJson(String str) => CustomerDataModel.fromJson(json.decode(str));
 
 String customerDataModelToJson(CustomerDataModel data) => json.encode(data.toJson());
@@ -22,7 +24,7 @@ class CustomerDataModel {
   String customerName;
   String customerEmailAddress;
   String customerMobileNumber;
-  List<CustomerAddress> customerAddress;
+  List<Address> customerAddress;
   DateTime customerDob;
   String id;
   String customerUniqId;
@@ -31,7 +33,7 @@ class CustomerDataModel {
     customerName: json["customer_name"],
     customerEmailAddress: json["customer_email_address"],
     customerMobileNumber: json["customer_mobile_number"],
-    customerAddress: List<CustomerAddress>.from(json["customer_address"].map((x) => CustomerAddress.fromJson(x))),
+    customerAddress: List<Address>.from(json["customer_address"].map((x) => Address.fromJson(x))),
     customerDob: DateTime.parse(json["customer_DOB"]),
     id: json["_id"],
     customerUniqId: json["customer_uniq_id"],
@@ -45,37 +47,5 @@ class CustomerDataModel {
     "customer_DOB": customerDob.toIso8601String(),
     "_id": id,
     "customer_uniq_id": customerUniqId,
-  };
-}
-
-class CustomerAddress {
-  CustomerAddress({
-    required this.type,
-    required this.subAddress,
-    required this.area,
-    required this.city,
-    required this.pincode,
-  });
-
-  String type;
-  String subAddress;
-  String area;
-  String city;
-  int pincode;
-
-  factory CustomerAddress.fromJson(Map<String, dynamic> json) => CustomerAddress(
-    type: json["type"],
-    subAddress: json["subAddress"],
-    area: json["area"],
-    city: json["city"],
-    pincode: json["pincode"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "type": type,
-    "subAddress": subAddress,
-    "area": area,
-    "city": city,
-    "pincode": pincode,
   };
 }

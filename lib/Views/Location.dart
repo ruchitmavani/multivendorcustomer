@@ -1,22 +1,43 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_geocoding/google_geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
 import 'package:multi_vendor_customer/CommonWidgets/MyTextFormField.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
+import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:provider/provider.dart';
 
 import 'map/search.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  final String subAddress;
+  final String area;
+  final String city;
+  final String pincode;
+  final String type;
+  final int index;
+  final bool isEditing;
+
+  const LocationScreen(
+      {required this.index,
+      required this.city,
+      required this.area,
+      required this.pincode,
+      required this.isEditing,
+      required this.subAddress,
+      required this.type,
+      Key? key})
+      : super(key: key);
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
@@ -32,10 +53,12 @@ class _LocationScreenState extends State<LocationScreen> {
   TextEditingController addressType = TextEditingController();
 
   bool _serviceEnabled = false;
+  bool isLoading = false;
   late PermissionStatus _permissionGranted;
   LocationData _locationData = loc.LocationData.fromMap({});
 
-  _saveAddress(Address address) async {
+  _saveAddress(Address address) {
+    print(address.toJson());
     if (addressList.contains(address)) {
       Fluttertoast.showToast(
           msg: "Address Already Exist",
@@ -43,8 +66,73 @@ class _LocationScreenState extends State<LocationScreen> {
           webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     } else {
       addressList.add(address);
-      if (Navigator.canPop(context)) Navigator.pop(context);
+      _updateCustomerData();
     }
+  }
+
+  _updateAddress(Address address) {
+    addressList[widget.index] = address;
+    _updateCustomerData();
+  }
+
+  _updateCustomerData() async {
+    setState(() {
+      isLoading = true;
+    });
+    List<Map<String, dynamic>> object = [];
+    for (int i = 0; i < addressList.length; i++) {
+      object.add({
+        "type": addressList.elementAt(i).type,
+        "subAddress": addressList.elementAt(i).subAddress,
+        "area": addressList.elementAt(i).area,
+        "city": addressList.elementAt(i).city,
+        "pincode": addressList.elementAt(i).pinCode,
+      });
+    }
+    await CustomerController.updateCustomerAddress(
+      customerId: sharedPrefs.customer_id,
+      address: object,
+    ).then((value) {
+      if (value.success) {
+        sharedPrefs.customer_email = value.data!.customerEmailAddress;
+        sharedPrefs.customer_name = value.data!.customerName;
+        sharedPrefs.customer_id = value.data!.customerUniqId;
+        sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
+
+        setState(() {
+          isLoading = false;
+        });
+        //todo navigate to appropriate path
+        log(GoRouter.of(context).location);
+        if (GoRouter.of(context).location.contains("/cart")) {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+        }else {
+          GoRouter.of(context).go('/' + sharedPrefs.storeLink+"/account");
+        }
+        Fluttertoast.showToast(
+            msg: "Address Update Success",
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+      } else {
+        Fluttertoast.showToast(
+            msg: value.message,
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      log(e.toString());
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   int defaultChoiceIndex = 0;
@@ -161,9 +249,31 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 
+  _setData() {
+    houseNo.text = widget.subAddress;
+    areaTxt.text = widget.area;
+    cityTxt.text = widget.city;
+    pinCode.text = widget.pincode;
+    int temp = 0;
+    if (widget.type == "Home") {
+      temp = 0;
+    } else if (widget.type == "Work") {
+      temp = 1;
+    } else {
+      temp = 2;
+      addressType.text = widget.type;
+    }
+    setState(() {
+      defaultChoiceIndex = temp;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    if (widget.isEditing) {
+      _setData();
+    }
     _getUsersLoaction();
   }
 
@@ -208,15 +318,16 @@ class _LocationScreenState extends State<LocationScreen> {
                             width: 41,
                             child: ElevatedButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                  EdgeInsets.zero
-                                ),
-                                backgroundColor: MaterialStateProperty.all(Colors.white),
+                                padding:
+                                    MaterialStateProperty.all(EdgeInsets.zero),
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white),
                               ),
                               onPressed: () {
                                 setLiveLocation();
                               },
-                              child: Icon(Icons.my_location,color: Color(0xff333333)),
+                              child: Icon(Icons.my_location,
+                                  color: Color(0xff333333)),
                             ),
                           ))
                     ],
@@ -318,7 +429,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                     ),
                                     selected: defaultChoiceIndex == index,
                                     selectedColor:
-                                        Provider.of<CustomColor>(context)
+                                        Provider.of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor,
                                     onSelected: (value) {
                                       setState(() {
@@ -352,6 +463,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           },
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 1,
@@ -359,7 +471,8 @@ class _LocationScreenState extends State<LocationScreen> {
                                 hintText: "city, state, country",
                                 maxLines: 1,
                                 validator: (value) {
-                                  if (value!.isEmpty) return "enter city, state, country";
+                                  if (value!.isEmpty)
+                                    return "enter city, state, country";
                                   return null;
                                 },
                                 controller: cityTxt,
@@ -393,8 +506,8 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(left: 17.0, right: 17, bottom: 12, top: 5),
+                    padding: const EdgeInsets.only(
+                        left: 17.0, right: 17, bottom: 12, top: 5),
                     child: SizedBox(
                       height: 45,
                       width: MediaQuery.of(context).size.width,
@@ -413,17 +526,29 @@ class _LocationScreenState extends State<LocationScreen> {
                         ),
                         onPressed: () {
                           if (_addressKey.currentState!.validate()) {
-                            _saveAddress(
-                              Address(
-                                type: defaultChoiceIndex == 2
-                                    ? addressType.text
-                                    : _choicesList.elementAt(defaultChoiceIndex),
-                                subAddress: houseNo.text,
-                                area: areaTxt.text,
-                                city: cityTxt.text,
-                                pinCode: int.parse(pinCode.text),
-                              ),
-                            );
+                            widget.isEditing
+                                ? _updateAddress(Address(
+                                    type: defaultChoiceIndex == 2
+                                        ? addressType.text
+                                        : _choicesList
+                                            .elementAt(defaultChoiceIndex),
+                                    subAddress: houseNo.text,
+                                    area: areaTxt.text,
+                                    city: cityTxt.text,
+                                    pinCode: int.parse(pinCode.text),
+                                  ))
+                                : _saveAddress(
+                                    Address(
+                                      type: defaultChoiceIndex == 2
+                                          ? addressType.text
+                                          : _choicesList
+                                              .elementAt(defaultChoiceIndex),
+                                      subAddress: houseNo.text,
+                                      area: areaTxt.text,
+                                      city: cityTxt.text,
+                                      pinCode: int.parse(pinCode.text),
+                                    ),
+                                  );
                           }
                         },
                       ),
@@ -443,16 +568,25 @@ class _LocationScreenState extends State<LocationScreen> {
                   SizedBox(
                     height: 40,
                     width: 40,
-                    child: FloatingActionButton(onPressed: (){
-                      if(Navigator.canPop(context)){
-                        Navigator.pop(context);
-                      }
-                    }, backgroundColor: Colors.white,foregroundColor: Colors.black,child: Icon(Icons.chevron_left,),),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      child: Icon(
+                        Icons.chevron_left,
+                      ),
+                    ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   SizedBox(
                     height: 40,
-                    width: MediaQuery.of(context).size.width-85,
+                    width: MediaQuery.of(context).size.width - 85,
                     child: TextFormField(
                       onTap: () {
                         _showMyDialog();
@@ -466,17 +600,18 @@ class _LocationScreenState extends State<LocationScreen> {
                         fillColor: Colors.white,
                         hoverColor: Colors.white,
                         hintText: "Search here",
-                        hintStyle:
-                            TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                        hintStyle: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade400),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.only(left: 15, right: 8, top: 4, bottom: 4),
+                        contentPadding: EdgeInsets.only(
+                            left: 15, right: 8, top: 4, bottom: 4),
                         suffixIcon: Icon(
                           Icons.search,
                           color: Colors.grey,
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 0.7),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.7),
                           borderRadius: BorderRadius.circular(50),
                         ),
                         enabledBorder: OutlineInputBorder(

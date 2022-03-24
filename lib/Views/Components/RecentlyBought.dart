@@ -88,7 +88,7 @@ class _RecentlyBoughtState extends State<RecentlyBought> {
                                 fontSize: 11,
                                 decoration: TextDecoration.lineThrough,
                                 decorationColor:
-                                    Provider.of<CustomColor>(context)
+                                    Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
                                 decorationThickness: 3),
                           ),

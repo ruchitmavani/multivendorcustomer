@@ -9,6 +9,7 @@ import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 
+import '../Models/AddressModel.dart';
 import 'ProductController.dart';
 
 class OrderController {
@@ -58,7 +59,7 @@ class OrderController {
       required double taxAmount,
       required double taxPercentage,
       required String couponId,
-      required CustomerAddress address}) async {
+      required Address address}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
 
     //body Data

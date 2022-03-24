@@ -13,7 +13,7 @@ class UpdatedLabel extends StatelessWidget {
       width: 53,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2),
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+          color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 2),
         child: Text(
@@ -37,7 +37,7 @@ class RejectedLabel extends StatelessWidget {
       width: 53,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2),
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+          color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 2),
         child: Text(

@@ -37,7 +37,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => VendorModelWrapper()),
       ChangeNotifierProvider(create: (_) => CartDataWrapper()),
-      ChangeNotifierProvider(create: (_) => CustomColor()),
+      ChangeNotifierProvider(create: (_) => ThemeColorProvider()),
       ChangeNotifierProvider(create: (_) => CategoryName()),
     ],
     child: MyApp(),
@@ -54,7 +54,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
-        accentColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        accentColor:
+            Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
             color: Colors.white,
@@ -66,8 +67,8 @@ class _MyAppState extends State<MyApp> {
                     color: Colors.black87,
                     fontFamily: "Poppins")),
             actionsIconTheme: IconThemeData(
-                color:
-                    Provider.of<CustomColor>(context).appPrimaryMaterialColor)),
+                color: Provider.of<ThemeColorProvider>(context)
+                    .appPrimaryMaterialColor)),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
               primary: Colors.grey.shade600,
@@ -84,7 +85,8 @@ class _MyAppState extends State<MyApp> {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             onPrimary: Colors.white,
-            primary: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            primary: Provider.of<ThemeColorProvider>(context)
+                .appPrimaryMaterialColor,
             elevation: 0,
             textStyle: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -93,9 +95,10 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         fontFamily: 'Poppins',
-        primaryColor: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+        primaryColor:
+            Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
         primarySwatch:
-            Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+            Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(),
         ),
@@ -108,11 +111,13 @@ class _MyAppState extends State<MyApp> {
 
   var _router = GoRouter(
     urlPathStrategy: UrlPathStrategy.path,
-    redirect: (state){
-      if(sharedPrefs.customer_id.isEmpty && state.location.contains("/account")){
+    redirect: (state) {
+      if (sharedPrefs.customer_id.isEmpty &&
+          state.location.contains("/account")) {
         return "/${sharedPrefs.storeLink}/login";
       }
-      if(sharedPrefs.customer_id.isEmpty && state.location.contains("/orders")){
+      if (sharedPrefs.customer_id.isEmpty &&
+          state.location.contains("/orders")) {
         return "/${sharedPrefs.storeLink}/login";
       }
       return null;
@@ -204,39 +209,37 @@ class _MyAppState extends State<MyApp> {
                 child: LoginScreen(),
               ),
             ),
-            if (sharedPrefs.customer_id.isNotEmpty)
-              GoRoute(
-                  path: PageCollection.myOrders,
-                  pageBuilder: (context, state) => MaterialPage<void>(
-                        key: state.pageKey,
-                        child: MyOrder(),
-                      ),
-                  routes: [
-                    GoRoute(
-                      path: PageCollection.order,
-                      pageBuilder: (context, state) {
-                        OrderDataModel? serviceDetail = state.extra != null
-                            ? state.extra as OrderDataModel
-                            : null;
-                        return MaterialPage<void>(
-                          key: state.pageKey,
-                          child: OrderDetails(
-                            orderData: serviceDetail!,
-                          ),
-                        );
-                      },
+            GoRoute(
+                path: PageCollection.myOrders,
+                pageBuilder: (context, state) => MaterialPage<void>(
+                      key: state.pageKey,
+                      child: MyOrder(),
                     ),
-                  ]),
-            if (sharedPrefs.customer_id.isNotEmpty)
-              GoRoute(
-                path: PageCollection.myAccount,
-                pageBuilder: (context, state) {
-                  return MaterialPage<void>(
-                    key: state.pageKey,
-                    child: MyAccount(),
-                  );
-                },
-              ),
+                routes: [
+                  GoRoute(
+                    path: PageCollection.order,
+                    pageBuilder: (context, state) {
+                      OrderDataModel? serviceDetail = state.extra != null
+                          ? state.extra as OrderDataModel
+                          : null;
+                      return MaterialPage<void>(
+                        key: state.pageKey,
+                        child: OrderDetails(
+                          orderData: serviceDetail!,
+                        ),
+                      );
+                    },
+                  ),
+                ]),
+            GoRoute(
+              path: PageCollection.myAccount,
+              pageBuilder: (context, state) {
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: MyAccount(),
+                );
+              },
+            ),
             GoRoute(
               path: PageCollection.privacyPolicy,
               pageBuilder: (context, state) => MaterialPage<void>(

@@ -57,12 +57,12 @@ Widget cartIconWidget(BuildContext context) {
       icon: Image.asset("images/cart_icon.png",
           width: 35,
           height: 35,
-          color: Provider.of<CustomColor>(context).appPrimaryMaterialColor),
+          color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor),
     ),
   );
 }
 
 
 String whatsAppParser(String message){
-  return message.replaceAll(" ", "%20");
+  return Uri.parse(message).toString();
 }

@@ -7,7 +7,6 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/ProductModel.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveButtonBulk extends StatefulWidget {
@@ -102,13 +101,13 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
             0
         ? widget.isRounded
             ? SizedBox(
-                width: 37,
-                height: 37,
+                width: 40,
+                height: 40,
                 child: Card(
                   shape: CircleBorder(),
                   elevation: 0,
-                  color:
-                      Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+                  color: Provider.of<ThemeColorProvider>(context)
+                      .appPrimaryMaterialColor,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -127,8 +126,8 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                 ),
               )
             : SizedBox(
-                height: 37,
-                width: 87,
+                height: 40,
+                width: 93,
                 child: InkWell(
                   onTap: () {
                     if (widget.qty > 0) addToCart();
@@ -141,7 +140,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   },
                   child: Card(
                     elevation: 0,
-                    color: Provider.of<CustomColor>(context)
+                    color: Provider.of<ThemeColorProvider>(context)
                         .appPrimaryMaterialColor,
                     child: Center(
                       child: Text("Add to Cart",
@@ -152,47 +151,47 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                 ),
               )
         : SizedBox(
-          height: 37,
-          width: 87,
-          child: InkWell(
-            onTap: () => deleteCart(),
-            child: Card(
-              elevation: 0,
-              color:
-                  Provider.of<CustomColor>(context).appPrimaryMaterialColor,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Consumer<CartDataWrapper>(
-                      builder: (context, CartDataWrapper value, child) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "${value.getIndividualQuantity(productId: widget.productData.productId)}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11,
-                                fontFamily: "Poppins"),
-                          ),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.delete,
-                        size: 18,
-                        color: Colors.white,
+            height: 40,
+            width: 93,
+            child: InkWell(
+              onTap: () => deleteCart(),
+              child: Card(
+                elevation: 0,
+                color: Provider.of<ThemeColorProvider>(context)
+                    .appPrimaryMaterialColor,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Consumer<CartDataWrapper>(
+                        builder: (context, CartDataWrapper value, child) {
+                          return Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              "${value.getIndividualQuantity(productId: widget.productData.productId)}",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11,
+                                  fontFamily: "Poppins"),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.delete,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
   }
 }

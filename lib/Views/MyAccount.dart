@@ -14,6 +14,8 @@ import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/SavedAddress.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'Components/AddressComponent.dart';
+
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
 
@@ -74,7 +76,7 @@ class _MyAccountState extends State<MyAccount> {
                       .city,
                   pinCode: customerData.customerAddress
                       .elementAt(i)
-                      .pincode));
+                      .pinCode));
             }
             setState(() {
               customerData = value.data;
@@ -304,41 +306,16 @@ class _MyAccountState extends State<MyAccount> {
                       width: MediaQuery
                           .of(context)
                           .size
-                          .height,
+                          .width,
                       margin: EdgeInsets.only(bottom: 8, top: 4),
                       padding: EdgeInsets.symmetric(
                           horizontal: 12, vertical: 16),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Colors.grey.shade100),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${addressList
-                                .elementAt(index)
-                                .type}",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 12,
-                                color: Colors.grey.shade700,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            "${addressList
-                                .elementAt(index)
-                                .subAddress}, ${addressList
-                                .elementAt(index)
-                                .area}, ${addressList
-                                .elementAt(index)
-                                .city}, ${addressList
-                                .elementAt(index)
-                                .pinCode}",
-                            style: TextStyle(
-                                fontSize: 12, color: Color(0xff383838)),
-                          ),
-                        ],
-                      ),
+                      child: AddressComponent(addressType: addressList
+                          .elementAt(index)
+                          .type, address: addressList.elementAt(index)),
                     );
                   },
                 ),
@@ -403,3 +380,4 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 }
+

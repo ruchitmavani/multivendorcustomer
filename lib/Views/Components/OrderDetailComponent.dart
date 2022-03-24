@@ -177,7 +177,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   ratingWidget: RatingWidget(
                     full: Icon(
                       Icons.star,
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider.of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor,
                     ),
                     half: Icon(
@@ -271,7 +271,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                     "$rating",
                                     style: TextStyle(
                                         fontStyle: FontStyle.italic,
-                                        color: Provider.of<CustomColor>(context)
+                                        color: Provider.of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w600),
@@ -281,7 +281,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                   ),
                                   Icon(
                                     Icons.star,
-                                    color: Provider.of<CustomColor>(context)
+                                    color: Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
                                     size: 11,
                                   ),
@@ -291,7 +291,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                 children: [
                                   Icon(
                                     Icons.star,
-                                    color: Provider.of<CustomColor>(context)
+                                    color: Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
                                     size: 11,
                                   ),
@@ -302,7 +302,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                     rating != 0 ? "$rating" : "Rate",
                                     style: TextStyle(
                                         fontStyle: FontStyle.italic,
-                                        color: Provider.of<CustomColor>(context)
+                                        color: Provider.of<ThemeColorProvider>(context)
                                             .appPrimaryMaterialColor,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w600),
@@ -331,7 +331,7 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                   decoration:
                                   TextDecoration.lineThrough,
                                   decorationColor:
-                                  Provider.of<CustomColor>(
+                                  Provider.of<ThemeColorProvider>(
                                       context)
                                       .appPrimaryMaterialColor,
                                   decorationThickness: 3)),

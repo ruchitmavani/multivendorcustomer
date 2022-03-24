@@ -16,7 +16,7 @@ class DiscountTag extends StatelessWidget {
         ? Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Provider.of<CustomColor>(context).appPrimaryMaterialColor,
+              color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Padding(

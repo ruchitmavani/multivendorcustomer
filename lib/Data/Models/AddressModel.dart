@@ -1,4 +1,6 @@
-class Address {
+import 'package:equatable/equatable.dart';
+
+class Address extends Equatable {
   String type;
   String subAddress;
   String city;
@@ -7,26 +9,30 @@ class Address {
 
   Address(
       {required this.type,
-       required this.subAddress,
-       required this.area,
-       required this.city,
-       required this.pinCode});
+      required this.subAddress,
+      required this.area,
+      required this.city,
+      required this.pinCode});
+
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
+        type: json["type"],
+        subAddress: json["subAddress"],
+        area: json["area"],
+        city: json["city"],
+        pinCode: json["pincode"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "type": type,
+        "subAddress": subAddress,
+        "area": area,
+        "city": city,
+        "pincode": pinCode,
+      };
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Address &&
-          runtimeType == other.runtimeType &&
-          subAddress == other.subAddress &&
-          type == other.type &&
-          area == other.area &&
-          city == other.city &&
-          pinCode == other.pinCode;
-
-  @override
-  int get hashCode => subAddress.hashCode;
+  List<Object?> get props => [type, subAddress, area, city, pinCode];
 }
 
-List<Address> addressList = [
 
-];
+List<Address> addressList = [];

@@ -83,7 +83,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                               productColor: widget.productData.productColor,
                             )}",
                             style: TextStyle(
-                                color: Provider.of<CustomColor>(context)
+                                color: Provider.of<ThemeColorProvider>(context)
                                     .appPrimaryMaterialColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
@@ -101,7 +101,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                         child: Icon(
                           Icons.delete,
                           size: 15,
-                          color: Provider.of<CustomColor>(context)
+                          color: Provider.of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                         ),
                       ),
@@ -159,7 +159,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                         child: Icon(
                           Icons.remove,
                           size: 15,
-                          color: Provider.of<CustomColor>(context)
+                          color: Provider.of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                         ),
                       ),
@@ -175,7 +175,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                               productColor: widget.productData.productColor,
                             )}",
                             style: TextStyle(
-                                color: Provider.of<CustomColor>(context)
+                                color: Provider.of<ThemeColorProvider>(context)
                                     .appPrimaryMaterialColor,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
@@ -200,7 +200,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                         child: Icon(
                           Icons.add,
                           size: 15,
-                          color: Provider.of<CustomColor>(context)
+                          color: Provider.of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                         ),
                       ),

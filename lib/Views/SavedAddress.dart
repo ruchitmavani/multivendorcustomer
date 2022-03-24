@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:multi_vendor_customer/Constants/textStyles.dart';
+import 'package:multi_vendor_customer/Data/Controller/CustomerController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
-import 'package:multi_vendor_customer/Views/EditLocation.dart';
 import 'package:multi_vendor_customer/Views/Location.dart';
+
+import '../Utils/SharedPrefs.dart';
 
 class SavedAddress extends StatefulWidget {
   const SavedAddress({Key? key}) : super(key: key);
@@ -11,12 +17,65 @@ class SavedAddress extends StatefulWidget {
 }
 
 class _SavedAddressState extends State<SavedAddress> {
+  bool isLoading = false;
+
+  _updateCustomerData() async {
+    setState(() {
+      isLoading = true;
+    });
+    List<Map<String, dynamic>> object = [];
+    for (int i = 0; i < addressList.length; i++) {
+      object.add({
+        "type": addressList.elementAt(i).type,
+        "subAddress": addressList.elementAt(i).subAddress,
+        "area": addressList.elementAt(i).area,
+        "city": addressList.elementAt(i).city,
+        "pincode": addressList.elementAt(i).pinCode,
+      });
+    }
+    await CustomerController.updateCustomerAddress(
+      customerId: sharedPrefs.customer_id,
+      address: object,
+    ).then((value) {
+      if (value.success) {
+        sharedPrefs.customer_email = value.data!.customerEmailAddress;
+        sharedPrefs.customer_name = value.data!.customerName;
+        sharedPrefs.customer_id = value.data!.customerUniqId;
+        sharedPrefs.customer_mobileNo = value.data!.customerMobileNumber;
+
+        setState(() {
+          isLoading = false;
+        });
+        Fluttertoast.showToast(
+            msg: "Address Delete Success",
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+      } else {
+        Fluttertoast.showToast(
+            msg: value.message,
+            webPosition: "center",
+            webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }, onError: (e) {
+      log(e.toString());
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Saved Address"),
+        title: Text(
+          "Saved Address",
+          style: FontsTheme.boldTextStyle(size: 16),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -45,21 +104,23 @@ class _SavedAddressState extends State<SavedAddress> {
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
-                                        return EditLocation(
-                                            subAddress: addressList
-                                                .elementAt(index)
-                                                .subAddress,
-                                            area: addressList
-                                                .elementAt(index)
-                                                .area,
-                                            city: addressList
-                                                .elementAt(index)
-                                                .city,
-                                            pincode: addressList
-                                                .elementAt(index)
-                                                .pinCode
-                                                .toString(),
-                                            index: index);
+                                        return LocationScreen(
+                                          isEditing: true,
+                                          type:
+                                              addressList.elementAt(index).type,
+                                          subAddress: addressList
+                                              .elementAt(index)
+                                              .subAddress,
+                                          area:
+                                              addressList.elementAt(index).area,
+                                          city:
+                                              addressList.elementAt(index).city,
+                                          pincode: addressList
+                                              .elementAt(index)
+                                              .pinCode
+                                              .toString(),
+                                          index: index,
+                                        );
                                       },
                                     )).then((value) {
                                       setState(() {});
@@ -71,14 +132,18 @@ class _SavedAddressState extends State<SavedAddress> {
                                   ),
                                 ),
                                 if (addressList.length >= 2)
-                                  InkWell(
-                                    onTap: () {
-                                      addressList.removeAt(index);
-                                      setState(() {});
-                                    },
-                                    child: Icon(
-                                      Icons.delete,
-                                      size: 18,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        addressList.removeAt(index);
+                                        _updateCustomerData();
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: 18,
+                                      ),
                                     ),
                                   ),
                               ],
@@ -94,7 +159,9 @@ class _SavedAddressState extends State<SavedAddress> {
                               child: Text(
                                 "${addressList.elementAt(index).subAddress}, ${addressList.elementAt(index).area}, ${addressList.elementAt(index).city}, ${addressList.elementAt(index).pinCode}",
                                 style: TextStyle(
-                                    fontSize: 12,color: Color(0xff383838),),
+                                  fontSize: 12,
+                                  color: Color(0xff383838),
+                                ),
                               ),
                             ),
                           ],
@@ -116,7 +183,15 @@ class _SavedAddressState extends State<SavedAddress> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LocationScreen(),
+              builder: (context) => LocationScreen(
+                isEditing: false,
+                index: 0,
+                area: "",
+                city: "",
+                pincode: "",
+                subAddress: "",
+                type: "",
+              ),
             ),
           ).then((value) {
             setState(() {});

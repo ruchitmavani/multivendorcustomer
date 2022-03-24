@@ -342,7 +342,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                               fontWeight: FontWeight.w400,
                                               color: productData.stockLeft < 10
                                                   ? Colors.red
-                                                  : Provider.of<CustomColor>(
+                                                  : Provider.of<ThemeColorProvider>(
                                                           context)
                                                       .appPrimaryMaterialColor),
                                         ),
@@ -423,7 +423,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                             border: Border.all(
                                                                 width: 2,
                                                                 color: Provider.of<
-                                                                            CustomColor>(
+                                                                            ThemeColorProvider>(
                                                                         context)
                                                                     .appPrimaryMaterialColor),
                                                             borderRadius:
@@ -494,7 +494,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                               color: currentSizeIndex ==
                                                                       index
                                                                   ? Provider.of<
-                                                                              CustomColor>(
+                                                                              ThemeColorProvider>(
                                                                           context)
                                                                       .appPrimaryMaterialColor
                                                                   : Colors.grey
@@ -523,7 +523,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
                                                               "${e.size}  \u{20B9}${e.sellingPrice}",
                                                               style: FontsTheme.subTitleStyle(
                                                                   color: currentSizeIndex == index
-                                                                      ? Provider.of<CustomColor>(
+                                                                      ? Provider.of<ThemeColorProvider>(
                                                                               context)
                                                                           .appPrimaryMaterialColor
                                                                       : Colors

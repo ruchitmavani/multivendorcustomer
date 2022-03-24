@@ -14,13 +14,16 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:multi_vendor_customer/Views/Components/AddressComponent.dart';
 import 'package:multi_vendor_customer/Views/Components/DiscountTag.dart';
 import 'package:multi_vendor_customer/Views/Components/ProductDetailsInCart.dart';
+import 'package:multi_vendor_customer/Views/Location.dart';
 import 'package:multi_vendor_customer/Views/PaymentOptions.dart';
 import 'package:multi_vendor_customer/exports.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Data/Models/AddressModel.dart';
 import 'CategorySubScreen.dart';
 
 class CartScreen extends StatefulWidget {
@@ -75,6 +78,25 @@ class _CartScreenState extends State<CartScreen> {
       if (value.success) {
         setState(() {
           customerData = value.data;
+          addressList.clear();
+          for (int i = 0; i < customerData.customerAddress.length; i++) {
+            addressList.add(Address(
+                type: customerData.customerAddress
+                    .elementAt(i)
+                    .type,
+                subAddress: customerData.customerAddress
+                    .elementAt(i)
+                    .subAddress,
+                area: customerData.customerAddress
+                    .elementAt(i)
+                    .area,
+                city: customerData.customerAddress
+                    .elementAt(i)
+                    .city,
+                pinCode: customerData.customerAddress
+                    .elementAt(i)
+                    .pinCode));
+          }
           isLoadingCustomer = false;
         });
       }
@@ -131,17 +153,25 @@ class _CartScreenState extends State<CartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16.0,
-                            ),
+                            padding:
+                                const EdgeInsets.only(top: 16.0, bottom: 6),
                             child: Text(
                               "Select Address Below",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 17,
                                   fontFamily: "Poppins",
                                   color: Colors.black87,
                                   fontWeight: FontWeight.w600),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2.0),
+                            child: Text("delivers to",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: context
+                                        .watch<ThemeColorProvider>()
+                                        .appPrimaryMaterialColor)),
                           ),
                           ListView.builder(
                             itemCount: customerData.customerAddress.length,
@@ -166,29 +196,47 @@ class _CartScreenState extends State<CartScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       color: Colors.grey.shade100),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${customerData.customerAddress.elementAt(index).type}",
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Text(
-                                        "${customerData.customerAddress.elementAt(index).subAddress}",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                        ),
-                                      ),
-                                    ],
+                                  child: AddressComponent(
+                                    addressType: customerData.customerAddress
+                                        .elementAt(index)
+                                        .type,
+                                    address: customerData.customerAddress
+                                        .elementAt(index),
                                   ),
                                 ),
                               );
                             },
                           ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LocationScreen(
+                                      index: 0,
+                                      area: "",
+                                      city: "",
+                                      isEditing: false,
+                                      pincode: "",
+                                      subAddress: "",
+                                      type: "",
+                                    ),
+                                  ),).then((value) => _loadCustomerData());
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                "+ Add Address",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: context
+                                      .watch<ThemeColorProvider>()
+                                      .appPrimaryMaterialColor,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -279,7 +327,8 @@ class _CartScreenState extends State<CartScreen> {
                                 ? Text(
                                     "Apply Coupon Success 😊!",
                                     style: TextStyle(
-                                        color: Provider.of<CustomColor>(context)
+                                        color: Provider.of<ThemeColorProvider>(
+                                                context)
                                             .appPrimaryMaterialColor),
                                   )
                                 : Row(
@@ -351,7 +400,7 @@ class _CartScreenState extends State<CartScreen> {
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       fontSize: 10,
-                      color: Provider.of<CustomColor>(context)
+                      color: Provider.of<ThemeColorProvider>(context)
                           .appPrimaryMaterialColor,
                       fontWeight: FontWeight.w600),
                 )
@@ -1045,7 +1094,7 @@ class _CartScreenState extends State<CartScreen> {
                       },
                       child: Container(
                         height: 48,
-                        color: Provider.of<CustomColor>(context)
+                        color: Provider.of<ThemeColorProvider>(context)
                             .appPrimaryMaterialColor,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 3.0),

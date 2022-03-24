@@ -28,7 +28,7 @@ class TitleViewAll extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Provider
-                        .of<CustomColor>(context)
+                        .of<ThemeColorProvider>(context)
                         .appPrimaryMaterialColor),
               ))
         ],
