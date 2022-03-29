@@ -24,7 +24,6 @@ class _MyOrderState extends State<MyOrder> {
     await OrderController.getOrder("${sharedPrefs.customer_id}").then((value) {
       if (value.success) {
         orderData = value.data!;
-
         setState(() {
           isLoading = false;
         });
@@ -44,6 +43,14 @@ class _MyOrderState extends State<MyOrder> {
   void initState() {
     super.initState();
     _loadData();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (mounted) {
+      _loadData();
+    }
   }
 
   int todayIndex = DateTime.now().weekday - 1;

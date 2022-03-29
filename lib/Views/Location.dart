@@ -102,7 +102,6 @@ class _LocationScreenState extends State<LocationScreen> {
         setState(() {
           isLoading = false;
         });
-        //todo navigate to appropriate path
         log(GoRouter.of(context).location);
         if (GoRouter.of(context).location.contains("/cart")) {
           if (Navigator.canPop(context)) {

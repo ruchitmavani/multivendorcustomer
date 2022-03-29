@@ -23,16 +23,8 @@ class _OrderComponentState extends State<OrderComponent> {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          GoRouter.of(context).push( helper(PageCollection.order),
-              extra: widget.orderData);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) => OrderDetails(
-          //       orderData: widget.orderData,
-          //     ),
-          //   ),
-          // );
+          GoRouter.of(context)
+              .push(helper(PageCollection.order), extra: widget.orderData);
         },
         child: Card(
             elevation: 0.1,
@@ -183,9 +175,7 @@ class _OrderComponentState extends State<OrderComponent> {
                             child: Text(
                               "${widget.orderData.vendorDetails.businessName}",
                               style: FontsTheme.gilroyText(
-                                color: Colors.black87,
-                                size: 12
-                              ),
+                                  color: Colors.black87, size: 12),
                             ),
                           ),
                           Text(
@@ -214,8 +204,9 @@ class _OrderComponentState extends State<OrderComponent> {
                                     ? "${widget.orderData.orderStatus.last}"
                                     : "",
                                 style: FontsTheme.boldTextStyle(
-                                    color: Provider.of<ThemeColorProvider>(context)
-                                        .appPrimaryMaterialColor,
+                                    color:
+                                        Provider.of<ThemeColorProvider>(context)
+                                            .appPrimaryMaterialColor,
                                     size: 11),
                               ),
                             ),

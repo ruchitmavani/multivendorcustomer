@@ -31,8 +31,11 @@ class _RejectOrderState extends State<RejectOrder> {
         .then((value) {
       if (value.success) {
         setState(() {
-          GoRouter.of(context).push('/'+storeConcat(PageCollection.myOrders));
-          Fluttertoast.showToast(msg: "Order Rejected",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+          GoRouter.of(context).go('/' + storeConcat(PageCollection.myOrders));
+          Fluttertoast.showToast(
+              msg: "Order Rejected",
+              webPosition: "center",
+              webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
           isLoading = false;
         });
       } else {
@@ -99,7 +102,11 @@ class _RejectOrderState extends State<RejectOrder> {
                       if (txtReason.text.length > 1) {
                         _rejectOrder();
                       } else
-                        Fluttertoast.showToast(msg: "Enter reason",webPosition:"center" ,webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                        Fluttertoast.showToast(
+                            msg: "Enter reason",
+                            webPosition: "center",
+                            webBgColor:
+                                "linear-gradient(to right, #5A5A5A, #5A5A5A)");
                     },
                   ),
                 ),

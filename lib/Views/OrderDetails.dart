@@ -92,7 +92,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     await OrderController.acceptOrder(widget.orderData.orderId).then((value) {
       if (value.success) {
         setState(() {
-          GoRouter.of(context).push('/' + storeConcat(PageCollection.myOrders));
+          GoRouter.of(context).go('/' + storeConcat(PageCollection.myOrders));
           Fluttertoast.showToast(
               msg: "Order Accepted",
               webPosition: "center",

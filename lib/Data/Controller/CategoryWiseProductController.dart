@@ -24,6 +24,8 @@ class CategoryController {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
             "sort": "$sortKey"
           };
+
+    log(data.toString());
     ResponseClass<List<AllCategoryModel>> responseClass =
         ResponseClass(success: false, message: "Something went wrong");
     try {
