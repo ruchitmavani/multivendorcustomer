@@ -94,7 +94,7 @@ class ProductData {
         isRequestPrice:
             json["is_request_price"] == null ? null : json["is_request_price"],
         isOutOfStock:
-            json["is_out_of_stock"] == null ? false : json["is_request_price"],
+            json["is_out_of_stock"] == null ? false : json["is_out_of_stock"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -128,6 +128,7 @@ class ProductData {
             ? null
             : List<dynamic>.from(bulkPriceList!.map((x) => x.toJson())),
         "is_request_price": isRequestPrice == null ? null : isRequestPrice,
+        "is_out_of_stock": isOutOfStock == null ? null : isOutOfStock,
       };
 }
 

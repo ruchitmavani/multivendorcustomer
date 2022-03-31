@@ -112,9 +112,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider
-        .of<CategoryName>(context)
-        .categoryName;
+    var provider = Provider.of<CategoryName>(context).categoryName;
 
     return DirectSelectContainer(
       child: Scaffold(
@@ -804,7 +802,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 ElevatedButton(
                                   onPressed: () {
                                     launch(
-                                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${productData.productName} (${provider.indexWhere((element) => element.categoryId == productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == productData.categoryId)).categoryName}"})*.")}");
+                                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${productData.productName} (${provider.indexWhere((element) => element.categoryId == productData.categoryId) == -1 ? "" : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == productData.categoryId)).categoryName}"})*.")}");
                                   },
                                   child: Text("Request Price",
                                       style: FontsTheme.boldTextStyle(
@@ -812,17 +810,18 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                   style: ButtonStyle(
                                     elevation:
                                         MaterialStateProperty.all<double>(0),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Provider.of<ThemeColorProvider>(context)
-                                                .appPrimaryMaterialColor),
+                                    backgroundColor: MaterialStateProperty.all<
+                                            Color>(
+                                        Provider.of<ThemeColorProvider>(context)
+                                            .appPrimaryMaterialColor),
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(
                                             Colors.white),
                                   ),
                                 )
-                              else if (productData.isStock &&
-                                  productData.stockLeft <= 0)
+                              else if ((productData.isStock &&
+                                      productData.stockLeft <= 0) ||
+                                  productData.isOutOfStock)
                                 Text(
                                   "Out of stock",
                                   style: TextStyle(
