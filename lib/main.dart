@@ -10,6 +10,7 @@ import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CategoryNameProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
+import 'package:multi_vendor_customer/Utils/mouse_drag_scroll.dart';
 import 'package:multi_vendor_customer/Views/AboutUs.dart';
 import 'package:multi_vendor_customer/Views/CartScreen.dart';
 import 'package:multi_vendor_customer/Views/CategorySubScreen.dart';
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
         accentColor:
             Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
