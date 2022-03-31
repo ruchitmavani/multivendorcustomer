@@ -27,6 +27,7 @@ class ProductData {
     required this.bulkPriceList,
     required this.isRequestPrice,
     required this.isStock,
+    required this.isOutOfStock,
   });
 
   String id;
@@ -54,6 +55,7 @@ class ProductData {
   List<BulkPriceList>? bulkPriceList;
   bool isRequestPrice;
   bool isStock;
+  bool isOutOfStock;
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         id: json["_id"],
@@ -91,6 +93,8 @@ class ProductData {
             json["bulk_price_list"].map((x) => BulkPriceList.fromJson(x))),
         isRequestPrice:
             json["is_request_price"] == null ? null : json["is_request_price"],
+        isOutOfStock:
+            json["is_out_of_stock"] == null ? false : json["is_request_price"],
       );
 
   Map<String, dynamic> toJson() => {

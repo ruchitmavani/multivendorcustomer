@@ -130,7 +130,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
                                         decorationColor:
-                                            Provider.of<ThemeColorProvider>(context)
+                                            Provider.of<ThemeColorProvider>(
+                                                    context)
                                                 .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
@@ -169,7 +170,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(context)
+                                      color: Provider.of<ThemeColorProvider>(
+                                              context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -179,7 +181,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(context)
+                                      color: Provider.of<ThemeColorProvider>(
+                                              context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -189,7 +192,8 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(context)
+                                      color: Provider.of<ThemeColorProvider>(
+                                              context)
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -231,9 +235,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
   }
 
   Widget cartButton() {
-    var provider = Provider
-        .of<CategoryName>(context)
-        .categoryName;
+    var provider = Provider.of<CategoryName>(context).categoryName;
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
@@ -255,14 +257,15 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
+            color: Provider.of<ThemeColorProvider>(context)
+                .appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
                     launch(
-                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? "" : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
                   },
                   child: Icon(
                     Icons.link,
@@ -277,7 +280,36 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
       } else if (widget.productData.bulkPriceList!.length > 0) {
         return SizedBox();
       } else if (widget.productData.isStock) {
-        if (widget.productData.stockLeft <= 0) {
+        if (widget.productData.stockLeft <= 0 ||
+            widget.productData.isOutOfStock) {
+          return Text(
+            "Out of stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
+          );
+        } else if (widget.productData.productVariationSizes!.length != 0 ||
+            widget.productData.productVariationColors!.length != 0) {
+          return context
+                      .watch<CartDataWrapper>()
+                      .getQuantity(widget.productData.productId) >
+                  1
+              ? SizedBox()
+              : AddRemoveButton(
+                  productData: widget.productData,
+                  isRounded: true,
+                  colorIndex: 0,
+                  sizeIndex: 0,
+                );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
+      } else if (!widget.productData.isStock) {
+        if (widget.productData.isOutOfStock) {
           return Text(
             "Out of stock",
             style: TextStyle(
@@ -466,8 +498,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "Request Price",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<ThemeColorProvider>(context)
-                                      .appPrimaryMaterialColor,
+                                  color:
+                                      Provider.of<ThemeColorProvider>(context)
+                                          .appPrimaryMaterialColor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -476,8 +509,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
                               "",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  color: Provider.of<ThemeColorProvider>(context)
-                                      .appPrimaryMaterialColor,
+                                  color:
+                                      Provider.of<ThemeColorProvider>(context)
+                                          .appPrimaryMaterialColor,
                                   fontSize: 4,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -516,9 +550,7 @@ class _ProductComponentListState extends State<ProductComponentList> {
   }
 
   Widget cartButton() {
-    var provider = Provider
-        .of<CategoryName>(context)
-        .categoryName;
+    var provider = Provider.of<CategoryName>(context).categoryName;
     if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
         Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
       if (!isProductAvailable(
@@ -540,15 +572,15 @@ class _ProductComponentListState extends State<ProductComponentList> {
           child: Card(
             shape: CircleBorder(),
             elevation: 0,
-            color: Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
+            color: Provider.of<ThemeColorProvider>(context)
+                .appPrimaryMaterialColor,
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
                     launch(
-                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? ""  : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
-
+                        "https://wa.me/+91${sharedPrefs.vendorMobileNumber}?text=${whatsAppParser("Hi, I${sharedPrefs.customer_name.isNotEmpty ? "'m *${sharedPrefs.customer_name}* and" : ""} would like to know more about *${widget.productData.productName} (${provider.indexWhere((element) => element.categoryId == widget.productData.categoryId) == -1 ? "" : "${provider.elementAt(provider.indexWhere((element) => element.categoryId == widget.productData.categoryId)).categoryName}"})*.")}");
                   },
                   child: Icon(
                     Icons.link,
@@ -563,12 +595,54 @@ class _ProductComponentListState extends State<ProductComponentList> {
       } else if (widget.productData.bulkPriceList!.length > 0) {
         return SizedBox();
       } else if (widget.productData.isStock) {
-        if (widget.productData.stockLeft <= 0) {
+        if (widget.productData.stockLeft <= 0 ||
+            widget.productData.isOutOfStock) {
           return Text(
             "Out of stock",
             style: TextStyle(
                 fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
           );
+        } else if (widget.productData.productVariationSizes!.length != 0 ||
+            widget.productData.productVariationColors!.length != 0) {
+          return context
+                      .watch<CartDataWrapper>()
+                      .getQuantity(widget.productData.productId) >
+                  1
+              ? SizedBox()
+              : AddRemoveButton(
+                  productData: widget.productData,
+                  isRounded: true,
+                  colorIndex: 0,
+                  sizeIndex: 0,
+                );
+        } else {
+          return AddRemoveButton(
+            productData: widget.productData,
+            isRounded: true,
+            colorIndex: 0,
+            sizeIndex: 0,
+          );
+        }
+      } else if (!widget.productData.isStock) {
+        if (widget.productData.isOutOfStock) {
+          return Text(
+            "Out of stock",
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 11, color: Colors.red),
+          );
+        } else if (widget.productData.productVariationSizes!.length != 0 ||
+            widget.productData.productVariationColors!.length != 0) {
+          return context
+                      .watch<CartDataWrapper>()
+                      .getQuantity(widget.productData.productId) >
+                  1
+              ? SizedBox()
+              : AddRemoveButton(
+                  productData: widget.productData,
+                  isRounded: true,
+                  colorIndex: 0,
+                  sizeIndex: 0,
+                );
         } else {
           return AddRemoveButton(
             productData: widget.productData,
