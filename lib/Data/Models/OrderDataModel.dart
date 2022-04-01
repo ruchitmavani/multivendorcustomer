@@ -3,32 +3,31 @@ import 'dart:convert';
 import 'ProductModel.dart';
 
 class OrderDataModel {
-  OrderDataModel({
-    required this.id,
-    required this.customerUniqId,
-    required this.vendorUniqId,
-    required this.orderItems,
-    required this.orderStatus,
-    required this.rejectReason,
-    required this.paymentType,
-    required this.refNo,
-    required this.deliveryApproxTime,
-    required this.paidAmount,
-    required this.refundAmount,
-    required this.orderAmount,
-    required this.itemTotalAmount,
-    required this.deliveryCharges,
-    required this.taxAmount,
-    required this.taxPercentage,
-    required this.couponAmount,
-    required this.couponId,
-    required this.updatedDeliveryCharges,
-    required this.orderId,
-    required this.deliveryAddress,
-    required this.vendorDetails,
-    required this.orderStatusWithTime,
-    required this.createdDateTime
-  });
+  OrderDataModel(
+      {required this.id,
+      required this.customerUniqId,
+      required this.vendorUniqId,
+      required this.orderItems,
+      required this.orderStatus,
+      required this.rejectReason,
+      required this.paymentType,
+      required this.refNo,
+      required this.deliveryApproxTime,
+      required this.paidAmount,
+      required this.refundAmount,
+      required this.orderAmount,
+      required this.itemTotalAmount,
+      required this.deliveryCharges,
+      required this.taxAmount,
+      required this.taxPercentage,
+      required this.couponAmount,
+      required this.couponId,
+      required this.updatedDeliveryCharges,
+      required this.orderId,
+      required this.deliveryAddress,
+      required this.vendorDetails,
+      required this.orderStatusWithTime,
+      required this.createdDateTime});
 
   String id;
   String customerUniqId;
@@ -46,7 +45,7 @@ class OrderDataModel {
   double itemTotalAmount;
   double deliveryCharges;
   double taxAmount;
-  double taxPercentage;
+  List<SimpleTaxModel> taxPercentage;
   DateTime? createdDateTime;
   double couponAmount;
   String couponId;
@@ -72,7 +71,8 @@ class OrderDataModel {
       itemTotalAmount: json["item_total_amount"],
       deliveryCharges: json["delivery_charges"],
       taxAmount: json["tax_amount"],
-      taxPercentage: json["tax_percentage"],
+      taxPercentage:List<SimpleTaxModel>.from(
+          json["tax_percentage"].map((x) => SimpleTaxModel.fromJson(x))) ,
       couponAmount: json["coupon_amount"],
       couponId: json["coupon_id"],
       updatedDeliveryCharges: json["updated_delivery_charges"],
@@ -521,4 +521,30 @@ class OrderStatus {
         status: json['status'],
         time: json['time'],
       );
+}
+
+// To parse this JSON data, do
+
+class SimpleTaxModel {
+  SimpleTaxModel({
+    required this.taxName,
+    required this.taxPercentage,
+    required this.amount,
+  });
+
+  final String taxName;
+  final int taxPercentage;
+  final double amount;
+
+  factory SimpleTaxModel.fromJson(Map<String, dynamic> json) => SimpleTaxModel(
+        taxName: json["tax_name"],
+        taxPercentage: json["tax_percentage"],
+        amount: json["amount"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "tax_name": taxName,
+        "tax_percentage": taxPercentage,
+        "amount": amount,
+      };
 }

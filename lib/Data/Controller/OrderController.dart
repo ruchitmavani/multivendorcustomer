@@ -57,7 +57,7 @@ class OrderController {
       required List<NewCartModel> orders,
       required double couponAmount,
       required double taxAmount,
-      required double taxPercentage,
+      required List<SimpleTaxModel> taxPercentage,
       required String couponId,
       required Address address}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
@@ -69,7 +69,7 @@ class OrderController {
               orders.elementAt(i).productColor == null
           ? AddOrder(
               productId: orders.elementAt(i).productId,
-              productQuantity: orders.elementAt(i).productQuantity)
+              productQuantity: orders.elementAt(i).productQuantity,)
           : orders.elementAt(i).productSize == null
               ? AddOrder(
                   productId: orders.elementAt(i).productId,

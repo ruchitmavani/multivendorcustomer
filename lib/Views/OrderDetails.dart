@@ -258,41 +258,46 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Divider(),
-                    if(widget.orderData.orderStatus.last.toLowerCase()=="accepted"||widget.orderData.orderStatus.last.toLowerCase()=="ready"||widget.orderData.orderStatus.last.toLowerCase()=="dispatched")
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: Text(
-                              " Approx Delivery Time: ",
-                              style: FontsTheme.valueStyle(
-                                fontWeight: FontWeight.w400,
-                                size: 12,
+                    if (widget.orderData.orderStatus.last.toLowerCase() ==
+                            "accepted" ||
+                        widget.orderData.orderStatus.last.toLowerCase() ==
+                            "ready" ||
+                        widget.orderData.orderStatus.last.toLowerCase() ==
+                            "dispatched")
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text(
+                                " Approx Delivery Time: ",
+                                style: FontsTheme.valueStyle(
+                                  fontWeight: FontWeight.w400,
+                                  size: 12,
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 6),
-                            padding:
-                                EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                            decoration: BoxDecoration(
-                                color: Colors.black12,
-                                borderRadius: BorderRadius.circular(40)),
-                            child: Text(
-                              "${widget.orderData.deliveryApproxTime}",
-                              style: FontsTheme.valueStyle(
-                                fontWeight: FontWeight.w400,
-                                size: 12,
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: Text(
+                                "${widget.orderData.deliveryApproxTime}",
+                                style: FontsTheme.valueStyle(
+                                  fontWeight: FontWeight.w400,
+                                  size: 12,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
 
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0, top: 6),
@@ -347,7 +352,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         2
                                     ? i == 1 || i == 2
                                         ? Colors.grey
-                                        : Provider.of<ThemeColorProvider>(context)
+                                        : Provider.of<ThemeColorProvider>(
+                                                context)
                                             .appPrimaryMaterialColor
                                     : Provider.of<ThemeColorProvider>(context)
                                         .appPrimaryMaterialColor,
@@ -363,15 +369,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ? 120
                                     : 90,
                             connectorBuilder: (_, i, ___) => SolidLineConnector(
-                              color:
-                                  widget.orderData.orderStatusWithTime.length <
-                                          2
-                                      ? i == 1 || i == 2
-                                          ? Colors.grey
-                                          : Provider.of<ThemeColorProvider>(context)
-                                              .appPrimaryMaterialColor
+                              color: widget.orderData.orderStatusWithTime
+                                          .length <
+                                      2
+                                  ? i == 1 || i == 2
+                                      ? Colors.grey
                                       : Provider.of<ThemeColorProvider>(context)
-                                          .appPrimaryMaterialColor,
+                                          .appPrimaryMaterialColor
+                                  : Provider.of<ThemeColorProvider>(context)
+                                      .appPrimaryMaterialColor,
                             ),
                           ),
                         ),
@@ -407,27 +413,57 @@ class _OrderDetailsState extends State<OrderDetails> {
                             ),
                           ),
                           //tax
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: SizedBox(
-                              height: 25,
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                dense: true,
-                                title: Text("Tax",
-                                    style: FontsTheme.valueStyle(
-                                        size: 14,
-                                        color: Colors.black.withOpacity(0.7))),
-                                trailing: Text(
-                                    "\u{20B9}" +
-                                        "${widget.orderData.taxAmount}",
-                                    style: FontsTheme.valueStyle(
-                                        size: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black.withOpacity(0.7))),
-                              ),
+                          if (widget.orderData.taxPercentage.length != 0)
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.orderData.taxPercentage.length,
+                              itemBuilder: (context, i) {
+                                return SizedBox(
+                                  height: 25,
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    dense: true,
+                                    title: Text(
+                                      "${widget.orderData.taxPercentage.elementAt(i).taxName}(${widget.orderData.taxPercentage.elementAt(i).taxPercentage}%)",
+                                      style: FontsTheme.digitStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      "\u{20B9} ${(widget.orderData.taxPercentage.elementAt(i).amount).toStringAsFixed(2)}",
+                                      style: FontsTheme.digitStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 4.0),
+                          //   child: SizedBox(
+                          //     height: 25,
+                          //     child: ListTile(
+                          //       contentPadding: EdgeInsets.zero,
+                          //       dense: true,
+                          //       title: Text("Tax",
+                          //           style: FontsTheme.valueStyle(
+                          //               size: 14,
+                          //               color: Colors.black.withOpacity(0.7))),
+                          //       trailing: Text(
+                          //           "\u{20B9}" +
+                          //               "${widget.orderData.taxAmount}",
+                          //           style: FontsTheme.valueStyle(
+                          //               size: 14,
+                          //               fontWeight: FontWeight.w500,
+                          //               color: Colors.black.withOpacity(0.7))),
+                          //     ),
+                          //   ),
+                          // ),
                           //delivery charges
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0),
@@ -438,15 +474,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 dense: true,
                                 title: Row(
                                   children: [
-                                    Text("Delivery charges  ",
-                                        style: FontsTheme.valueStyle(
-                                            size: 14,
-                                            color:
-                                                Colors.black.withOpacity(0.7))),
-                                    if (widget
-                                            .orderData.updatedDeliveryCharges !=
-                                        0)
-                                      UpdatedLabel(),
+                                    Text(
+                                      "Delivery charges  ",
+                                      style: FontsTheme.valueStyle(
+                                        size: 14,
+                                        color: Colors.black.withOpacity(0.7),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 trailing: RichText(
@@ -460,40 +494,78 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       TextSpan(
                                         text:
                                             "${widget.orderData.deliveryCharges}",
-                                        style: widget
-                                                    .orderData.updatedDeliveryCharges !=
-                                                0
-                                            ? FontsTheme.valueStyle(
-                                                    size: 14,
-                                                    fontWeight: FontWeight.w500)
-                                                .copyWith(
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    decorationThickness: 3,
-                                                    decorationColor: Provider
-                                                            .of<ThemeColorProvider>(
-                                                                context)
-                                                        .appPrimaryMaterialColor)
-                                            : FontsTheme.valueStyle(
+                                        style:
+                                            // widget
+                                            //             .orderData.updatedDeliveryCharges !=
+                                            //         0
+                                            //     ? FontsTheme.valueStyle(
+                                            //             size: 14,
+                                            //             fontWeight: FontWeight.w500)
+                                            //         .copyWith(
+                                            //             decoration: TextDecoration
+                                            //                 .lineThrough,
+                                            //             decorationThickness: 3,
+                                            //             decorationColor: Provider
+                                            //                     .of<ThemeColorProvider>(
+                                            //                         context)
+                                            //                 .appPrimaryMaterialColor)
+                                            //     :
+                                            FontsTheme.valueStyle(
                                                 size: 14,
                                                 fontWeight: FontWeight.w500),
                                       ),
-                                      if (widget.orderData
-                                              .updatedDeliveryCharges !=
-                                          0)
-                                        TextSpan(
-                                          text:
-                                              " ${widget.orderData.updatedDeliveryCharges}",
-                                          style: FontsTheme.valueStyle(
-                                              size: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                          //additional delivery charges
+                          if (widget.orderData.updatedDeliveryCharges != 0)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: SizedBox(
+                                height: 25,
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  dense: true,
+                                  title: Row(
+                                    children: [
+                                      Text("Additional charges  ",
+                                          style: FontsTheme.valueStyle(
+                                              size: 14,
+                                              color: Colors.black
+                                                  .withOpacity(0.7))),
+                                      if (widget.orderData
+                                              .updatedDeliveryCharges !=
+                                          0)
+                                        UpdatedLabel(),
+                                    ],
+                                  ),
+                                  trailing: RichText(
+                                    text: TextSpan(
+                                      text: "\u{20B9}",
+                                      style: FontsTheme.valueStyle(
+                                          size: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(0.7)),
+                                      children: [
+                                        if (widget.orderData
+                                                .updatedDeliveryCharges !=
+                                            0)
+                                          TextSpan(
+                                            text:
+                                                " ${widget.orderData.updatedDeliveryCharges}",
+                                            style: FontsTheme.valueStyle(
+                                                size: 14,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           //total amount
                           Padding(
                             padding: const EdgeInsets.only(top: 13.0),

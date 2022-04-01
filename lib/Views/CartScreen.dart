@@ -925,7 +925,7 @@ class _CartScreenState extends State<CartScreen> {
                               fontWeight: FontWeight.w600),
                         ),
                         trailing: Text(
-                          "\u{20B9} ${Provider.of<CartDataWrapper>(context).intialSaving}",
+                          "\u{20B9} ${Provider.of<CartDataWrapper>(context).initialSaving}",
                           style: FontsTheme.digitStyle(
                               fontSize: 14,
                               color: Colors.green,

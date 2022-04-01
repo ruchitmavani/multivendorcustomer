@@ -22,12 +22,12 @@ class CartDataWrapper extends ChangeNotifier {
   late double taxPercentage;
   late double discount = 0;
   late int shipping;
-  late double intialSaving = 0;
+  late double initialSaving = 0;
 
   Future loadCartData() async {
     totalItems = cartData.length;
     totalAmount = 0;
-    intialSaving = 0;
+    initialSaving = 0;
 
     for (int i = 0; i < cartData.length; i++) {
       totalAmount = totalAmount +
@@ -40,7 +40,7 @@ class CartDataWrapper extends ChangeNotifier {
 
       int q = cartData.elementAt(i).productQuantity;
 
-      intialSaving = intialSaving +
+      initialSaving = initialSaving +
           q *
               (cartData.elementAt(i).productMrp -
                   cartData.elementAt(i).productSellingPrice);
@@ -165,7 +165,7 @@ class CartDataWrapper extends ChangeNotifier {
           element.productSize == productSize;
     })).productQuantity = quantity;
 
-    log("--$intialSaving");
+    log("--$initialSaving");
     notifyListeners();
   }
 

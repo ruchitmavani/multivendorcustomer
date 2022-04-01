@@ -8,7 +8,7 @@ import 'package:multi_vendor_customer/Constants/textStyles.dart';
 import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Controller/PaymentController.dart';
 import 'package:multi_vendor_customer/Data/Models/AddressModel.dart';
-import 'package:multi_vendor_customer/Data/Models/CustomerDataModel.dart';
+import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/CartProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
@@ -65,9 +65,11 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           isLoadingOrderId = false;
           if (value.data == null) {
             orderId = null;
-            Fluttertoast.showToast(msg: "More than 5,00,000 can't be paid online",
-              webPosition: "center",
-              webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",webShowClose: true);
+            Fluttertoast.showToast(
+                msg: "More than 5,00,000 can't be paid online",
+                webPosition: "center",
+                webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",
+                webShowClose: true);
             return;
           }
           orderId = value.data!.orderId.id;
@@ -158,9 +160,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .of<CartDataWrapper>(context, listen: false)
             .tax
         ,
-        taxPercentage: Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .taxPercentage,
+        taxPercentage: List.generate(sharedPrefs.taxName.length, (index) {
+          return SimpleTaxModel(
+            taxName: sharedPrefs.taxName[index],
+            taxPercentage: int.parse(sharedPrefs.tax[index]),
+            amount: (int.parse(sharedPrefs.tax[index]) * (Provider
+                .of<CartDataWrapper>(context, listen: false)
+                .totalAmount)) / 100,
+          );
+        }),
         totalAmount: Provider
             .of<CartDataWrapper>(context, listen: false)
             .totalAmount
@@ -201,7 +209,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   _verifyPayment() async {
     await PaymentController.paymentVerify().then((value) {
       if (value.success) {
-
         isLoadingOrderId = false;
         Fluttertoast.showToast(msg: "${value.data!.orderId}",
             webPosition: "center",
@@ -248,7 +255,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     });
                   },
                   child: Padding(
-                    padding: EdgeInsets.only(top: (orderId==null)? 0: 5.0),
+                    padding: EdgeInsets.only(top: (orderId == null) ? 0 : 5.0),
                     child: ListTile(
                       dense: true,
                       visualDensity:
