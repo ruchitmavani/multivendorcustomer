@@ -309,7 +309,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Icon(
                                           Icons.chevron_right,
                                           color:
-                                              Provider.of<ThemeColorProvider>(context)
+                                              Provider.of<ThemeColorProvider>(
+                                                      context)
                                                   .appPrimaryMaterialColor,
                                         ),
                                       ],
@@ -328,8 +329,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.category_outlined,
                   color: Colors.white,
                 ),
-                backgroundColor:
-                    Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
+                backgroundColor: Provider.of<ThemeColorProvider>(context)
+                    .appPrimaryMaterialColor,
               )
             : FloatingActionButton(
                 onPressed: () {
@@ -343,8 +344,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.category_outlined,
                   color: Colors.white,
                 ),
-                backgroundColor:
-                    Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
+                backgroundColor: Provider.of<ThemeColorProvider>(context)
+                    .appPrimaryMaterialColor,
               ),
         body: isShopOpen
             ? vendorProvider != null
@@ -425,7 +426,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               },
                                               child: Icon(Icons.call,
                                                   color: Provider.of<
-                                                          ThemeColorProvider>(context)
+                                                              ThemeColorProvider>(
+                                                          context)
                                                       .appPrimaryMaterialColor),
                                             ),
                                           ),
@@ -478,7 +480,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (banners.length > 0)
                                     CarouselSlider(
                                       options: CarouselOptions(
-                                          height: 170.0,
+                                          height: MediaQuery.of(context)
+                                                      .size
+                                                      .width >
+                                                  650
+                                              ? 250
+                                              : 170.0,
                                           aspectRatio: 16 / 9,
                                           viewportFraction: 0.9,
                                           autoPlay: true),
@@ -564,38 +571,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             Icon(Icons.directions,
                                                 size: 18,
-                                                color: Provider.of<ThemeColorProvider>(
+                                                color: Provider.of<
+                                                            ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor),
                                             InkWell(
-                                              onTap: () {    if (Provider.of<VendorModelWrapper>(
-    context,
-    listen: false)
-        .vendorModel!
-        .latitude !=
-    0 &&
-    Provider.of<VendorModelWrapper>(
-    context,
-    listen: false)
-        .vendorModel!
-        .longitude !=
-    0) {
-                                                launch(
-                                                    "https://maps.google.com/?q=${Provider
-                                                        .of<VendorModelWrapper>(
-                                                        context, listen: false)
-                                                        .vendorModel!
-                                                        .latitude
-                                                        .toString()},${Provider
-                                                        .of<VendorModelWrapper>(
-                                                        context, listen: false)
-                                                        .vendorModel!
-                                                        .longitude
-                                                        .toString()}");
-                                              }else{
-                                                Fluttertoast.showToast(msg: "No Location Added",  webPosition: "center",
-                                                    webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
-                                              }   },
+                                              onTap: () {
+                                                if (Provider.of<VendorModelWrapper>(
+                                                                context,
+                                                                listen: false)
+                                                            .vendorModel!
+                                                            .latitude !=
+                                                        0 &&
+                                                    Provider.of<VendorModelWrapper>(
+                                                                context,
+                                                                listen: false)
+                                                            .vendorModel!
+                                                            .longitude !=
+                                                        0) {
+                                                  launch(
+                                                      "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg: "No Location Added",
+                                                      webPosition: "center",
+                                                      webBgColor:
+                                                          "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                                                }
+                                              },
                                               child: AutoSizeText(" Direction",
                                                   minFontSize: 8,
                                                   style: FontsTheme.gilroyText(
@@ -1013,7 +1016,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'tel: ${vendorProvider.mobileNumber}');
                                             },
                                             child: Icon(Icons.call,
-                                                color: Provider.of<ThemeColorProvider>(
+                                                color: Provider.of<
+                                                            ThemeColorProvider>(
                                                         context)
                                                     .appPrimaryMaterialColor),
                                           ),
@@ -1067,7 +1071,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if (banners.length > 0)
                                   CarouselSlider(
                                     options: CarouselOptions(
-                                        height: 170.0,
+                                        height:
+                                            MediaQuery.of(context).size.width >
+                                                    650
+                                                ? 250
+                                                : 170.0,
                                         aspectRatio: 16 / 9,
                                         viewportFraction: 0.9,
                                         autoPlay: true),
@@ -1154,7 +1162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           Icon(Icons.directions,
                                               size: 18,
-                                              color: Provider.of<ThemeColorProvider>(
+                                              color: Provider.of<
+                                                          ThemeColorProvider>(
                                                       context)
                                                   .appPrimaryMaterialColor),
                                           FittedBox(
@@ -1173,25 +1182,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             .longitude !=
                                                         0) {
                                                   launch(
-                                                      "https://maps.google.com/?q=${Provider
-                                                          .of<
-                                                          VendorModelWrapper>(
-                                                          context,
-                                                          listen: false)
-                                                          .vendorModel!
-                                                          .latitude
-                                                          .toString()},${Provider
-                                                          .of<
-                                                          VendorModelWrapper>(
-                                                          context,
-                                                          listen: false)
-                                                          .vendorModel!
-                                                          .longitude
-                                                          .toString()}");
-                                                }else {
-                                                  Fluttertoast.showToast(msg: "No Location Added",  webPosition: "center",
-                                                      webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
-                                                } },
+                                                      "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg: "No Location Added",
+                                                      webPosition: "center",
+                                                      webBgColor:
+                                                          "linear-gradient(to right, #5A5A5A, #5A5A5A)");
+                                                }
+                                              },
                                               child: Text(
                                                 " Direction",
                                                 style: TextStyle(
@@ -1263,8 +1262,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SvgPicture.asset(
                   "images/error.svg",
-                  color:
-                      Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor,
+                  color: Provider.of<ThemeColorProvider>(context)
+                      .appPrimaryMaterialColor,
                   width: 30,
                   height: 30,
                 ),
