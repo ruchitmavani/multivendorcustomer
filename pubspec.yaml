@@ -113,8 +113,7 @@ flutter:
     - images/
     - payment.html
     - web/payment.html
-    - try.html
-    - web/try.html
+    - web/landing_page.html
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

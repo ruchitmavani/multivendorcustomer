@@ -25,7 +25,7 @@ class LandingScreen extends StatelessWidget {
       //   }
       // });
 
-      element.src = 'try.html';
+      element.src = 'landing_page.html';
       element.style.border = 'none';
 
       return element;

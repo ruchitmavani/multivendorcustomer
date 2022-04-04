@@ -108,18 +108,24 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .of<CartDataWrapper>(context, listen: false)
             .cartData,
         couponId: "",
-        deliveryCharge: type == 'TAKEAWAY' || ((Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount > Provider
+        deliveryCharge: type == 'TAKEAWAY' ||
+            ((Provider
+                .of<CartDataWrapper>(context, listen: false)
+                .totalAmount > Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .freeDeliveryAboveAmount)
+                && Provider
+                    .of<VendorModelWrapper>(context, listen: false)
+                    .vendorModel!
+                    .freeDeliveryAboveAmount > 0) ? 0.0 :
+        Provider
             .of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
-            .freeDeliveryAboveAmount) && Provider
+            .isDeliveryCharges ? Provider
             .of<VendorModelWrapper>(context, listen: false)
             .vendorModel!
-            .freeDeliveryAboveAmount > 0) ? 0.0 : Provider
-            .of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .deliveryCharges,
+            .deliveryCharges : 0,
         orderAmount: type == 'TAKEAWAY'
             ? Provider
             .of<CartDataWrapper>(context, listen: false)
