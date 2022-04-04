@@ -39,7 +39,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   @override
   void initState() {
     super.initState();
-    _generateOrderId();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _generateOrderId();
+    });
   }
 
   _generateOrderId() async {
@@ -51,11 +53,16 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .of<CartDataWrapper>(context, listen: false)
             .totalAmount
             .toInt() +
-            Provider
+            Provider.of<CartDataWrapper>(context, listen: false)
+                .getDeliveryCharges(Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .freeDeliveryAboveAmount, Provider
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .toInt() + Provider
+            )
+            + Provider
             .of<CartDataWrapper>(context, listen: false)
             .tax
             .toInt())
@@ -139,11 +146,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .totalAmount
             .roundOff()
             +
-            Provider
+            Provider.of<CartDataWrapper>(context, listen: false)
+                .getDeliveryCharges(Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .freeDeliveryAboveAmount, Provider
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .roundOff() + Provider
+            ) + Provider
             .of<CartDataWrapper>(context, listen: false)
             .tax
             .roundOff(),
@@ -152,11 +163,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .of<CartDataWrapper>(context, listen: false)
             .totalAmount
             .roundOff()
-            + Provider
+            + Provider.of<CartDataWrapper>(context, listen: false)
+                .getDeliveryCharges(Provider
+                .of<VendorModelWrapper>(context, listen: false)
+                .vendorModel!
+                .freeDeliveryAboveAmount, Provider
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-                .roundOff() + Provider
+            ) + Provider
             .of<CartDataWrapper>(context, listen: false)
             .tax
             .roundOff()

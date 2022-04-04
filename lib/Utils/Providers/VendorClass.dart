@@ -19,6 +19,8 @@ class VendorModelWrapper with ChangeNotifier {
     await VendorController.getVendorData(vendorId: vendorId).then((value) {
       if (value.success && value.data != null) {
         vendorModel = value.data;
+        vendorModel!.deliveryCharges =
+            vendorModel!.isDeliveryCharges ? vendorModel!.deliveryCharges : 0;
         isLoaded = true;
         sharedPrefs.vendor_uniq_id = vendorModel!.vendorUniqId;
         sharedPrefs.vendor_email_address = vendorModel!.emailAddress;
@@ -82,7 +84,9 @@ class VendorModelWrapper with ChangeNotifier {
       //     return "Closed";
       //   }
       // }
-      return (list.isEmpty)?"-": "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
+      return (list.isEmpty)
+          ? "-"
+          : "${list[weekIndex(list)].openTime} - ${list[weekIndex(list)].closeTime}";
     } else {
       return "Offline";
     }

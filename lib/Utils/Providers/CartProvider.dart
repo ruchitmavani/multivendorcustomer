@@ -10,19 +10,15 @@ import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 class CartDataWrapper extends ChangeNotifier {
   List<NewCartModel> cartData = [];
   List<TaxDetail> taxData = [];
-  bool _isLoading = true;
+  bool isLoading = true;
   bool isCouponApplied = false;
-
-  bool get isLoading => _isLoading;
-
-  set isLoading(bool isLoading) => _isLoading = isLoading;
   int totalItems = 0;
   late double totalAmount;
   late double tax;
   late double taxPercentage;
   late double discount = 0;
-  late int shipping;
   late double initialSaving = 0;
+  double deliveryCharges = 0;
 
   Future loadCartData() async {
     totalItems = cartData.length;
@@ -118,6 +114,16 @@ class CartDataWrapper extends ChangeNotifier {
           webPosition: "center",
           webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
     });
+  }
+
+  int getDeliveryCharges(
+    int freeAboveAmount,
+    double deliveryCharge,
+  ) {
+    if (totalAmount >= freeAboveAmount) {
+      return 0;
+    }
+    return deliveryCharge.toInt();
   }
 
   int getIndividualQuantity(

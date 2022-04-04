@@ -673,7 +673,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   isDownload = true;
                                 });
                                 await compute(
-                                    buildPdf(
+                                    await buildPdf(
                                         PdfPageFormat.a4, widget.orderData),
                                     "Q");
                                 setState(() {
@@ -689,336 +689,141 @@ class _OrderDetailsState extends State<OrderDetails> {
     );
   }
 
-  buildPdf(PdfPageFormat format, OrderDataModel order) async {
-    // Create the Pdf document
-    final pw.Document doc = pw.Document();
-    // Add one page with centered text "Hello World"
-    ByteData? imageData;
-    await rootBundle.load('Gilroy-Bold.ttf').then((data) => imageData = data);
+  Future buildPdf(PdfPageFormat format, OrderDataModel order) async {
+    pw.Document pdf = pw.Document();
+    final montserrat = await PdfGoogleFonts.montserratSemiBold();
 
-    doc.addPage(
-      pw.Page(
+    pdf.addPage(pw.Page(
+        margin: pw.EdgeInsets.only(top: 30, bottom: 10),
         theme: pw.ThemeData.withFont(
-            base: pw.Font.ttf(await rootBundle.load("fonts/Gilroy-Bold.ttf")),
-            bold: await PdfGoogleFonts.montserratBold()),
-        pageFormat: format,
+            base: await PdfGoogleFonts.montserratSemiBold()),
         build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Padding(
-                padding:
-                    const pw.EdgeInsets.only(top: 12.0, left: 8, right: 15),
-                child: pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Image(pw.MemoryImage(logoByteList),
-                          height: 100, width: 100),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.only(left: 8.0),
-                        child: pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text("${sharedPrefs.businessName}",
-                                style: pw.TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: pw.FontWeight.normal)),
-                            pw.Text("${order.deliveryAddress.city}",
-                                style: pw.TextStyle(
-                                  fontSize: 16,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ]),
+          return pw.Column(children: [
+            pw.Padding(
+              padding: pw.EdgeInsets.only(right: 20, left: 20),
+              child: headerContent(order, logoByteList),
+            ),
+            pw.SizedBox(height: 40),
+            pw.Padding(
+              padding: pw.EdgeInsets.only(left: 30, right: 30),
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("ORDER DETAIL",
+                      style: pw.TextStyle(
+                        fontSize: 16,
+                        fontWeight: pw.FontWeight.bold,
+                      )),
+                ],
               ),
-              pw.Padding(
-                padding:
-                    const pw.EdgeInsets.only(left: 20.0, right: 20, top: 45),
-                child: pw.Column(
-                  children: [
-                    pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.Text("Date",
-                            style: pw.TextStyle(
-                                fontSize: 14,
-                                fontWeight: pw.FontWeight.normal)),
-                        pw.Text("${order.createdDateTime}",
-                            style: pw.TextStyle(
-                                fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                      ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Expanded(
+              child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(0.0),
+                  child: pw.Container(
+                    child: pw.Wrap(
+                      children: List.generate(
+                          order.orderItems.length >= 4
+                              ? 4
+                              : order.orderItems.length, (index) {
+                        return pw.Padding(
+                            padding: pw.EdgeInsets.only(
+                                left: 30, right: 30, top: 20),
+                            child: orderComponent(
+                              order.orderItems[index],
+                              montserrat,
+                            ));
+                      }),
                     ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 5.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Order ID",
-                              style: pw.TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: pw.FontWeight.normal)),
-                          pw.Text("${order.orderId}",
-                              style: pw.TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: pw.FontWeight.normal))
-                        ],
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 5.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Name", style: pw.TextStyle(fontSize: 14)),
-                          pw.Text("${sharedPrefs.customer_name}",
-                              style: pw.TextStyle(fontSize: 12))
-                        ],
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 5.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Mobile", style: pw.TextStyle(fontSize: 14)),
-                          pw.Text("${sharedPrefs.customer_mobileNo}",
-                              style: pw.TextStyle(fontSize: 12))
-                        ],
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 5.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Payment Method",
-                              style: pw.TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: pw.FontWeight.bold)),
-                          pw.Text("${order.paymentType}",
-                              style: pw.TextStyle(
-                                  fontSize: 12, fontWeight: pw.FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 5.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Address",
-                              style: pw.TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: pw.FontWeight.bold)),
-                          pw.Text(
-                              "${order.deliveryAddress.subAddress}" +
-                                  " " +
-                                  "${order.deliveryAddress.area}",
-                              style: pw.TextStyle(
-                                  fontSize: 12, fontWeight: pw.FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    pw.SizedBox(height: 45),
-                    pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      children: [
-                        pw.Text("ORDER DETAIL",
-                            style: pw.TextStyle(
-                              fontSize: 16,
-                              fontWeight: pw.FontWeight.bold,
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(top: 11.0),
-                child: pw.Column(
-                  children: List.generate(
-                      order.orderItems.length,
-                      (index) => pw.Padding(
-                            padding: const pw.EdgeInsets.only(
-                                top: 10, left: 20.0, right: 21),
-                            child: pw.Container(
-                              child: pw.Row(
-                                mainAxisAlignment: pw.MainAxisAlignment.start,
-                                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.Expanded(
-                                    child: pw.Column(
-                                      crossAxisAlignment:
-                                          pw.CrossAxisAlignment.start,
-                                      children: [
-                                        pw.Row(
-                                          children: [
-                                            pw.Expanded(
-                                              child: pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.only(
-                                                        left: 14.0),
-                                                child: pw.Column(
-                                                  crossAxisAlignment: pw
-                                                      .CrossAxisAlignment.start,
-                                                  children: [
-                                                    pw.Text(
-                                                        "${order.orderItems.elementAt(index).productDetails.productName}",
-                                                        style: pw.TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight: pw
-                                                                .FontWeight
-                                                                .bold)),
-                                                    pw.Padding(
-                                                      padding: const pw
-                                                              .EdgeInsets.only(
-                                                          top: 5.0),
-                                                      child: pw.Row(
-                                                        mainAxisAlignment: pw
-                                                            .MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          pw.Row(
-                                                            children: [
-                                                              pw.Container(
-                                                                decoration: pw.BoxDecoration(
-                                                                    borderRadius: pw
-                                                                            .BorderRadius
-                                                                        .circular(
-                                                                            3)),
-                                                                height: 22,
-                                                                width: 22,
-                                                                child:
-                                                                    pw.Center(
-                                                                  child: pw.Text(
-                                                                      "${order.orderItems.elementAt(index).productQuantity}",
-                                                                      style: pw.TextStyle(
-                                                                          fontWeight: pw
-                                                                              .FontWeight
-                                                                              .bold)),
-                                                                ),
-                                                              ),
-                                                              pw.Padding(
-                                                                padding: const pw
-                                                                        .EdgeInsets.only(
-                                                                    left: 9.0),
-                                                                child:
-                                                                    pw.RichText(
-                                                                        text: pw.TextSpan(
-                                                                            text:
-                                                                                "₹",
-                                                                            style:
-                                                                                pw.TextStyle(fontSize: 12, color: PdfColors.black),
-                                                                            children: [
-                                                                      pw.TextSpan(
-                                                                          text:
-                                                                              " X ${order.orderItems.elementAt(index).productDetails.productSellingPrice}")
-                                                                    ])),
-                                                              )
-                                                              /*pw.Text("x  ₹$productPrice",
-                                                    style: FontsTheme.valueStyle(
-                                                        fontWeight: FontWeight.w600)),*/
-                                                            ],
-                                                          ),
-                                                          pw.Text("₹ " +
-                                                              "${order.orderItems[index].productQuantity.toDouble() * order.orderItems[index].productDetails.productSellingPrice.toDouble()}"),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        pw.Padding(
-                                          padding: const pw.EdgeInsets.only(
-                                              top: 15.0),
-                                          child: pw.Divider(
-                                            color: PdfColors.grey,
-                                            thickness: 0.3,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
-                ),
-              ),
-              pw.Padding(
-                padding:
-                    const pw.EdgeInsets.only(top: 30.0, left: 20, right: 20),
-                child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.Text("Item Total",
-                            style: pw.TextStyle(
-                              fontSize: 13,
-                            )),
-                        pw.Text("₹ " + "${order.itemTotalAmount}"),
-                      ],
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 10.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Delivery Fee"),
-                          pw.Text("${order.deliveryCharges}")
-                        ],
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.only(top: 10.0),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text("Tax( ${order.taxPercentage} )"),
-                          pw.Text("₹ " + "${order.taxAmount}")
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(top: 60.0),
-                child: pw.Container(
-                  height: 70,
-                  color: PdfColors.deepPurple,
-                  child: pw.Padding(
-                    padding: const pw.EdgeInsets.only(
-                        top: 10.0, bottom: 10, right: 20, left: 20),
-                    child: pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.Text("Total",
-                            style: pw.TextStyle(color: PdfColors.white)),
-                        pw.Text("₹ " + "${order.orderAmount}",
-                            style: pw.TextStyle(color: PdfColors.white)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              pw.Padding(
-                padding:
-                    const pw.EdgeInsets.only(top: 8.0, left: 10, bottom: 10),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                  )),
+            ),
+            if (order.orderItems.length <= 3)
+              priceContent(
+                order,
+                montserrat,
+              )
+          ]);
+        }));
 
-    final bytes = await doc.save();
+    if (order.orderItems.length > 4) {
+      int length = order.orderItems.length >= 11 ? 11 : order.orderItems.length;
+      pdf.addPage(pw.Page(
+          margin: pw.EdgeInsets.only(top: 20),
+          theme: pw.ThemeData.withFont(
+              base: pw.Font.ttf(await rootBundle.load("Gilroy-Regular.ttf")),
+              bold: pw.Font.ttf(await rootBundle.load("Gilroy-Bold.ttf"))),
+          build: (pw.Context context) {
+            return pw.Column(children: [
+              pw.Column(children: [
+                for (int index = 4; index < length; index++) ...[
+                  pw.Padding(
+                      padding: pw.EdgeInsets.only(left: 30, right: 30, top: 20),
+                      child:
+                          orderComponent(order.orderItems[index], montserrat))
+                ]
+              ]),
+              pw.SizedBox(height: 10),
+              if (order.orderItems.length <= 11)
+                priceContent(
+                  order,
+                  montserrat,
+                ),
+              // pw.Padding(padding: pw.EdgeInsets.only(bottom: 30),)
+            ]);
+          }));
+    }
+
+    if (order.orderItems.length > 13) {
+      pdf.addPage(pw.Page(
+          margin: pw.EdgeInsets.only(top: 20),
+          theme: pw.ThemeData.withFont(
+              base: pw.Font.ttf(await rootBundle.load("Gilroy-Regular.ttf")),
+              bold: pw.Font.ttf(await rootBundle.load("Gilroy-Bold.ttf"))),
+          build: (pw.Context context) {
+            return pw.Column(children: [
+              pw.Column(children: [
+                for (int index = 11;
+                    index < order.orderItems.length;
+                    index++) ...[
+                  pw.Padding(
+                      padding: pw.EdgeInsets.only(left: 30, right: 30, top: 20),
+                      child:
+                          orderComponent(order.orderItems[index], montserrat))
+                ]
+              ]),
+              pw.SizedBox(height: 40),
+              if (order.orderItems.length != 12 &&
+                  order.orderItems.length != 13)
+                priceContent(
+                  order,
+                  montserrat,
+                ),
+              // pw.Padding(padding: pw.EdgeInsets.only(bottom: 30),)
+            ]);
+          }));
+    }
+
+    if (order.orderItems.length == 4 ||
+        order.orderItems.length == 12 ||
+        order.orderItems.length == 13) {
+      pdf.addPage(pw.Page(
+          margin: pw.EdgeInsets.only(top: 20),
+          theme: pw.ThemeData.withFont(
+              base: pw.Font.ttf(await rootBundle.load("Gilroy-Regular.ttf")),
+              bold: pw.Font.ttf(await rootBundle.load("Gilroy-Bold.ttf"))),
+          build: (pw.Context context) {
+            return pw.Column(children: [
+              pw.SizedBox(height: 40),
+              priceContent(
+                order,
+                montserrat,
+              ),
+            ]);
+          }));
+    }
+
+    final bytes = await pdf.save();
     final blob = Blob([bytes], 'application/pdf');
     final url = Url.createObjectUrlFromBlob(blob);
     window.open(url, '_blank');
@@ -1026,8 +831,250 @@ class _OrderDetailsState extends State<OrderDetails> {
     setState(() {
       isDownload = false;
     });
-    // return await doc.save();
-    // Build and return the final Pdf file data
-    // return await doc.save();
+    return (String foo) {};
   }
+}
+
+pw.Widget headerContent(
+  OrderDataModel orderData,
+  Uint8List logoByteList,
+) {
+  return pw.Column(children: [
+    pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+      pw.Image(pw.MemoryImage(logoByteList), height: 100, width: 100),
+      pw.Padding(
+        padding: pw.EdgeInsets.only(right: 15),
+        child: pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Text("${sharedPrefs.businessName.toUpperCase()}",
+                style: pw.TextStyle(
+                  fontSize: 19,
+                  fontWeight: pw.FontWeight.bold,
+                )),
+          ],
+        ),
+      )
+    ]),
+    pw.SizedBox(height: 40),
+    pw.Padding(
+        padding: pw.EdgeInsets.only(left: 10, right: 10),
+        child: pw.Column(children: [
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text("Date",
+                  style: pw.TextStyle(
+                      fontSize: 12, fontWeight: pw.FontWeight.normal)),
+              pw.Text("${dateFormat(orderData.createdDateTime!)}",
+                  style: pw.TextStyle(
+                      fontSize: 14, fontWeight: pw.FontWeight.bold)),
+            ],
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 5.0),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text("Order ID",
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.normal)),
+                pw.Text("${orderData.orderId.toString().split("_")[0]}",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))
+              ],
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 5.0),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text("Name",
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.normal)),
+                pw.Text("${sharedPrefs.customer_name}",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))
+              ],
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 5.0),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text("Mobile",
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.normal)),
+                pw.Text("${sharedPrefs.customer_mobileNo}",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))
+              ],
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 5.0),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text("Payment Method",
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.normal)),
+                pw.Text("${orderData.paymentType}",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))
+              ],
+            ),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 5.0),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text("Address",
+                    style: pw.TextStyle(
+                        fontSize: 12, fontWeight: pw.FontWeight.normal)),
+                pw.Text(
+                    "${orderData.deliveryAddress.subAddress}" +
+                        " " +
+                        "${orderData.deliveryAddress.area}",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))
+              ],
+            ),
+          ),
+        ]))
+  ]);
+}
+
+pw.Widget priceContent(
+  OrderDataModel orderData,
+  final montserrat,
+) {
+  return pw.Column(children: [
+    pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Padding(
+            padding: pw.EdgeInsets.only(left: 30, right: 30),
+            child: pw.Column(children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Item Total",
+                      style: pw.TextStyle(
+                        fontSize: 13,
+                        fontWeight: pw.FontWeight.bold,
+                      )),
+                  pw.Text("₹ " + "${orderData.itemTotalAmount}",
+                      style: pw.TextStyle(font: montserrat)),
+                ],
+              ),
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(top: 10.0),
+                child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Text("Delivery Fee"),
+                    pw.Text("₹ ${orderData.deliveryCharges}",
+                        style: pw.TextStyle(font: montserrat))
+                  ],
+                ),
+              ),
+              pw.ListView.builder(
+                  direction: pw.Axis.vertical,
+                  itemBuilder: (context, index) => pw.Padding(
+                        padding: const pw.EdgeInsets.only(top: 10.0),
+                        child: pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text(
+                                "${orderData.taxPercentage[index].taxName}(${orderData.taxPercentage[index].taxPercentage})"),
+                            pw.Text(
+                                "₹ " +
+                                    "${orderData.taxPercentage[index].amount}",
+                                style: pw.TextStyle(font: montserrat))
+                          ],
+                        ),
+                      ),
+                  itemCount: orderData.taxPercentage.length),
+            ]))
+      ],
+    ),
+    pw.Padding(
+      padding: const pw.EdgeInsets.only(top: 15.0),
+      child: pw.Container(
+        height: 70,
+        color: PdfColors.deepPurple,
+        child: pw.Padding(
+          padding: pw.EdgeInsets.only(left: 30, right: 30),
+          child: pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text("Total",
+                  style: pw.TextStyle(
+                    color: PdfColors.white,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 17,
+                  )),
+              pw.Text("₹ " + "${orderData.orderAmount}",
+                  style: pw.TextStyle(
+                      color: PdfColors.white,
+                      font: montserrat,
+                      fontWeight: pw.FontWeight.bold,
+                      fontSize: 17)),
+            ],
+          ),
+        ),
+      ),
+    )
+  ]);
+}
+
+//component
+pw.Widget orderComponent(OrderItem orderItems, final montserrat) {
+  return pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+    pw.Text("${orderItems.productDetails.productName}",
+        style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
+        maxLines: 1,
+        overflow: pw.TextOverflow.clip),
+    pw.SizedBox(height: 5),
+    pw.Row(children: [
+      pw.Expanded(
+        child: pw.Row(
+          children: [
+            pw.Text("${orderItems.productQuantity}",
+                style:
+                    pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 15)),
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(left: 0.0),
+              child: pw.Text(
+                  " X ₹ ${orderItems.productDetails.productSellingPrice}",
+                  style: pw.TextStyle(
+                      fontSize: 15, color: PdfColors.black, font: montserrat)),
+            )
+          ],
+        ),
+      ),
+      pw.Text(
+          "₹" +
+              "${orderItems.productQuantity * orderItems.productDetails.productSellingPrice.toDouble()}",
+          style: pw.TextStyle(font: montserrat, fontSize: 15)),
+    ]),
+    pw.Padding(
+      padding: const pw.EdgeInsets.only(top: 8.0),
+      child: pw.Divider(
+        color: PdfColors.grey,
+        thickness: 0.2,
+      ),
+    ),
+  ]);
+}
+
+//Date Format Function
+String dateFormat(DateTime date) {
+  final DateFormat formatter = DateFormat('MMM dd, yyyy  HH:MM a');
+  final String formatted = formatter.format(date);
+  return formatted;
 }

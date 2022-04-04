@@ -81,21 +81,12 @@ class _CartScreenState extends State<CartScreen> {
           addressList.clear();
           for (int i = 0; i < customerData.customerAddress.length; i++) {
             addressList.add(Address(
-                type: customerData.customerAddress
-                    .elementAt(i)
-                    .type,
-                subAddress: customerData.customerAddress
-                    .elementAt(i)
-                    .subAddress,
-                area: customerData.customerAddress
-                    .elementAt(i)
-                    .area,
-                city: customerData.customerAddress
-                    .elementAt(i)
-                    .city,
-                pinCode: customerData.customerAddress
-                    .elementAt(i)
-                    .pinCode));
+                type: customerData.customerAddress.elementAt(i).type,
+                subAddress:
+                    customerData.customerAddress.elementAt(i).subAddress,
+                area: customerData.customerAddress.elementAt(i).area,
+                city: customerData.customerAddress.elementAt(i).city,
+                pinCode: customerData.customerAddress.elementAt(i).pinCode));
           }
           isLoadingCustomer = false;
         });
@@ -210,18 +201,19 @@ class _CartScreenState extends State<CartScreen> {
                           InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LocationScreen(
-                                      index: 0,
-                                      area: "",
-                                      city: "",
-                                      isEditing: false,
-                                      pincode: "",
-                                      subAddress: "",
-                                      type: "",
-                                    ),
-                                  ),).then((value) => _loadCustomerData());
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LocationScreen(
+                                    index: 0,
+                                    area: "",
+                                    city: "",
+                                    isEditing: false,
+                                    pincode: "",
+                                    subAddress: "",
+                                    type: "",
+                                  ),
+                                ),
+                              ).then((value) => _loadCustomerData());
                             },
                             child: Padding(
                               padding:
@@ -964,10 +956,20 @@ class _CartScreenState extends State<CartScreen> {
                         },
                       ),
                     Provider.of<VendorModelWrapper>(context).isLoaded
-                        ? Provider.of<VendorModelWrapper>(context)
+                        ? (Provider.of<VendorModelWrapper>(context)
                                     .vendorModel!
-                                    .isDeliveryCharges ==
-                                true
+                                    .isDeliveryCharges &&
+                                Provider.of<CartDataWrapper>(context)
+                                        .getDeliveryCharges(
+                                            Provider.of<VendorModelWrapper>(
+                                                    context)
+                                                .vendorModel!
+                                                .freeDeliveryAboveAmount,
+                                            Provider.of<VendorModelWrapper>(
+                                                    context)
+                                                .vendorModel!
+                                                .deliveryCharges) >
+                                    0)
                             ? SizedBox(
                                 height: 25,
                                 child: ListTile(
@@ -987,7 +989,24 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                               )
-                            : Container()
+                            : SizedBox(
+                                height: 25,
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  dense: true,
+                                  title: Text(
+                                    "Free Delivery",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.green),
+                                  ),
+                                  trailing: Text(
+                                    "",
+                                    style: FontsTheme.digitStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              )
                         : Center(child: CircularProgressIndicator()),
                     Padding(
                       padding: const EdgeInsets.only(top: 4.0),
@@ -1005,7 +1024,7 @@ class _CartScreenState extends State<CartScreen> {
                           trailing: Text(
                             Provider.of<CartDataWrapper>(context).isLoading
                                 ? "0"
-                                : "\u{20B9} ${(Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges + Provider.of<CartDataWrapper>(context).tax).roundOff()}",
+                                : "\u{20B9} ${(Provider.of<CartDataWrapper>(context).totalAmount.roundOff() + Provider.of<CartDataWrapper>(context).getDeliveryCharges(Provider.of<VendorModelWrapper>(context).vendorModel!.freeDeliveryAboveAmount, Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges) + Provider.of<CartDataWrapper>(context).tax).roundOff()}",
                             style: FontsTheme.digitStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
@@ -1053,7 +1072,7 @@ class _CartScreenState extends State<CartScreen> {
                             child: Text(
                               Provider.of<CartDataWrapper>(context).isLoading
                                   ? "0"
-                                  : "${(Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges.roundOff() + Provider.of<CartDataWrapper>(context).tax).roundOff()}",
+                                  : "${(Provider.of<CartDataWrapper>(context).totalAmount + Provider.of<CartDataWrapper>(context).getDeliveryCharges(Provider.of<VendorModelWrapper>(context).vendorModel!.freeDeliveryAboveAmount, Provider.of<VendorModelWrapper>(context).vendorModel!.deliveryCharges.roundOff()) + Provider.of<CartDataWrapper>(context).tax).roundOff()}",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w600,
