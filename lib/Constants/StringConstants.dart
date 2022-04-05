@@ -87,4 +87,6 @@ class PageCollection {
   static const String privacyPolicy = 'privacy_policy';
   static const String refundPolicy = 'refund_policy';
   static const String termsAndCondition = 'terms_of_use';
+  static const String weSellAboutUs = 'wesell_about_us';
+  static const String weSellContactUs = 'wesell_contact_us';
 }
