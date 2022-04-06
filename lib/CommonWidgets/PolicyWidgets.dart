@@ -15,7 +15,7 @@ class PolicyParagraph extends StatelessWidget {
           textAlign: TextAlign.justify,
         ),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
       ],
     );
@@ -39,7 +39,7 @@ class PolicyTitle extends StatelessWidget {
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
         ),
         SizedBox(
-          height: 20,
+          height: 10,
         ),
       ],
     );

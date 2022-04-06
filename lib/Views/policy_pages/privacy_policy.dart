@@ -14,7 +14,7 @@ class PrivacyPolicy extends StatelessWidget {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

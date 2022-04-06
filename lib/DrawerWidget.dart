@@ -143,6 +143,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           PolicyButton(
               name: "Refund Policy", navigatePage: PageCollection.refundPolicy),
           PolicyButton(
+              name: "Shipping Policy",
+              navigatePage: PageCollection.shippingPolicy),
+          PolicyButton(
               name: "Terms and Conditions",
               navigatePage: PageCollection.termsAndCondition),
           SizedBox(

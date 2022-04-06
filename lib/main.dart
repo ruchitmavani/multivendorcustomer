@@ -22,6 +22,7 @@ import 'package:multi_vendor_customer/Views/NotFound.dart';
 import 'package:multi_vendor_customer/Views/SearchScreen.dart';
 import 'package:multi_vendor_customer/Views/policy_pages/privacy_policy.dart';
 import 'package:multi_vendor_customer/Views/policy_pages/refund_policy.dart';
+import 'package:multi_vendor_customer/Views/policy_pages/shipping_policy.dart';
 import 'package:multi_vendor_customer/Views/policy_pages/terms_of_service.dart';
 import 'package:multi_vendor_customer/Views/wesell_aboutus.dart';
 import 'package:multi_vendor_customer/Views/wesell_contactus.dart';
@@ -243,6 +244,13 @@ class _MyAppState extends State<MyApp> {
                   child: MyAccount(),
                 );
               },
+            ),
+            GoRoute(
+              path: PageCollection.shippingPolicy,
+              pageBuilder: (context, state) => MaterialPage<void>(
+                key: state.pageKey,
+                child: ShippingPolicy(),
+              ),
             ),
             GoRoute(
               path: PageCollection.privacyPolicy,

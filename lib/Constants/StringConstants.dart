@@ -85,6 +85,7 @@ class PageCollection {
   static const String product = 'product';
   static const String store = 'veer0411';
   static const String privacyPolicy = 'privacy_policy';
+  static const String shippingPolicy = 'shipping_policy';
   static const String refundPolicy = 'refund_policy';
   static const String termsAndCondition = 'terms_of_use';
   static const String weSellAboutUs = 'wesell_about_us';
