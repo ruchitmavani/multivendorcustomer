@@ -288,7 +288,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                         selling: productData
                                                             .productSellingPrice)),
                                               ),
+                                            if(productData
+                                                .productRatingAverage !=0)
                                             Space(height: 8),
+                                            if(productData
+                                                .productRatingAverage !=0)
                                             ProductRating(productData
                                                 .productRatingAverage),
                                             Space(height: 8),

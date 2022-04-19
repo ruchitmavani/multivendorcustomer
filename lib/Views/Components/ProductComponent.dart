@@ -425,11 +425,11 @@ class _ProductComponentListState extends State<ProductComponentList> {
                       Padding(
                           padding: const EdgeInsets.only(right: 4.0),
                           child:
-                              // widget.productData.productRatingAverage != 0
-                              //     ?
+                              widget.productData.productRatingAverage != 0
+                                  ?
                               ProductRating(
                                   widget.productData.productRatingAverage)
-                          // : Text(
+                          : SizedBox()
                           //     "Pending",
                           //     style: TextStyle(
                           //         fontWeight: FontWeight.bold, fontSize: 11),

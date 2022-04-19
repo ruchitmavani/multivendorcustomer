@@ -682,9 +682,12 @@ class _CartScreenState extends State<CartScreen> {
                                                           TextOverflow.ellipsis,
                                                     ),
                                                   ),
+                                                  cartProvider
+                                                      .elementAt(index)
+                                                      .rating !=0?
                                                   ProductRating(cartProvider
                                                       .elementAt(index)
-                                                      .rating),
+                                                      .rating):SizedBox(),
                                                 ],
                                               ),
                                               const SizedBox(
