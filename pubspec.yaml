@@ -52,7 +52,10 @@ dependencies:
   google_geocoding: ^0.2.0
   location: ^4.3.0
   flutter_google_places_sdk: ^0.3.2+1
+
+  #unique id generation
   uuid: ^3.0.6
+  nanoid: ^1.0.0
 
   #video_player
   video_player: ^2.2.5
@@ -82,7 +85,8 @@ dependencies:
   go_router: ^2.5.7
 
   #payment gateway
-  razorpay_flutter: ^1.2.7
+  #razorpay_flutter: ^1.2.7
+  cashfree_pg: 2.0.9+29
 
   #pdf
   pdf: ^3.6.2

@@ -13,14 +13,14 @@ class OrderId {
     required this.orderId,
   });
 
-  OrderIdClass orderId;
+  String orderId;
 
   factory OrderId.fromJson(Map<String, dynamic> json) => OrderId(
-    orderId: OrderIdClass.fromJson(json["order_id"]),
+    orderId: json["cftoken"],
   );
 
   Map<String, dynamic> toJson() => {
-    "order_id": orderId.toJson(),
+    // "order_id": orderId.toJson(),
   };
 }
 

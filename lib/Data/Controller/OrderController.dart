@@ -173,6 +173,7 @@ class OrderController {
   }
 
   /*-----------Reject Order -----------*/
+  //todo deprecated
   static Future<ResponseClass> rejectOrder(
       {required String orderId, required String reason}) async {
     String url = StringConstants.api_url + StringConstants.reject_order;

@@ -1,6 +1,9 @@
 import 'dart:developer';
 import 'dart:html';
+import 'dart:math' as math;
 
+import 'package:cashfree_pg/cashfree_pg.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
@@ -35,12 +38,19 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   paymentMethods _selection = paymentMethods.COD;
   bool isLoadingOrderId = false;
   String? orderId;
+  String token = "";
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _generateOrderId();
+    });
+  }
+
+  _generateCashFreeOrderId() async {
+    setState(() {
+      isLoadingOrderId = true;
     });
   }
 
@@ -67,19 +77,11 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             .tax
             .toInt())
         .then((value) {
-      if (value.success) {
+      if (value.isNotEmpty) {
         setState(() {
           isLoadingOrderId = false;
-          if (value.data == null) {
-            orderId = null;
-            Fluttertoast.showToast(
-                msg: "More than 5,00,000 can't be paid online",
-                webPosition: "center",
-                webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",
-                webShowClose: true);
-            return;
-          }
-          orderId = value.data!.orderId.id;
+          orderId = value["orderID"]!;
+          token = value["token"];
           window.localStorage["orderId"] = orderId!;
         });
       } else {
@@ -208,7 +210,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
           );
 
-          _verifyPayment();
+          // _verifyPayment();
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => OrderSuccess()));
           // Navigator.push(context,
@@ -409,7 +411,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 child: CircularProgressIndicator(),
               )
                   : InkWell(
-                onTap: () {
+                onTap: () async {
                   if (_selection
                       .toString()
                       .split(".")
@@ -428,24 +430,92 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       .split(".")
                       .last ==
                       "PAY_ONLINE") {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return WebPayment(
-                          price: Provider
-                              .of<CartDataWrapper>(context,
-                              listen: false)
-                              .totalAmount
-                              .toInt() *
-                              100,
-                          name: sharedPrefs.customer_name,
-                          image:
-                          "${StringConstants.api_url}${sharedPrefs.logo}",
-                          addOrder: _addOrder,
-                          orderId: orderId!,
-                        );
-                      },
-                    ),
-                    );
+                    //todo navigate to payment gateway
+                    String stage = "TEST";
+                    String orderAmount = Provider
+                        .of<CartDataWrapper>(context,
+                        listen: false)
+                        .totalAmount
+                        .toInt()
+                        .toString();
+                    String customerName = sharedPrefs.customer_name;
+                    String orderNote = "Order Note";
+                    String orderCurrency = "INR";
+                    String appId = "155112560e54c0c53e63a913e2211551";
+                    String customerPhone = sharedPrefs.customer_mobileNo;
+                    String customerEmail = sharedPrefs.customer_email;
+                    String notifyUrl = "https://test.gocashfree.com/notify";
+
+
+                    Map<String, dynamic> input = {
+                      "orderId": orderId!,
+                      "orderAmount": (Provider
+                          .of<CartDataWrapper>(context, listen: false)
+                          .totalAmount
+                          .toInt() +
+                          Provider.of<CartDataWrapper>(context, listen: false)
+                              .getDeliveryCharges(Provider
+                              .of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .freeDeliveryAboveAmount, Provider
+                              .of<VendorModelWrapper>(context, listen: false)
+                              .vendorModel!
+                              .deliveryCharges
+                          )
+                          + Provider
+                              .of<CartDataWrapper>(context, listen: false)
+                              .tax
+                              .toInt()).toString(),
+                      "customerName": customerName,
+                      "orderNote": orderNote,
+                      "orderCurrency": orderCurrency,
+                      "appId": appId,
+                      "customerPhone": customerPhone,
+                      "customerEmail": customerEmail,
+                      "stage": stage,
+                      "tokenData": token,
+                      "notifyUrl": notifyUrl
+                    };
+
+                    input.addAll(UIMeta().toMap());
+
+
+                    input.forEach((key, value) {
+                      print(value);
+                    });
+
+
+                     CashfreePGSDK.doPayment(input).then((value) {
+                      print("dfhshgj");
+                      value?.forEach((key, value) {
+                        if (kDebugMode) {
+                          print("$key : $value");
+                        }
+                      });
+                      if(value?["txStatus"]=="SUCCESS"){
+                      _addOrder("PAY_ONLINE");}else{
+                        Fluttertoast.showToast(msg: 'Failed payment');
+                      }
+                    });
+
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) {
+                    //     return WebPayment(
+                    //       price: Provider
+                    //           .of<CartDataWrapper>(context,
+                    //           listen: false)
+                    //           .totalAmount
+                    //           .toInt() *
+                    //           100,
+                    //       name: sharedPrefs.customer_name,
+                    //       image:
+                    //       "${StringConstants.api_url}${sharedPrefs.logo}",
+                    //       addOrder: _addOrder,
+                    //       orderId: orderId!,
+                    //     );
+                    //   },
+                    // ),
+                    // );
                   }
                 },
                 child: Container(
@@ -473,5 +543,89 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         ),
       ),
     );
+  }
+}
+
+
+class UIMeta {
+  String color1 = "#FF233F";
+  String color2 = "#033400";
+  String hideOrderId = "false";
+
+  static String getRandomNo() {
+    var rng = math.Random();
+    return 'order ${rng.nextInt(1000000)}';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {"color1": color1, "color2": color2};
+  }
+
+  @override
+  String toString() {
+    return " \ncolor1 $color1 \ncolor1  $color2  \nhideOrderId $hideOrderId";
+  }
+}
+
+class Order {
+  Order();
+
+  String stage = "TEST";
+  String orderId = "newOrder1";
+  String orderAmount = "100";
+  String tokenData =
+      "qU9JCN4MzUIJiOicGbhJCLiQ1VKJiOiAXe0Jye.FG0nIwcTNlhTOhJGOhZjM2IiOiQHbhN3XiwyNzcTM0czM1YTM6ICc4VmIsIiUOlkI6ISej5WZyJXdDJXZkJ3biwCMwEjOiQnb19WbBJXZkJ3biwiIxIXZkJ3T3VmbiojIklkclRmcvJye.PvX8Vz4sgTcWei6iw3KuI_i5kwjyfLYyfjhwvZR24Mj1IABwnqU8UJd2CGhGLHMFfG";
+  String customerName = "Chirag";
+  String orderNote = "Order Note";
+  String orderCurrency = "INR";
+  String appId = "155112560e54c0c53e63a913e2211551";
+  String customerPhone = "8488027477";
+  String customerEmail = "ruchit@gmail.com";
+
+  // String cf = "2394153";
+  String notifyUrl = "https://test.gocashfree.com/notify";
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      "orderId": orderId,
+      "orderAmount": orderAmount,
+      "customerName": customerName,
+      "orderNote": orderNote,
+      "orderCurrency": orderCurrency,
+      "appId": appId,
+      "customerPhone": customerPhone,
+      "customerEmail": customerEmail,
+      "stage": stage,
+      "tokenData": tokenData,
+      // "cftoken": cf,
+      "notifyUrl": notifyUrl
+    };
+  }
+
+  @override
+  String toString() {
+    return " \norderId" +
+        orderId +
+        " \norderAmount " +
+        orderAmount +
+        " \ncustomerName " +
+        customerName +
+        " \norderNote " +
+        orderNote +
+        " \norderCurrency " +
+        orderCurrency +
+        " \nappId " +
+        appId +
+        " \ncustomerPhone " +
+        customerPhone +
+        " \ncustomerEmail " +
+        customerEmail +
+        " \nstage " +
+        stage +
+        " \nnotifyUrl " +
+        notifyUrl +
+        " \ntokenData " +
+        tokenData;
   }
 }
