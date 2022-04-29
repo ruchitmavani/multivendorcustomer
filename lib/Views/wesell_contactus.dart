@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WeSellContactUs extends StatelessWidget {

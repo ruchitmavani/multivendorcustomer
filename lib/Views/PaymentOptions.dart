@@ -62,7 +62,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
         Provider
             .of<CartDataWrapper>(context, listen: false)
             .totalAmount
-            .toInt() +
+            .roundOff()
+            +
             Provider.of<CartDataWrapper>(context, listen: false)
                 .getDeliveryCharges(Provider
                 .of<VendorModelWrapper>(context, listen: false)
@@ -71,17 +72,16 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                 .of<VendorModelWrapper>(context, listen: false)
                 .vendorModel!
                 .deliveryCharges
-            )
-            + Provider
+            ) + Provider
             .of<CartDataWrapper>(context, listen: false)
             .tax
-            .toInt())
+            .roundOff())
         .then((value) {
-      if (value.isNotEmpty) {
+      if (value != null) {
         setState(() {
           isLoadingOrderId = false;
-          orderId = value["orderID"]!;
-          token = value["token"];
+          orderId = value.orderId;
+          token = value.cftoken;
           window.localStorage["orderId"] = orderId!;
         });
       } else {
@@ -104,6 +104,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     await OrderController.addOrder(
         type: "$type",
         address: widget.address,
+        ref_no: orderId ?? "",
         couponAmount:
         Provider
             .of<CartDataWrapper>(context, listen: false)
@@ -304,12 +305,18 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     ),
                   ),
                 ),
-                if(orderId != null)
+                if(orderId != null && context
+                    .watch<VendorModelWrapper>()
+                    .vendorModel!
+                    .isOnlinePayment)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
-                if(orderId != null)
+                if(orderId != null && context
+                    .watch<VendorModelWrapper>()
+                    .vendorModel!
+                    .isOnlinePayment)
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -452,7 +459,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       "orderAmount": (Provider
                           .of<CartDataWrapper>(context, listen: false)
                           .totalAmount
-                          .toInt() +
+                          .roundOff()
+                          +
                           Provider.of<CartDataWrapper>(context, listen: false)
                               .getDeliveryCharges(Provider
                               .of<VendorModelWrapper>(context, listen: false)
@@ -461,11 +469,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                               .of<VendorModelWrapper>(context, listen: false)
                               .vendorModel!
                               .deliveryCharges
-                          )
-                          + Provider
-                              .of<CartDataWrapper>(context, listen: false)
-                              .tax
-                              .toInt()).toString(),
+                          ) + Provider
+                          .of<CartDataWrapper>(context, listen: false)
+                          .tax
+                          .roundOff()).toString(),
                       "customerName": customerName,
                       "orderNote": orderNote,
                       "orderCurrency": orderCurrency,
@@ -479,22 +486,19 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
                     input.addAll(UIMeta().toMap());
 
-
-                    input.forEach((key, value) {
-                      print(value);
-                    });
-
-
-                     CashfreePGSDK.doPayment(input).then((value) {
-                      print("dfhshgj");
+                    CashfreePGSDK.doPayment(input).then((value) {
+                      // print("dfhshgj");
                       value?.forEach((key, value) {
                         if (kDebugMode) {
                           print("$key : $value");
                         }
                       });
-                      if(value?["txStatus"]=="SUCCESS"){
-                      _addOrder("PAY_ONLINE");}else{
-                        Fluttertoast.showToast(msg: 'Failed payment');
+                      if (value?["txStatus"] == "SUCCESS") {
+                        _addOrder("PAY_ONLINE");
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: 'Failed payment', webPosition: "center",
+                          webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
                       }
                     });
 

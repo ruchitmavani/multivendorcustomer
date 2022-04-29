@@ -34,7 +34,8 @@ class VendorDataModel {
     required this.isStorePickupEnable,
     required this.isWhatsappChatSupport,
     required this.colorTheme,
-    required this.taxDetails
+    required this.taxDetails,
+    required this.isOnlinePayment,
   });
 
   String vendorUniqId;
@@ -56,6 +57,7 @@ class VendorDataModel {
   List<String> profilePercentageCount;
   bool isOnline;
   bool isDeliveryCharges;
+  bool isOnlinePayment;
   double deliveryCharges;
   int freeDeliveryAboveAmount;
   bool isStorePickupEnable;
@@ -82,6 +84,7 @@ class VendorDataModel {
     profileCompletedPercentage: json["profile_completed_percentage"],
     profilePercentageCount: List<String>.from(json["profile_percentage_count"].map((x) => x)),
     isOnline: json["is_online"],
+    isOnlinePayment: json["is_online_payment"],
     isDeliveryCharges: json["is_delivery_charges"],
     deliveryCharges: json["delivery_charges"],
     freeDeliveryAboveAmount: json["free_delivery_above_amount"],

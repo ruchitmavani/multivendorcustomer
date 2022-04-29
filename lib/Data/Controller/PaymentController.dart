@@ -5,33 +5,33 @@ import 'package:dio/dio.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Data/Models/PaymentDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
+import 'package:multi_vendor_customer/Data/Models/TokenModel.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
-import 'package:nanoid/async.dart';
+import 'package:nanoid/nanoid.dart';
 
 import 'ProductController.dart';
 
 class PaymentController {
   /*-----------Generate Order id Data-----------*/
   //todo deprecated
-  static Future<Map> generateOrderId(
-    int amount,
+  static Future<TokenModel?> generateOrderId(
+    double amount,
   ) async {
     String url =
         StringConstants.api_url + StringConstants.create_payment_orderId;
 
-    String orderID=await nanoid(10);
+    String orderID = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 10);
 
-    print(orderID);
-    print(amount);
-
+    // print(orderID);
+    // print(amount);
 
     //body Data
     var data = {
-      "orderId":orderID ,
+      "orderId": orderID,
       "orderAmount": amount,
     };
 
-    String responseClass ="";
+    TokenModel? responseClass ;
     try {
       Response response = await dio.post(
         url,
@@ -41,15 +41,13 @@ class PaymentController {
       log("generate order id response -> ${response.data}");
       if (response.statusCode == 200) {
         log("generate order id ${response.data}");
-        responseClass = response.data["cftoken"];
+        // response.data.add
+        responseClass = TokenModel.fromJson(response.data,orderID);
       }
-      return {
-        "orderID":orderID,
-        "token":responseClass
-      };
+      return responseClass;
     } catch (e) {
       log("generate order id error->>>" + e.toString());
-      return {};
+      return null;
     }
   }
 

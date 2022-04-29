@@ -6,6 +6,7 @@ import 'package:multi_vendor_customer/Data/Models/NewCartModel.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/Models/Response.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
+import 'package:nanoid/nanoid.dart';
 
 import '../Models/AddressModel.dart';
 import 'ProductController.dart';
@@ -57,7 +58,8 @@ class OrderController {
       required double taxAmount,
       required List<SimpleTaxModel> taxPercentage,
       required String couponId,
-      required Address address}) async {
+      required Address address,
+      required String ref_no}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
 
     //body Data
@@ -67,7 +69,8 @@ class OrderController {
               orders.elementAt(i).productColor == null
           ? AddOrder(
               productId: orders.elementAt(i).productId,
-              productQuantity: orders.elementAt(i).productQuantity,)
+              productQuantity: orders.elementAt(i).productQuantity,
+            )
           : orders.elementAt(i).productSize == null
               ? AddOrder(
                   productId: orders.elementAt(i).productId,
@@ -100,6 +103,7 @@ class OrderController {
             "tax_percentage": taxPercentage,
             "coupon_amount": couponAmount,
             "delivery_address": address.toJson(),
+            "ref_no": ref_no,
           }
         : {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
@@ -116,6 +120,7 @@ class OrderController {
             "coupon_amount": couponAmount,
             "coupon_id": "$couponId",
             "delivery_address": address.toJson(),
+            "ref_no": ref_no,
           };
 
     ResponseClass<List<OrderDataModel>> responseClass =
@@ -184,7 +189,8 @@ class OrderController {
       "is_rejected_by_customer": true,
       "order_status": "Rejected",
       "reject_reason": "$reason",
-      "razorpay_payment_id": "pay_IAeuocTTDp9zFC"
+      "refund_note": reason,
+      "refundId": customAlphabet("0123456789abcdefghijklmnnopqrstuvwxyz", 10),
     };
 
     ResponseClass responseClass =
