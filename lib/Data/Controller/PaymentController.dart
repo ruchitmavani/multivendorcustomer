@@ -13,7 +13,6 @@ import 'ProductController.dart';
 
 class PaymentController {
   /*-----------Generate Order id Data-----------*/
-  //todo deprecated
   static Future<TokenModel?> generateOrderId(
     double amount,
   ) async {

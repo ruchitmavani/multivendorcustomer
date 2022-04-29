@@ -44,13 +44,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _generateOrderId();
-    });
-  }
-
-  _generateCashFreeOrderId() async {
-    setState(() {
-      isLoadingOrderId = true;
+      if (context
+          .read<VendorModelWrapper>()
+          .vendorModel!
+          .isOnlinePayment) {
+        _generateOrderId();
+      }
     });
   }
 
@@ -437,18 +436,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       .split(".")
                       .last ==
                       "PAY_ONLINE") {
-                    //todo navigate to payment gateway
-                    String stage = "TEST";
-                    String orderAmount = Provider
-                        .of<CartDataWrapper>(context,
-                        listen: false)
-                        .totalAmount
-                        .toInt()
-                        .toString();
+
+                    String stage = "PROD";
                     String customerName = sharedPrefs.customer_name;
                     String orderNote = "Order Note";
                     String orderCurrency = "INR";
-                    String appId = "155112560e54c0c53e63a913e2211551";
+                    String appId = "20382800473cf07d7fe70e2e08828302";
                     String customerPhone = sharedPrefs.customer_mobileNo;
                     String customerEmail = sharedPrefs.customer_email;
                     String notifyUrl = "https://test.gocashfree.com/notify";
@@ -487,7 +480,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     input.addAll(UIMeta().toMap());
 
                     CashfreePGSDK.doPayment(input).then((value) {
-                      // print("dfhshgj");
                       value?.forEach((key, value) {
                         if (kDebugMode) {
                           print("$key : $value");
@@ -568,68 +560,5 @@ class UIMeta {
   @override
   String toString() {
     return " \ncolor1 $color1 \ncolor1  $color2  \nhideOrderId $hideOrderId";
-  }
-}
-
-class Order {
-  Order();
-
-  String stage = "TEST";
-  String orderId = "newOrder1";
-  String orderAmount = "100";
-  String tokenData =
-      "qU9JCN4MzUIJiOicGbhJCLiQ1VKJiOiAXe0Jye.FG0nIwcTNlhTOhJGOhZjM2IiOiQHbhN3XiwyNzcTM0czM1YTM6ICc4VmIsIiUOlkI6ISej5WZyJXdDJXZkJ3biwCMwEjOiQnb19WbBJXZkJ3biwiIxIXZkJ3T3VmbiojIklkclRmcvJye.PvX8Vz4sgTcWei6iw3KuI_i5kwjyfLYyfjhwvZR24Mj1IABwnqU8UJd2CGhGLHMFfG";
-  String customerName = "Chirag";
-  String orderNote = "Order Note";
-  String orderCurrency = "INR";
-  String appId = "155112560e54c0c53e63a913e2211551";
-  String customerPhone = "8488027477";
-  String customerEmail = "ruchit@gmail.com";
-
-  // String cf = "2394153";
-  String notifyUrl = "https://test.gocashfree.com/notify";
-
-
-  Map<String, dynamic> toMap() {
-    return {
-      "orderId": orderId,
-      "orderAmount": orderAmount,
-      "customerName": customerName,
-      "orderNote": orderNote,
-      "orderCurrency": orderCurrency,
-      "appId": appId,
-      "customerPhone": customerPhone,
-      "customerEmail": customerEmail,
-      "stage": stage,
-      "tokenData": tokenData,
-      // "cftoken": cf,
-      "notifyUrl": notifyUrl
-    };
-  }
-
-  @override
-  String toString() {
-    return " \norderId" +
-        orderId +
-        " \norderAmount " +
-        orderAmount +
-        " \ncustomerName " +
-        customerName +
-        " \norderNote " +
-        orderNote +
-        " \norderCurrency " +
-        orderCurrency +
-        " \nappId " +
-        appId +
-        " \ncustomerPhone " +
-        customerPhone +
-        " \ncustomerEmail " +
-        customerEmail +
-        " \nstage " +
-        stage +
-        " \nnotifyUrl " +
-        notifyUrl +
-        " \ntokenData " +
-        tokenData;
   }
 }
