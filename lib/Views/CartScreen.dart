@@ -947,7 +947,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                               trailing: Text(
-                                "\u{20B9} ${((context.watch<CartDataWrapper>().tax / context.watch<CartDataWrapper>().taxPercentage) * double.parse(sharedPrefs.tax.elementAt(i))).toStringAsFixed(2)}",
+                                "\u{20B9} ${((context.watch<CartDataWrapper>().tax / context.watch<CartDataWrapper>().taxPercentage) * double.parse(sharedPrefs.tax.elementAt(i))).roundOff()}",
                                 style: FontsTheme.digitStyle(
                                   fontSize: 14,
                                   color: Colors.grey,

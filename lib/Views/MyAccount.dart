@@ -241,7 +241,7 @@ class _MyAccountState extends State<MyAccount> {
                       RegExp regex = RegExp(pattern);
                       if (value == "" || value == null)
                         return "Email is Empty";
-                      if (!regex.hasMatch(value))
+                      if (!regex.hasMatch(value.trim()))
                         return 'Enter Valid Email';
                       else
                         return null;

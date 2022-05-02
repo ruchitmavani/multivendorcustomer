@@ -18,6 +18,7 @@ import 'package:multi_vendor_customer/Data/Controller/OrderController.dart';
 import 'package:multi_vendor_customer/Data/Models/OrderDataModel.dart';
 import 'package:multi_vendor_customer/Data/wesellimage.dart';
 import 'package:multi_vendor_customer/Routes/Helper.dart';
+import 'package:multi_vendor_customer/Utils/DoubleExtension.dart';
 import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/Components/OrderDetailComponent.dart';
@@ -258,12 +259,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ),
                     Divider(),
-                    if (widget.orderData.orderStatus.last.toLowerCase() ==
+                    if ((widget.orderData.orderStatus.last.toLowerCase() ==
                             "accepted" ||
                         widget.orderData.orderStatus.last.toLowerCase() ==
                             "ready" ||
                         widget.orderData.orderStatus.last.toLowerCase() ==
-                            "dispatched")
+                            "dispatched") && widget.orderData.deliveryApproxTime.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Row(
@@ -432,7 +433,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "\u{20B9} ${(widget.orderData.taxPercentage.elementAt(i).amount).toStringAsFixed(2)}",
+                                      "\u{20B9} ${(widget.orderData.taxPercentage.elementAt(i).amount).roundOff()}",
                                       style: FontsTheme.digitStyle(
                                         fontSize: 14,
                                         color: Colors.grey,
