@@ -93,10 +93,6 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
           isBulk: false,
           rating: widget.productData.productRatingAverage),
     );
-    Provider
-        .of<CartDataWrapper>(context, listen: false)
-        .cartData
-        .forEach((element) {});
     Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
     Fluttertoast.showToast(
       msg: "Added to Cart",
@@ -146,7 +142,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
               .isActive
               : false,
         ) : null);
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
+    provider.loadCartData();
   }
 
   Future updateCart(int quantity) async {

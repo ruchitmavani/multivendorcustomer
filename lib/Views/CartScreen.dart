@@ -456,6 +456,7 @@ class _CartScreenState extends State<CartScreen> {
     var cartProvider = Provider
         .of<CartDataWrapper>(context)
         .cartData;
+    var vendorProvider = Provider.of<VendorModelWrapper>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -737,10 +738,13 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                         cartProvider
                                             .elementAt(index)
-                                            .rating != 0 ?
-                                        ProductRating(cartProvider
-                                            .elementAt(index)
-                                            .rating) : SizedBox(),
+                                            .rating !=
+                                            0
+                                            ? ProductRating(
+                                            cartProvider
+                                                .elementAt(index)
+                                                .rating)
+                                            : SizedBox(),
                                       ],
                                     ),
                                     const SizedBox(
@@ -1032,25 +1036,14 @@ class _CartScreenState extends State<CartScreen> {
                           );
                         },
                       ),
-                    Provider
-                        .of<VendorModelWrapper>(context)
-                        .isLoaded
-                        ? (Provider
-                        .of<VendorModelWrapper>(context)
-                        .vendorModel!
-                        .isDeliveryCharges &&
+                    vendorProvider.isLoaded
+                        ? (vendorProvider.vendorModel!.isDeliveryCharges &&
                         Provider.of<CartDataWrapper>(context)
                             .getDeliveryCharges(
-                            Provider
-                                .of<VendorModelWrapper>(
-                                context)
-                                .vendorModel!
+                            vendorProvider.vendorModel!
                                 .freeDeliveryAboveAmount,
-                            Provider
-                                .of<VendorModelWrapper>(
-                                context)
-                                .vendorModel!
-                                .deliveryCharges) >
+                            vendorProvider
+                                .vendorModel!.deliveryCharges) >
                             0)
                         ? SizedBox(
                       height: 25,
@@ -1064,9 +1057,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         trailing: Text(
-                          "\u{20B9} ${Provider
-                              .of<VendorModelWrapper>(context)
-                              .vendorModel!
+                          "\u{20B9} ${vendorProvider.vendorModel!
                               .deliveryCharges}",
                           style: FontsTheme.digitStyle(
                               fontSize: 14,
@@ -1116,13 +1107,11 @@ class _CartScreenState extends State<CartScreen> {
                                 .totalAmount
                                 .roundOff() +
                                 Provider.of<CartDataWrapper>(context)
-                                    .getDeliveryCharges(Provider
-                                    .of<VendorModelWrapper>(context)
-                                    .vendorModel!
-                                    .freeDeliveryAboveAmount, Provider
-                                    .of<VendorModelWrapper>(context)
-                                    .vendorModel!
-                                    .deliveryCharges) + Provider
+                                    .getDeliveryCharges(
+                                    vendorProvider.vendorModel!
+                                        .freeDeliveryAboveAmount,
+                                    vendorProvider.vendorModel!
+                                        .deliveryCharges) + Provider
                                 .of<CartDataWrapper>(context)
                                 .tax).roundOff()}",
                             style: FontsTheme.digitStyle(
@@ -1180,14 +1169,10 @@ class _CartScreenState extends State<CartScreen> {
                             : "${(Provider
                             .of<CartDataWrapper>(context)
                             .totalAmount + Provider.of<CartDataWrapper>(context)
-                            .getDeliveryCharges(Provider
-                            .of<VendorModelWrapper>(context)
-                            .vendorModel!
-                            .freeDeliveryAboveAmount, Provider
-                            .of<VendorModelWrapper>(context)
-                            .vendorModel!
-                            .deliveryCharges
-                            .roundOff()) + Provider
+                            .getDeliveryCharges(
+                            vendorProvider.vendorModel!.freeDeliveryAboveAmount,
+                            vendorProvider.vendorModel!.deliveryCharges
+                                .roundOff()) + Provider
                             .of<CartDataWrapper>(context)
                             .tax).roundOff()}",
                         style: TextStyle(

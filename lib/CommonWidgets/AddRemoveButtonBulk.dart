@@ -81,7 +81,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   Future deleteCart() async {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(productId: widget.productData.productId);
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
+    provider.loadCartData();
   }
 
   @override

@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode mobile;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     mobile = FocusNode();
   }
