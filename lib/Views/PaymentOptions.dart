@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:html';
 import 'dart:math' as math;
-
 import 'package:cashfree_pg/cashfree_pg.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,37 +41,25 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if (context
-          .read<VendorModelWrapper>()
-          .vendorModel!
-          .isOnlinePayment) {
+      if (context.read<VendorModelWrapper>().vendorModel!.isOnlinePayment) {
         _generateOrderId();
       }
     });
   }
 
   _generateOrderId() async {
+    var cartProvider = Provider.of<CartDataWrapper>(context, listen: false);
+    var vendorProvider =
+        Provider.of<VendorModelWrapper>(context, listen: false);
     setState(() {
       isLoadingOrderId = true;
     });
     await PaymentController.generateOrderId(
-        Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount
-            .roundOff()
-            +
-            Provider.of<CartDataWrapper>(context, listen: false)
-                .getDeliveryCharges(Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .freeDeliveryAboveAmount, Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .deliveryCharges
-            ) + Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .tax
-            .roundOff())
+            cartProvider.totalAmount.roundOff() +
+                cartProvider.getDeliveryCharges(
+                    vendorProvider.vendorModel!.freeDeliveryAboveAmount,
+                    vendorProvider.vendorModel!.deliveryCharges) +
+                cartProvider.tax.roundOff())
         .then((value) {
       if (value != null) {
         setState(() {
@@ -95,124 +82,72 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   }
 
   _addOrder(String type) async {
+    var cartProvider = Provider.of<CartDataWrapper>(context, listen: false);
+    var vendorProvider =
+        Provider.of<VendorModelWrapper>(context, listen: false);
+
     setState(() {
       isLoadingOrderId = true;
     });
     await OrderController.addOrder(
-        type: "$type",
-        address: widget.address,
-        ref_no: orderId ?? "",
-        couponAmount:
-        Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .isCouponApplied == true
-            ? Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .discount
-            : 0,
-        orders:
-        Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .cartData,
-        couponId: "",
-        deliveryCharge: type == 'TAKEAWAY' ||
-            ((Provider
-                .of<CartDataWrapper>(context, listen: false)
-                .totalAmount > Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .freeDeliveryAboveAmount)
-                && Provider
-                    .of<VendorModelWrapper>(context, listen: false)
-                    .vendorModel!
-                    .freeDeliveryAboveAmount > 0) ? 0.0 :
-        Provider
-            .of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .isDeliveryCharges ? Provider
-            .of<VendorModelWrapper>(context, listen: false)
-            .vendorModel!
-            .deliveryCharges : 0,
-        orderAmount: type == 'TAKEAWAY'
-            ? Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount
-            .roundOff() + Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .tax
-            .roundOff()
-            : Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount
-            .roundOff()
-            +
-            Provider.of<CartDataWrapper>(context, listen: false)
-                .getDeliveryCharges(Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .freeDeliveryAboveAmount, Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .deliveryCharges
-            ) + Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .tax
-            .roundOff(),
-        paidAmount: type == 'PAY_ONLINE'
-            ? Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount
-            .roundOff()
-            + Provider.of<CartDataWrapper>(context, listen: false)
-                .getDeliveryCharges(Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .freeDeliveryAboveAmount, Provider
-                .of<VendorModelWrapper>(context, listen: false)
-                .vendorModel!
-                .deliveryCharges
-            ) + Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .tax
-            .roundOff()
-            : 0,
-        refundAmount: 0,
-        taxAmount: Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .tax
-        ,
-        taxPercentage: List.generate(sharedPrefs.taxName.length, (index) {
-          return SimpleTaxModel(
-            taxName: sharedPrefs.taxName[index],
-            taxPercentage: int.parse(sharedPrefs.tax[index]),
-            amount: (int.parse(sharedPrefs.tax[index]) * (Provider
-                .of<CartDataWrapper>(context, listen: false)
-                .totalAmount)) / 100,
-          );
-        }),
-        totalAmount: Provider
-            .of<CartDataWrapper>(context, listen: false)
-            .totalAmount
-    )
+            type: "$type",
+            address: widget.address,
+            ref_no: orderId ?? "",
+            couponAmount: cartProvider.isCouponApplied == true
+                ? cartProvider.discount
+                : 0,
+            orders: cartProvider.cartData,
+            couponId: "",
+            deliveryCharge: type == 'TAKEAWAY' ||
+                    ((cartProvider.totalAmount >
+                            vendorProvider
+                                .vendorModel!.freeDeliveryAboveAmount) &&
+                        vendorProvider.vendorModel!.freeDeliveryAboveAmount > 0)
+                ? 0.0
+                : vendorProvider.vendorModel!.isDeliveryCharges
+                    ? vendorProvider.vendorModel!.deliveryCharges
+                    : 0,
+            orderAmount: type == 'TAKEAWAY'
+                ? cartProvider.totalAmount.roundOff() +
+                    cartProvider.tax.roundOff()
+                : cartProvider.totalAmount.roundOff() +
+                    cartProvider.getDeliveryCharges(
+                        vendorProvider.vendorModel!.freeDeliveryAboveAmount,
+                        vendorProvider.vendorModel!.deliveryCharges) +
+                    cartProvider.tax.roundOff(),
+            paidAmount: type == 'PAY_ONLINE'
+                ? cartProvider.totalAmount.roundOff() +
+                    cartProvider.getDeliveryCharges(
+                        vendorProvider.vendorModel!.freeDeliveryAboveAmount,
+                        vendorProvider.vendorModel!.deliveryCharges) +
+                    cartProvider.tax.roundOff()
+                : 0,
+            refundAmount: 0,
+            taxAmount: cartProvider.tax,
+            taxPercentage: List.generate(sharedPrefs.taxName.length, (index) {
+              return SimpleTaxModel(
+                taxName: sharedPrefs.taxName[index],
+                taxPercentage: int.parse(sharedPrefs.tax[index]),
+                amount: (int.parse(sharedPrefs.tax[index]) *
+                        (cartProvider.totalAmount)) /
+                    100,
+              );
+            }),
+            totalAmount: cartProvider.totalAmount)
         .then((value) {
       if (value.success) {
         setState(() {
           isLoadingOrderId = false;
-          Fluttertoast.showToast(msg: "Order Success",
+          Fluttertoast.showToast(
+              msg: "Order Success",
               webPosition: "center",
               webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
-          Provider
-              .of<CartDataWrapper>(context, listen: false)
-              .cartData
-              .clear();
-          Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-          );
+          cartProvider.cartData.clear();
+          cartProvider.loadCartData();
 
           // _verifyPayment();
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => OrderSuccess()));
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: (_) => OrderSuccess()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => OrderSuccess()));
         });
       } else {
         setState(() {
@@ -231,7 +166,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     await PaymentController.paymentVerify().then((value) {
       if (value.success) {
         isLoadingOrderId = false;
-        Fluttertoast.showToast(msg: "${value.data!.orderId}",
+        Fluttertoast.showToast(
+            msg: "${value.data!.orderId}",
             webPosition: "center",
             webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
         orderId = value.data!.orderId;
@@ -259,10 +195,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(6),
           ),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
@@ -279,41 +212,44 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     padding: EdgeInsets.only(top: (orderId == null) ? 0 : 5.0),
                     child: ListTile(
                       dense: true,
-                      visualDensity:
-                      VisualDensity(horizontal: 0, vertical: -4),
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                       title: const Text(
-                        'Cash on Delivery', style: TextStyle(fontSize: 12),),
+                        'Cash on Delivery',
+                        style: TextStyle(fontSize: 12),
+                      ),
                       leading: Transform.scale(
                         scale: 0.92,
-
                         child: Radio<paymentMethods>(
-                          activeColor: Provider
-                              .of<ThemeColorProvider>(context)
+                          activeColor: Provider.of<ThemeColorProvider>(context)
                               .appPrimaryMaterialColor,
                           value: paymentMethods.COD,
                           groupValue: _selection,
                           onChanged: (paymentMethods? value) {
-                            setState(() {
-                              _selection = value!;
-                            },);
+                            setState(
+                              () {
+                                _selection = value!;
+                              },
+                            );
                           },
                         ),
                       ),
                     ),
                   ),
                 ),
-                if(orderId != null && context
-                    .watch<VendorModelWrapper>()
-                    .vendorModel!
-                    .isOnlinePayment)
+                if (orderId != null &&
+                    context
+                        .watch<VendorModelWrapper>()
+                        .vendorModel!
+                        .isOnlinePayment)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
-                if(orderId != null && context
-                    .watch<VendorModelWrapper>()
-                    .vendorModel!
-                    .isOnlinePayment)
+                if (orderId != null &&
+                    context
+                        .watch<VendorModelWrapper>()
+                        .vendorModel!
+                        .isOnlinePayment)
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -321,23 +257,27 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       });
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: Provider
-                          .of<VendorModelWrapper>(context)
-                          .vendorModel!
-                          .isStorePickupEnable ? 0 : 5.0),
+                      padding: EdgeInsets.only(
+                          bottom: Provider.of<VendorModelWrapper>(context)
+                                  .vendorModel!
+                                  .isStorePickupEnable
+                              ? 0
+                              : 5.0),
                       child: ListTile(
                         dense: true,
                         visualDensity:
-                        VisualDensity(horizontal: 0, vertical: -4),
+                            VisualDensity(horizontal: 0, vertical: -4),
                         title: const Text(
-                          'Pay Online', style: TextStyle(fontSize: 12),),
+                          'Pay Online',
+                          style: TextStyle(fontSize: 12),
+                        ),
                         leading: Transform.scale(
                           scale: 0.92,
                           child: Radio<paymentMethods>(
                             value: paymentMethods.PAY_ONLINE,
-                            activeColor: Provider
-                                .of<ThemeColorProvider>(context)
-                                .appPrimaryMaterialColor,
+                            activeColor:
+                                Provider.of<ThemeColorProvider>(context)
+                                    .appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
                               setState(() {
@@ -349,38 +289,39 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       ),
                     ),
                   ),
-                if(Provider
-                    .of<VendorModelWrapper>(context)
+                if (Provider.of<VendorModelWrapper>(context)
                     .vendorModel!
                     .isStorePickupEnable)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
-                if(Provider
-                    .of<VendorModelWrapper>(context)
+                if (Provider.of<VendorModelWrapper>(context)
                     .vendorModel!
                     .isStorePickupEnable)
-                  InkWell(onTap: () {
-                    setState(() {
-                      _selection = paymentMethods.TAKEAWAY;
-                    });
-                  },
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selection = paymentMethods.TAKEAWAY;
+                      });
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 5.0),
                       child: ListTile(
                         dense: true,
                         visualDensity:
-                        VisualDensity(horizontal: 0, vertical: -4),
+                            VisualDensity(horizontal: 0, vertical: -4),
                         title: const Text(
-                          'Take Away', style: TextStyle(fontSize: 12),),
+                          'Take Away',
+                          style: TextStyle(fontSize: 12),
+                        ),
                         leading: Transform.scale(
                           scale: 0.92,
                           child: Radio<paymentMethods>(
                             value: paymentMethods.TAKEAWAY,
-                            activeColor: Provider
-                                .of<ThemeColorProvider>(context)
-                                .appPrimaryMaterialColor,
+                            activeColor:
+                                Provider.of<ThemeColorProvider>(context)
+                                    .appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
                               setState(() {
@@ -412,126 +353,117 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             Flexible(
               child: isLoadingOrderId
                   ? Center(
-                child: CircularProgressIndicator(),
-              )
+                      child: CircularProgressIndicator(),
+                    )
                   : InkWell(
-                onTap: () async {
-                  if (_selection
-                      .toString()
-                      .split(".")
-                      .last ==
-                      "TAKEAWAY") {
-                    _addOrder("TAKEAWAY");
-                  }
-                  if (_selection
-                      .toString()
-                      .split(".")
-                      .last == "COD") {
-                    _addOrder("COD");
-                  }
-                  if (_selection
-                      .toString()
-                      .split(".")
-                      .last ==
-                      "PAY_ONLINE") {
-
-                    String stage = "PROD";
-                    String customerName = sharedPrefs.customer_name;
-                    String orderNote = "Order Note";
-                    String orderCurrency = "INR";
-                    String appId = "20382800473cf07d7fe70e2e08828302";
-                    String customerPhone = sharedPrefs.customer_mobileNo;
-                    String customerEmail = sharedPrefs.customer_email;
-                    String notifyUrl = "https://test.gocashfree.com/notify";
-
-
-                    Map<String, dynamic> input = {
-                      "orderId": orderId!,
-                      "orderAmount": (Provider
-                          .of<CartDataWrapper>(context, listen: false)
-                          .totalAmount
-                          .roundOff()
-                          +
-                          Provider.of<CartDataWrapper>(context, listen: false)
-                              .getDeliveryCharges(Provider
-                              .of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .freeDeliveryAboveAmount, Provider
-                              .of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .deliveryCharges
-                          ) + Provider
-                          .of<CartDataWrapper>(context, listen: false)
-                          .tax
-                          .roundOff()).toString(),
-                      "customerName": customerName,
-                      "orderNote": orderNote,
-                      "orderCurrency": orderCurrency,
-                      "appId": appId,
-                      "customerPhone": customerPhone,
-                      "customerEmail": customerEmail,
-                      "stage": stage,
-                      "tokenData": token,
-                      "notifyUrl": notifyUrl
-                    };
-
-                    input.addAll(UIMeta().toMap());
-
-                    CashfreePGSDK.doPayment(input).then((value) {
-                      value?.forEach((key, value) {
-                        if (kDebugMode) {
-                          print("$key : $value");
+                      onTap: () async {
+                        if (_selection == paymentMethods.TAKEAWAY) {
+                          _addOrder("TAKEAWAY");
                         }
-                      });
-                      if (value?["txStatus"] == "SUCCESS") {
-                        _addOrder("PAY_ONLINE");
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: 'Failed payment', webPosition: "center",
-                          webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)",);
-                      }
-                    });
+                        if (_selection == paymentMethods.COD) {
+                          _addOrder("COD");
+                        }
+                        if (_selection == paymentMethods.PAY_ONLINE) {
+                          String stage = "PROD";
+                          String customerName = sharedPrefs.customer_name;
+                          String orderNote = "Order Note";
+                          String orderCurrency = "INR";
+                          String appId = "20382800473cf07d7fe70e2e08828302";
+                          String customerPhone = sharedPrefs.customer_mobileNo;
+                          String customerEmail = sharedPrefs.customer_email;
+                          String notifyUrl =
+                              "https://test.gocashfree.com/notify";
 
-                    // Navigator.push(context, MaterialPageRoute(
-                    //   builder: (context) {
-                    //     return WebPayment(
-                    //       price: Provider
-                    //           .of<CartDataWrapper>(context,
-                    //           listen: false)
-                    //           .totalAmount
-                    //           .toInt() *
-                    //           100,
-                    //       name: sharedPrefs.customer_name,
-                    //       image:
-                    //       "${StringConstants.api_url}${sharedPrefs.logo}",
-                    //       addOrder: _addOrder,
-                    //       orderId: orderId!,
-                    //     );
-                    //   },
-                    // ),
-                    // );
-                  }
-                },
-                child: Container(
-                  height: 48,
-                  color: Provider
-                      .of<ThemeColorProvider>(context)
-                      .appPrimaryMaterialColor,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
-                    child: Center(
-                      child: Text(
-                        "Order",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 15),
+                          var cartProvider = Provider.of<CartDataWrapper>(
+                              context,
+                              listen: false);
+
+                          var vendorProvider = Provider.of<VendorModelWrapper>(
+                              context,
+                              listen: false);
+
+                          Map<String, dynamic> input = {
+                            "orderId": orderId!,
+                            "orderAmount":
+                                (cartProvider.totalAmount.roundOff() +
+                                        cartProvider.getDeliveryCharges(
+                                            vendorProvider.vendorModel!
+                                                .freeDeliveryAboveAmount,
+                                            vendorProvider
+                                                .vendorModel!.deliveryCharges) +
+                                        cartProvider.tax.roundOff())
+                                    .toString(),
+                            "customerName": customerName,
+                            "orderNote": orderNote,
+                            "orderCurrency": orderCurrency,
+                            "appId": appId,
+                            "customerPhone": customerPhone,
+                            "customerEmail": customerEmail,
+                            "stage": stage,
+                            "tokenData": token,
+                            "notifyUrl": notifyUrl
+                          };
+
+                          input.addAll(UIMeta().toMap());
+
+                          CashfreePGSDK.doPayment(input).then((value) {
+                            value?.forEach((key, value) {
+                              if (kDebugMode) {
+                                print("$key : $value");
+                              }
+                            });
+                            if (value?["txStatus"] == "SUCCESS") {
+                              _addOrder("PAY_ONLINE");
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: 'Failed payment',
+                                webPosition: "center",
+                                webBgColor:
+                                    "linear-gradient(to right, #5A5A5A, #5A5A5A)",
+                              );
+                            }
+                          });
+
+                          //razorpay payment gate way open
+                          // Navigator.push(context, MaterialPageRoute(
+                          //   builder: (context) {
+                          //     return WebPayment(
+                          //       price: Provider
+                          //           .of<CartDataWrapper>(context,
+                          //           listen: false)
+                          //           .totalAmount
+                          //           .toInt() *
+                          //           100,
+                          //       name: sharedPrefs.customer_name,
+                          //       image:
+                          //       "${StringConstants.api_url}${sharedPrefs.logo}",
+                          //       addOrder: _addOrder,
+                          //       orderId: orderId!,
+                          //     );
+                          //   },
+                          // ),
+                          // );
+                        }
+                      },
+                      child: Container(
+                        height: 48,
+                        color: Provider.of<ThemeColorProvider>(context)
+                            .appPrimaryMaterialColor,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 3.0),
+                          child: Center(
+                            child: Text(
+                              "Order",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -539,7 +471,6 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     );
   }
 }
-
 
 class UIMeta {
   String color1 = "#FF233F";

@@ -22,11 +22,6 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
   String _sessionToken = "";
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,

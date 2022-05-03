@@ -71,8 +71,8 @@ class OrderDataModel {
       itemTotalAmount: json["item_total_amount"],
       deliveryCharges: json["delivery_charges"],
       taxAmount: json["tax_amount"],
-      taxPercentage:List<SimpleTaxModel>.from(
-          json["tax_percentage"].map((x) => SimpleTaxModel.fromJson(x))) ,
+      taxPercentage: List<SimpleTaxModel>.from(
+          json["tax_percentage"].map((x) => SimpleTaxModel.fromJson(x))),
       couponAmount: json["coupon_amount"],
       couponId: json["coupon_id"],
       updatedDeliveryCharges: json["updated_delivery_charges"],

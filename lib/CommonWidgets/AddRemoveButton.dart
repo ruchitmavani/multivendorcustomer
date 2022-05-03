@@ -27,20 +27,6 @@ class AddRemoveButton extends StatefulWidget {
 class _AddRemoveButtonState extends State<AddRemoveButton> {
   int q = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    // updateQuantity();
-  }
-
-  getColorValue() {
-
-  }
-
-  getSizeValue() {
-
-  }
-
   Future addToCart() async {
     Provider
         .of<CartDataWrapper>(context, listen: false)

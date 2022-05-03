@@ -37,21 +37,22 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   }
 
   Future addToCart() async {
+    var cartProvider = Provider.of<CartDataWrapper>(context, listen: false);
     if (widget.productData.isStock) {
       if (widget.qty <= widget.productData.stockLeft) {
-        Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
-              NewCartModel(
-                  productId: widget.productData.productId,
-                  productColor: null,
-                  productImageUrl: widget.productData.productImageUrl,
-                  productQuantity: widget.qty,
-                  productMrp: widget.price,
-                  productName: "${widget.productData.productName}",
-                  productSellingPrice: widget.price,
-                  productSize: null,
-                  isBulk: true,
-                  rating: widget.productData.productRatingAverage),
-            );
+        cartProvider.cartData.add(
+          NewCartModel(
+              productId: widget.productData.productId,
+              productColor: null,
+              productImageUrl: widget.productData.productImageUrl,
+              productQuantity: widget.qty,
+              productMrp: widget.price,
+              productName: "${widget.productData.productName}",
+              productSellingPrice: widget.price,
+              productSize: null,
+              isBulk: true,
+              rating: widget.productData.productRatingAverage),
+        );
       } else {
         Fluttertoast.showToast(
             msg: "Not in Stock",
@@ -59,22 +60,22 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
             webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
       }
     } else {
-      Provider.of<CartDataWrapper>(context, listen: false).cartData.add(
-            NewCartModel(
-                productId: widget.productData.productId,
-                productColor: null,
-                productImageUrl: widget.productData.productImageUrl,
-                productQuantity: widget.qty,
-                productMrp: widget.price,
-                productName: "${widget.productData.productName}",
-                productSellingPrice: widget.price,
-                productSize: null,
-                isBulk: true,
-                rating: widget.productData.productRatingAverage),
-          );
+      cartProvider.cartData.add(
+        NewCartModel(
+            productId: widget.productData.productId,
+            productColor: null,
+            productImageUrl: widget.productData.productImageUrl,
+            productQuantity: widget.qty,
+            productMrp: widget.price,
+            productName: "${widget.productData.productName}",
+            productSellingPrice: widget.price,
+            productSize: null,
+            isBulk: true,
+            rating: widget.productData.productRatingAverage),
+      );
     }
 
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
+    cartProvider.loadCartData();
   }
 
   Future deleteCart() async {
@@ -96,7 +97,9 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
+    var cartProvider = Provider.of<CartDataWrapper>(context);
+
+    return cartProvider.getIndividualQuantity(
                 productId: widget.productData.productId) ==
             0
         ? widget.isRounded

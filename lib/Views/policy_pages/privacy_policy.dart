@@ -43,10 +43,10 @@ class PrivacyPolicy extends StatelessWidget {
                 PolicyTitle(
                   txt: "SECTION 4 - PAYMENT",
                 ),
-                PolicyParagraph(
-                  txt:
-                      "We use Razorpay for processing payments. We/Razorpay do not store your card data on their servers. The data is encrypted through the Payment Card Industry Data Security Standard (PCI-DSS) when processing payment. Your purchase transaction data is only used as long as is necessary to complete your purchase transaction. After that is complete, your purchase transaction information is not saved.\n\nOur payment gateway adheres to the standards set by PCI-DSS as managed by the PCI Security Standards Council, which is a joint effort of brands like Visa, MasterCard, American Express and Discover.\n\nPCI-DSS requirements help ensure the secure handling of credit card information by our store and its service providers.\n\nFor more insight, you may also want to read terms and conditions of razorpay on https://razorpay.com",
-                ),
+                // PolicyParagraph(
+                //   txt:
+                //       "We use Razorpay for processing payments. We/Razorpay do not store your card data on their servers. The data is encrypted through the Payment Card Industry Data Security Standard (PCI-DSS) when processing payment. Your purchase transaction data is only used as long as is necessary to complete your purchase transaction. After that is complete, your purchase transaction information is not saved.\n\nOur payment gateway adheres to the standards set by PCI-DSS as managed by the PCI Security Standards Council, which is a joint effort of brands like Visa, MasterCard, American Express and Discover.\n\nPCI-DSS requirements help ensure the secure handling of credit card information by our store and its service providers.\n\nFor more insight, you may also want to read terms and conditions of razorpay on https://razorpay.com",
+                // ),
                 PolicyTitle(
                   txt: "SECTION 5 - THIRD-PARTY SERVICES",
                 ),

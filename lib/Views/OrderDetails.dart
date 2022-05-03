@@ -47,14 +47,6 @@ class _OrderDetailsState extends State<OrderDetails> {
   List<String> status = [];
   bool isDownload = false;
 
-  // Invoice orderData = Invoice(
-  //     products: List.generate(widget.orderData.orderItems.length, (index) => Product(productName, price, quantity)),
-  //     customerName: "${sharedPrefs.customer_name}",
-  //     invoiceNumber: "",
-  //     tax: 0.15,
-  //     baseColor: PdfColors.teal,
-  //     accentColor: PdfColors.blueGrey900);
-
   @override
   void initState() {
     super.initState();

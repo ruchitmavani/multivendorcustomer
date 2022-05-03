@@ -19,11 +19,6 @@ class RoundedAddRemove extends StatefulWidget {
 class _RoundedAddRemoveState extends State<RoundedAddRemove> {
   int q = 0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future deleteCart() async {
     var provider = Provider.of<CartDataWrapper>(context, listen: false);
     provider.deleteFromCart(
@@ -31,7 +26,7 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
       productSize: widget.productData.productSize,
       productColor: widget.productData.productColor,
     );
-    Provider.of<CartDataWrapper>(context, listen: false).loadCartData();
+    provider.loadCartData();
   }
 
   Future updateCart(int quantity) async {
@@ -129,25 +124,23 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () {
-                          if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
+                          var cartProvider = Provider.of<CartDataWrapper>(
+                              context,
+                              listen: false);
+
+                          if (cartProvider.getIndividualQuantity(
                                 productId: widget.productData.productId,
                                 productSize: widget.productData.productSize,
                                 productColor: widget.productData.productColor,
                               ) >
                               1) {
-                            updateCart(Provider.of<CartDataWrapper>(context,
-                                        listen: false)
-                                    .getIndividualQuantity(
+                            updateCart(cartProvider.getIndividualQuantity(
                                   productId: widget.productData.productId,
                                   productSize: widget.productData.productSize,
                                   productColor: widget.productData.productColor,
                                 ) -
                                 1);
-                          } else if (Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
+                          } else if (cartProvider.getIndividualQuantity(
                                 productId: widget.productData.productId,
                                 productSize: widget.productData.productSize,
                                 productColor: widget.productData.productColor,
@@ -188,9 +181,10 @@ class _RoundedAddRemoveState extends State<RoundedAddRemove> {
                       padding: const EdgeInsets.all(4.0),
                       child: InkWell(
                         onTap: () {
-                          updateCart((Provider.of<CartDataWrapper>(context,
-                                      listen: false)
-                                  .getIndividualQuantity(
+                          var cartProvider = Provider.of<CartDataWrapper>(
+                              context,
+                              listen: false);
+                          updateCart((cartProvider.getIndividualQuantity(
                                 productId: widget.productData.productId,
                                 productSize: widget.productData.productSize,
                                 productColor: widget.productData.productColor,

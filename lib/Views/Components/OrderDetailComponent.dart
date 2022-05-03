@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_vendor_customer/CommonWidgets/Space.dart';
+import 'package:multi_vendor_customer/CommonWidgets/rejected_label.dart';
 import 'package:multi_vendor_customer/CommonWidgets/updatedLabel.dart';
 import 'package:multi_vendor_customer/Constants/StringConstants.dart';
 import 'package:multi_vendor_customer/Constants/textStyles.dart';
@@ -271,7 +272,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                     "$rating",
                                     style: TextStyle(
                                         fontStyle: FontStyle.italic,
-                                        color: Provider.of<ThemeColorProvider>(context)
+                                        color: Provider.of<ThemeColorProvider>(
+                                                context)
                                             .appPrimaryMaterialColor,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w600),
@@ -281,8 +283,9 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                   ),
                                   Icon(
                                     Icons.star,
-                                    color: Provider.of<ThemeColorProvider>(context)
-                                        .appPrimaryMaterialColor,
+                                    color:
+                                        Provider.of<ThemeColorProvider>(context)
+                                            .appPrimaryMaterialColor,
                                     size: 11,
                                   ),
                                 ],
@@ -291,8 +294,9 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                 children: [
                                   Icon(
                                     Icons.star,
-                                    color: Provider.of<ThemeColorProvider>(context)
-                                        .appPrimaryMaterialColor,
+                                    color:
+                                        Provider.of<ThemeColorProvider>(context)
+                                            .appPrimaryMaterialColor,
                                     size: 11,
                                   ),
                                   Space(
@@ -302,7 +306,8 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                                     rating != 0 ? "$rating" : "Rate",
                                     style: TextStyle(
                                         fontStyle: FontStyle.italic,
-                                        color: Provider.of<ThemeColorProvider>(context)
+                                        color: Provider.of<ThemeColorProvider>(
+                                                context)
                                             .appPrimaryMaterialColor,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w600),
@@ -318,57 +323,66 @@ class _OrderDetailComponentState extends State<OrderDetailComponent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(mainAxisAlignment: MainAxisAlignment.start,children: [ widget.orderItem.updatedQuantity != null
-                          ? Row(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Qty : ",
-                              style: FontsTheme.descriptionText(
-                                  fontWeight: FontWeight.w500)),
-                          Text("${widget.orderItem.productQuantity}",
-                              style: FontsTheme.descriptionText(
-                                  fontWeight: FontWeight.w500)
-                                  .copyWith(
-                                  decoration:
-                                  TextDecoration.lineThrough,
-                                  decorationColor:
-                                  Provider.of<ThemeColorProvider>(
-                                      context)
-                                      .appPrimaryMaterialColor,
-                                  decorationThickness: 3)),
-                          Text(" ${widget.orderItem.updatedQuantity}  ",
-                              style: FontsTheme.descriptionText(
-                                  fontWeight: FontWeight.w500)),
-                          UpdatedLabel(),
+                          widget.orderItem.updatedQuantity != null
+                              ? Row(
+                                  children: [
+                                    Text("Qty : ",
+                                        style: FontsTheme.descriptionText(
+                                            fontWeight: FontWeight.w500)),
+                                    Text("${widget.orderItem.productQuantity}",
+                                        style: FontsTheme.descriptionText(
+                                                fontWeight: FontWeight.w500)
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                decorationColor: Provider.of<
+                                                            ThemeColorProvider>(
+                                                        context)
+                                                    .appPrimaryMaterialColor,
+                                                decorationThickness: 3)),
+                                    Text(
+                                        " ${widget.orderItem.updatedQuantity}  ",
+                                        style: FontsTheme.descriptionText(
+                                            fontWeight: FontWeight.w500)),
+                                    UpdatedLabel(),
+                                  ],
+                                )
+                              : Text("Qty : $qty",
+                                  style: FontsTheme.descriptionText(
+                                      fontWeight: FontWeight.w500)),
+                          if (widget.orderItem.productColor != null)
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                      width: 0.3, color: Colors.grey),
+                                  color: Color(widget
+                                      .orderItem.productColor!.colorCode)),
+                            ),
+                          if (widget.orderItem.productSize != null)
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              height: 20,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 1),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border:
+                                      Border.all(width: 1, color: Colors.grey)),
+                              child: Text(
+                                "${widget.orderItem.productSize!.size}",
+                                style: FontsTheme.subTitleStyle(
+                                    color: Colors.grey.shade400, size: 10),
+                              ),
+                            ),
                         ],
-                      )
-                          : Text("Qty : $qty",
-                          style: FontsTheme.descriptionText(
-                              fontWeight: FontWeight.w500)),
-
-                        if(widget.orderItem.productColor!=null)
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            height: 17,
-                            width: 17,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(width: 0.3,color: Colors.grey),
-                                color: Color(widget.orderItem.productColor!.colorCode)
-                            ),
-                          ),
-                        if(widget.orderItem.productSize!=null)
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            height: 20,
-                            padding: EdgeInsets.symmetric(horizontal: 6,vertical: 1),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Text("${widget.orderItem.productSize!.size}",style:  FontsTheme.subTitleStyle(color: Colors
-                                .grey.shade400,size: 10),),
-                          ),],),
-
+                      ),
                       widget.orderItem.isReject == true
                           ? RejectedLabel()
                           : Row(

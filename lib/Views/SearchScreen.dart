@@ -54,13 +54,6 @@ class _SearchState extends State<Search> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Provider.of<VendorModelWrapper>(context, listen: false)
-    //     .loadVendorData(sharedPrefs.vendor_uniq_id);
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
