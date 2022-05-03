@@ -89,27 +89,7 @@ class _ProductDescriptionInCartState extends State<ProductDescriptionInCart> {
     });
   }
 
-  _updateCartDaetails() async {
-    // await CartController.update(jsonMap: {
-    //   "product_size": productData.productVariationSizes!
-    //       .elementAt(currentSizeIndex)
-    //       .toJson(),
-    //   "product_color":
-    //       productData.productVariationColors!.elementAt(currentIndex).toJson()
-    // }).then((value) {
-    //   if (value.success) {
-    //     print("cart ${value.data}");
-    //     Fluttertoast.showToast(msg: "Update success");
-    //     Provider.of<CartDataWrapper>(context, listen: false).loadCartData(
-    //         vendorId: Provider.of<VendorModelWrapper>(context, listen: false)
-    //             .vendorModel!
-    //             .vendorUniqId);
-    //   } else {
-    //     Fluttertoast.showToast(msg: "Update failed");
-    //   }
-    // }, onError: (e) {
-    //   print(e);
-    // });
+  _updateCartDetails() async {
     int index = Provider.of<CartDataWrapper>(context, listen: false)
         .cartData
         .indexWhere((element) => element.productId == productData.productId);

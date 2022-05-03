@@ -12,21 +12,10 @@ class LandingScreen extends StatelessWidget {
     ui.platformViewRegistry.registerViewFactory("landing-html", (int viewId) {
       IFrameElement element = IFrameElement();
 
-      // window.onMessage.forEach((value) {
-      //   print('Event Received in callback: ${value.data}');
-      //   if (value.data == 'MODAL_CLOSED') {
-      //     Navigator.pop(context);
-      //   } else if (value.data == 'SUCCESS') {
-      //     Fluttertoast.showToast(
-      //         msg: 'Payment Success ${(price! * 0.01)}',
-      //         webPosition: "center",
-      //         webBgColor: "linear-gradient(to right, #5A5A5A, #5A5A5A)");
-      //     addOrder("PAY_ONLINE");
-      //   }
-      // });
-
       element.src = 'landing_page.html';
       element.style.border = 'none';
+      element.style.height='100%';
+      element.style.width='100%';
 
       return element;
     });
