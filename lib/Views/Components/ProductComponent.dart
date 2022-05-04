@@ -235,8 +235,9 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
 
   Widget cartButton() {
     var provider = Provider.of<CategoryName>(context).categoryName;
-    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+    var vendorProvider=Provider.of<VendorModelWrapper>(context);
+    if (vendorProvider.isShopOpen != "" &&
+        vendorProvider.isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(
@@ -550,8 +551,9 @@ class _ProductComponentListState extends State<ProductComponentList> {
 
   Widget cartButton() {
     var provider = Provider.of<CategoryName>(context).categoryName;
-    if (Provider.of<VendorModelWrapper>(context).isShopOpen != "" &&
-        Provider.of<VendorModelWrapper>(context).isShopOpen != "Offline") {
+    var vendorProvider=Provider.of<VendorModelWrapper>(context);
+    if (vendorProvider.isShopOpen != "" &&
+        vendorProvider.isShopOpen != "Offline") {
       if (!isProductAvailable(
           liveTimings: widget.productData.productLiveTiming)) {
         return Padding(

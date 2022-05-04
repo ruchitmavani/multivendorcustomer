@@ -20,6 +20,10 @@ class AboutUs extends StatefulWidget {
 class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
+    var vendorProvider = Provider.of<VendorModelWrapper>(context);
+    var vendorProviderDumb =
+        Provider.of<VendorModelWrapper>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,7 +39,7 @@ class _AboutUsState extends State<AboutUs> {
           },
         ),
       ),
-      body: Provider.of<VendorModelWrapper>(context).vendorModel == null
+      body: vendorProvider.vendorModel == null
           ? Center(
               child: SizedBox(
                   height: 20, width: 20, child: CircularProgressIndicator()),
@@ -58,7 +62,7 @@ class _AboutUsState extends State<AboutUs> {
                                 height: 60,
                                 width: 60,
                                 imageUrl:
-                                    "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context).vendorModel!.logo}",
+                                    "${StringConstants.api_url}${vendorProvider.vendorModel!.logo}",
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => SizedBox(
                                   width: 12,
@@ -73,7 +77,7 @@ class _AboutUsState extends State<AboutUs> {
                               ),
 
                               Space(width: 8.0),
-                              // Text("${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
+                              // Text("${vendorProvider.vendorModel!.businessName}",
                               //     style: FontsTheme.boldTextStyle(size: 17))
                             ],
                           ),
@@ -85,47 +89,41 @@ class _AboutUsState extends State<AboutUs> {
                               child: InkWell(
                                 onTap: () async {
                                   await launch(
-                                      'tel: ${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}');
+                                      'tel: ${vendorProviderDumb.vendorModel!.mobileNumber}');
                                 },
                                 child: Icon(Icons.call,
-                                    color: Provider.of<ThemeColorProvider>(context)
-                                        .appPrimaryMaterialColor),
+                                    color:
+                                        Provider.of<ThemeColorProvider>(context)
+                                            .appPrimaryMaterialColor),
                               ),
                             ),
-                            Provider.of<VendorModelWrapper>(context,
-                                        listen: false)
-                                    .vendorModel!
-                                    .isWhatsappChatSupport
+                            vendorProviderDumb
+                                    .vendorModel!.isWhatsappChatSupport
                                 ? Space(width: 8)
                                 : Container(),
-                            Provider.of<VendorModelWrapper>(context,
-                                        listen: false)
-                                    .vendorModel!
-                                    .isWhatsappChatSupport
+                            vendorProviderDumb
+                                    .vendorModel!.isWhatsappChatSupport
                                 ? Container(
                                     height: 18, width: 0.9, color: Colors.grey)
                                 : Container(),
-                            Provider.of<VendorModelWrapper>(context,
-                                        listen: false)
-                                    .vendorModel!
-                                    .isWhatsappChatSupport
+                            vendorProviderDumb
+                                    .vendorModel!.isWhatsappChatSupport
                                 ? Space(width: 8)
                                 : Container(),
-                            Provider.of<VendorModelWrapper>(context,
-                                        listen: false)
-                                    .vendorModel!
-                                    .isWhatsappChatSupport
+                            vendorProviderDumb
+                                    .vendorModel!.isWhatsappChatSupport
                                 ? FittedBox(
                                     child: InkWell(
                                       onTap: () async {
                                         await launch(
-                                            "https://wa.me/+91${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.mobileNumber}");
+                                            "https://wa.me/+91${vendorProviderDumb.vendorModel!.mobileNumber}");
                                       },
                                       child: Image.asset(
                                         "images/whatsapp.png.",
                                         height: 22,
                                         width: 22,
-                                        color: Provider.of<ThemeColorProvider>(context)
+                                        color: Provider.of<ThemeColorProvider>(
+                                                context)
                                             .appPrimaryMaterialColor,
                                       ),
                                     ),
@@ -141,12 +139,9 @@ class _AboutUsState extends State<AboutUs> {
                   Space(
                     height: 20,
                   ),
-                  if (Provider.of<VendorModelWrapper>(context, listen: false)
-                          .vendorModel!
-                          .coverImageUrl !=
-                      "")
+                  if (vendorProviderDumb.vendorModel!.coverImageUrl != "")
                     Image.network(
-                      "${StringConstants.api_url}${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.coverImageUrl}",
+                      "${StringConstants.api_url}${vendorProviderDumb.vendorModel!.coverImageUrl}",
                       fit: BoxFit.fill,
                       width: MediaQuery.of(context).size.width,
                       height: 160,
@@ -156,43 +151,43 @@ class _AboutUsState extends State<AboutUs> {
                   ),
                   Center(
                     child: Text(
-                      "${Provider.of<VendorModelWrapper>(context).vendorModel!.businessName}",
+                      "${vendorProvider.vendorModel!.businessName}",
                       style:
                           FontsTheme.gilroyText(color: Colors.black, size: 15),
                     ),
                   ),
-                  if(Provider.of<VendorModelWrapper>(context,
-                      listen: false)
-                      .vendorModel!
-                      .latitude !=0 && Provider.of<VendorModelWrapper>(context,
-                      listen: false)
-                      .vendorModel!
-                      .longitude !=0 )
-                  Center(
-                    child: InkWell(
-                      onTap: () {
-                        launch(
-                            "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          AutoSizeText(
-                            "Location ",
-                            style: FontsTheme.descriptionText(
-                                fontWeight: FontWeight.w500, size: 10),
-                            minFontSize: 8,
-                          ),
-                          Icon(Icons.directions,
-                              size: 18,
-                              color: Provider.of<ThemeColorProvider>(context)
-                                  .appPrimaryMaterialColor),
-
-                        ],
+                  if (vendorProviderDumb
+                              .vendorModel!
+                              .latitude !=
+                          0 &&
+                      vendorProviderDumb
+                              .vendorModel!
+                              .longitude !=
+                          0)
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          launch(
+                              "https://maps.google.com/?q=${vendorProviderDumb.vendorModel!.latitude.toString()},${vendorProviderDumb.vendorModel!.longitude.toString()}");
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AutoSizeText(
+                              "Location ",
+                              style: FontsTheme.descriptionText(
+                                  fontWeight: FontWeight.w500, size: 10),
+                              minFontSize: 8,
+                            ),
+                            Icon(Icons.directions,
+                                size: 18,
+                                color: Provider.of<ThemeColorProvider>(context)
+                                    .appPrimaryMaterialColor),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   Space(
                     height: 20,
                   ),
@@ -210,12 +205,9 @@ class _AboutUsState extends State<AboutUs> {
                     padding:
                         const EdgeInsets.only(left: 15.0, right: 15, top: 10),
                     child: Text(
-                      Provider.of<VendorModelWrapper>(context, listen: false)
-                              .vendorModel!
-                              .aboutBusiness
-                              .isEmpty
+                      vendorProviderDumb.vendorModel!.aboutBusiness.isEmpty
                           ? "about business is not added."
-                          : "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.aboutBusiness}",
+                          : "${vendorProviderDumb.vendorModel!.aboutBusiness}",
                       textAlign: TextAlign.justify,
                       style: FontsTheme.subTitleStyle(
                           fontWeight: FontWeight.w500, size: 12),
@@ -301,54 +293,58 @@ class _AboutUsState extends State<AboutUs> {
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 15.0, right: 15, top: 10),
-                    child: Text(Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address.isEmpty?"address is not added.":
-                      "${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.address}",
+                    child: Text(
+                      vendorProviderDumb.vendorModel!.address.isEmpty
+                          ? "address is not added."
+                          : "${vendorProviderDumb.vendorModel!.address}",
                       textAlign: TextAlign.justify,
                       style: FontsTheme.subTitleStyle(
                           fontWeight: FontWeight.w500, size: 12),
                     ),
                   ),
-                  if(Provider.of<VendorModelWrapper>(context,
-                      listen: false)
-                      .vendorModel!
-                      .latitude !=0 && Provider.of<VendorModelWrapper>(context,
-                      listen: false)
-                      .vendorModel!
-                      .longitude !=0 )
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15,right: 15, top: 10  ),
-                    child: SizedBox(
-                      height: 230,
-                      child: GoogleMap(
-                        mapType: MapType.normal,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              Provider.of<VendorModelWrapper>(context,
-                                      listen: false)
-                                  .vendorModel!
-                                  .latitude,
-                              Provider.of<VendorModelWrapper>(context,
-                                      listen: false)
-                                  .vendorModel!
-                                  .longitude),
-                          zoom: 18,
+                  if (vendorProviderDumb
+                              .vendorModel!
+                              .latitude !=
+                          0 &&
+                      vendorProviderDumb
+                              .vendorModel!
+                              .longitude !=
+                          0)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 15, top: 10),
+                      child: SizedBox(
+                        height: 230,
+                        child: GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                                vendorProviderDumb
+                                    .vendorModel!
+                                    .latitude,
+                                vendorProviderDumb
+                                    .vendorModel!
+                                    .longitude),
+                            zoom: 18,
+                          ),
+                          onMapCreated: (GoogleMapController controller) {},
+                          markers: {
+                            Marker(
+                              markerId: MarkerId("location"),
+                              position: LatLng(
+                                 vendorProviderDumb
+                                      .vendorModel!
+                                      .latitude,
+                                 vendorProviderDumb
+                                      .vendorModel!
+                                      .longitude),
+                            ),
+                          },
+                          zoomGesturesEnabled: false,
+                          zoomControlsEnabled: false,
                         ),
-                        onMapCreated: (GoogleMapController controller) {},
-                        markers: {
-                          Marker(markerId:MarkerId("location"),position: LatLng(  Provider.of<VendorModelWrapper>(context,
-                              listen: false)
-                              .vendorModel!
-                              .latitude,Provider.of<VendorModelWrapper>(context,
-                              listen: false)
-                              .vendorModel!
-                              .longitude),),
-                        },
-                        zoomGesturesEnabled: false,
-                        zoomControlsEnabled: false,
-
                       ),
-                    ),
-                  )
+                    )
                 ],
               ),
             ),

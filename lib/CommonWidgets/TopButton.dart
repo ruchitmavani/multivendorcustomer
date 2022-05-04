@@ -22,6 +22,8 @@ class _TopButtonsState extends State<TopButtons> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeColorProvider>(
+        context);
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -125,9 +127,8 @@ class _TopButtonsState extends State<TopButtons> {
                                             groupValue: _selection,
                                             splashRadius: 10,
                                             activeColor:
-                                                Provider.of<ThemeColorProvider>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
+                                            themeProvider
+                                                .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
                                               setState(() {
                                                 _selection = value!;
@@ -171,9 +172,8 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.OtoN,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<ThemeColorProvider>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
+                                            themeProvider
+                                                .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
                                               setState(() {
                                                 _selection = value!;
@@ -218,9 +218,8 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.spHtoL,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<ThemeColorProvider>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
+                                            themeProvider
+                                                .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
                                               setState(() {
                                                 _selection = value!;
@@ -265,9 +264,8 @@ class _TopButtonsState extends State<TopButtons> {
                                             value: SortKeys.spLtoH,
                                             groupValue: _selection,
                                             activeColor:
-                                                Provider.of<ThemeColorProvider>(
-                                                        context)
-                                                    .appPrimaryMaterialColor,
+                                            themeProvider
+                                                .appPrimaryMaterialColor,
                                             onChanged: (SortKeys? value) {
                                               setState(() {
                                                 _selection = value!;

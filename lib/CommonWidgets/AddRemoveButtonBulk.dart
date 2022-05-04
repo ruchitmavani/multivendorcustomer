@@ -98,6 +98,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
   @override
   Widget build(BuildContext context) {
     var cartProvider = Provider.of<CartDataWrapper>(context);
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
 
     return cartProvider.getIndividualQuantity(
                 productId: widget.productData.productId) ==
@@ -109,8 +110,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                 child: Card(
                   shape: CircleBorder(),
                   elevation: 0,
-                  color: Provider.of<ThemeColorProvider>(context)
-                      .appPrimaryMaterialColor,
+                  color: themeProvider.appPrimaryMaterialColor,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -143,8 +143,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
                   },
                   child: Card(
                     elevation: 0,
-                    color: Provider.of<ThemeColorProvider>(context)
-                        .appPrimaryMaterialColor,
+                    color: themeProvider.appPrimaryMaterialColor,
                     child: Center(
                       child: Text("Add to Cart",
                           style: FontsTheme.boldTextStyle(
@@ -160,8 +159,7 @@ class _AddRemoveButtonBulkState extends State<AddRemoveButtonBulk> {
               onTap: () => deleteCart(),
               child: Card(
                 elevation: 0,
-                color: Provider.of<ThemeColorProvider>(context)
-                    .appPrimaryMaterialColor,
+                color: themeProvider.appPrimaryMaterialColor,
                 child: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

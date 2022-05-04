@@ -227,6 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     VendorDataModel? vendorProvider =
         Provider.of<VendorModelWrapper>(context, listen: false).vendorModel;
+
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context);
@@ -249,9 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 actions: [
                   IconButton(
                     icon: Icon(CupertinoIcons.search,
-                        size: 25,
-                        color: Provider.of<ThemeColorProvider>(context)
-                            .appPrimaryMaterialColor),
+                        size: 25, color: themeProvider.appPrimaryMaterialColor),
                     onPressed: () {
                       GoRouter.of(context)
                           .push('/' + storeConcat(PageCollection.search));
@@ -309,8 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Icon(
                                           Icons.chevron_right,
                                           color:
-                                              Provider.of<ThemeColorProvider>(
-                                                      context)
+                                              themeProvider
                                                   .appPrimaryMaterialColor,
                                         ),
                                       ],
@@ -329,8 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.category_outlined,
                   color: Colors.white,
                 ),
-                backgroundColor: Provider.of<ThemeColorProvider>(context)
-                    .appPrimaryMaterialColor,
+                backgroundColor: themeProvider.appPrimaryMaterialColor,
               )
             : FloatingActionButton(
                 onPressed: () {
@@ -344,8 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.category_outlined,
                   color: Colors.white,
                 ),
-                backgroundColor: Provider.of<ThemeColorProvider>(context)
-                    .appPrimaryMaterialColor,
+                backgroundColor: themeProvider.appPrimaryMaterialColor,
               ),
         body: isShopOpen
             ? vendorProvider != null
@@ -571,26 +568,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             Icon(Icons.directions,
                                                 size: 18,
-                                                color: Provider.of<
-                                                            ThemeColorProvider>(
-                                                        context)
+                                                color: themeProvider
                                                     .appPrimaryMaterialColor),
                                             InkWell(
                                               onTap: () {
-                                                if (Provider.of<VendorModelWrapper>(
-                                                                context,
-                                                                listen: false)
-                                                            .vendorModel!
-                                                            .latitude !=
+                                                if (vendorProvider.latitude !=
                                                         0 &&
-                                                    Provider.of<VendorModelWrapper>(
-                                                                context,
-                                                                listen: false)
-                                                            .vendorModel!
-                                                            .longitude !=
+                                                    vendorProvider.longitude !=
                                                         0) {
                                                   launch(
-                                                      "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                                      "https://maps.google.com/?q=${vendorProvider.latitude.toString()},${vendorProvider.longitude.toString()}");
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg: "No Location Added",
@@ -1016,9 +1003,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'tel: ${vendorProvider.mobileNumber}');
                                             },
                                             child: Icon(Icons.call,
-                                                color: Provider.of<
-                                                            ThemeColorProvider>(
-                                                        context)
+                                                color: themeProvider
                                                     .appPrimaryMaterialColor),
                                           ),
                                         ),
@@ -1169,20 +1154,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           FittedBox(
                                             child: InkWell(
                                               onTap: () {
-                                                if (Provider.of<VendorModelWrapper>(
-                                                                context,
-                                                                listen: false)
-                                                            .vendorModel!
-                                                            .latitude !=
+                                                if (vendorProvider.latitude !=
                                                         0 &&
-                                                    Provider.of<VendorModelWrapper>(
-                                                                context,
-                                                                listen: false)
-                                                            .vendorModel!
-                                                            .longitude !=
+                                                    vendorProvider.longitude !=
                                                         0) {
                                                   launch(
-                                                      "https://maps.google.com/?q=${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.latitude.toString()},${Provider.of<VendorModelWrapper>(context, listen: false).vendorModel!.longitude.toString()}");
+                                                      "https://maps.google.com/?q=${vendorProvider.latitude.toString()},${vendorProvider.longitude.toString()}");
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg: "No Location Added",
