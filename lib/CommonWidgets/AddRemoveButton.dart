@@ -290,7 +290,9 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.of<CartDataWrapper>(context).getIndividualQuantity(
+    var cartProvider = Provider.of<CartDataWrapper>(context);
+    var cartProviderDumb = Provider.of<CartDataWrapper>(context, listen: false);
+    return cartProvider.getIndividualQuantity(
       productId: widget.productData.productId,
       productColor: widget.productData.productVariationColors != null
           && widget.productData.productVariationColors!.length != 0
@@ -399,8 +401,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
-                    if (Provider.of<CartDataWrapper>(context,
-                        listen: false)
+                    if (cartProviderDumb
                         .getIndividualQuantity(
                       productId: widget.productData.productId,
                       productColor: widget.productData
@@ -454,8 +455,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                               : false) : null,
                     ) >
                         1) {
-                      updateCart((Provider.of<CartDataWrapper>(context,
-                          listen: false)
+                      updateCart((cartProviderDumb
                           .getIndividualQuantity(
                         productId: widget.productData.productId,
                         productColor: widget.productData
@@ -507,8 +507,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                                 : false) : null,
                       ) -
                           1));
-                    } else if (Provider.of<CartDataWrapper>(context,
-                        listen: false)
+                    } else if (cartProviderDumb
                         .getIndividualQuantity(
                       productId: widget.productData.productId,
                       productColor: widget.productData
@@ -640,8 +639,7 @@ class _AddRemoveButtonState extends State<AddRemoveButton> {
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
                   onTap: () {
-                    updateCart(Provider.of<CartDataWrapper>(context,
-                        listen: false)
+                    updateCart(cartProviderDumb
                         .getIndividualQuantity(
                       productId: widget.productData.productId,
                       productColor: widget.productData
