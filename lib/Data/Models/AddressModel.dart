@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 class Address extends Equatable {
-  String type;
-  String subAddress;
-  String city;
-  String area;
-  int pinCode;
+  final String type;
+  final String subAddress;
+  final String city;
+  final String area;
+  final int pinCode;
 
   Address(
       {required this.type,
@@ -33,6 +33,5 @@ class Address extends Equatable {
   @override
   List<Object?> get props => [type, subAddress, area, city, pinCode];
 }
-
 
 List<Address> addressList = [];

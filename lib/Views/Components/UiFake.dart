@@ -1,5 +1,5 @@
-class platformViewRegistry {
+class PlatformViewRegistry {
   static registerViewFactory(String viewId, dynamic cb) {
-    platformViewRegistry.registerViewFactory(viewId, cb);
+    PlatformViewRegistry.registerViewFactory(viewId, cb);
   }
 }

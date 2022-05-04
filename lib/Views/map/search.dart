@@ -19,7 +19,6 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
   TextEditingController _search = TextEditingController();
   List<AutocompletePrediction> predictions = [];
   var uuid = Uuid();
-  String _sessionToken = "";
 
   @override
   Widget build(BuildContext context) {

@@ -29,6 +29,7 @@ class ProductComponentGrid extends StatefulWidget {
 class _ProductComponentGridState extends State<ProductComponentGrid> {
   @override
   Widget build(BuildContext context) {
+    var themeProvider=Provider.of<ThemeColorProvider>(context);
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(4),
@@ -129,8 +130,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
                                         decorationColor:
-                                            Provider.of<ThemeColorProvider>(
-                                                    context)
+                                        themeProvider
                                                 .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
@@ -169,8 +169,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(
-                                              context)
+                                      color: themeProvider
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
@@ -180,8 +179,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(
-                                              context)
+                                      color:themeProvider
                                           .appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -191,8 +189,7 @@ class _ProductComponentGridState extends State<ProductComponentGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(
-                                              context)
+                                      color: themeProvider
                                           .appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),

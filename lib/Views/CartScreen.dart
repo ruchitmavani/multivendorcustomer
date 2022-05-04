@@ -453,10 +453,12 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var cartProvider = Provider
+    var cartDataProvider = Provider
         .of<CartDataWrapper>(context)
         .cartData;
+    var cartProvider = Provider.of<CartDataWrapper>(context);
     var vendorProvider = Provider.of<VendorModelWrapper>(context);
+    var themeProvider=Provider.of<ThemeColorProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -553,8 +555,7 @@ class _CartScreenState extends State<CartScreen> {
                 padding: const EdgeInsets.symmetric(
                   vertical: 4.0,
                 ),
-                child: Provider
-                    .of<CartDataWrapper>(context)
+                child: cartProvider
                     .isLoading
                     ? Center(
                   child: ListView.builder(
@@ -582,7 +583,7 @@ class _CartScreenState extends State<CartScreen> {
                     },
                   ),
                 )
-                    : cartProvider.length == 0
+                    : cartDataProvider.length == 0
                     ? Container(
                     alignment: Alignment.center,
                     width: MediaQuery
@@ -601,7 +602,7 @@ class _CartScreenState extends State<CartScreen> {
                   padding: EdgeInsets.all(0),
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemCount: cartProvider.length,
+                  itemCount: cartDataProvider.length,
                   separatorBuilder: (context, index) {
                     return Divider(
                       thickness: 1,
@@ -649,13 +650,13 @@ class _CartScreenState extends State<CartScreen> {
                                           Radius.circular(10.0)),
                                     ),
                                     child: ProductDescriptionInCart(
-                                      productId: cartProvider
+                                      productId: cartDataProvider
                                           .elementAt(index)
                                           .productId,
-                                      color: cartProvider
+                                      color: cartDataProvider
                                           .elementAt(index)
                                           .productColor,
-                                      size: cartProvider
+                                      size: cartDataProvider
                                           .elementAt(index)
                                           .productSize,
                                     ),
@@ -672,7 +673,7 @@ class _CartScreenState extends State<CartScreen> {
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
                           children: [
-                            cartProvider
+                            cartDataProvider
                                 .elementAt(index)
                                 .productImageUrl
                                 .length ==
@@ -687,7 +688,7 @@ class _CartScreenState extends State<CartScreen> {
                               height: 55,
                               width: 55,
                               imageUrl:
-                              "${StringConstants.api_url}${cartProvider
+                              "${StringConstants.api_url}${cartDataProvider
                                   .elementAt(index)
                                   .productImageUrl
                                   .first}",
@@ -723,7 +724,7 @@ class _CartScreenState extends State<CartScreen> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "${cartProvider
+                                            "${cartDataProvider
                                                 .elementAt(index)
                                                 .productName}",
                                             style: TextStyle(
@@ -736,12 +737,12 @@ class _CartScreenState extends State<CartScreen> {
                                             TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        cartProvider
+                                        cartDataProvider
                                             .elementAt(index)
                                             .rating !=
                                             0
                                             ? ProductRating(
-                                            cartProvider
+                                            cartDataProvider
                                                 .elementAt(index)
                                                 .rating)
                                             : SizedBox(),
@@ -786,7 +787,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                        "${cartProvider
+                                                        "${cartDataProvider
                                                             .elementAt(index)
                                                             .productMrp}",
                                                       ),
@@ -811,7 +812,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                        "${cartProvider
+                                                        "${cartDataProvider
                                                             .elementAt(index)
                                                             .productSellingPrice}",
                                                       ),
@@ -822,10 +823,10 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                             RoundedAddRemove(
                                               productData:
-                                              cartProvider
+                                              cartDataProvider
                                                   .elementAt(
                                                   index),
-                                              isBulk: cartProvider
+                                              isBulk: cartDataProvider
                                                   .elementAt(index)
                                                   .isBulk,
                                             ),
@@ -838,10 +839,10 @@ class _CartScreenState extends State<CartScreen> {
                                           mainAxisAlignment:
                                           MainAxisAlignment.start,
                                           children: [
-                                            if (cartProvider
+                                            if (cartDataProvider
                                                 .elementAt(index)
                                                 .productMrp >
-                                                cartProvider
+                                                cartDataProvider
                                                     .elementAt(index)
                                                     .productSellingPrice)
                                               Padding(
@@ -852,17 +853,17 @@ class _CartScreenState extends State<CartScreen> {
                                                 child: SizedBox(
                                                   width: 48,
                                                   child: DiscountTag(
-                                                      mrp: cartProvider
+                                                      mrp: cartDataProvider
                                                           .elementAt(
                                                           index)
                                                           .productMrp,
-                                                      selling: cartProvider
+                                                      selling: cartDataProvider
                                                           .elementAt(
                                                           index)
                                                           .productSellingPrice),
                                                 ),
                                               ),
-                                            if (cartProvider
+                                            if (cartDataProvider
                                                 .elementAt(index)
                                                 .productColor !=
                                                 null)
@@ -890,7 +891,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               color: Colors
                                                                   .grey),
                                                           color: Color(
-                                                              cartProvider
+                                                              cartDataProvider
                                                                   .elementAt(
                                                                   index)
                                                                   .productColor!
@@ -899,7 +900,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   ],
                                                 ),
                                               ),
-                                            if (cartProvider
+                                            if (cartDataProvider
                                                 .elementAt(index)
                                                 .productSize !=
                                                 null)
@@ -933,7 +934,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               color: Colors
                                                                   .grey)),
                                                       child: Text(
-                                                        "${cartProvider
+                                                        "${cartDataProvider
                                                             .elementAt(index)
                                                             .productSize!
                                                             .size}",
@@ -963,7 +964,7 @@ class _CartScreenState extends State<CartScreen> {
                   },
                 ),
               ),
-            if (cartProvider.length > 0)
+            if (cartDataProvider.length > 0)
               Padding(
                 padding: const EdgeInsets.only(
                     top: 10.0, bottom: 10, left: 12, right: 12),
@@ -978,8 +979,7 @@ class _CartScreenState extends State<CartScreen> {
                         contentPadding: EdgeInsets.zero,
                         dense: true,
                         title: Text(
-                          Provider
-                              .of<CartDataWrapper>(context)
+                          cartProvider
                               .isCouponApplied
                               ? "Total Savings(${couponText.text}),"
                               : "Total Savings",
@@ -989,8 +989,7 @@ class _CartScreenState extends State<CartScreen> {
                               fontWeight: FontWeight.w600),
                         ),
                         trailing: Text(
-                          "\u{20B9} ${Provider
-                              .of<CartDataWrapper>(context)
+                          "\u{20B9} ${cartProvider
                               .initialSaving}",
                           style: FontsTheme.digitStyle(
                               fontSize: 14,
@@ -1019,10 +1018,8 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                               trailing: Text(
-                                "\u{20B9} ${((context
-                                    .watch<CartDataWrapper>()
-                                    .tax / context
-                                    .watch<CartDataWrapper>()
+                                "\u{20B9} ${((cartProvider
+                                    .tax / cartProvider
                                     .taxPercentage) *
                                     double.parse(sharedPrefs.tax.elementAt(i)))
                                     .roundOff()}",
@@ -1038,7 +1035,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     vendorProvider.isLoaded
                         ? (vendorProvider.vendorModel!.isDeliveryCharges &&
-                        Provider.of<CartDataWrapper>(context)
+                        cartProvider
                             .getDeliveryCharges(
                             vendorProvider.vendorModel!
                                 .freeDeliveryAboveAmount,
@@ -1098,21 +1095,18 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           trailing: Text(
-                            Provider
-                                .of<CartDataWrapper>(context)
+                            cartProvider
                                 .isLoading
                                 ? "0"
-                                : "\u{20B9} ${(Provider
-                                .of<CartDataWrapper>(context)
+                                : "\u{20B9} ${(cartProvider
                                 .totalAmount
                                 .roundOff() +
-                                Provider.of<CartDataWrapper>(context)
+                                cartProvider
                                     .getDeliveryCharges(
                                     vendorProvider.vendorModel!
                                         .freeDeliveryAboveAmount,
                                     vendorProvider.vendorModel!
-                                        .deliveryCharges) + Provider
-                                .of<CartDataWrapper>(context)
+                                        .deliveryCharges) + cartProvider
                                 .tax).roundOff()}",
                             style: FontsTheme.digitStyle(
                               fontSize: 15,
@@ -1128,7 +1122,7 @@ class _CartScreenState extends State<CartScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: cartProvider.length > 0
+      bottomNavigationBar: cartDataProvider.length > 0
           ? Container(
         decoration: new BoxDecoration(
           boxShadow: [
@@ -1162,18 +1156,15 @@ class _CartScreenState extends State<CartScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 5.0),
                       child: Text(
-                        Provider
-                            .of<CartDataWrapper>(context)
+                        cartProvider
                             .isLoading
                             ? "0"
-                            : "${(Provider
-                            .of<CartDataWrapper>(context)
-                            .totalAmount + Provider.of<CartDataWrapper>(context)
+                            : "${(cartProvider
+                            .totalAmount + cartProvider
                             .getDeliveryCharges(
                             vendorProvider.vendorModel!.freeDeliveryAboveAmount,
                             vendorProvider.vendorModel!.deliveryCharges
-                                .roundOff()) + Provider
-                            .of<CartDataWrapper>(context)
+                                .roundOff()) + cartProvider
                             .tax).roundOff()}",
                         style: TextStyle(
                             fontFamily: "Poppins",
@@ -1216,8 +1207,7 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: Container(
                   height: 48,
-                  color: Provider
-                      .of<ThemeColorProvider>(context)
+                  color: themeProvider
                       .appPrimaryMaterialColor,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 3.0),

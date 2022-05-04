@@ -111,6 +111,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<CategoryName>(context).categoryName;
+    var themeProvider=Provider.of<ThemeColorProvider>(context);
 
     return DirectSelectContainer(
       child: Scaffold(
@@ -120,7 +121,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
             IconButton(
               icon: Icon(CupertinoIcons.search,
                   size: 25,
-                  color: Provider.of<ThemeColorProvider>(context)
+                  color: themeProvider
                       .appPrimaryMaterialColor),
               onPressed: () {
                 GoRouter.of(context)
@@ -405,7 +406,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                       border: Border.all(
                                                                           width:
                                                                               2,
-                                                                          color: Provider.of<ThemeColorProvider>(context)
+                                                                          color: themeProvider
                                                                               .appPrimaryMaterialColor),
                                                                       borderRadius:
                                                                           BorderRadius.circular(
@@ -483,7 +484,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                             1,
                                                                         color: currentSizeIndex ==
                                                                                 index
-                                                                            ? Provider.of<ThemeColorProvider>(context)
+                                                                            ? themeProvider
                                                                                 .appPrimaryMaterialColor
                                                                             : Colors
                                                                                 .grey.shade400),
@@ -515,7 +516,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                                                         "${e.size}  \u{20B9}${e.sellingPrice}",
                                                                         style: FontsTheme.subTitleStyle(
                                                                             color: currentSizeIndex == index
-                                                                                ? Provider.of<ThemeColorProvider>(context).appPrimaryMaterialColor
+                                                                                ? themeProvider.appPrimaryMaterialColor
                                                                                 : Colors.grey.shade400,
                                                                             size: 12),
                                                                       ),
@@ -814,7 +815,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                         MaterialStateProperty.all<double>(0),
                                     backgroundColor: MaterialStateProperty.all<
                                             Color>(
-                                        Provider.of<ThemeColorProvider>(context)
+                                        themeProvider
                                             .appPrimaryMaterialColor),
                                     foregroundColor:
                                         MaterialStateProperty.all<Color>(

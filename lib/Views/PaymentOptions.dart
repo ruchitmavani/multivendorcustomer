@@ -49,7 +49,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
   _generateOrderId() async {
     var cartProvider = Provider.of<CartDataWrapper>(context, listen: false);
-    var vendorProvider =
+    var vendorProviderDumb =
         Provider.of<VendorModelWrapper>(context, listen: false);
     setState(() {
       isLoadingOrderId = true;
@@ -57,8 +57,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     await PaymentController.generateOrderId(
             cartProvider.totalAmount.roundOff() +
                 cartProvider.getDeliveryCharges(
-                    vendorProvider.vendorModel!.freeDeliveryAboveAmount,
-                    vendorProvider.vendorModel!.deliveryCharges) +
+                    vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
+                    vendorProviderDumb.vendorModel!.deliveryCharges) +
                 cartProvider.tax.roundOff())
         .then((value) {
       if (value != null) {
@@ -83,7 +83,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
   _addOrder(String type) async {
     var cartProvider = Provider.of<CartDataWrapper>(context, listen: false);
-    var vendorProvider =
+    var vendorProviderDumb =
         Provider.of<VendorModelWrapper>(context, listen: false);
 
     setState(() {
@@ -92,7 +92,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     await OrderController.addOrder(
             type: "$type",
             address: widget.address,
-            ref_no: orderId ?? "",
+            refNo: orderId ?? "",
             couponAmount: cartProvider.isCouponApplied == true
                 ? cartProvider.discount
                 : 0,
@@ -100,26 +100,28 @@ class _PaymentOptionsState extends State<PaymentOptions> {
             couponId: "",
             deliveryCharge: type == 'TAKEAWAY' ||
                     ((cartProvider.totalAmount >
-                            vendorProvider
+                            vendorProviderDumb
                                 .vendorModel!.freeDeliveryAboveAmount) &&
-                        vendorProvider.vendorModel!.freeDeliveryAboveAmount > 0)
+                        vendorProviderDumb
+                                .vendorModel!.freeDeliveryAboveAmount >
+                            0)
                 ? 0.0
-                : vendorProvider.vendorModel!.isDeliveryCharges
-                    ? vendorProvider.vendorModel!.deliveryCharges
+                : vendorProviderDumb.vendorModel!.isDeliveryCharges
+                    ? vendorProviderDumb.vendorModel!.deliveryCharges
                     : 0,
             orderAmount: type == 'TAKEAWAY'
                 ? cartProvider.totalAmount.roundOff() +
                     cartProvider.tax.roundOff()
                 : cartProvider.totalAmount.roundOff() +
                     cartProvider.getDeliveryCharges(
-                        vendorProvider.vendorModel!.freeDeliveryAboveAmount,
-                        vendorProvider.vendorModel!.deliveryCharges) +
+                        vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
+                        vendorProviderDumb.vendorModel!.deliveryCharges) +
                     cartProvider.tax.roundOff(),
             paidAmount: type == 'PAY_ONLINE'
                 ? cartProvider.totalAmount.roundOff() +
                     cartProvider.getDeliveryCharges(
-                        vendorProvider.vendorModel!.freeDeliveryAboveAmount,
-                        vendorProvider.vendorModel!.deliveryCharges) +
+                        vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
+                        vendorProviderDumb.vendorModel!.deliveryCharges) +
                     cartProvider.tax.roundOff()
                 : 0,
             refundAmount: 0,
@@ -180,6 +182,8 @@ class _PaymentOptionsState extends State<PaymentOptions> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
+    var vendorProvider = context.watch<VendorModelWrapper>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -220,8 +224,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       leading: Transform.scale(
                         scale: 0.92,
                         child: Radio<paymentMethods>(
-                          activeColor: Provider.of<ThemeColorProvider>(context)
-                              .appPrimaryMaterialColor,
+                          activeColor: themeProvider.appPrimaryMaterialColor,
                           value: paymentMethods.COD,
                           groupValue: _selection,
                           onChanged: (paymentMethods? value) {
@@ -237,18 +240,14 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   ),
                 ),
                 if (orderId != null &&
-                    context
-                        .watch<VendorModelWrapper>()
-                        .vendorModel!
+                    vendorProvider    .vendorModel!
                         .isOnlinePayment)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
                 if (orderId != null &&
-                    context
-                        .watch<VendorModelWrapper>()
-                        .vendorModel!
+                    vendorProvider    .vendorModel!
                         .isOnlinePayment)
                   InkWell(
                     onTap: () {
@@ -258,7 +257,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     },
                     child: Padding(
                       padding: EdgeInsets.only(
-                          bottom: Provider.of<VendorModelWrapper>(context)
+                          bottom: vendorProvider
                                   .vendorModel!
                                   .isStorePickupEnable
                               ? 0
@@ -275,9 +274,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           scale: 0.92,
                           child: Radio<paymentMethods>(
                             value: paymentMethods.PAY_ONLINE,
-                            activeColor:
-                                Provider.of<ThemeColorProvider>(context)
-                                    .appPrimaryMaterialColor,
+                            activeColor: themeProvider.appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
                               setState(() {
@@ -289,14 +286,14 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       ),
                     ),
                   ),
-                if (Provider.of<VendorModelWrapper>(context)
+                if (vendorProvider
                     .vendorModel!
                     .isStorePickupEnable)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
-                if (Provider.of<VendorModelWrapper>(context)
+                if (vendorProvider
                     .vendorModel!
                     .isStorePickupEnable)
                   InkWell(
@@ -319,9 +316,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           scale: 0.92,
                           child: Radio<paymentMethods>(
                             value: paymentMethods.TAKEAWAY,
-                            activeColor:
-                                Provider.of<ThemeColorProvider>(context)
-                                    .appPrimaryMaterialColor,
+                            activeColor: themeProvider.appPrimaryMaterialColor,
                             groupValue: _selection,
                             onChanged: (paymentMethods? value) {
                               setState(() {
@@ -374,24 +369,24 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           String notifyUrl =
                               "https://test.gocashfree.com/notify";
 
-                          var cartProvider = Provider.of<CartDataWrapper>(
+                          var cartProviderDumb = Provider.of<CartDataWrapper>(
                               context,
                               listen: false);
 
-                          var vendorProvider = Provider.of<VendorModelWrapper>(
+                          var vendorProviderDumb = Provider.of<VendorModelWrapper>(
                               context,
                               listen: false);
 
                           Map<String, dynamic> input = {
                             "orderId": orderId!,
                             "orderAmount":
-                                (cartProvider.totalAmount.roundOff() +
-                                        cartProvider.getDeliveryCharges(
-                                            vendorProvider.vendorModel!
+                                (cartProviderDumb.totalAmount.roundOff() +
+                                        cartProviderDumb.getDeliveryCharges(
+                                            vendorProviderDumb.vendorModel!
                                                 .freeDeliveryAboveAmount,
-                                            vendorProvider
+                                            vendorProviderDumb
                                                 .vendorModel!.deliveryCharges) +
-                                        cartProvider.tax.roundOff())
+                                        cartProviderDumb.tax.roundOff())
                                     .toString(),
                             "customerName": customerName,
                             "orderNote": orderNote,
@@ -447,8 +442,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       },
                       child: Container(
                         height: 48,
-                        color: Provider.of<ThemeColorProvider>(context)
-                            .appPrimaryMaterialColor,
+                        color: themeProvider.appPrimaryMaterialColor,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 3.0),
                           child: Center(

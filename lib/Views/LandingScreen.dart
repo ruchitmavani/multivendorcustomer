@@ -9,7 +9,7 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ui.platformViewRegistry.registerViewFactory("landing-html", (int viewId) {
+    ui.PlatformViewRegistry.registerViewFactory("landing-html", (int viewId) {
       IFrameElement element = IFrameElement();
 
       element.src = 'landing_page.html';

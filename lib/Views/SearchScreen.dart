@@ -56,7 +56,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -97,8 +97,7 @@ class _SearchState extends State<Search> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: Provider.of<ThemeColorProvider>(context)
-                            .appPrimaryMaterialColor,
+                        color: themeProvider.appPrimaryMaterialColor,
                         width: 0.7),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -106,8 +105,7 @@ class _SearchState extends State<Search> {
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       width: 1,
-                      color: Provider.of<ThemeColorProvider>(context)
-                          .appPrimaryMaterialColor,
+                      color: themeProvider.appPrimaryMaterialColor,
                       style: BorderStyle.solid,
                     ),
                   ),
@@ -200,7 +198,7 @@ class _SearchState extends State<Search> {
 }
 
 class SearchGrid extends StatefulWidget {
-  ProductData productData;
+  final ProductData productData;
 
   SearchGrid({required this.productData});
 
@@ -211,7 +209,7 @@ class SearchGrid extends StatefulWidget {
 class _SearchGridState extends State<SearchGrid> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(4),
       child: SizedBox(
@@ -290,10 +288,8 @@ class _SearchGridState extends State<SearchGrid> {
                                     style: TextStyle(
                                         decoration: TextDecoration.lineThrough,
                                         decorationThickness: 3,
-                                        decorationColor:
-                                            Provider.of<ThemeColorProvider>(
-                                                    context)
-                                                .appPrimaryMaterialColor,
+                                        decorationColor: themeProvider
+                                            .appPrimaryMaterialColor,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w400,
                                         color: Colors.grey.shade700,
@@ -329,9 +325,8 @@ class _SearchGridState extends State<SearchGrid> {
                                   "Request Price",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(
-                                              context)
-                                          .appPrimaryMaterialColor,
+                                      color:
+                                          themeProvider.appPrimaryMaterialColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -340,9 +335,8 @@ class _SearchGridState extends State<SearchGrid> {
                                   "",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
-                                      color: Provider.of<ThemeColorProvider>(
-                                              context)
-                                          .appPrimaryMaterialColor,
+                                      color:
+                                          themeProvider.appPrimaryMaterialColor,
                                       fontSize: 4,
                                       fontWeight: FontWeight.w600),
                                 ),

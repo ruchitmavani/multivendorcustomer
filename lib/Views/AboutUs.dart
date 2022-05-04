@@ -23,6 +23,7 @@ class _AboutUsState extends State<AboutUs> {
     var vendorProvider = Provider.of<VendorModelWrapper>(context);
     var vendorProviderDumb =
         Provider.of<VendorModelWrapper>(context, listen: false);
+    var themeProvider = Provider.of<ThemeColorProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -93,8 +94,7 @@ class _AboutUsState extends State<AboutUs> {
                                 },
                                 child: Icon(Icons.call,
                                     color:
-                                        Provider.of<ThemeColorProvider>(context)
-                                            .appPrimaryMaterialColor),
+                                        themeProvider.appPrimaryMaterialColor),
                               ),
                             ),
                             vendorProviderDumb
@@ -122,8 +122,7 @@ class _AboutUsState extends State<AboutUs> {
                                         "images/whatsapp.png.",
                                         height: 22,
                                         width: 22,
-                                        color: Provider.of<ThemeColorProvider>(
-                                                context)
+                                        color: themeProvider
                                             .appPrimaryMaterialColor,
                                       ),
                                     ),
@@ -156,14 +155,8 @@ class _AboutUsState extends State<AboutUs> {
                           FontsTheme.gilroyText(color: Colors.black, size: 15),
                     ),
                   ),
-                  if (vendorProviderDumb
-                              .vendorModel!
-                              .latitude !=
-                          0 &&
-                      vendorProviderDumb
-                              .vendorModel!
-                              .longitude !=
-                          0)
+                  if (vendorProviderDumb.vendorModel!.latitude != 0 &&
+                      vendorProviderDumb.vendorModel!.longitude != 0)
                     Center(
                       child: InkWell(
                         onTap: () {
@@ -182,8 +175,7 @@ class _AboutUsState extends State<AboutUs> {
                             ),
                             Icon(Icons.directions,
                                 size: 18,
-                                color: Provider.of<ThemeColorProvider>(context)
-                                    .appPrimaryMaterialColor),
+                                color: themeProvider.appPrimaryMaterialColor),
                           ],
                         ),
                       ),
@@ -302,14 +294,8 @@ class _AboutUsState extends State<AboutUs> {
                           fontWeight: FontWeight.w500, size: 12),
                     ),
                   ),
-                  if (vendorProviderDumb
-                              .vendorModel!
-                              .latitude !=
-                          0 &&
-                      vendorProviderDumb
-                              .vendorModel!
-                              .longitude !=
-                          0)
+                  if (vendorProviderDumb.vendorModel!.latitude != 0 &&
+                      vendorProviderDumb.vendorModel!.longitude != 0)
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 15, right: 15, top: 10),
@@ -319,12 +305,8 @@ class _AboutUsState extends State<AboutUs> {
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
                             target: LatLng(
-                                vendorProviderDumb
-                                    .vendorModel!
-                                    .latitude,
-                                vendorProviderDumb
-                                    .vendorModel!
-                                    .longitude),
+                                vendorProviderDumb.vendorModel!.latitude,
+                                vendorProviderDumb.vendorModel!.longitude),
                             zoom: 18,
                           ),
                           onMapCreated: (GoogleMapController controller) {},
@@ -332,12 +314,8 @@ class _AboutUsState extends State<AboutUs> {
                             Marker(
                               markerId: MarkerId("location"),
                               position: LatLng(
-                                 vendorProviderDumb
-                                      .vendorModel!
-                                      .latitude,
-                                 vendorProviderDumb
-                                      .vendorModel!
-                                      .longitude),
+                                  vendorProviderDumb.vendorModel!.latitude,
+                                  vendorProviderDumb.vendorModel!.longitude),
                             ),
                           },
                           zoomGesturesEnabled: false,

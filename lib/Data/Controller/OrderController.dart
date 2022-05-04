@@ -59,7 +59,7 @@ class OrderController {
       required List<SimpleTaxModel> taxPercentage,
       required String couponId,
       required Address address,
-      required String ref_no}) async {
+      required String refNo}) async {
     String url = StringConstants.api_url + StringConstants.add_order;
 
     //body Data
@@ -103,7 +103,7 @@ class OrderController {
             "tax_percentage": taxPercentage,
             "coupon_amount": couponAmount,
             "delivery_address": address.toJson(),
-            "ref_no": ref_no,
+            "ref_no": refNo,
           }
         : {
             "customer_uniq_id": "${sharedPrefs.customer_id}",
@@ -120,7 +120,7 @@ class OrderController {
             "coupon_amount": couponAmount,
             "coupon_id": "$couponId",
             "delivery_address": address.toJson(),
-            "ref_no": ref_no,
+            "ref_no": refNo,
           };
 
     ResponseClass<List<OrderDataModel>> responseClass =

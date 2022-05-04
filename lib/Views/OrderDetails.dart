@@ -106,6 +106,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider=Provider.of<ThemeColorProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -185,7 +186,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               'tel: ${widget.orderData.vendorDetails.mobileNumber}');
                         },
                         child: Icon(Icons.call,
-                            color: Provider.of<ThemeColorProvider>(context)
+                            color: themeProvider
                                 .appPrimaryMaterialColor),
                       ),
                       widget.orderData.vendorDetails.isWhatsappChatSupport
@@ -208,7 +209,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 "images/whatsapp.png.",
                                 height: 22,
                                 width: 22,
-                                color: Provider.of<ThemeColorProvider>(context)
+                                color: themeProvider
                                     .appPrimaryMaterialColor,
                               ),
                             )
@@ -345,10 +346,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         2
                                     ? i == 1 || i == 2
                                         ? Colors.grey
-                                        : Provider.of<ThemeColorProvider>(
-                                                context)
+                                        : themeProvider
                                             .appPrimaryMaterialColor
-                                    : Provider.of<ThemeColorProvider>(context)
+                                    : themeProvider
                                         .appPrimaryMaterialColor,
                                 child: Icon(
                                   Icons.check,
@@ -367,9 +367,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       2
                                   ? i == 1 || i == 2
                                       ? Colors.grey
-                                      : Provider.of<ThemeColorProvider>(context)
+                                      : themeProvider
                                           .appPrimaryMaterialColor
-                                  : Provider.of<ThemeColorProvider>(context)
+                                  : themeProvider
                                       .appPrimaryMaterialColor,
                             ),
                           ),
@@ -498,9 +498,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             //             decoration: TextDecoration
                                             //                 .lineThrough,
                                             //             decorationThickness: 3,
-                                            //             decorationColor: Provider
-                                            //                     .of<ThemeColorProvider>(
-                                            //                         context)
+                                            //             decorationColor: themeProvider
                                             //                 .appPrimaryMaterialColor)
                                             //     :
                                             FontsTheme.valueStyle(
