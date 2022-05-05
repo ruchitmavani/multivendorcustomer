@@ -26,7 +26,7 @@ class WebPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ui.PlatformViewRegistry.registerViewFactory("rzp-html", (int viewId) {
+    ui.platformViewRegistry.registerViewFactory("rzp-html", (int viewId) {
       IFrameElement element = IFrameElement();
 
       window.onMessage.forEach((value) {
