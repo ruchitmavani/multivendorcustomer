@@ -17,6 +17,7 @@ import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/OrderSuccess.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert' show base64, json, utf8;
 
 class PaymentOptions extends StatefulWidget {
   final Address address;
@@ -54,12 +55,13 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     setState(() {
       isLoadingOrderId = true;
     });
-    await PaymentController.generateOrderId(
-            cartProvider.totalAmount.roundOff() +
-                cartProvider.getDeliveryCharges(
-                    vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
-                    vendorProviderDumb.vendorModel!.deliveryCharges) +
-                cartProvider.tax.roundOff())
+    await PaymentController.generateOrderId(2.0
+            // cartProvider.totalAmount.roundOff() +
+            //     cartProvider.getDeliveryCharges(
+            //         vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
+            //         vendorProviderDumb.vendorModel!.deliveryCharges) +
+            //     cartProvider.tax.roundOff()
+            )
         .then((value) {
       if (value != null) {
         setState(() {
@@ -240,15 +242,13 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   ),
                 ),
                 if (orderId != null &&
-                    vendorProvider    .vendorModel!
-                        .isOnlinePayment)
+                    vendorProvider.vendorModel!.isOnlinePayment)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
                 if (orderId != null &&
-                    vendorProvider    .vendorModel!
-                        .isOnlinePayment)
+                    vendorProvider.vendorModel!.isOnlinePayment)
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -257,11 +257,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                     },
                     child: Padding(
                       padding: EdgeInsets.only(
-                          bottom: vendorProvider
-                                  .vendorModel!
-                                  .isStorePickupEnable
-                              ? 0
-                              : 5.0),
+                          bottom:
+                              vendorProvider.vendorModel!.isStorePickupEnable
+                                  ? 0
+                                  : 5.0),
                       child: ListTile(
                         dense: true,
                         visualDensity:
@@ -286,16 +285,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                       ),
                     ),
                   ),
-                if (vendorProvider
-                    .vendorModel!
-                    .isStorePickupEnable)
+                if (vendorProvider.vendorModel!.isStorePickupEnable)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
-                if (vendorProvider
-                    .vendorModel!
-                    .isStorePickupEnable)
+                if (vendorProvider.vendorModel!.isStorePickupEnable)
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -360,10 +355,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                         }
                         if (_selection == paymentMethods.PAY_ONLINE) {
                           String stage = "PROD";
+                          // String stage = "TEST";
                           String customerName = sharedPrefs.customer_name;
                           String orderNote = "Order Note";
                           String orderCurrency = "INR";
                           String appId = "20382800473cf07d7fe70e2e08828302";
+                          // String appId = "155112560e54c0c53e63a913e2211551";
                           String customerPhone = sharedPrefs.customer_mobileNo;
                           String customerEmail = sharedPrefs.customer_email;
                           String notifyUrl =
@@ -373,21 +370,28 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                               context,
                               listen: false);
 
-                          var vendorProviderDumb = Provider.of<VendorModelWrapper>(
-                              context,
-                              listen: false);
-
+                          var vendorProviderDumb =
+                              Provider.of<VendorModelWrapper>(context,
+                                  listen: false);
+                          print((cartProviderDumb.totalAmount.roundOff() +
+                              cartProviderDumb.getDeliveryCharges(
+                                  vendorProviderDumb
+                                      .vendorModel!.freeDeliveryAboveAmount,
+                                  vendorProviderDumb
+                                      .vendorModel!.deliveryCharges) +
+                              cartProviderDumb.tax.roundOff()));
                           Map<String, dynamic> input = {
+                            // "orderId": "veerRochit",
                             "orderId": orderId!,
-                            "orderAmount":
-                                (cartProviderDumb.totalAmount.roundOff() +
-                                        cartProviderDumb.getDeliveryCharges(
-                                            vendorProviderDumb.vendorModel!
-                                                .freeDeliveryAboveAmount,
-                                            vendorProviderDumb
-                                                .vendorModel!.deliveryCharges) +
-                                        cartProviderDumb.tax.roundOff())
-                                    .toString(),
+                            "orderAmount": "2",
+                            // (cartProviderDumb.totalAmount.roundOff() +
+                            //         cartProviderDumb.getDeliveryCharges(
+                            //             vendorProviderDumb.vendorModel!
+                            //                 .freeDeliveryAboveAmount,
+                            //             vendorProviderDumb
+                            //                 .vendorModel!.deliveryCharges) +
+                            //         cartProviderDumb.tax.roundOff()).roundOff()
+                            //     .toString(),
                             "customerName": customerName,
                             "orderNote": orderNote,
                             "orderCurrency": orderCurrency,
@@ -396,9 +400,17 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             "customerEmail": customerEmail,
                             "stage": stage,
                             "tokenData": token,
-                            "notifyUrl": notifyUrl
+                            // "tokenData": "yJ9JCN4MzUIJiOicGbhJCLiQ1VKJiOiAXe0Jye.RLQfiYWY3EjY1gTZwUzNyYjI6ICdsF2cfJCL3kTNwMDN0UjNxojIwhXZiwiIS5USiojI5NmblJnc1NkclRmcvJCLyADMxojI05Wdv1WQyVGZy9mIsICdph2YvJlclVmdiojIklkclRmcvJye.fCK8IDPcbfpxpb8tvftn0GanpceZH46dDhfHy1PMpAMcunQx72C1clHLaYsN0k9rZI",
+                            "notifyUrl": notifyUrl,
+                            "paymentSplits": "${base64.encode(utf8.encode(json.encode([
+                              {"vendorId": 'veer1', "amount": 1},
+                              {"vendorId": '93qqk2whye', "amount": 1}
+                            ])))}"
                           };
-
+                          print("${base64.encode(utf8.encode(json.encode([
+                            {"vendorId": 'veer1', "amount": 1},
+                            {"vendorId": '93qqk2whye', "amount": 1}
+                          ])))}");
                           input.addAll(UIMeta().toMap());
 
                           CashfreePGSDK.doPayment(input).then((value) {
