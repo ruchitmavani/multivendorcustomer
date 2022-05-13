@@ -41,6 +41,8 @@ class StringConstants {
   static String payment_verify = "payment_verify";
   static String accept_order = "accept_order";
   static String reject_order = "reject_order";
+  static String view_payment_details = "view_payment_details";
+
 
   /*---------------- SharedPreference Keys ------------------*/
 

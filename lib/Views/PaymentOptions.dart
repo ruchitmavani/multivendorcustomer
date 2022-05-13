@@ -37,13 +37,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   bool isLoadingOrderId = false;
   String? orderId;
   String token = "";
+  String? vendorPaymentId;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (context.read<VendorModelWrapper>().vendorModel!.isOnlinePayment) {
         _generateOrderId();
+        _getPaymentID();
       }
     });
   }
@@ -55,13 +57,12 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     setState(() {
       isLoadingOrderId = true;
     });
-    await PaymentController.generateOrderId(2.0
-            // cartProvider.totalAmount.roundOff() +
-            //     cartProvider.getDeliveryCharges(
-            //         vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
-            //         vendorProviderDumb.vendorModel!.deliveryCharges) +
-            //     cartProvider.tax.roundOff()
-            )
+    await PaymentController.generateOrderId(
+            cartProvider.totalAmount.roundOff() +
+                cartProvider.getDeliveryCharges(
+                    vendorProviderDumb.vendorModel!.freeDeliveryAboveAmount,
+                    vendorProviderDumb.vendorModel!.deliveryCharges) +
+                cartProvider.tax.roundOff())
         .then((value) {
       if (value != null) {
         setState(() {
@@ -69,6 +70,29 @@ class _PaymentOptionsState extends State<PaymentOptions> {
           orderId = value.orderId;
           token = value.cftoken;
           window.localStorage["orderId"] = orderId!;
+        });
+      } else {
+        setState(() {
+          isLoadingOrderId = false;
+        });
+      }
+    }, onError: (e) {
+      setState(() {
+        isLoadingOrderId = false;
+      });
+      log(e.toString());
+    });
+  }
+
+  _getPaymentID() async {
+    setState(() {
+      isLoadingOrderId = true;
+    });
+    await PaymentController.getBankDetails().then((value) {
+      if (value.data != null) {
+        setState(() {
+          isLoadingOrderId = false;
+          vendorPaymentId = value.data!.vendorPaymentId;
         });
       } else {
         setState(() {
@@ -242,13 +266,15 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                   ),
                 ),
                 if (orderId != null &&
-                    vendorProvider.vendorModel!.isOnlinePayment)
+                    vendorProvider.vendorModel!.isOnlinePayment &&
+                    vendorPaymentId != null)
                   Divider(
                     thickness: 1,
                     color: Colors.white,
                   ),
                 if (orderId != null &&
-                    vendorProvider.vendorModel!.isOnlinePayment)
+                    vendorProvider.vendorModel!.isOnlinePayment &&
+                    vendorPaymentId != null)
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -359,7 +385,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           String customerName = sharedPrefs.customer_name;
                           String orderNote = "Order Note";
                           String orderCurrency = "INR";
+                          //prod app id
                           String appId = "20382800473cf07d7fe70e2e08828302";
+                          //test app id
                           // String appId = "155112560e54c0c53e63a913e2211551";
                           String customerPhone = sharedPrefs.customer_mobileNo;
                           String customerEmail = sharedPrefs.customer_email;
@@ -383,15 +411,16 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                           Map<String, dynamic> input = {
                             // "orderId": "veerRochit",
                             "orderId": orderId!,
-                            "orderAmount": "2",
-                            // (cartProviderDumb.totalAmount.roundOff() +
-                            //         cartProviderDumb.getDeliveryCharges(
-                            //             vendorProviderDumb.vendorModel!
-                            //                 .freeDeliveryAboveAmount,
-                            //             vendorProviderDumb
-                            //                 .vendorModel!.deliveryCharges) +
-                            //         cartProviderDumb.tax.roundOff()).roundOff()
-                            //     .toString(),
+                            "orderAmount":
+                                (cartProviderDumb.totalAmount.roundOff() +
+                                        cartProviderDumb.getDeliveryCharges(
+                                            vendorProviderDumb.vendorModel!
+                                                .freeDeliveryAboveAmount,
+                                            vendorProviderDumb
+                                                .vendorModel!.deliveryCharges) +
+                                        cartProviderDumb.tax.roundOff())
+                                    .roundOff()
+                                    .toString(),
                             "customerName": customerName,
                             "orderNote": orderNote,
                             "orderCurrency": orderCurrency,
@@ -402,18 +431,20 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             "tokenData": token,
                             // "tokenData": "yJ9JCN4MzUIJiOicGbhJCLiQ1VKJiOiAXe0Jye.RLQfiYWY3EjY1gTZwUzNyYjI6ICdsF2cfJCL3kTNwMDN0UjNxojIwhXZiwiIS5USiojI5NmblJnc1NkclRmcvJCLyADMxojI05Wdv1WQyVGZy9mIsICdph2YvJlclVmdiojIklkclRmcvJye.fCK8IDPcbfpxpb8tvftn0GanpceZH46dDhfHy1PMpAMcunQx72C1clHLaYsN0k9rZI",
                             "notifyUrl": notifyUrl,
-                            "paymentSplits": "${base64.encode(utf8.encode(json.encode([
-                              {"vendorId": 'veer1', "amount": 1},
-                              {"vendorId": '93qqk2whye', "amount": 1}
-                            ])))}"
+                            "paymentSplits":
+                                "${base64.encode(utf8.encode(json.encode([
+                                  {
+                                    "vendorId": "$vendorPaymentId",
+                                    "percentage": 99
+                                  }
+                                ])))}"
                           };
                           print("${base64.encode(utf8.encode(json.encode([
-                            {"vendorId": 'veer1', "amount": 1},
-                            {"vendorId": '93qqk2whye', "amount": 1}
-                          ])))}");
+                                {"vendorId": '93qqk2whye', "percentage": 99}
+                              ])))}");
                           input.addAll(UIMeta().toMap());
 
-                          CashfreePGSDK.doPayment(input).then((value) {
+                          await CashfreePGSDK.doPayment(input).then((value) {
                             value?.forEach((key, value) {
                               if (kDebugMode) {
                                 print("$key : $value");
