@@ -42,7 +42,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       if (context.read<VendorModelWrapper>().vendorModel!.isOnlinePayment) {
         _generateOrderId();
         _getPaymentID();
@@ -431,16 +431,17 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             "tokenData": token,
                             // "tokenData": "yJ9JCN4MzUIJiOicGbhJCLiQ1VKJiOiAXe0Jye.RLQfiYWY3EjY1gTZwUzNyYjI6ICdsF2cfJCL3kTNwMDN0UjNxojIwhXZiwiIS5USiojI5NmblJnc1NkclRmcvJCLyADMxojI05Wdv1WQyVGZy9mIsICdph2YvJlclVmdiojIklkclRmcvJye.fCK8IDPcbfpxpb8tvftn0GanpceZH46dDhfHy1PMpAMcunQx72C1clHLaYsN0k9rZI",
                             "notifyUrl": notifyUrl,
+                            //total percentage 1% merchant commission 2.25% cashfree charges 0.1 vendor split charge
                             "paymentSplits":
                                 "${base64.encode(utf8.encode(json.encode([
                                   {
                                     "vendorId": "$vendorPaymentId",
-                                    "percentage": 99
+                                    "percentage": 96.6
                                   }
                                 ])))}"
                           };
-                          print("${base64.encode(utf8.encode(json.encode([
-                                {"vendorId": '93qqk2whye', "percentage": 99}
+                          log("${base64.encode(utf8.encode(json.encode([
+                                {"vendorId": '$vendorPaymentId', "percentage": 96.6}
                               ])))}");
                           input.addAll(UIMeta().toMap());
 
