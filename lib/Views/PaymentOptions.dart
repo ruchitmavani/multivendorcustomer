@@ -16,6 +16,7 @@ import 'package:multi_vendor_customer/Utils/Providers/ColorProvider.dart';
 import 'package:multi_vendor_customer/Utils/Providers/VendorClass.dart';
 import 'package:multi_vendor_customer/Utils/SharedPrefs.dart';
 import 'package:multi_vendor_customer/Views/OrderSuccess.dart';
+import 'package:multi_vendor_customer/Views/dialogs/payment_failed_dialog.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert' show base64, json, utf8;
 
@@ -454,6 +455,10 @@ class _PaymentOptionsState extends State<PaymentOptions> {
                             if (value?["txStatus"] == "SUCCESS") {
                               _addOrder("PAY_ONLINE");
                             } else {
+                              failedDialog(
+                                context,
+                                value
+                              );
                               Fluttertoast.showToast(
                                 msg: 'Failed payment',
                                 webPosition: "center",
